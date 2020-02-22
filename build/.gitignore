@@ -1,5 +1,6 @@
 candaemon
 *.o
+.ycm*
 .config
 *.a
 CMakeCache.txt
