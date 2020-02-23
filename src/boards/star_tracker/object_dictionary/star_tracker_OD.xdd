@@ -645,7 +645,7 @@
             <denotation>
               <label lang="en" />
             </denotation>
-            <defaultValue value="2" />
+            <defaultValue value="0" />
           </parameter>
           <parameter uniqueID="UID_PARAM_160001" access="readWrite">
             <label lang="en">mapped object 1</label>
@@ -653,7 +653,7 @@
             <denotation>
               <label lang="en" />
             </denotation>
-            <defaultValue value="0x31010120" />
+            <defaultValue value="0x00000000" />
           </parameter>
           <parameter uniqueID="UID_PARAM_160002" access="readWrite">
             <label lang="en">mapped object 2</label>
@@ -661,7 +661,7 @@
             <denotation>
               <label lang="en" />
             </denotation>
-            <defaultValue value="0x31010220" />
+            <defaultValue value="0x00000000" />
           </parameter>
           <parameter uniqueID="UID_PARAM_160003" access="readWrite">
             <label lang="en">mapped object 3</label>
@@ -725,7 +725,7 @@
             <denotation>
               <label lang="en" />
             </denotation>
-            <defaultValue value="2" />
+            <defaultValue value="0" />
           </parameter>
           <parameter uniqueID="UID_PARAM_160101" access="readWrite">
             <label lang="en">mapped object 1</label>
@@ -733,7 +733,7 @@
             <denotation>
               <label lang="en" />
             </denotation>
-            <defaultValue value="0x31010320" />
+            <defaultValue value="0x00000000" />
           </parameter>
           <parameter uniqueID="UID_PARAM_160102" access="readWrite">
             <label lang="en">mapped object 2</label>
@@ -741,7 +741,7 @@
             <denotation>
               <label lang="en" />
             </denotation>
-            <defaultValue value="0x31010420" />
+            <defaultValue value="0x00000000" />
           </parameter>
           <parameter uniqueID="UID_PARAM_160103" access="readWrite">
             <label lang="en">mapped object 3</label>

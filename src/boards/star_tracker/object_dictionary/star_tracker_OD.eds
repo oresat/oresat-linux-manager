@@ -740,7 +740,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0005
 AccessType=rw
-DefaultValue=2
+DefaultValue=0
 PDOMapping=0
 
 [1600sub1]
@@ -749,7 +749,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
 AccessType=rw
-DefaultValue=0x31010120
+DefaultValue=0x00000000
 PDOMapping=0
 
 [1600sub2]
@@ -758,7 +758,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
 AccessType=rw
-DefaultValue=0x31010220
+DefaultValue=0x00000000
 PDOMapping=0
 
 [1600sub3]
@@ -827,7 +827,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0005
 AccessType=rw
-DefaultValue=2
+DefaultValue=0
 PDOMapping=0
 
 [1601sub1]
@@ -836,7 +836,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
 AccessType=rw
-DefaultValue=0x31010320
+DefaultValue=0x00000000
 PDOMapping=0
 
 [1601sub2]
@@ -845,7 +845,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
 AccessType=rw
-DefaultValue=0x31010420
+DefaultValue=0x00000000
 PDOMapping=0
 
 [1601sub3]
