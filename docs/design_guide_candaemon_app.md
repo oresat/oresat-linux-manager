@@ -9,9 +9,9 @@ All candaemon apps require two functions `void <app>_OD_setup()` and `void <app>
 ### Error handling in apps
 - Use `log_message(in prio, char *message)`
     - *It will save to syslog*
-- If an error occurs (like the app failing to connect to the systemd bus), just return.
+- If an error occurs (like the app failing to connect to the systemd bus), **clean** your app's memory and call return. **Do not ever call** `exit(EXIT_FAILURE)`.
     - *The candaemon will must continue to run even if your app fails.*
-    - *The candaemon will note it and may try to run function again later. So, on errors **clean** your app's memory and call return. **Do not ever call** exit(1)*
+    - *The candaemon will note it and may try to run function again later.*
 
 ### App CANopen Object Dictionary entries
 - The candaemon, systemd, and linux updater will all use indexes in 0x3000 to 0x30FF in the OD.
