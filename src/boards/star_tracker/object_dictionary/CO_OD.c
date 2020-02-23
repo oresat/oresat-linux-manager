@@ -1,61 +1,17 @@
+// clang-format off
 /*******************************************************************************
 
    File - CO_OD.c/CO_OD.h
    CANopen Object Dictionary.
 
-   Copyright (C) 2004-2008 Janez Paternoster
-
-   License: GNU Lesser General Public License (LGPL).
-
-   <http://canopennode.sourceforge.net>
-
-   (For more information see <CO_SDO.h>.)
-
-   This file is part of CANopenNode, an open source CANopen Stack.
-   Project home page is <https://github.com/CANopenNode/CANopenNode>.
-   For more information on CANopen see <http://www.can-cia.org/>.
- 
-   CANopenNode is free and open source software: you can redistribute
-   it and/or modify it under the terms of the GNU General Public License
-   as published by the Free Software Foundation, either version 2 of the
-   License, or (at your option) any later version.
-  
-   This program is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-   GNU General Public License for more details.
-  
-   You should have received a copy of the GNU General Public License
-   along with this program. If not, see <http://www.gnu.org/licenses/>.
-  
-   Following clarification and special exception to the GNU General Public
-   License is included to the distribution terms of CANopenNode:
-  
-   Linking this library statically or dynamically with other modules is
-   making a combined work based on this library. Thus, the terms and
-   conditions of the GNU General Public License cover the whole combination.
-  
-   As a special exception, the copyright holders of this library give
-   you permission to link this library with independent modules to
-   produce an executable, regardless of the license terms of these
-   independent modules, and to copy and distribute the resulting
-   executable under terms of your choice, provided that you also meet,
-   for each linked independent module, the terms and conditions of the
-   license of that module. An independent module is a module which is
-   not derived from or based on this library. If you modify this
-   library, you may extend this exception to your version of the
-   library, but you are not obliged to do so. If you do not wish
-   to do so, delete this exception statement from your version.
- 
    This file was automatically generated with libedssharp Object
-   Dictionary Editor v0.7-9-g821eedb   DON'T EDIT THIS FILE MANUALLY !!!!
+   Dictionary Editor v0.8-0-gb60f4eb   DON'T EDIT THIS FILE MANUALLY !!!!
 *******************************************************************************/
 
 
 #include "CO_driver.h"
 #include "CO_OD.h"
 #include "CO_SDO.h"
-
 
 /*******************************************************************************
    DEFINITION AND INITIALIZATION OF OBJECT DICTIONARY VARIABLES
@@ -100,16 +56,16 @@ struct sCO_OD_RAM CO_OD_RAM = {
 /*1401*/ {0x2L, 0x0300L, 0xfeL},
 /*1402*/ {0x2L, 0x0400L, 0xfeL},
 /*1403*/ {0x2L, 0x0500L, 0xfeL}},
-/*1600*/ {{0x0L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L},
-/*1601*/ {0x0L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L},
+/*1600*/ {{0x2L, 0x31010120L, 0x31010220L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L},
+/*1601*/ {0x2L, 0x31010320L, 0x31010420L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L},
 /*1602*/ {0x0L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L},
 /*1603*/ {0x0L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L}},
-/*1800*/ {{0x6L, 0x0180L, 0xffL, 0x64, 0x0L, 0x00, 0x0L},
-/*1801*/ {0x6L, 0x0280L, 0xfeL, 0x00, 0x0L, 0x00, 0x0L},
+/*1800*/ {{0x6L, 0x0180L, 0xffL, 0x3e8, 0x0L, 0x9c4, 0x0L},
+/*1801*/ {0x6L, 0x0280L, 0xfeL, 0x3e8, 0x0L, 0x9c4, 0x0L},
 /*1802*/ {0x6L, 0x0380L, 0xfeL, 0x00, 0x0L, 0x00, 0x0L},
 /*1803*/ {0x6L, 0x0480L, 0xfeL, 0x00, 0x0L, 0x00, 0x0L}},
-/*1a00*/ {{0x0L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L},
-/*1a01*/ {0x0L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L},
+/*1a00*/ {{0x2L, 0x31010120L, 0x31010220L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L},
+/*1a01*/ {0x2L, 0x31010320L, 0x31010420L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L},
 /*1a02*/ {0x0L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L},
 /*1a03*/ {0x0L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L}},
 /*1f80*/ 0x0000L,
@@ -128,7 +84,8 @@ struct sCO_OD_RAM CO_OD_RAM = {
 /*3002*/ {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 /*3003*/ {0x8L, 0x0L, 0, 0, 0x0000L, 0, 0x0000L, 0x0000L, 0},
 /*3100*/ 0x0,
-/*3101*/ {0x3L, 0x0000L, 0x0000L, 0x0000L},
+/*3101*/ {0x4L, 0x0000L, 0x0000L, 0x0000L, 0},
+/*3102*/ {'n', 'o', 'n', 'e'},
 
            CO_OD_FIRST_LAST_WORD,
 };
@@ -363,17 +320,18 @@ struct sCO_OD_EEPROM CO_OD_EEPROM = {
            {(void*)&CO_OD_RAM.sendFileControl.refreshFileList, 0x0e, 0x1 },
 };
 
-/*0x3101*/ const CO_OD_entryRecord_t OD_record3101[4] = {
+/*0x3101*/ const CO_OD_entryRecord_t OD_record3101[5] = {
            {(void*)&CO_OD_RAM.orienation.maxSubIndex, 0x06, 0x1 },
-           {(void*)&CO_OD_RAM.orienation.declination, 0x8e, 0x4 },
-           {(void*)&CO_OD_RAM.orienation.right_ascension, 0x8e, 0x4 },
-           {(void*)&CO_OD_RAM.orienation.orienation, 0x8e, 0x4 },
+           {(void*)&CO_OD_RAM.orienation.declination, 0xa6, 0x4 },
+           {(void*)&CO_OD_RAM.orienation.right_ascension, 0xa6, 0x4 },
+           {(void*)&CO_OD_RAM.orienation.orienation, 0xa6, 0x4 },
+           {(void*)&CO_OD_RAM.orienation.timestamp, 0xa6, 0x4 },
 };
 
 /*******************************************************************************
    OBJECT DICTIONARY
 *******************************************************************************/
-const CO_OD_entry_t CO_OD[54] = {
+const CO_OD_entry_t CO_OD[55] = {
 
 {0x1000, 0x00, 0x86, 4, (void*)&CO_OD_RAM.deviceType},
 {0x1001, 0x00, 0x26, 1, (void*)&CO_OD_RAM.errorRegister},
@@ -428,5 +386,7 @@ const CO_OD_entry_t CO_OD[54] = {
 {0x3002, 0x7f, 0x0e, 0, (void*)0},
 {0x3003, 0x08, 0x00, 0, (void*)&OD_record3003},
 {0x3100, 0x00, 0x0e, 1, (void*)&CO_OD_RAM.testCamera},
-{0x3101, 0x03, 0x00, 0, (void*)&OD_record3101},
+{0x3101, 0x04, 0x00, 0, (void*)&OD_record3101},
+{0x3102, 0x00, 0x06, 4, (void*)&CO_OD_RAM.lastSolvedFilepath},
 };
+// clang-format on

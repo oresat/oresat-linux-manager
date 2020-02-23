@@ -1,58 +1,16 @@
+// clang-format off
 /*******************************************************************************
 
    File - CO_OD.c/CO_OD.h
    CANopen Object Dictionary.
 
-   Copyright (C) 2004-2008 Janez Paternoster
-
-   License: GNU Lesser General Public License (LGPL).
-
-   <http://canopennode.sourceforge.net>
-
-   (For more information see <CO_SDO.h>.)
-
-   This file is part of CANopenNode, an open source CANopen Stack.
-   Project home page is <https://github.com/CANopenNode/CANopenNode>.
-   For more information on CANopen see <http://www.can-cia.org/>.
- 
-   CANopenNode is free and open source software: you can redistribute
-   it and/or modify it under the terms of the GNU General Public License
-   as published by the Free Software Foundation, either version 2 of the
-   License, or (at your option) any later version.
-  
-   This program is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-   GNU General Public License for more details.
-  
-   You should have received a copy of the GNU General Public License
-   along with this program. If not, see <http://www.gnu.org/licenses/>.
-  
-   Following clarification and special exception to the GNU General Public
-   License is included to the distribution terms of CANopenNode:
-  
-   Linking this library statically or dynamically with other modules is
-   making a combined work based on this library. Thus, the terms and
-   conditions of the GNU General Public License cover the whole combination.
-  
-   As a special exception, the copyright holders of this library give
-   you permission to link this library with independent modules to
-   produce an executable, regardless of the license terms of these
-   independent modules, and to copy and distribute the resulting
-   executable under terms of your choice, provided that you also meet,
-   for each linked independent module, the terms and conditions of the
-   license of that module. An independent module is a module which is
-   not derived from or based on this library. If you modify this
-   library, you may extend this exception to your version of the
-   library, but you are not obliged to do so. If you do not wish
-   to do so, delete this exception statement from your version.
- 
    This file was automatically generated with libedssharp Object
-   Dictionary Editor v0.7-9-g821eedb   DON'T EDIT THIS FILE MANUALLY !!!!
+   Dictionary Editor v0.8-0-gb60f4eb   DON'T EDIT THIS FILE MANUALLY !!!!
 *******************************************************************************/
 
 
-#pragma once
+#ifndef CO_OD_H_
+#define CO_OD_H_
 
 /*******************************************************************************
    CANopen DATA TYPES
@@ -66,8 +24,8 @@
    typedef int16_t      INTEGER16;
    typedef int32_t      INTEGER32;
    typedef int64_t      INTEGER64;
-   typedef float32_t    REAL32; 
-   typedef float64_t    REAL64; 
+   typedef float32_t    REAL32;
+   typedef float64_t    REAL64;
    typedef char_t       VISIBLE_STRING;
    typedef oChar_t      OCTET_STRING;
 
@@ -117,6 +75,7 @@
 *******************************************************************************/
   #define CO_NO_SYNC                     1   //Associated objects: 1005-1007
   #define CO_NO_EMERGENCY                1   //Associated objects: 1014, 1015
+  #define CO_NO_TS                       0   //Associated objects: 1012, 1013
   #define CO_NO_SDO_SERVER               1   //Associated objects: 1200-127F
   #define CO_NO_SDO_CLIENT               1   //Associated objects: 1280-12FF
   #define CO_NO_LSS_SERVER               0   //LSS Slave
@@ -129,7 +88,7 @@
 /*******************************************************************************
    OBJECT DICTIONARY
 *******************************************************************************/
-   #define CO_OD_NoOfElements             54
+   #define CO_OD_NoOfElements             55
 
 
 /*******************************************************************************
@@ -222,6 +181,7 @@
                INTEGER32      declination;
                INTEGER32      right_ascension;
                INTEGER32      orienation;
+               REAL32         timestamp;
                }              OD_orienation_t;
 
 /*******************************************************************************
@@ -735,6 +695,10 @@
         #define OD_3101_1_orienation_declination                    1
         #define OD_3101_2_orienation_right_ascension                2
         #define OD_3101_3_orienation_orienation                     3
+        #define OD_3101_4_orienation_timestamp                      4
+
+/*3102 */
+        #define OD_3102_lastSolvedFilepath                          0x3102
 
 /*******************************************************************************
    STRUCTURES FOR VARIABLES IN DIFFERENT MEMORY LOCATIONS
@@ -795,6 +759,7 @@ struct sCO_OD_RAM{
 /*3003      */ OD_sendFileControl_t sendFileControl;
 /*3100      */ INTEGER8        testCamera;
 /*3101      */ OD_orienation_t orienation;
+/*3102      */ VISIBLE_STRING  lastSolvedFilepath[4];
 
                UNSIGNED32     LastWord;
 };
@@ -974,3 +939,9 @@ extern struct sCO_OD_EEPROM CO_OD_EEPROM;
 /*3101, Data Type: orienation_t */
         #define OD_orienation                                       CO_OD_RAM.orienation
 
+/*3102, Data Type: VISIBLE_STRING */
+        #define OD_lastSolvedFilepath                               CO_OD_RAM.lastSolvedFilepath
+        #define ODL_lastSolvedFilepath_stringLength                 4
+
+#endif
+// clang-format on
