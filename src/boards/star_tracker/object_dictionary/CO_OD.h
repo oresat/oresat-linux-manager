@@ -178,9 +178,9 @@
                }              OD_sendFileControl_t;
 /*3101    */ typedef struct {
                UNSIGNED8      maxSubIndex;
-               INTEGER32      declination;
-               INTEGER32      right_ascension;
-               INTEGER32      orienation;
+               REAL32         declination;
+               REAL32         right_ascension;
+               REAL32         orienation;
                REAL32         timestamp;
                }              OD_orienation_t;
 

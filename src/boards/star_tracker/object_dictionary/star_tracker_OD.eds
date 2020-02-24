@@ -1115,7 +1115,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0006
 AccessType=rw
-DefaultValue=1000
+DefaultValue=0
 PDOMapping=0
 
 [1800sub4]
@@ -1133,7 +1133,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0006
 AccessType=rw
-DefaultValue=2500
+DefaultValue=5000
 PDOMapping=0
 
 [1800sub6]
@@ -1184,7 +1184,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0006
 AccessType=rw
-DefaultValue=1000
+DefaultValue=0
 PDOMapping=0
 
 [1801sub4]
@@ -1202,7 +1202,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0006
 AccessType=rw
-DefaultValue=2500
+DefaultValue=5000
 PDOMapping=0
 
 [1801sub6]
@@ -3281,8 +3281,8 @@ PDOMapping=0
 ParameterName=declination
 ObjectType=0x7
 ;StorageLocation=RAM
-DataType=0x0004
-AccessType=ro
+DataType=0x0008
+AccessType=rw
 DefaultValue=0
 PDOMapping=1
 
@@ -3290,8 +3290,8 @@ PDOMapping=1
 ParameterName=right_ascension
 ObjectType=0x7
 ;StorageLocation=RAM
-DataType=0x0004
-AccessType=ro
+DataType=0x0008
+AccessType=rw
 DefaultValue=0
 PDOMapping=1
 
@@ -3299,8 +3299,8 @@ PDOMapping=1
 ParameterName=orienation
 ObjectType=0x7
 ;StorageLocation=RAM
-DataType=0x0004
-AccessType=ro
+DataType=0x0008
+AccessType=rw
 DefaultValue=0
 PDOMapping=1
 
@@ -3309,7 +3309,7 @@ ParameterName=timestamp
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0008
-AccessType=ro
+AccessType=rw
 DefaultValue=0
 PDOMapping=1
 
@@ -3318,7 +3318,7 @@ ParameterName=Last solved filepath
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0009
-AccessType=ro
+AccessType=rw
 DefaultValue=none
 PDOMapping=0
 

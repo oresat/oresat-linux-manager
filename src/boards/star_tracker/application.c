@@ -9,9 +9,9 @@
 #include <stdbool.h>
 
 
-#define DESTINATION     "org.oresat.startracker"
-#define INTERFACE_NAME  "org.oresat.startracker"
-#define OBJECT_PATH     "/org/oresat/startracker"
+#define DESTINATION     "org.OreSat.StarTracker"
+#define INTERFACE_NAME  "org.OreSat.StarTracker"
+#define OBJECT_PATH     "/org/OreSat/StarTracker"
 
 
 // Static variables
@@ -21,7 +21,7 @@ static bool             end_program = false;
 
 
 // Static functions headers
-static int coor_cb(sd_bus_message *m, void *userdata, sd_bus_error *ret_error);
+static int prop_cb(sd_bus_message *m, void *userdata, sd_bus_error *ret_error);
 static void* app_signal_thread(void* arg);
 
 
@@ -42,8 +42,8 @@ int app_dbus_setup(void) {
             NULL,
             OBJECT_PATH,
             "org.freedesktop.DBus.Properties",
-            "PropertiesChanged", 
-            coor_cb, 
+            "PropertiesChanged",
+            prop_cb,
             userdata);
     if (r < 0) {
         log_message(LOG_ERR, "Failed to add new signal match.\n");
@@ -69,12 +69,12 @@ int app_dbus_end(void) {
     tim.tv_sec = 1;
     tim.tv_nsec = 0;
 
-    if (nanosleep(&tim, NULL) < 0 ) {
-        log_message(LOG_DEBUG, "Nano sleep system call failed \n");
+    if (nanosleep(&tim, NULL) < 0) {
+        log_message(LOG_DEBUG, "Nano sleep system call failed.\n");
     }
 
     if (pthread_join(app_signal_thread_id, NULL) != 0) {
-        log_message(LOG_DEBUG, "app signal thread join failed.\n");
+        log_message(LOG_DEBUG, "App signal thread join failed.\n");
         return -1;
     }
 
@@ -87,24 +87,35 @@ int app_dbus_end(void) {
 // other star tracker functions
 
 
-static int coor_cb(sd_bus_message *m, void *userdata, sd_bus_error *ret_error) {
-    double declination, right_ascension, orientation = 0.0;
-    char *temp = NULL;
+static int prop_cb(sd_bus_message *m, void *userdata, sd_bus_error *ret_error) {
 
-    if (sd_bus_get_property(bus, DESTINATION, OBJECT_PATH, INTERFACE_NAME, "coor", ret_error, &m, "(ddds)") < 0)
+    // Initialize holding variables
+    double declination = 0.0, right_ascension = 0.0, orientation = 0.0, timestamp = 0.0;
+    char *solve_path = NULL;
+
+    // Get the coordinates + timestamp
+    if (sd_bus_get_property(bus, DESTINATION, OBJECT_PATH, INTERFACE_NAME, "coor", ret_error, &m, "(dddd)") < 0)
         return 1; // failed to get property
-    
-    if (sd_bus_message_read(m, "ddds", &declination, &right_ascension, &orientation, temp) < 0)
+    if (sd_bus_message_read(m, "(dddd)", &declination, &right_ascension, &orientation, &timestamp) < 0)
         return 1; // failed to decode dbus property
 
-    // update OD
+    // Get the solution image's filepath
+    if (sd_bus_get_property(bus, DESTINATION, OBJECT_PATH, INTERFACE_NAME, "filepath", ret_error, &m, "s") < 0)
+        return 1; // failed to get property
+    if (sd_bus_message_read(m, "s", solve_path) < 0)
+        return 1; // failed to decode dbus property
+
+    // Update OD
     app_writeOD(0x3101, 1, &declination, sizeof(declination));
     app_writeOD(0x3101, 2, &right_ascension, sizeof(right_ascension));
     app_writeOD(0x3101, 3, &orientation, sizeof(orientation));
-    
-    if(temp != NULL) {
-        free(temp);
-        temp = NULL;
+    app_writeOD(0x3101, 4, &timestamp, sizeof(timestamp));
+    app_writeOD(0x3102, 0, solve_path, strlen(solve_path));
+
+    // Free memory
+    if (solve_path != NULL) {
+        free(solve_path);
+        solve_path = NULL;
     }
 
     return 0;
@@ -118,12 +129,12 @@ static void* app_signal_thread(void* arg) {
     while (end_program == false) {
         // Process requests
         r = sd_bus_process(bus, NULL);
-        if ( r < 0) 
+        if (r < 0)
             log_message(LOG_DEBUG, "Failed to process bus.\n");
         else if (r > 0) // we processed a request, try to process another one, right-away
             continue;
 
-        // Wait for the next request to process 
+        // Wait for the next request to process
         if (sd_bus_wait(bus, 100000) < 0)
             log_message(LOG_DEBUG, "Bus wait failed.\n");
     }
@@ -131,4 +142,3 @@ static void* app_signal_thread(void* arg) {
     sd_bus_error_free(&err);
     return NULL;
 }
-*/

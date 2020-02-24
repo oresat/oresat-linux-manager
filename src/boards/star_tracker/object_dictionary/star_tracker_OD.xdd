@@ -989,7 +989,7 @@
             <denotation>
               <label lang="en" />
             </denotation>
-            <defaultValue value="1000" />
+            <defaultValue value="0" />
           </parameter>
           <parameter uniqueID="UID_PARAM_180004" access="readWrite">
             <label lang="en">compatibility entry</label>
@@ -1005,7 +1005,7 @@
             <denotation>
               <label lang="en" />
             </denotation>
-            <defaultValue value="2500" />
+            <defaultValue value="5000" />
           </parameter>
           <parameter uniqueID="UID_PARAM_180006" access="readWrite">
             <label lang="en">SYNC start value</label>
@@ -1053,7 +1053,7 @@
             <denotation>
               <label lang="en" />
             </denotation>
-            <defaultValue value="1000" />
+            <defaultValue value="0" />
           </parameter>
           <parameter uniqueID="UID_PARAM_180104" access="readWrite">
             <label lang="en">compatibility entry</label>
@@ -1069,7 +1069,7 @@
             <denotation>
               <label lang="en" />
             </denotation>
-            <defaultValue value="2500" />
+            <defaultValue value="5000" />
           </parameter>
           <parameter uniqueID="UID_PARAM_180106" access="readWrite">
             <label lang="en">SYNC start value</label>
@@ -2935,7 +2935,7 @@
             </denotation>
             <defaultValue value="4" />
           </parameter>
-          <parameter uniqueID="UID_PARAM_310101" access="read">
+          <parameter uniqueID="UID_PARAM_310101" access="readWrite">
             <label lang="en">declination</label>
             <description lang="en" />
             <denotation>
@@ -2943,7 +2943,7 @@
             </denotation>
             <defaultValue value="0" />
           </parameter>
-          <parameter uniqueID="UID_PARAM_310102" access="read">
+          <parameter uniqueID="UID_PARAM_310102" access="readWrite">
             <label lang="en">right_ascension</label>
             <description lang="en" />
             <denotation>
@@ -2951,7 +2951,7 @@
             </denotation>
             <defaultValue value="0" />
           </parameter>
-          <parameter uniqueID="UID_PARAM_310103" access="read">
+          <parameter uniqueID="UID_PARAM_310103" access="readWrite">
             <label lang="en">orienation</label>
             <description lang="en" />
             <denotation>
@@ -2959,7 +2959,7 @@
             </denotation>
             <defaultValue value="0" />
           </parameter>
-          <parameter uniqueID="UID_PARAM_310104" access="read">
+          <parameter uniqueID="UID_PARAM_310104" access="readWrite">
             <label lang="en">timestamp</label>
             <description lang="en" />
             <denotation>
@@ -2967,7 +2967,7 @@
             </denotation>
             <defaultValue value="0" />
           </parameter>
-          <parameter uniqueID="UID_PARAM_3102" access="read">
+          <parameter uniqueID="UID_PARAM_3102" access="readWrite">
             <label lang="en">Last solved filepath</label>
             <description lang="en" />
             <denotation>
@@ -3389,12 +3389,12 @@
           <CANopenObject index="3100" name="Test camera" objectType="7" dataType="0002" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" edseditor_extenstion_storagelocation="RAM" PDOmapping="no" uniqueIDRef="UID_PARAM_3100" />
           <CANopenObject index="3101" name="Orienation" objectType="9" dataType="0000" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" edseditor_extenstion_storagelocation="RAM" PDOmapping="no" uniqueIDRef="UID_PARAM_3101" subNumber="5">
             <CANopenSubObject subIndex="0000" name="max sub-index" objectType="7" dataType="0005" lowLimit="" highLimit="" accessType="ro" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_310100" />
-            <CANopenSubObject subIndex="0001" name="declination" objectType="7" dataType="0004" lowLimit="" highLimit="" accessType="ro" actualValue="" denotation="" PDOmapping="optional" uniqueIDRef="UID_PARAM_310101" />
-            <CANopenSubObject subIndex="0002" name="right_ascension" objectType="7" dataType="0004" lowLimit="" highLimit="" accessType="ro" actualValue="" denotation="" PDOmapping="optional" uniqueIDRef="UID_PARAM_310102" />
-            <CANopenSubObject subIndex="0003" name="orienation" objectType="7" dataType="0004" lowLimit="" highLimit="" accessType="ro" actualValue="" denotation="" PDOmapping="optional" uniqueIDRef="UID_PARAM_310103" />
-            <CANopenSubObject subIndex="0004" name="timestamp" objectType="7" dataType="0008" lowLimit="" highLimit="" accessType="ro" actualValue="" denotation="" PDOmapping="optional" uniqueIDRef="UID_PARAM_310104" />
+            <CANopenSubObject subIndex="0001" name="declination" objectType="7" dataType="0008" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="optional" uniqueIDRef="UID_PARAM_310101" />
+            <CANopenSubObject subIndex="0002" name="right_ascension" objectType="7" dataType="0008" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="optional" uniqueIDRef="UID_PARAM_310102" />
+            <CANopenSubObject subIndex="0003" name="orienation" objectType="7" dataType="0008" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="optional" uniqueIDRef="UID_PARAM_310103" />
+            <CANopenSubObject subIndex="0004" name="timestamp" objectType="7" dataType="0008" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="optional" uniqueIDRef="UID_PARAM_310104" />
           </CANopenObject>
-          <CANopenObject index="3102" name="Last solved filepath" objectType="7" dataType="0009" lowLimit="" highLimit="" accessType="ro" actualValue="" denotation="" edseditor_extenstion_storagelocation="RAM" PDOmapping="no" uniqueIDRef="UID_PARAM_3102" />
+          <CANopenObject index="3102" name="Last solved filepath" objectType="7" dataType="0009" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" edseditor_extenstion_storagelocation="RAM" PDOmapping="no" uniqueIDRef="UID_PARAM_3102" />
         </CANopenObjectList>
         <dummyUsage>
           <dummy entry="Dummy0001=0" />

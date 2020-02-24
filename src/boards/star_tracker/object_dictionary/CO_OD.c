@@ -60,8 +60,8 @@ struct sCO_OD_RAM CO_OD_RAM = {
 /*1601*/ {0x0L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L},
 /*1602*/ {0x0L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L},
 /*1603*/ {0x0L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L}},
-/*1800*/ {{0x6L, 0x0180L, 0xffL, 0x3e8, 0x0L, 0x9c4, 0x0L},
-/*1801*/ {0x6L, 0x0280L, 0xfeL, 0x3e8, 0x0L, 0x9c4, 0x0L},
+/*1800*/ {{0x6L, 0x0180L, 0xffL, 0x00, 0x0L, 0x1388, 0x0L},
+/*1801*/ {0x6L, 0x0280L, 0xfeL, 0x00, 0x0L, 0x1388, 0x0L},
 /*1802*/ {0x6L, 0x0380L, 0xfeL, 0x00, 0x0L, 0x00, 0x0L},
 /*1803*/ {0x6L, 0x0480L, 0xfeL, 0x00, 0x0L, 0x00, 0x0L}},
 /*1a00*/ {{0x2L, 0x31010120L, 0x31010220L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L},
@@ -84,7 +84,7 @@ struct sCO_OD_RAM CO_OD_RAM = {
 /*3002*/ {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 /*3003*/ {0x8L, 0x0L, 0, 0, 0x0000L, 0, 0x0000L, 0x0000L, 0},
 /*3100*/ 0x0,
-/*3101*/ {0x4L, 0x0000L, 0x0000L, 0x0000L, 0},
+/*3101*/ {0x4L, 0, 0, 0, 0},
 /*3102*/ {'n', 'o', 'n', 'e'},
 
            CO_OD_FIRST_LAST_WORD,
@@ -322,10 +322,10 @@ struct sCO_OD_EEPROM CO_OD_EEPROM = {
 
 /*0x3101*/ const CO_OD_entryRecord_t OD_record3101[5] = {
            {(void*)&CO_OD_RAM.orienation.maxSubIndex, 0x06, 0x1 },
-           {(void*)&CO_OD_RAM.orienation.declination, 0xa6, 0x4 },
-           {(void*)&CO_OD_RAM.orienation.right_ascension, 0xa6, 0x4 },
-           {(void*)&CO_OD_RAM.orienation.orienation, 0xa6, 0x4 },
-           {(void*)&CO_OD_RAM.orienation.timestamp, 0xa6, 0x4 },
+           {(void*)&CO_OD_RAM.orienation.declination, 0xbe, 0x4 },
+           {(void*)&CO_OD_RAM.orienation.right_ascension, 0xbe, 0x4 },
+           {(void*)&CO_OD_RAM.orienation.orienation, 0xbe, 0x4 },
+           {(void*)&CO_OD_RAM.orienation.timestamp, 0xbe, 0x4 },
 };
 
 /*******************************************************************************
@@ -387,6 +387,6 @@ const CO_OD_entry_t CO_OD[55] = {
 {0x3003, 0x08, 0x00, 0, (void*)&OD_record3003},
 {0x3100, 0x00, 0x0e, 1, (void*)&CO_OD_RAM.testCamera},
 {0x3101, 0x04, 0x00, 0, (void*)&OD_record3101},
-{0x3102, 0x00, 0x06, 4, (void*)&CO_OD_RAM.lastSolvedFilepath},
+{0x3102, 0x00, 0x0e, 4, (void*)&CO_OD_RAM.lastSolvedFilepath},
 };
 // clang-format on
