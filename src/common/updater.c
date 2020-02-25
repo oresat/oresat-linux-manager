@@ -1,8 +1,7 @@
 #include "CANopen.h"
 #include "CO_SDO.h"
-#include "OD_helpers.h"
+#include "app_OD_helpers.h"
 #include "file_transfer_ODF.h"
-#include "log_message.h"
 #include "updater.h"
 #include <systemd/sd-bus.h>
 #include <pthread.h>
@@ -12,44 +11,37 @@
 #include <pthread.h>
 
 
-#define DESTINATION         "org.oresat.updater"
-#define INTERFACE_NAME      "org.oresat.updater"
-#define OBJECT_PATH         "/org/oresat/updater"
+#define DESTINATION         "org.OreSat.LinuxUpdater"
+#define INTERFACE_NAME      "org.OreSat.LinuxUpdater"
+#define OBJECT_PATH         "/org/OreSat/LinuxUpdater"
+#define UPDATER_ODF_INDEX   0x3004
 #define FILE_NAME_SIZE      100
-#define ERROR_MESSAGE_SIZE  100
+#define APP_NAME            "Updater"
 
 
 // Static variables
-static sd_bus               *bus = NULL;
-static pthread_t            signal_thread_id;
-static bool                 end_program = false;
-static int32_t              current_state = 0;
-static uint32_t             updates_available = 0;
-static char                 current_file[FILE_NAME_SIZE] = "\0";
-static char                 error_message[ERROR_MESSAGE_SIZE] = "\0";
-
-
-// Static functions headers
-static int read_status_cb(sd_bus_message *m, void *userdata, sd_bus_error *ret_error);
-static void* signal_thread(void* arg);
+static sd_bus               *bus;
+static shared_data          sd  = {false, 0, 0, "\0", PTHREAD_MUTEX_INITIALIZER};
 
 
 // ***************************************************************************
-// updater dbus functions
+// manitory functions
 
 
-int updater_dbus_setup(void) {
-    int r;
-    void* userdata = NULL;
+int linux_updater_ODF_setup(void) {
+    // add of app's ODFs to OD
+    app_OD_configure(UPDATER_ODF_INDEX, updater_ODF, NULL, 0, 0U);
+    return 0;
+}
 
-    // add updater_ODF to OD
-    CO_OD_configure(CO->SDO[0], 0x3004, updater_ODF, NULL, 0, 0U);
 
-    // Connect to the bus
+int linux_updater_dbus_main(void) {
+    int r = 0;
+
     r = sd_bus_open_system(&bus);
     if (r < 0) {
-        log_message(LOG_ERR, "Failed to connect to systemd bus.\n");
-        return r;
+        app_log_message(APP_NAME, LOG_CRIT, "Open system bus failed");
+        goto END;
     }
 
     r = sd_bus_match_signal(
@@ -60,50 +52,45 @@ int updater_dbus_setup(void) {
             "org.freedesktop.DBus.Properties",
             "PropertiesChanged",
             read_status_cb,
-            userdata);
+            NULL);
     if (r < 0) {
-        log_message(LOG_ERR, "Failed to add new signal match.\n");
-        return r;
+        app_log_message(APP_NAME, LOG_CRIT, "Signal match PropertiesChanged failed");
+        goto END;
     }
 
-    // Start dbus signal thread
-    if (pthread_create(&signal_thread_id, NULL, signal_thread, NULL) != 0) {
-        log_message(LOG_DEBUG, "Failed to start dbus signal thread.\n");
-        return -1;
+    pthread_mutex_lock(&sd.mutex);
+    sd.dbus_running = true; // setup worked, start loop
+    pthread_mutex_unlock(&sd.mutex);
+
+    while (sd.dbus_running) {
+        // Process requests
+        r = sd_bus_process(bus, NULL);
+        if ( r < 0)
+            app_log_message(APP_NAME, LOG_ERR, "Process bus failed");
+        else if (r > 0) // processed a request, try to process another one right-away
+            continue;
+
+        // TODO error count timeout with goto END
+
+        // Wait for the next request to process
+        if (sd_bus_wait(bus, UINT64_MAX) < 0)
+            app_log_message(APP_NAME, LOG_ERR, "Bus wait failed");
     }
 
-    return 0;
-}
-
-
-int updater_dbus_end(void) {
-
-    // stop dbus signal thread
-    end_program = true;
-
-    struct timespec tim;
-    tim.tv_sec = 1;
-    tim.tv_nsec = 0;
-
-    if (nanosleep(&tim, NULL) < 0 ) {
-        log_message(LOG_DEBUG, "Nano sleep system call failed \n");
-    }
-
-    if (pthread_join(signal_thread_id, NULL) != 0) {
-        log_message(LOG_DEBUG, "updater signal thread join failed.\n");
-        return -1;
-    }
-
+END: // setup / loop failed, clean up, set running to false for ODF callbacks
+    pthread_mutex_lock(&sd.mutex);
+    sd.dbus_running = false;
+    pthread_mutex_unlock(&sd.mutex);
     sd_bus_unref(bus);
-    return 0;
+    return -r;
 }
 
 
 // ***************************************************************************
-// updater dbus signal functions
+// dbus call back functions
 
 
-static int read_status_cb(sd_bus_message *m, void *userdata, sd_bus_error *ret_error) {
+int read_status_cb(sd_bus_message *m, void *userdata, sd_bus_error *ret_error) {
     int r;
 
     r = sd_bus_get_property(
@@ -115,12 +102,16 @@ static int read_status_cb(sd_bus_message *m, void *userdata, sd_bus_error *ret_e
             ret_error,
             &m,
             "i");
-    if (r < 0)
+    if (r < 0) {
+        app_log_message(APP_NAME, LOG_ERR, "Getting property Status failed");
         return r;
+    }
 
-    r = sd_bus_message_read(m, "i", &current_state);
-    if (r < 0)
+    r = sd_bus_message_read(m, "i", &sd.current_state);
+    if (r < 0) {
+        app_log_message(APP_NAME, LOG_ERR, "Reading property Status failed");
         return r;
+    }
 
     r = sd_bus_get_property(
             bus,
@@ -131,57 +122,38 @@ static int read_status_cb(sd_bus_message *m, void *userdata, sd_bus_error *ret_e
             ret_error,
             &m,
             "s");
-    if (r < 0)
+    if (r < 0) {
+        app_log_message(APP_NAME, LOG_ERR, "Getting property CurrentUpdateFile failed");
         return r;
+    }
 
-    r = sd_bus_message_read(m, "s", &current_file);
-    if (r < 0)
+    r = sd_bus_message_read(m, "s", &sd.current_file);
+    if (r < 0) {
+        app_log_message(APP_NAME, LOG_ERR, "Reading property CurrentUpdateFile failed");
         return r;
+    }
 
     return 0;
 }
 
 
-static void* signal_thread(void* arg) {
-    int r;
-    sd_bus_error err = SD_BUS_ERROR_NULL;
-
-    while (end_program == false) {
-        // Process requests
-        r = sd_bus_process(bus, NULL);
-        if ( r < 0)
-            log_message(LOG_DEBUG, "Failed to processA bus.\n");
-        else if (r > 0) // we processed a request, try to process another one, right-away
-            continue;
-
-        // Wait for the next request to process
-        if (sd_bus_wait(bus, 100000) < 0)
-            log_message(LOG_DEBUG, "Bus wait failed.\n");
-    }
-    printf("app thread exited \n");
-
-    sd_bus_error_free(&err);
-    return NULL;
-}
-
-
 // ***************************************************************************
-// updater ODF(s)
+// CANopen ODF(s)
 
 
 CO_SDO_abortCode_t updater_ODF(CO_ODF_arg_t *ODF_arg) {
     CO_SDO_abortCode_t ret = CO_SDO_AB_NONE;
     sd_bus_error err = SD_BUS_ERROR_NULL;
-    sd_bus_message *mess;
-    int r;
+    sd_bus_message *mess = NULL;
     bool_t temp_bool;
+    int r;
 
     switch(ODF_arg->subIndex) {
         case 1 : // current state
 
             if(ODF_arg->reading == true) {
-                ODF_arg->dataLength = sizeof(current_state);
-                memcpy(ODF_arg->data, &current_state, ODF_arg->dataLength);
+                ODF_arg->dataLength = sizeof(sd.current_state);
+                memcpy(ODF_arg->data, &sd.current_state, ODF_arg->dataLength);
             }
             else
                 ret = CO_SDO_AB_READONLY; // can't write parameters, read only
@@ -191,8 +163,8 @@ CO_SDO_abortCode_t updater_ODF(CO_ODF_arg_t *ODF_arg) {
         case 2 : // updates available
 
             if(ODF_arg->reading == true) {
-                ODF_arg->dataLength = sizeof(updates_available);
-                memcpy(ODF_arg->data, &updates_available, ODF_arg->dataLength);
+                ODF_arg->dataLength = sizeof(sd.updates_available);
+                memcpy(ODF_arg->data, &sd.updates_available, ODF_arg->dataLength);
             }
             else
                 ret = CO_SDO_AB_READONLY; // can't write parameters, read only
@@ -202,127 +174,147 @@ CO_SDO_abortCode_t updater_ODF(CO_ODF_arg_t *ODF_arg) {
         case 3 : // current file
 
             if(ODF_arg->reading == true)  {
-                ODF_arg->dataLength = strlen(current_file);
-                memcpy(ODF_arg->data, current_file, ODF_arg->dataLength);
+                ODF_arg->dataLength = strlen(sd.current_file);
+                memcpy(ODF_arg->data, sd.current_file, ODF_arg->dataLength);
             }
             else
                 ret = CO_SDO_AB_READONLY; // can't write parameters, read only
 
             break;
 
-        case 4 : // error message
+        case 4 : // TODO REMOVE
 
-            if(ODF_arg->reading == true)  {
-                ODF_arg->dataLength = strlen(error_message);
-                memcpy(ODF_arg->data, error_message, ODF_arg->dataLength);
-            }
-            else
-                ret = CO_SDO_AB_READONLY; // can't write parameters, read only
+            ret = CO_SDO_AB_GENERAL;
 
             break;
 
         case 5 : // give updater new file, will not update with it yet
 
-            if(ODF_arg->reading == true)
+            if(ODF_arg->reading == true) {
                 ret = CO_SDO_AB_WRITEONLY; // can't read parameters, write only
-            else {
-                // dbus interface not up
-                if(bus == NULL) {
-                    ret = CO_SDO_AB_GENERAL;
-                    break;
-                }
+                break;
+            }
 
-                if(ODF_arg->dataLength > FILE_PATH_MAX_LENGTH) {
-                    ret = CO_SDO_AB_GENERAL; // file path to big
-                    break;
-                }
+            if(!sd.dbus_running) {
+                app_log_message(APP_NAME, LOG_ERR, "DBus interface is not up");
+                ret = CO_SDO_AB_GENERAL;
+                break;
+            }
 
-                // copy file name into a temp var
-                char new_update_file[FILE_PATH_MAX_LENGTH] = "\0";
-                memcpy(new_update_file, ODF_arg->data, ODF_arg->dataLength);
+            if(ODF_arg->dataLength > FILE_PATH_MAX_LENGTH) {
+                app_log_message(APP_NAME, LOG_ERR, "New archvie file path wont fit in buffer");
+                ret = CO_SDO_AB_GENERAL;
+                break;
+            }
 
-                // make sure its an absoult path
-                if(new_update_file[0] != '/') {
-                    ret = CO_SDO_AB_GENERAL;
-                    break;
-                }
+            // copy file name into a temp var
+            char new_archive_file_path[FILE_PATH_MAX_LENGTH] = "\0";
+            memcpy(new_archive_file_path, ODF_arg->data, ODF_arg->dataLength);
 
-                r = sd_bus_call_method(
-                        bus,
-                        DESTINATION,
-                        OBJECT_PATH,
-                        INTERFACE_NAME,
-                        "AddUpdateFile",
-                        &err,
-                        &mess,
-                        "s",
-                        new_update_file);
-                if (r < 0)
-                    log_message(LOG_DEBUG, "Failed to issue method call.");
+            if(new_archive_file_path[0] != '/') {
+                app_log_message(APP_NAME, LOG_ERR, "New archive file path not an absolute path");
+                ret = CO_SDO_AB_GENERAL;
+                break;
+            }
 
-                // Parse the response message
-                r = sd_bus_message_read(mess, "b", &temp_bool);
-                if (r < 0)
-                    log_message(LOG_DEBUG, "Failed to parse response message.");
+            r = sd_bus_call_method(
+                    bus,
+                    DESTINATION,
+                    OBJECT_PATH,
+                    INTERFACE_NAME,
+                    "AddUpdateFile",
+                    &err,
+                    &mess,
+                    "s",
+                    new_archive_file_path);
+            if (r < 0) {
+                app_log_message(APP_NAME, LOG_ERR, "Method call AddUpdateFile failed");
+                ret = CO_SDO_AB_GENERAL;
+                break;
+            }
 
-                sd_bus_message_unref(mess);
-                sd_bus_error_free(&err);
+            // Parse the response message
+            r = sd_bus_message_read(mess, "b", &temp_bool);
+            if (r < 0) {
+                app_log_message(APP_NAME, LOG_ERR, "AddUpdateFile reply message failed to be parsed");
+                ret = CO_SDO_AB_GENERAL;
+                break;
             }
 
             break;
 
         case 6 : // start update
 
-            if(ODF_arg->reading == true)
+
+            if(ODF_arg->reading == true) {
                 ret = CO_SDO_AB_WRITEONLY; // can't read parameters, write only
-            else {
-                r = sd_bus_call_method(
-                        bus,
-                        DESTINATION,
-                        OBJECT_PATH,
-                        INTERFACE_NAME,
-                        "StartUpdate",
-                        &err,
-                        &mess,
-                        NULL);
-                if (r < 0)
-                    log_message(LOG_DEBUG, "Failed to issue method call.");
+                break;
+            }
 
-                // Parse the response message
-                r = sd_bus_message_read(mess, "b", &temp_bool);
-                if (r < 0)
-                    log_message(LOG_DEBUG, "Failed to parse response message.");
+            if(!sd.dbus_running) {
+                app_log_message(APP_NAME, LOG_ERR, "DBus interface is not up");
+                ret = CO_SDO_AB_GENERAL;
+                break;
+            }
 
-                sd_bus_message_unref(mess);
-                sd_bus_error_free(&err);
+            r = sd_bus_call_method(
+                    bus,
+                    DESTINATION,
+                    OBJECT_PATH,
+                    INTERFACE_NAME,
+                    "StartUpdate",
+                    &err,
+                    &mess,
+                    NULL);
+            if (r < 0) {
+                app_log_message(APP_NAME, LOG_ERR, "Method call StartUpdate failed");
+                ret = CO_SDO_AB_GENERAL;
+                break;
+            }
+
+            r = sd_bus_message_read(mess, "b", &temp_bool);
+            if (r < 0) {
+                app_log_message(APP_NAME, LOG_ERR, "StartUpdate reply message failed to be parsed");
+                ret = CO_SDO_AB_GENERAL;
+                break;
             }
 
             break;
 
         case 7 : // emergency stop update
 
-            if(ODF_arg->reading == true)
+            if(ODF_arg->reading == true) {
                 ret = CO_SDO_AB_WRITEONLY; // can't read parameters, write only
-            else {
-                r = sd_bus_call_method(
-                        bus,
-                        DESTINATION,
-                        OBJECT_PATH,
-                        INTERFACE_NAME,
-                        "StopUpdate",
-                        &err,
-                        &mess,
-                        NULL);
-                if (r < 0)
-                    log_message(LOG_DEBUG, "Failed to issue method call.");
+                break;
+            }
 
-                // Parse the response message
-                r = sd_bus_message_read(mess, "b", &temp_bool);
-                if (r < 0)
-                    log_message(LOG_DEBUG, "Failed to parse response message.");
+            if(!sd.dbus_running) {
+                app_log_message(APP_NAME, LOG_ERR, "DBus interface is not up");
+                ret = CO_SDO_AB_GENERAL;
+                break;
+            }
 
-                sd_bus_message_unref(mess);
-                sd_bus_error_free(&err);
+            r = sd_bus_call_method(
+                    bus,
+                    DESTINATION,
+                    OBJECT_PATH,
+                    INTERFACE_NAME,
+                    "StopUpdate",
+                    &err,
+                    &mess,
+                    NULL);
+            if (r < 0) {
+                app_log_message(APP_NAME, LOG_ERR, "Method call StopUpdate failed");
+                ret = CO_SDO_AB_GENERAL;
+                break;
+            }
+
+            // Parse the response message
+            r = sd_bus_message_read(mess, "b", &temp_bool);
+            if (r < 0) {
+                app_log_message(APP_NAME, LOG_ERR, "StopUpdate reply message failed to be parsed");
+                ret = CO_SDO_AB_GENERAL;
+                break;
             }
 
             break;
@@ -341,21 +333,29 @@ CO_SDO_abortCode_t updater_ODF(CO_ODF_arg_t *ODF_arg) {
                         &err,
                         &mess,
                         NULL);
-                if (r < 0)
-                    log_message(LOG_DEBUG, "Failed to issue method call.");
+                if (r < 0) {
+                    app_log_message(APP_NAME, LOG_DEBUG, "Method call Reset failed");
+                    ret = CO_SDO_AB_GENERAL;
+                    break;
+                }
 
                 /* Parse the response message */
                 r = sd_bus_message_read(mess, "b", &temp_bool);
-                if (r < 0)
-                    log_message(LOG_DEBUG, "Failed to parse response message.");
-
-                sd_bus_message_unref(mess);
-                sd_bus_error_free(&err);
+                if (r < 0) {
+                    app_log_message(APP_NAME, LOG_ERR, "Reset reply message failed to be parsed");
+                    ret = CO_SDO_AB_GENERAL;
+                    break;
+                 }
             }
 
             break;
 
         case 9 : // get apt update output as a file
+
+            if(!sd.dbus_running) { // dbus interface is not up
+                ret = CO_SDO_AB_GENERAL;
+                break;
+            }
 
             if(ODF_arg->reading == true)
                 ret = CO_SDO_AB_WRITEONLY; // can't read parameters, write only
@@ -369,16 +369,19 @@ CO_SDO_abortCode_t updater_ODF(CO_ODF_arg_t *ODF_arg) {
                         &err,
                         &mess,
                         NULL);
-                if (r < 0)
-                    log_message(LOG_DEBUG, "Failed to issue method call.");
+                if (r < 0) {
+                    app_log_message(APP_NAME, LOG_DEBUG, "Method call GetAptListOutput failed");
+                    ret = CO_SDO_AB_GENERAL;
+                    break;
+                }
 
                 // Parse the response message
                 r = sd_bus_message_read(mess, "b", &temp_bool);
-                if (r < 0)
-                    log_message(LOG_DEBUG, "Failed to parse response message.");
-
-                sd_bus_message_unref(mess);
-                sd_bus_error_free(&err);
+                if (r < 0) {
+                    app_log_message(APP_NAME, LOG_ERR, "GetAptListOuput reply message failed to be parsed");
+                    ret = CO_SDO_AB_GENERAL;
+                    break;
+                }
             }
 
             break;
@@ -388,7 +391,8 @@ CO_SDO_abortCode_t updater_ODF(CO_ODF_arg_t *ODF_arg) {
     }
 
     ODF_arg->lastSegment = true;
-
+    sd_bus_message_unref(mess);
+    sd_bus_error_free(&err);
     return ret;
 }
 
