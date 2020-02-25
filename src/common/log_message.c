@@ -13,9 +13,3 @@ void log_message(int priority, const char *fmt, ...) {
 	va_end(args);
 }
 
-// canopen.* needs this
-void CO_errExit(char* msg) {
-    perror(msg);
-    exit(EXIT_FAILURE);
-}
-
