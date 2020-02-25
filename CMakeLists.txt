@@ -143,7 +143,7 @@ set(SOURCE_FILES
     ${COMMON_DIR}/log_message.c
     ${COMMON_DIR}/file_transfer_ODF.c
     ${COMMON_DIR}/app_OD_helpers.c
-    ${COMMON_DIR}/systemd_ODF.c
+    ${COMMON_DIR}/systemd_app.c
     ${COMMON_DIR}/linux_updater_app.c
     src/main.c
 )
