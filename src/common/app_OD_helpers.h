@@ -3,6 +3,7 @@
 
 
 #include "CANopen.h"
+#include <syslog.h>
 #include <stdint.h>
 
 
