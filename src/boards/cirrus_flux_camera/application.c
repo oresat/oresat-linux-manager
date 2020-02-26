@@ -10,9 +10,9 @@
 #include <stdbool.h>
 
 
-#define DESTINATION     "org.oresat.cirrusfluxcamera"
-#define INTERFACE_NAME  "org.oresat.cirrusfluxcamera"
-#define OBJECT_PATH     "/org/oresat/cirrusfluxcamera"
+#define DESTINATION     "org.OreSat.CirrusFluxCamera"
+#define INTERFACE_NAME  "org.OreSat.CirrusFluxCamera"
+#define OBJECT_PATH     "/org/OreSat/CirrusFluxCamera"
 
 
 // Static variables
