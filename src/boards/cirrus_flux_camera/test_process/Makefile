@@ -11,6 +11,7 @@ oresat-test-cfc:
 install:
 	bash -c "cp ./oresat-test-cfc /usr/bin/"
 	bash -c "cp ./oresat-test-cfc.service /lib/systemd/system"
+	bash -c "cp ./org.OreSat.CirrusFluxCamera.conf /usr/share/dbus-1/system.d/"
 	bash -c "systemctl daemon-reload"
 
 run:
@@ -23,6 +24,7 @@ remove:
 	bash -c "systemctl stop oresat-test-cfc"
 	bash -c "rm /usr/bin/oresat-test-cfc"
 	bash -c "rm /lib/systemd/system/oresat-test-cfc.service"
+	bash -c "rm /usr/share/dbus-1/system.d/org.OreSat.CirrusFluxCamera.conf"
 	bash -c "systemctl daemon-reload"
 
 help:
