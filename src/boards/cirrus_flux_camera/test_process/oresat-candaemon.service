@@ -1,0 +1,12 @@
+[Unit]
+Description=Test OreSat CFC process for MDC imager veiwer.
+
+[Service]
+Type=forking
+PIDFile=/run/oresat-cfc.pid
+ExecStart=/usr/bin/oresat-cfc -d
+User=root
+Group=root
+
+[Install]
+WantedBy=multi-user.target
