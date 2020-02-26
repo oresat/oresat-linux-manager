@@ -25,7 +25,7 @@
 #define DESTINATION         "org.OreSat.CirrusFluxCamera"
 #define BUS_NAME            "org.OreSat.CirrusFluxCamera"
 #define OBJECT_PATH         "/org/OreSat/CirrusFluxCamera"
-#define DEFAULT_PID_FILE    "/run/oresat-cfc.pid"
+#define DEFAULT_PID_FILE    "/run/oresat-test-cfc.pid"
 
 
 /* static data */
@@ -103,11 +103,6 @@ int main(int argc, char *argv[]) {
     int r;
     char c;
 
-    if(getuid() != 0) {
-        printf("This uses system dbus. Run as root.\n");
-        return 1;
-    }
-
     // Command line argument processing
     while ((c = getopt(argc, argv, "d")) != -1) {
         switch (c) {
@@ -118,9 +113,14 @@ int main(int argc, char *argv[]) {
                 log_message(LOG_ERR, "Uknown flag\n");
                 exit(1);
             default:
-                log_message(LOG_ERR, "Usage: %s [-d] [-l link]\n", argv[0]);
+                log_message(LOG_ERR, "Usage: %s [-d]\n", argv[0]);
                 exit(1);
         }
+    }
+
+    if(getuid() != 0) {
+        printf("This uses system dbus. Run as root.\n");
+        return 1;
     }
 
     setlogmask(LOG_UPTO(LOG_NOTICE));
