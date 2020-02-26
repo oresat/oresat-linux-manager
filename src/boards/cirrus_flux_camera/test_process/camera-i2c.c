@@ -57,7 +57,7 @@ int writeRegs(camReg *regs, int size)
   }
 
   if(close(file_i2c)){
-    printf("file close error: %d\n");
+    printf("file close error:\n");
   }
 
   return ret;
