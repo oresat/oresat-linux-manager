@@ -33,9 +33,7 @@ static const sd_bus_vtable method_vtable[];
 static sd_bus_slot *slot = NULL;
 static sd_bus *bus = NULL;
 static bool endProgram = 0;
-static char file_name[50];
 static char file_path[200];
-static uint8_t capture_num = 0;
 
 
 /* static functions */
@@ -77,12 +75,11 @@ void dbusAssertFailure(int r, char* err) {
 
 
 static int lastest_image(sd_bus_message *m, void *systemdata, sd_bus_error *ret_error) {
-    int r = -1;
-    sprintf(file_name, "captures/capture_%03d.bmp", capture_num);
-    get_image(file_name);
-    ++capture_num;
+    char file_name[20];
+    if(get_image(file_name) != 0)
+        log_message(LOG_ERR, "Get image failed");
     if(realpath(file_name, file_path) == NULL)
-        dbusAssertError(r, "latest image file path error.");
+        log_message(LOG_ERR, "latest image file path error.");
 
     return sd_bus_reply_method_return(m, "s", file_path);
 }

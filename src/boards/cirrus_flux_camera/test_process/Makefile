@@ -1,11 +1,11 @@
 CC= gcc
-CFLAGS= -g -Wall
+CFLAGS= -g -Wall -D_GNU_SOURCE
 LDFLAGS= $(shell pkg-config --libs libsystemd)
 
 all: oresat-test-cfc
 
 oresat-test-cfc:
-	$(CC) oresat-test-cfc.c camera-i2c.c testprucam.c -o $@ $(CFLAGS) $(LDFLAGS)
+	$(CC) oresat-test-cfc.c camera-i2c.c testprucam.c qdbmp.c -o $@ $(CFLAGS) $(LDFLAGS)
 
 
 install:
