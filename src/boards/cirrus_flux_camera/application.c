@@ -15,26 +15,11 @@
 #define OBJECT_PATH     "/org/OreSat/CirrusFluxCamera"
 
 
-// Static variables
-static sd_bus           *bus = NULL;
-
-
-// Static functions headers
-
-
 // ***************************************************************************
 // app dbus functions
 
 
 int app_dbus_setup(void) {
-    int r;
-
-    /* Connect to the bus */
-    r = sd_bus_open_system(&bus);
-    if (r < 0) {
-        log_message(LOG_ERR, "Failed to connect to systemd bus.\n");
-        return r;
-    }
 
     CO_OD_configure(CO->SDO[0], 0x3100, CFC_ODF, NULL, 0, 0U);
 
@@ -43,7 +28,6 @@ int app_dbus_setup(void) {
 
 
 int app_dbus_end(void) {
-    sd_bus_unref(bus);
     return 0;
 }
 
@@ -56,6 +40,7 @@ CO_SDO_abortCode_t CFC_ODF(CO_ODF_arg_t *ODF_arg) {
     CO_SDO_abortCode_t ret = CO_SDO_AB_NONE;
     sd_bus_error err = SD_BUS_ERROR_NULL;
     sd_bus_message *m = NULL;
+    sd_bus  *bus = NULL;
     uint8_t temp = 0;
     char *file_path;
     int r;
@@ -63,6 +48,13 @@ CO_SDO_abortCode_t CFC_ODF(CO_ODF_arg_t *ODF_arg) {
     if(ODF_arg->reading == false) { /* write parameters */
         ODF_arg->dataLength = sizeof(temp);
         memcpy(ODF_arg->data, &temp, ODF_arg->dataLength);
+    }
+
+    /* Connect to the bus */
+    r = sd_bus_open_system(&bus);
+    if (r < 0) {
+        log_message(LOG_ERR, "Failed to connect to systemd bus.\n");
+        return CO_SDO_AB_GENERAL;
     }
 
     /* Issue the method call and store the response message in m */
@@ -76,22 +68,25 @@ CO_SDO_abortCode_t CFC_ODF(CO_ODF_arg_t *ODF_arg) {
             &m,
             NULL);
     if (r < 0) {
-        log_message(LOG_DEBUG, "Failed to issue LatestImage method call.");
+        log_message(LOG_ERR, "Failed to issue LatestImage method call.");
         return CO_SDO_AB_GENERAL;
     }
 
     /* Parse the response message */
     r = sd_bus_message_read(m, "s", &file_path);
     if (r < 0) {
-        log_message(LOG_DEBUG, "Failed to parse response message from LatestImage.");
+        log_message(LOG_ERR, "Failed to parse response message from LatestImage.");
         return CO_SDO_AB_GENERAL;
     }
 
     if(file_path != NULL)
         app_send_file(file_path);
+    else
+        log_message(LOG_ERR, "File path was null.");
 
     sd_bus_error_free(&err);
     sd_bus_message_unref(m);
+    sd_bus_unref(bus);
 
     ODF_arg->lastSegment = true;
 
