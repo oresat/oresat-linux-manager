@@ -12,6 +12,7 @@
 #define DESTINATION     "org.OreSat.StarTracker"
 #define INTERFACE_NAME  "org.OreSat.StarTracker"
 #define OBJECT_PATH     "/org/OreSat/StarTracker"
+#define WAIT_TIME       1 // seconds
 
 
 // Static variables
@@ -26,6 +27,8 @@ static void* app_signal_thread(void* arg);
 
 
 int app_dbus_setup(void) {
+
+    // DBus variables
     int r;
     void* userdata = NULL;
 
@@ -36,21 +39,25 @@ int app_dbus_setup(void) {
         return r;
     }
 
-    r = sd_bus_match_signal(
-            bus,
-            NULL,
-            NULL,
-            OBJECT_PATH,
-            "org.freedesktop.DBus.Properties",
-            "PropertiesChanged",
-            prop_cb,
-            userdata);
-    if (r < 0) {
-        log_message(LOG_ERR, "Failed to add new signal match.\n");
-        return r;
-    }
+    // ********** SIGNAL RESPONSE CODE **********
+    //
+    // r = sd_bus_match_signal(
+    //         bus,
+    //         NULL,
+    //         NULL,
+    //         OBJECT_PATH,
+    //         "org.freedesktop.DBus.Properties",
+    //         "PropertiesChanged",
+    //         prop_cb,
+    //         userdata);
+    // if (r < 0) {
+    //     log_message(LOG_ERR, "Failed to add new signal match.\n");
+    //     return r;
+    // }
+    //
+    // ******************************************
 
-    //start dbus signal thread
+    // Start dbus signal thread
     if (pthread_create(&app_signal_thread_id, NULL, app_signal_thread, NULL) != 0) {
         log_message(LOG_ERR, "Failed to start dbus signal thread.\n");
         return -1;
@@ -123,20 +130,76 @@ static int prop_cb(sd_bus_message *m, void *userdata, sd_bus_error *ret_error) {
 
 
 static void* app_signal_thread(void* arg) {
+
+    // DBus variables
     int r;
     sd_bus_error err = SD_BUS_ERROR_NULL;
+    sd_bus_message *mess = NULL;
 
-    while (end_program == false) {
-        // Process requests
-        r = sd_bus_process(bus, NULL);
-        if (r < 0)
-            log_message(LOG_DEBUG, "Failed to process bus.\n");
-        else if (r > 0) // we processed a request, try to process another one, right-away
-            continue;
+    // Holding variables
+    double declination = 0.0, right_ascension = 0.0, orientation = 0.0, timestamp = 0.0;
+    char *solve_path = NULL;
 
-        // Wait for the next request to process
-        if (sd_bus_wait(bus, 100000) < 0)
-            log_message(LOG_DEBUG, "Bus wait failed.\n");
+    // ********** SIGNAL RESPONSE CODE **********
+    //
+    // while (end_program == false) {
+    //     // Process requests
+    //     r = sd_bus_process(bus, NULL);
+    //     if (r < 0)
+    //         log_message(LOG_DEBUG, "Failed to process bus.\n");
+    //     else if (r > 0) // we processed a request, try to process another one, right-away
+    //         continue;
+
+    //     // Wait for the next request to process
+    //     if (sd_bus_wait(bus, 100000) < 0)
+    //         log_message(LOG_DEBUG, "Bus wait failed.\n");
+    }
+    //
+    // ******************************************
+
+    // Keep checking until stopped
+    while (end_program == false)
+    {
+        // Grab the coordinates
+        r = sd_bus_get_property(bus, DESTINATION, OBJECT_PATH, INTERFACE_NAME, "coor", &err, &mess, "(dddd)");
+        dbus_assert(r, "Get property failed.");
+
+        // Decode property
+        if (r >= 0) {
+            r = sd_bus_message_read(mess, "(dddd)", &declination, &right_ascension, &orientation, &timestamp);
+            dbus_assert(r, "Read message failed.");
+        }
+
+        // Free message
+        sd_bus_error_free(&err);
+        err = SD_BUS_ERROR_NULL;
+        sd_bus_message_unref(mess);
+        mess = NULL;
+
+        // Get the filepath
+        r = sd_bus_get_property(bus, DESTINATION, OBJECT_PATH, INTERFACE_NAME, "filepath",  &err, &mess, "s");
+        dbus_assert(r, "Get property failed.");
+
+        // Decode property
+        if (r >= 0) {
+            r = sd_bus_message_read(mess, "s", solve_path);
+            dbus_assert(r, "Read message failed.");
+        }
+
+        // Free message
+        sd_bus_error_free(&err);
+        err = SD_BUS_ERROR_NULL;
+        sd_bus_message_unref(mess);
+        mess = NULL;
+
+        // Update OD
+        app_writeOD(0x3101, 1, &declination, sizeof(declination));
+        app_writeOD(0x3101, 2, &right_ascension, sizeof(right_ascension));
+        app_writeOD(0x3101, 3, &orientation, sizeof(orientation));
+        app_writeOD(0x3101, 4, &timestamp, sizeof(timestamp));
+        app_writeOD(0x3102, 0, solve_path, strlen(solve_path));
+
+        sleep(WAIT_TIME);
     }
 
     sd_bus_error_free(&err);
