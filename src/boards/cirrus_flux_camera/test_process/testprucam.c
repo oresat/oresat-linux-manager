@@ -64,7 +64,9 @@ int get_image(char *name) {
   BMP_CHECK_ERROR( stderr, -2 );
   BMP_Free(bmp);
 
-
+  //convert to jpg
+  system("magick convert capture_001.bmp capture_001.jpg");
+  sprintf(name, "capture_%03d.jpg", 1);
 
   ret = close(fd);
   if(ret != 0) {
