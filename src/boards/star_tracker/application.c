@@ -1,5 +1,5 @@
 #include "application.h"
-#include "OD_helpers.h"
+#include "app_OD_helpers.h"
 #include "file_transfer_ODF.h"
 #include "log_message.h"
 #include <systemd/sd-bus.h>
@@ -98,9 +98,9 @@ static int coor_cb(sd_bus_message *m, void *userdata, sd_bus_error *ret_error) {
         return 1; // failed to decode dbus property
 
     // update OD
-    app_writeOD(0x3101, 1, &declination, sizeof(declination));
-    app_writeOD(0x3101, 2, &right_ascension, sizeof(right_ascension));
-    app_writeOD(0x3101, 3, &orientation, sizeof(orientation));
+    app_OD_write(0x3101, 1, &declination, sizeof(declination));
+    app_OD_write(0x3101, 2, &right_ascension, sizeof(right_ascension));
+    app_OD_write(0x3101, 3, &orientation, sizeof(orientation));
     
     if(temp != NULL) {
         free(temp);

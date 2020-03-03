@@ -3,15 +3,15 @@
 
 
 /**
- * Function is called on program startup.
+ * Used to set up any ODF needed by the app.
  */
-int app_dbus_setup(void);
+int main_process_ODF_setup(void);
 
 
 /**
- * Function is called just before program ends.
+ * The apps main function.
  */
-int app_dbus_end(void);
+int main_process_dbus_main(void);
 
 
 #endif

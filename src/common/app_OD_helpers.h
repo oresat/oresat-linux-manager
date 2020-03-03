@@ -8,6 +8,21 @@
 
 
 /**
+ * Return values for app_OD_read() and app_OD_write().
+ * For long explination see app_OD_error_str.
+ */
+enum APP_OD_ERROR_ENUM {
+    APP_OD_NONE,
+    APP_OD_INDEX,
+    APP_OD_SUBINDEX,
+    APP_OD_READONLY,
+    APP_OD_WRITEONLY,
+    APP_OD_DOMAIN,
+    APP_OD_LENGTH,
+};
+
+
+/**
  * A nice wrapper for apps to not worry about CO->SDO[].
  */
 void app_OD_configure(
@@ -48,9 +63,9 @@ uint16_t app_OD_find(uint16_t index);
  * @param data Buffer: for copy data from OD
  * @param length: Length of data buffer in bytes
  *
- * @return true on success.
+ * @return app_OD_error value.
  */
-bool app_OD_read(
+int app_OD_read(
         uint16_t index,
         uint16_t subIndex,
         void *data,
@@ -66,9 +81,9 @@ bool app_OD_read(
  * @param data: Data buffer to copy into OD
  * @param length: Length of data buffer in bytes
  *
- * @return true on success.
+ * @return app_OD_error value.
  */
-bool app_OD_write(
+int app_OD_write(
         uint16_t index,
         uint16_t subIndex,
         void *data,

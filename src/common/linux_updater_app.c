@@ -2,7 +2,7 @@
 #include "CO_SDO.h"
 #include "app_OD_helpers.h"
 #include "file_transfer_ODF.h"
-#include "updater.h"
+#include "linux_updater_app.h"
 #include <systemd/sd-bus.h>
 #include <pthread.h>
 #include <stdio.h>

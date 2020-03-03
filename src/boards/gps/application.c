@@ -1,7 +1,6 @@
 #include "application.h"
-#include "OD_helpers.h"
+#include "app_OD_helpers.h"
 #include "file_transfer_ODF.h"
-#include "log_message.h"
 #include <systemd/sd-bus.h>
 #include <pthread.h>
 #include <stdio.h>
@@ -9,34 +8,37 @@
 #include <stdbool.h>
 
 
-#define DESTINATION     "org.oresat.gps"
-#define INTERFACE_NAME  "org.oresat.gps"
-#define OBJECT_PATH     "/org/oresat/gps"
+#define DESTINATION     "org.OreSat.GPS"
+#define INTERFACE_NAME  "org.OreSat.GPS"
+#define OBJECT_PATH     "/org/OreSat/GPS"
+#define APP_NAME        "GPS"
 
 
 // Static variables
 static sd_bus           *bus = NULL;
-static pthread_t        app_signal_thread_id;
-static bool             end_program = false;
+static bool             running = true;
 
 
 // Static functions headers
 static int read_gps_cb(sd_bus_message *m, void *userdata, sd_bus_error *ret_error);
-static void* app_signal_thread(void* arg);
 
 
 // ***************************************************************************
-// app dbus functions
+// app ODF and dbus functions
 
 
-int app_dbus_setup(void) {
+int main_process_ODF_setup(void) {
+    return 0;
+}
+
+
+int main_process_dbus_main(void) {
     int r;
-    void* userdata = NULL;
 
     /* Connect to the bus */
     r = sd_bus_open_system(&bus);
     if (r < 0) {
-        log_message(LOG_ERR, "Failed to connect to systemd bus.\n");
+        app_log_message(APP_NAME, LOG_ERR, "Failed to connect to systemd bus.\n");
         return r;
     }
 
@@ -46,40 +48,25 @@ int app_dbus_setup(void) {
             NULL,
             OBJECT_PATH,
             "org.freedesktop.DBus.Properties",
-            "PropertiesChanged", 
-            read_gps_cb, 
-            userdata);
+            "PropertiesChanged",
+            read_gps_cb,
+            NULL);
     if (r < 0) {
-        log_message(LOG_ERR, "Failed to add new signal match.\n");
+        app_log_message(APP_NAME, LOG_ERR, "Failed to add new signal match.\n");
         return r;
     }
 
-    //start dbus signal thread
-    if (pthread_create(&app_signal_thread_id, NULL, app_signal_thread, NULL) != 0) {
-        log_message(LOG_ERR, "Failed to start dbus signal thread.\n");
-        return -1;
-    }
+    while (running) {
+        // Process requests
+        r = sd_bus_process(bus, NULL);
+        if ( r < 0)
+            app_log_message(APP_NAME, LOG_DEBUG, "Failed to processA bus.\n");
+        else if (r > 0) // we processed a request, try to process another one, right-away
+            continue;
 
-    return 0;
-}
-
-
-int app_dbus_end(void) {
-
-    // stop dbus signal thread
-    end_program = true;
-
-    struct timespec tim;
-    tim.tv_sec = 1;
-    tim.tv_nsec = 0;
-
-    if (nanosleep(&tim, NULL) < 0 ) {
-        log_message(LOG_DEBUG, "Nano sleep system call failed \n");
-    }
-
-    if (pthread_join(app_signal_thread_id, NULL) != 0) {
-        log_message(LOG_DEBUG, "app signal thread join failed.\n");
-        return -1;
+        // Wait for the next request to process
+        if (sd_bus_wait(bus, 100000) < 0)
+            app_log_message(APP_NAME, LOG_DEBUG, "Bus wait failed.\n");
     }
 
     sd_bus_unref(bus);
@@ -88,7 +75,7 @@ int app_dbus_end(void) {
 
 
 // ***************************************************************************
-// other gps functions
+// app callback functions
 
 
 static int read_gps_cb(sd_bus_message *m, void *userdata, sd_bus_error *ret_error) {
@@ -113,36 +100,15 @@ static int read_gps_cb(sd_bus_message *m, void *userdata, sd_bus_error *ret_erro
     if (r < 0)
         return -1;
 
-    app_writeOD(0x3003, 1, &posX, sizeof(float));
-    app_writeOD(0x3003, 2, &posY, sizeof(float));
-    app_writeOD(0x3003, 3, &posZ, sizeof(float));
-    app_writeOD(0x3003, 4, &velX, sizeof(float));
-    app_writeOD(0x3003, 5, &velY, sizeof(float));
-    app_writeOD(0x3003, 6, &velZ, sizeof(float));
-    app_writeOD(0x3001, 1, &state, sizeof(state));
+    app_OD_write(0x3003, 1, &posX, sizeof(float));
+    app_OD_write(0x3003, 2, &posY, sizeof(float));
+    app_OD_write(0x3003, 3, &posZ, sizeof(float));
+    app_OD_write(0x3003, 4, &velX, sizeof(float));
+    app_OD_write(0x3003, 5, &velY, sizeof(float));
+    app_OD_write(0x3003, 6, &velZ, sizeof(float));
+    app_OD_write(0x3001, 1, &state, sizeof(state));
 
     return 0;
 }
 
-
-static void* app_signal_thread(void* arg) {
-    int r;
-    sd_bus_error err = SD_BUS_ERROR_NULL;
-
-    while (end_program == false) {
-        // Process requests
-        r = sd_bus_process(bus, NULL);
-        if ( r < 0) 
-            log_message(LOG_DEBUG, "Failed to processA bus.\n");
-        else if (r > 0) // we processed a request, try to process another one, right-away
-            continue;
-
-        // Wait for the next request to process 
-        if (sd_bus_wait(bus, 100000) < 0)
-            log_message(LOG_DEBUG, "Bus wait failed.\n");
-    }
-
-    sd_bus_error_free(&err);
-    return NULL;
-}
 

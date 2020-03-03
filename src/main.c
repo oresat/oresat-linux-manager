@@ -2,6 +2,7 @@
 #include "CANopen.h"
 #include "CO_Linux_tasks.h"
 #include "CO_time.h"
+#include "file_transfer_ODF.h"
 #include "application.h"
 #include "linux_updater_app.h"
 #include "systemd_app.h"

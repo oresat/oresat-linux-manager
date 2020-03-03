@@ -1,6 +1,6 @@
 #include "CANopen.h"
 #include "CO_driver.h"
-#include "OD_helpers.h"
+#include "app_OD_helpers.h"
 #include "log_message.h"
 #include "file_transfer_ODF.h"
 #include <string.h>
@@ -49,13 +49,13 @@ static CO_SDO_abortCode_t read_file_data(CO_ODF_arg_t *ODF_arg);
 
 
 static int ft_lock_mtx(void) {
-    if(pthread_mutex_lock(&FT_ODF_mtx) != 0) 
+    if(pthread_mutex_lock(&FT_ODF_mtx) != 0)
         log_message(LOG_ERR, "File transfer mutex lock failed");
     return 0;
 }
 
 static int ft_unlock_mtx(void) {
-    if(pthread_mutex_unlock(&FT_ODF_mtx) != 0) 
+    if(pthread_mutex_unlock(&FT_ODF_mtx) != 0)
         log_message(LOG_ERR, "File transfer mutex unlock failed");
     return 0;
 }
@@ -89,7 +89,7 @@ int file_transfer_ODF_setup(void) {
 
 
 /**
- * Wrapper function used by recv_file_ODF to save file data into SDO buffer from struct. 
+ * Wrapper function used by recv_file_ODF to save file data into SDO buffer from struct.
  * It can handle spilting large data files into multiple segments.
  * */
 static CO_SDO_abortCode_t save_file_data(CO_ODF_arg_t *ODF_arg, received_file_data_t *recvFileBuffer) {
@@ -100,13 +100,13 @@ static CO_SDO_abortCode_t save_file_data(CO_ODF_arg_t *ODF_arg, received_file_da
         if(ODF_arg->dataLengthTotal > FILE_TRANSFER_MAX_SIZE) {
             return CO_SDO_AB_OUT_OF_MEM; /* file is larger than domain buffer */
         }
-        
-        recvFileBuffer->fileSize = 0; 
+
+        recvFileBuffer->fileSize = 0;
         ODF_arg->offset = 0;
     }
 
-    /** 
-     * check if there are more segements comming. This will also check if 
+    /**
+     * check if there are more segements comming. This will also check if
      * dataLengthTotal in not set (is 0).
      * */
     if((recvFileBuffer->fileSize + ODF_arg->dataLength) >= ODF_arg->dataLengthTotal)
@@ -134,19 +134,19 @@ CO_SDO_abortCode_t recv_file_ODF(CO_ODF_arg_t *ODF_arg) {
 
     /* error, no data to write */
     if(ODF_arg->dataLength == 0)
-        return CO_SDO_AB_NO_DATA; 
+        return CO_SDO_AB_NO_DATA;
 
-    if(ODF_arg->reading == false) 
+    if(ODF_arg->reading == false)
         return CO_SDO_AB_READONLY; /* can't write parameters, read only */
 
     ft_lock_mtx();
 
     switch(ODF_arg->subIndex) {
         case 1 : /* file name */
-            
+
             /* check if new data will fit in struct */
             if(ODF_arg->dataLength > FILE_PATH_MAX_LENGTH)
-                ret = CO_SDO_AB_OUT_OF_MEM; 
+                ret = CO_SDO_AB_OUT_OF_MEM;
             else {
                 /* write data */
                 memcpy(recvFileBuffer->fileName, ODF_arg->data, ODF_arg->dataLength);
@@ -160,20 +160,20 @@ CO_SDO_abortCode_t recv_file_ODF(CO_ODF_arg_t *ODF_arg) {
             break;
 
         case 2 : /* file data */
-            
+
             ret = save_file_data(ODF_arg, recvFileBuffer);
             break;
 
         case 3 : /* save file */
-            
+
             if(recvFileBuffer->fileSize == 0 || recvFileBuffer->fileName[0] == '\0')
                 ret = CO_SDO_AB_NO_DATA; /* error, no data to save */
             else { /* save file to recieve folder */
                 strcat(filePath, recvFileBuffer->fileName);
-                
+
                 f = fopen(filePath, "wb");
                 if(f == NULL)
-                    ret = CO_SDO_AB_GENERAL; 
+                    ret = CO_SDO_AB_GENERAL;
                 else {
                     fwrite(recvFileBuffer->fileData, sizeof(char), recvFileBuffer->fileSize, f);
                     fclose(f);
@@ -188,7 +188,7 @@ CO_SDO_abortCode_t recv_file_ODF(CO_ODF_arg_t *ODF_arg) {
             break;
 
         default :
-            ret = CO_SDO_AB_SUB_UNKNOWN; 
+            ret = CO_SDO_AB_SUB_UNKNOWN;
     }
 
     ft_unlock_mtx();
@@ -206,7 +206,7 @@ CO_SDO_abortCode_t send_file_array_ODF(CO_ODF_arg_t *ODF_arg) {
 
     sendFileBuffer = (send_file_data_t*) ODF_arg->object;
 
-    if(ODF_arg->reading == false) 
+    if(ODF_arg->reading == false)
         return CO_SDO_AB_READONLY; /* can't write parameters, read only */
 
     ft_lock_mtx();
@@ -260,16 +260,16 @@ int app_send_file(const char *filePath) {
         ft_lock_mtx();
 
         /* there is a empty spot in file list, add filename to the list */
-        if(sendFileBuffer.filesAvailable < SEND_FILE_LIST_SIZE) { 
+        if(sendFileBuffer.filesAvailable < SEND_FILE_LIST_SIZE) {
             unsigned int i=0;
 
-            /* Since the file list array will be 127 at maxiumum, 
-             * a iterative search through the list is fine, 
+            /* Since the file list array will be 127 at maxiumum,
+             * a iterative search through the list is fine,
              * it will have a O(1).
              */
 
             /* spin until an empty spot in the file list is found or at end */
-            while(sendFileBuffer.fileList[0][i] != '\0' && i < SEND_FILE_LIST_SIZE) 
+            while(sendFileBuffer.fileList[0][i] != '\0' && i < SEND_FILE_LIST_SIZE)
                 ++i;
 
             /* add file name to file list if there is valid empty spot */
@@ -284,7 +284,7 @@ int app_send_file(const char *filePath) {
         ft_unlock_mtx();
     }
 
-    return ret; 
+    return ret;
 }
 
 
@@ -293,8 +293,8 @@ int app_send_file(const char *filePath) {
 
 
 /**
-* Wrapper funciton for send_file_ODF. Initalizes the file list array to empty 
-* and then adds any files found in the send folder to the file list. 
+* Wrapper funciton for send_file_ODF. Initalizes the file list array to empty
+* and then adds any files found in the send folder to the file list.
 *
 * @return 1 on sucess and -1 on error
 */
@@ -304,7 +304,7 @@ static int initFileList(send_file_data_t *sendFileBuffer) {
     int a, b;
 
     /* mark every entry in file array as empty */
-    for(unsigned int i=0; i<SEND_FILE_LIST_SIZE; ++i) 
+    for(unsigned int i=0; i<SEND_FILE_LIST_SIZE; ++i)
         sendFileBuffer->fileList[0][i] = '\0';
 
     /* defualt values */
@@ -313,7 +313,7 @@ static int initFileList(send_file_data_t *sendFileBuffer) {
     sendFileBuffer->fileName = sendFileBuffer->fileList[0];
     sendFileBuffer->filePath[0] = '\0';
 
-    if((d = opendir(FILE_SEND_FOLDER)) != NULL) { 
+    if((d = opendir(FILE_SEND_FOLDER)) != NULL) {
         /* directory found */
         while((dir = readdir(d)) != NULL) {
             /* file found */
@@ -329,7 +329,7 @@ static int initFileList(send_file_data_t *sendFileBuffer) {
                 ++sendFileBuffer->filesAvailable;
             }
         }
-        
+
         closedir(d);
 
         /* load 1st file, if there is one */
@@ -362,7 +362,7 @@ static uint32_t get_file_name(const char *filePath, char *fileName) {
 
     start = strlen(filePath);
     pathNameSize = start + 1;
-    
+
     /* find right most '/' */
     while(start > 0) {
         if(filePath[start] == '/') {
@@ -418,7 +418,7 @@ static uint32_t get_file_data(const char *filePath, int8_t *fileData) {
 
 
 /**
- * Wrapper function used by send_file_ODF to read file data into SDO buffer from struct. 
+ * Wrapper function used by send_file_ODF to read file data into SDO buffer from struct.
  * It can handle spilting large data files into multiple segments.
  * */
 static CO_SDO_abortCode_t read_file_data(CO_ODF_arg_t *ODF_arg) {
@@ -426,7 +426,7 @@ static CO_SDO_abortCode_t read_file_data(CO_ODF_arg_t *ODF_arg) {
 
     sendFileBuffer = (send_file_data_t*) ODF_arg->object;
 
-    if(ODF_arg->reading == false) 
+    if(ODF_arg->reading == false)
         return CO_SDO_AB_READONLY; /* can't write parameters, read only */
 
     /* if the file path is empty, don't use the data buffer */
@@ -439,7 +439,7 @@ static CO_SDO_abortCode_t read_file_data(CO_ODF_arg_t *ODF_arg) {
     if(ODF_arg->firstSegment == true) { /* 1st segment */
         if(sendFileBuffer->fileSize > FILE_TRANSFER_MAX_SIZE)
             return CO_SDO_AB_OUT_OF_MEM; /* file is larger than domain buffer */
-        
+
         ODF_arg->dataLengthTotal = sendFileBuffer->fileSize;
         ODF_arg->offset = 0;
 
@@ -448,7 +448,7 @@ static CO_SDO_abortCode_t read_file_data(CO_ODF_arg_t *ODF_arg) {
             ODF_arg->lastSegment = true;
             ODF_arg->dataLength = sendFileBuffer->fileSize;
         }
-        else { 
+        else {
             /* multiple segments needed */
             ODF_arg->lastSegment = false;
             ODF_arg->dataLength = CO_SDO_BUFFER_SIZE;
@@ -507,7 +507,7 @@ CO_SDO_abortCode_t send_file_ODF(CO_ODF_arg_t *ODF_arg) {
                 --sendFileBuffer->filePointer; /* fix offset value */
 
                 sendFileBuffer->fileName = sendFileBuffer->fileList[sendFileBuffer->filePointer];
-                
+
                 /* if there is a valid file name in the file list, make the file path */
                 if(sendFileBuffer->fileName[0] != '\0') {
 
@@ -527,7 +527,7 @@ CO_SDO_abortCode_t send_file_ODF(CO_ODF_arg_t *ODF_arg) {
 
         case 2 : /* file name (read only) */
 
-            if(ODF_arg->reading == false) 
+            if(ODF_arg->reading == false)
                 ret = CO_SDO_AB_READONLY; /* can't write parameters, read only */
             else {
                 uint32_t temp = strlen(sendFileBuffer->fileName);
@@ -550,7 +550,7 @@ CO_SDO_abortCode_t send_file_ODF(CO_ODF_arg_t *ODF_arg) {
 
         case 4 : /* file size (read only) */
 
-            if(ODF_arg->reading == false) 
+            if(ODF_arg->reading == false)
                 ret = CO_SDO_AB_READONLY; /* can't write parameters, read only */
             else {
                 ODF_arg->dataLength = sizeof(sendFileBuffer->fileSize);
@@ -580,7 +580,7 @@ CO_SDO_abortCode_t send_file_ODF(CO_ODF_arg_t *ODF_arg) {
 
         case 6 : /* total # of files available (read only) */
 
-            if(ODF_arg->reading == false) 
+            if(ODF_arg->reading == false)
                 ret = CO_SDO_AB_READONLY; /* can't write parameters, read only */
             else {
                 ODF_arg->dataLength = sizeof(sendFileBuffer->filesAvailable);
@@ -590,8 +590,8 @@ CO_SDO_abortCode_t send_file_ODF(CO_ODF_arg_t *ODF_arg) {
             break;
 
         case 7 : /* # of files that overflowed (not in file array) (read only) */
-            
-            if(ODF_arg->reading == false) 
+
+            if(ODF_arg->reading == false)
                 ret = CO_SDO_AB_READONLY; /* can't write parameters, read only */
             else {
                 ODF_arg->dataLength = sizeof(sendFileBuffer->overflow);
@@ -613,7 +613,7 @@ CO_SDO_abortCode_t send_file_ODF(CO_ODF_arg_t *ODF_arg) {
             break;
 
         default :
-            ret = CO_SDO_AB_SUB_UNKNOWN; 
+            ret = CO_SDO_AB_SUB_UNKNOWN;
     }
 
     ft_unlock_mtx();

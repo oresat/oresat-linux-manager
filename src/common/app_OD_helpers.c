@@ -15,6 +15,29 @@
 extern CO_OD_entry_t CO_OD[CO_OD_NoOfElements];
 
 
+/**
+ * For logging/printing app_OD_error as a string.
+ * Also long explination for app_OD_error enum.
+ */
+const char *APP_OD_ERROR_STRING[] = {
+    "No error",
+    "OD index not found",
+    "OD subindex not found",
+    "Attempted to write a read-only object",
+    "Attempted to read a write-only object",
+    "Attempted to access a domain type",
+    "Attempted to write an object that wont fit in OD entry", // can't write a int64 into int8
+};
+
+
+const char*
+app_OD_error(int error) {
+    if( error >= 0)
+        return APP_OD_ERROR_STRING[-error];
+    return "";
+}
+
+
 void
 app_OD_configure(
         uint16_t index,
@@ -75,7 +98,7 @@ app_OD_find(uint16_t index){
 }
 
 
-bool
+int
 app_OD_read(uint16_t index, uint16_t sub_index, void *data, uint16_t *length) {
     CO_OD_entry_t* object = NULL;
     int8_t *OD_data = NULL;
@@ -125,7 +148,7 @@ app_OD_read(uint16_t index, uint16_t sub_index, void *data, uint16_t *length) {
     }
 
     if((OD_attribute & CO_ODA_READABLE) == 0)
-        return false; // Attempted to read a write-only object
+        return false; 
 
     if(OD_data == NULL)
         return false; // Is a domain type
@@ -142,7 +165,7 @@ app_OD_read(uint16_t index, uint16_t sub_index, void *data, uint16_t *length) {
 }
 
 
-bool
+int
 app_OD_write(uint16_t index, uint16_t sub_index, void *data, uint16_t length) {
     CO_OD_entry_t* object = NULL;
     int8_t *OD_data = NULL;
