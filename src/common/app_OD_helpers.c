@@ -56,9 +56,9 @@ app_log_message(const char *app_name, int priority, const char *message) {
     char *format = "";
 
     // merge strings
-    strncat(format, app_name, strlen(app_name));
-    strcat(format, ": ");
-    strncat(format, message, strlen(message));
+    strncat(format, app_name, strlen(format));
+    strncat(format, ": ", strlen(format));
+    strncat(format, message, strlen(format));
 
     log_message(priority, format);
 }

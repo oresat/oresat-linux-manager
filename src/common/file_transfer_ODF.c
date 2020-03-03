@@ -274,7 +274,7 @@ int app_send_file(const char *filePath) {
 
             /* add file name to file list if there is valid empty spot */
             if(i < SEND_FILE_LIST_SIZE)
-                strncpy(sendFileBuffer.fileList[i], fileName, strlen(fileName) + 1);
+                strncpy(sendFileBuffer.fileList[i], fileName, strlen(sendFileBuffer.fileList[i]) + 1);
             else
                 ++sendFileBuffer.overflow;
 
@@ -322,7 +322,8 @@ static int initFileList(send_file_data_t *sendFileBuffer) {
 
             if(a != 0 && b != 0) { /* file found */
                 if(sendFileBuffer->filesAvailable < SEND_FILE_LIST_SIZE) /* space in file array  */
-                    strncpy(sendFileBuffer->fileList[sendFileBuffer->filesAvailable], dir->d_name, strlen(dir->d_name) + 1);
+                    strncpy(sendFileBuffer->fileList[sendFileBuffer->filesAvailable], dir->d_name,
+                            strlen(sendFileBuffer->fileList[sendFileBuffer->filesAvailable]) + 1);
                 else /* file array is full */
                     ++sendFileBuffer->overflow;
 
@@ -335,8 +336,8 @@ static int initFileList(send_file_data_t *sendFileBuffer) {
         /* load 1st file, if there is one */
         if(sendFileBuffer->fileList[0][0] != '\0') {
             /* update file path */
-            strncpy(sendFileBuffer->filePath, FILE_SEND_FOLDER, strlen(FILE_SEND_FOLDER) + 1);
-            strncat(sendFileBuffer->filePath, sendFileBuffer->fileName, strlen(sendFileBuffer->fileName) + 1);
+            strncpy(sendFileBuffer->filePath, FILE_SEND_FOLDER, strlen(sendFileBuffer->filePath) + 1);
+            strncat(sendFileBuffer->filePath, sendFileBuffer->fileName, strlen(sendFileBuffer->filePath) + 1);
 
             /* load file into buffer and get size */
             sendFileBuffer->fileSize = get_file_data(sendFileBuffer->filePath, sendFileBuffer->fileData);
@@ -512,8 +513,8 @@ CO_SDO_abortCode_t send_file_ODF(CO_ODF_arg_t *ODF_arg) {
                 if(sendFileBuffer->fileName[0] != '\0') {
 
                     /* update file path */
-                    strncpy(sendFileBuffer->filePath, FILE_SEND_FOLDER, strlen(FILE_SEND_FOLDER)+1);
-                    strncat(sendFileBuffer->filePath, sendFileBuffer->fileName, strlen(sendFileBuffer->fileName) + 1);
+                    strncpy(sendFileBuffer->filePath, FILE_SEND_FOLDER, strlen(sendFileBuffer->filePath)+1);
+                    strncat(sendFileBuffer->filePath, sendFileBuffer->fileName, strlen(sendFileBuffer->filePath) + 1);
 
                     /* load file into buffer and get size */
                     sendFileBuffer->fileSize = get_file_data(sendFileBuffer->filePath, sendFileBuffer->fileData);
