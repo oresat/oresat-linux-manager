@@ -11,15 +11,16 @@
  * Return values for app_OD_read() and app_OD_write().
  * For long explination see app_OD_error_str.
  */
-enum APP_OD_ERROR_ENUM {
+typedef enum {
     APP_OD_NONE,
+    APP_OD_NULL_DATA,
     APP_OD_INDEX,
     APP_OD_SUBINDEX,
     APP_OD_READONLY,
     APP_OD_WRITEONLY,
     APP_OD_DOMAIN,
     APP_OD_LENGTH,
-};
+} APP_OD_ERROR_ENUM;
 
 
 /**
@@ -65,7 +66,7 @@ uint16_t app_OD_find(uint16_t index);
  *
  * @return app_OD_error value.
  */
-int app_OD_read(
+APP_OD_ERROR_ENUM app_OD_read(
         uint16_t index,
         uint16_t subIndex,
         void *data,
@@ -83,7 +84,7 @@ int app_OD_read(
  *
  * @return app_OD_error value.
  */
-int app_OD_write(
+APP_OD_ERROR_ENUM app_OD_write(
         uint16_t index,
         uint16_t subIndex,
         void *data,

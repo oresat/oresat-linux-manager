@@ -21,6 +21,7 @@ extern CO_OD_entry_t CO_OD[CO_OD_NoOfElements];
  */
 const char *APP_OD_ERROR_STRING[] = {
     "No error",
+    "Input data was null",
     "OD index not found",
     "OD subindex not found",
     "Attempted to write a read-only object",
@@ -31,7 +32,7 @@ const char *APP_OD_ERROR_STRING[] = {
 
 
 const char*
-app_OD_error(int error) {
+get_error_string(APP_OD_ERROR_ENUM error) {
     if( error >= 0)
         return APP_OD_ERROR_STRING[-error];
     return "";
@@ -98,7 +99,7 @@ app_OD_find(uint16_t index){
 }
 
 
-int
+APP_OD_ERROR_ENUM
 app_OD_read(uint16_t index, uint16_t sub_index, void *data, uint16_t *length) {
     CO_OD_entry_t* object = NULL;
     int8_t *OD_data = NULL;
@@ -107,19 +108,19 @@ app_OD_read(uint16_t index, uint16_t sub_index, void *data, uint16_t *length) {
     uint16_t OD_attribute;
 
     if(data == NULL)
-        return false; // No data pointer for return
+        return APP_OD_NULL_DATA; // No data pointer for return
 
     // Get object location
     OD_entry_num = app_OD_find(index);
     if(OD_entry_num == 0xFFFE)
-        return false; // Index not found
+        return APP_OD_INDEX; // Index not found
 
     // Get object
     object = &CO_OD[OD_entry_num];
 
     // Check if sub index is valid
     if(sub_index >= object->maxSubIndex)
-        return false; // Sub index does not exist
+        return APP_OD_SUBINDEX; // Sub index does not exist
 
     // Figure out OD entry type
     if(object->maxSubIndex == 0U) { // Object type is Variable
@@ -148,10 +149,10 @@ app_OD_read(uint16_t index, uint16_t sub_index, void *data, uint16_t *length) {
     }
 
     if((OD_attribute & CO_ODA_READABLE) == 0)
-        return false; 
+        return APP_OD_WRITEONLY;
 
     if(OD_data == NULL)
-        return false; // Is a domain type
+        return APP_OD_DOMAIN; // Is a domain type
 
     CO_LOCK_OD();
 
@@ -161,11 +162,11 @@ app_OD_read(uint16_t index, uint16_t sub_index, void *data, uint16_t *length) {
 
     CO_UNLOCK_OD();
 
-    return true;
+    return APP_OD_NONE;
 }
 
 
-int
+APP_OD_ERROR_ENUM
 app_OD_write(uint16_t index, uint16_t sub_index, void *data, uint16_t length) {
     CO_OD_entry_t* object = NULL;
     int8_t *OD_data = NULL;
@@ -174,17 +175,17 @@ app_OD_write(uint16_t index, uint16_t sub_index, void *data, uint16_t length) {
     uint16_t OD_attribute;
 
     if(data == NULL || length == 0)
-        return false; // No data to write
+        return APP_OD_NULL_DATA; // No data to write
 
     OD_entry_num = app_OD_find(index);
     if(OD_entry_num == 0xFFFE)
-        return false; // Index not found
+        return APP_OD_INDEX; // Index not found
 
     // Get object
     object = &CO_OD[OD_entry_num];
 
     if(sub_index >= object->maxSubIndex)
-        return false; // Sub index does not exist
+        return APP_OD_SUBINDEX; // Sub index does not exist
 
     // Figure out OD entry type
     if(object->maxSubIndex == 0U) { //Object type is Varaible
@@ -214,13 +215,13 @@ app_OD_write(uint16_t index, uint16_t sub_index, void *data, uint16_t length) {
     }
 
     if((OD_attribute & CO_ODA_WRITEABLE) == 0)
-        return false; // Attempted to write a read-only object
+        return APP_OD_READONLY; // Attempted to write a read-only object
 
     if(OD_data == NULL)
-        return false; // Is a domain type, can't write it
+        return APP_OD_DOMAIN; // Is a domain type, can't write it
 
     if(length > OD_length)
-        return false; // Length of service parameter does not match
+        return APP_OD_LENGTH; // Length of service parameter does not match
 
     CO_LOCK_OD();
 
