@@ -3,9 +3,15 @@
 #include "CO_Linux_tasks.h"
 #include "CO_time.h"
 #include "file_transfer_ODF.h"
+#ifdef MAIN_PROCESS_APP
 #include "application.h"
+#endif
+#ifdef LINUX_UPDATER_APP
 #include "linux_updater_app.h"
+#endif
+#ifdef SYSTEMD_APP
 #include "systemd_app.h"
+#endif
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -54,7 +60,7 @@ static pthread_t            linux_updater_thread_id;
 static void*                main_process_thread(void* arg);
 static pthread_t            main_process_thread_id;
 #endif
-#ifdef SYSTEMD_APP
+#ifdef SYSTEMD_APP_OFF // when connecting to systemd dbus inteface, systemd uses 70% of cpu TODO fix this
 static void*                systemd_thread(void* arg);
 static pthread_t            systemd_thread_id;
 #endif
@@ -68,12 +74,12 @@ static void signal_handler(int sig) {
 
     // stop all dbus services threads
 #ifdef LINUX_UPDATER_APP
-    pthread_cancel(LU_thread_id);
+    pthread_cancel(linux_updater_thread_id);
 #endif
 #ifdef MAIN_PROCESS_APP
-    pthread_cancel(BMP_thread_id);
+    pthread_cancel(main_process_thread_id);
 #endif
-#ifdef SYSTEMD_APP
+#ifdef SYSTEMD_APP_OFF
     pthread_cancel(systemd_thread_id);
 #endif
 }
@@ -235,16 +241,16 @@ int main (int argc, char *argv[]) {
     log_message(LOG_DEBUG, "Power count=%u ...\n", ++OD_powerOnCounter);
 
     // Create dbus threads
-#ifdef SYSTEMD_APP
+#ifdef SYSTEMD_APP_OFF
     if(pthread_create(&systemd_thread_id, NULL, systemd_thread, NULL) != 0)
         log_message(LOG_ERR, "Program init - systemd_thread creation failed\n");
 #endif
 #ifdef LINUX_UPDATER_APP
-    if(pthread_create(&updater_linux_thread_id, NULL, updater_linux_thread, NULL) != 0)
+    if(pthread_create(&linux_updater_thread_id, NULL, linux_updater_thread, NULL) != 0)
         log_message(LOG_ERR, "Program init - linux_updater_thread creation failed\n");
 #endif
 #ifdef MAIN_PROCESS_APP
-    if(pthread_create(&main_process_thread_id, NULL, main_process__thread, NULL) != 0)
+    if(pthread_create(&main_process_thread_id, NULL, main_process_thread, NULL) != 0)
         log_message(LOG_ERR, "Program init - main_process_thread creation failed\n");
 #endif
 
@@ -360,7 +366,7 @@ int main (int argc, char *argv[]) {
         log_message(LOG_ERR, "Program end - pthread_join failed for rt thread");
 
     // stop dbus threads
-#ifdef SYSTEMD_APP
+#ifdef SYSTEMD_APP_OFF
     if(pthread_join(systemd_thread_id, NULL) != 0)
         log_message(LOG_ERR, "Program end - pthread_join failed for systemd app");
 #endif
@@ -368,7 +374,7 @@ int main (int argc, char *argv[]) {
     if(pthread_join(linux_updater_thread_id, NULL) != 0)
         log_message(LOG_ERR, "Program end - pthread_join failed for linux updater app");
 #endif
-#ifdef MAIN_UPDATER_APP
+#ifdef MAIN_PROCESS_APP
     if(pthread_join(main_process_thread_id, NULL) != 0)
         log_message(LOG_ERR, "Program end - pthread_join failed for main process app");
 #endif
@@ -431,11 +437,11 @@ static void* rt_thread(void* arg) {
     return NULL;
 }
 
-
-#ifdef SYSTEMD_APP
+#ifdef SYSTEMD_APP_OFF
 static void*
 systemd_thread(void* arg) {
     systemd_dbus_main();
+    return NULL;
 }
 #endif
 
@@ -443,7 +449,8 @@ systemd_thread(void* arg) {
 #ifdef LINUX_UPDATER_APP
 static void*
 linux_updater_thread(void* arg) {
-    linux_update_dbus_main();
+    linux_updater_dbus_main();
+    return NULL;
 }
 #endif
 
@@ -452,5 +459,6 @@ linux_updater_thread(void* arg) {
 static void*
 main_process_thread(void* arg) {
     main_process_dbus_main();
+    return NULL;
 }
 #endif

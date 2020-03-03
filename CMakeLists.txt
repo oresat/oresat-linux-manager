@@ -27,6 +27,34 @@ message(STATUS "Board ${BOARD} selected")
 
 
 ##############################################################################
+# Turn DBus apps on/off for debugging. Assumption if not define, it is on.
+
+if(NOT SYSTEMD_APP OR SYSTEMD_APP MATCHES "on")
+    add_definitions(-DSYSTEMD_APP)
+elseif(SYSTEMD_APP MATCHES "off")
+    # SYSTEMD_APP is defined
+else()
+    message(FATAL_ERROR "${SYSTEMD_APP} is not a valid input for SYSTEMD_APP")
+endif()
+
+if(NOT LINUX_UPDATER_APP OR LINUX_UPDATER_APP MATCHES "on")
+    add_definitions(-DLINUX_UPDATER_APP)
+elseif(LINUX_UPDATER_APP MATCHES "off")
+    # LINUX_UPDATER_APP is not defined
+else()
+    message(FATAL_ERROR "${LINUX_UPDATER_APP} is not a valid input for LINUX_UPDATER_APP")
+endif()
+
+if(NOT MAIN_PROCESS_APP OR MAIN_PROCESS_APP MATCHES "on")
+    add_definitions(-DMAIN_PROCESS_APP)
+elseif(MAIN_PROCESS_APP MATCHES "off")
+    # MAIN_PROCESS_APP is not defined
+else()
+    message(FATAL_ERROR "${MAIN_PROCESS_APP} is not a valid input for MAIN_PROCESS_APP")
+endif()
+
+
+##############################################################################
 # Check Linux distribution / verion / kernel version
 
 set(LINUX_DISTRIBUTION "")
