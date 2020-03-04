@@ -3,7 +3,7 @@
 ## Required functions
 All candaemon apps require two functions `int <app_name>_app_setup()` and `int <app_name>_app_main)`.
 **NOTE:** The linux updater app uses `linux_updater_app_setup()` and `linux_updater_app_main()`, the systemd app uses `systemd_app_setup()` and `systemd_app_main()`, the board's main process app uses `main_process_app_setup()` and `main_process_app_main()`.
-- `<app_name>_app_setup()` is used to set up any OD functions needed by candaemon to use the app and to tell the systemd app what daemon to control. ie: register any object dictionary functions with `app_app_configure()` and associate daemon with app with `app_add_daemon()`.
+- `<app_name>_app_setup()` is used to set up any OD functions needed by candaemon to use the app and to tell the systemd app what daemon to control. ie: register any object dictionary functions with `app_ODF_configure()` and associate daemon with app with `app_add_daemon()`.
 - `<app_name>_app_main()` is a thread supplied by the candaemon for the app to use, AKA the `main()` for the app.
 
 ### Error handling in apps
