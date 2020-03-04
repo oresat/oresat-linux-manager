@@ -64,8 +64,8 @@ The CANdaemon is ment to be a node on the CANbus, not the Network Manager.
 - [Daemons]
 - [Systemd]
 - [Systemd-DBus]
-- [DBus-Specs]
-- [CANopen-Specs]
+- [DBus-Specifcations]
+- [CANopen-Specifcations]
 - [ECSS-CANBus-Extended-Protocal]
 
 <!-- Other oresat repos -->
@@ -81,7 +81,7 @@ The CANdaemon is ment to be a node on the CANbus, not the Network Manager.
 [Systemd]:https://freedesktop.org/wiki/Software/systemd/
 [Systemd-DBus]:https://www.freedesktop.org/wiki/Software/systemd//
 [DBus-Specifcations]:https://.freedesktop.org/doc/dbus-specification.html
-[CANopen-Specs]:https://www.can-cia.org/groups/specifications/
+[CANopen-Specifcations]:https://www.can-cia.org/groups/specifications/
 [ECSS-CANBus-Extended-Protocal]:https://ecss.nl/standard/ecss-e-st-50-15c-space-engineering-canbus-extension-protocol-1-may-2015/
 [CAN-in-Automation]:https://can-cia.org/
 
