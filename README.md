@@ -1,16 +1,4 @@
-<div align="center">
-  <h1>
-    <br> Oresat Linux CANdaemon </br>
-  </h1>
-  <h4>
-    <a href="#features">Features</a> |
-    <a href="#dependices">Dependices</a> |
-    <a href="#how to use">How to use</a> |
-    <a href="#directory layout">Directory Layout</a> |
-    <a href="#Making a new board">Making a new board</a> |
-    <a href="#Useful References">Useful References</a> 
-  </h4>
-</div>
+# Oresat Linux CANdaemon
 
 The CANdaemon is based off of [CANopenSocket], but with dbus interfaces to commicate and control daemons. The CANdaemon can commicate with main process ([GPS], [StarTracker], [OreSatLive], or the Cirrus Flux Camera daemons) and the Linux Updater. The CANdaemon is ment to be a node on the CANbus, not the Network Manager.
 
