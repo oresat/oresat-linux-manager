@@ -325,9 +325,15 @@ int main (int argc, char *argv[]) {
             file_transfer_ODF_setup();
 
             // set up dbus services
+#ifdef SYSTEMD_DBUS_APP
             systemd_ODF_setup();
+#endif
+#ifdef LINUX_UPDATER_DBUS_APP
             linux_updater_ODF_setup();
+#endif
+#ifdef MAIN_PROCESS_DBUS_APP
             main_process_ODF_setup();
+#endif
         }
 
         // start CAN
