@@ -5,8 +5,10 @@
   <h4>
     <a href="#features">Features</a> |
     <a href="#dependices">Dependices</a> |
-    <a href="#how to use">How to use</a>
+    <a href="#how to use">How to use</a> |
     <a href="#directory layout">Directory Layout</a> |
+    <a href="#Making a new board">Making a new board</a> |
+    <a href="#Useful References">Useful References</a> 
   </h4>
 </div>
 
@@ -46,6 +48,11 @@ The CANdaemon is based off of [CANopenSocket], but with dbus interfaces to commi
 - Building deb binary package on a beaglebone (or debian based armhf system)
     - `sudo make package` or`sudo ninja package`
 
+## Making a new board
+- `cp -r boards/template boards/<new_board_name>`
+- modify /boards/<new_board_name>/appilcation.* as needed
+- modify /boards/<new_board_name>/objDict with [libedssharp] as needed
+
 ## Directory Layout 
 - **src** - Holds an CANdaemon app for each OreSat Linux board
     - **boards** - Holds an CANdaemon app for each OreSat Linux board
@@ -53,11 +60,6 @@ The CANdaemon is based off of [CANopenSocket], but with dbus interfaces to commi
     - **common** - Common source code, regardless of which board is enabled.
     - **socketCAN** - CANopenNode SocketCAN driver
 - **docs** - Documentation for CANdaemon
-
-### Making a new board
-- `cp -r boards/template boards/<new_board_name>`
-- modify /boards/<new_board_name>/appilcation.* as needed
-- modify /boards/<new_board_name>/objDict with [libedssharp] as needed
 
 ## Useful References
 - [CAN-Wikipedia]
