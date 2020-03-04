@@ -69,6 +69,7 @@ CO_SDO_abortCode_t CFC_ODF(CO_ODF_arg_t *ODF_arg) {
     CO_SDO_abortCode_t ret = CO_SDO_AB_NONE;
     sd_bus_error err = SD_BUS_ERROR_NULL;
     sd_bus_message *m = NULL;
+    sd_bus  *bus = NULL;
     uint8_t temp = 0;
     char *file_path;
     int r;
@@ -107,12 +108,13 @@ CO_SDO_abortCode_t CFC_ODF(CO_ODF_arg_t *ODF_arg) {
 
     if(file_path != NULL)
         app_send_file(file_path);
-
-    sd_bus_error_free(&err);
-    sd_bus_message_unref(m);
+    else
+        app_log_message(APP_NAME, LOG_ERR, "File path was null.");
 
     ODF_arg->lastSegment = true;
 
+    sd_bus_error_free(&err);
+    sd_bus_message_unref(m);
     return ret;
 }
 
