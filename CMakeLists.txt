@@ -183,7 +183,7 @@ set(SOURCE_FILES
     ${STACK_DIR}/crc16-ccitt.c
     ${STACK_DRIVER_DIR}/CO_driver.c
     ${STACK_DRIVER_DIR}/CO_Linux_tasks.c
-    ${COMMON_DIR}/CO_time.c
+    ${STACK_DRIVER_DIR}/CO_time.c
     ${COMMON_DIR}/log_message.c
     ${COMMON_DIR}/file_transfer_ODF.c
     ${COMMON_DIR}/app_OD_helpers.c
