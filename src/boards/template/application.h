@@ -5,13 +5,13 @@
 /**
  * Used to set up any ODF needed by the app.
  */
-int main_process_ODF_setup(void);
+int main_process_app_setup(void);
 
 
 /**
  * The apps main function.
  */
-int main_process_dbus_main(void);
+int main_process_app_main(void);
 
 
 #endif

@@ -28,12 +28,12 @@ static int read_gps_cb(sd_bus_message *m, void *userdata, sd_bus_error *ret_erro
 // app ODF and dbus functions
 
 
-int main_process_ODF_setup(void) {
+int main_process_app_setup(void) {
     return 0;
 }
 
 
-int main_process_dbus_main(void) {
+int main_process_app_main(void) {
     int r;
 
     /* Connect to the bus */

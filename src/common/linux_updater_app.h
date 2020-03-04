@@ -33,13 +33,13 @@ typedef struct {
 /**
  * Function is called on program startup. Used to set up ODFs.
  */
-int linux_updater_ODF_setup(void);
+int linux_updater_app_setup(void);
 
 
 /**
  * Main for the Linux updater app.
  */
-int linux_updater_dbus_main(void);
+int linux_updater_app_main(void);
 
 
 /**

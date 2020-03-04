@@ -12,7 +12,7 @@
 #define APP_NAME            "Systemd"
 
 
-int systemd_ODF_setup(void) {
+int systemd_app_setup(void) {
 
     CO_OD_configure(CO->SDO[0], 0x3000, systemd_ODF, NULL, 0, 0U);
 

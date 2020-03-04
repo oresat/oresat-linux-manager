@@ -27,14 +27,14 @@ static shared_data          sd  = {false, 0, 0, "\0", PTHREAD_MUTEX_INITIALIZER}
 // manitory functions
 
 
-int linux_updater_ODF_setup(void) {
+int linux_updater_app_setup(void) {
     // add of app's ODFs to OD
     app_OD_configure(UPDATER_ODF_INDEX, updater_ODF, NULL, 0, 0U);
     return 0;
 }
 
 
-int linux_updater_dbus_main(void) {
+int linux_updater_app_main(void) {
     int r = 0;
 
     r = sd_bus_open_system(&bus);

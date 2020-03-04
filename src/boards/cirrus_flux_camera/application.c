@@ -27,13 +27,13 @@ CO_SDO_abortCode_t CFC_ODF(CO_ODF_arg_t *ODF_arg);
 // app ODF and dbus functions
 
 
-int main_process_ODF_setup(void) {
+int main_process_app_setup(void) {
     app_OD_configure(0x3100, CFC_ODF, NULL, 0, 0U);
     return 0;
 }
 
 
-int main_process_dbus_main(void) {
+int main_process_app_main(void) {
     int r;
 
     // Connect to the bus

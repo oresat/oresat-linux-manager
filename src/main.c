@@ -326,13 +326,13 @@ int main (int argc, char *argv[]) {
 
             // set up dbus services
 #ifdef SYSTEMD_DBUS_APP
-            systemd_ODF_setup();
+            systemd_app_setup();
 #endif
 #ifdef LINUX_UPDATER_DBUS_APP
-            linux_updater_ODF_setup();
+            linux_updater_app_setup();
 #endif
 #ifdef MAIN_PROCESS_DBUS_APP
-            main_process_ODF_setup();
+            main_process_app_setup();
 #endif
         }
 
@@ -446,7 +446,7 @@ static void* rt_thread(void* arg) {
 #ifdef SYSTEMD_DBUS_APP_OFF
 static void*
 systemd_thread(void* arg) {
-    systemd_dbus_main();
+    systemd_app_main();
     return NULL;
 }
 #endif
@@ -455,7 +455,7 @@ systemd_thread(void* arg) {
 #ifdef LINUX_UPDATER_DBUS_APP
 static void*
 linux_updater_thread(void* arg) {
-    linux_updater_dbus_main();
+    linux_updater_app_main();
     return NULL;
 }
 #endif
@@ -464,7 +464,7 @@ linux_updater_thread(void* arg) {
 #ifdef MAIN_PROCESS_DBUS_APP
 static void*
 main_process_thread(void* arg) {
-    main_process_dbus_main();
+    main_process_app_main();
     return NULL;
 }
 #endif

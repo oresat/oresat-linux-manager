@@ -18,12 +18,12 @@
 // app ODF and dbus functions
 
 
-int main_process_ODF_setup(void) {
+int main_process_app_setup(void) {
     return 0;
 }
 
 
-int main_process_dbus_main(void) {
+int main_process_app_main(void) {
     return 0;
 }
 

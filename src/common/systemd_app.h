@@ -9,7 +9,7 @@
 /**
  * Set up the systemd app  ODFs
  */
-int systemd_ODF_setup(void);
+int systemd_app_setup(void);
 
 
 
