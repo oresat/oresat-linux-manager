@@ -30,7 +30,7 @@ message(STATUS "${BOARD} Board selected")
 # Turn DBus apps on/off for debugging. Assumption if not define, it is on.
 
 if(SYSTEMD_APP MATCHES "on")
-    add_definitions(-DSYSTEMD_DBUS_APP)
+    add_definitions(-DSYSTEMD_DBUS_APP="on")
     message(STATUS "Systemd dbus app is on")
 elseif(SYSTEMD_APP MATCHES "off")
     message(STATUS "Systemd dbus app is off")

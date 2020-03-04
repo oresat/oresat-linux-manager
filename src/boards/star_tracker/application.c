@@ -1,7 +1,6 @@
-#include "application.h"
 #include "app_OD_helpers.h"
 #include "file_transfer_ODF.h"
-#include "log_message.h"
+#include "application.h"
 #include <systemd/sd-bus.h>
 #include <pthread.h>
 #include <stdio.h>
@@ -12,6 +11,7 @@
 #define DESTINATION     "org.oresat.startracker"
 #define INTERFACE_NAME  "org.oresat.startracker"
 #define OBJECT_PATH     "/org/oresat/startracker"
+#define APP_NAME        "StarTracker"
 
 
 // Static variables
@@ -23,6 +23,10 @@ static bool             end_program = false;
 // Static functions headers
 static int coor_cb(sd_bus_message *m, void *userdata, sd_bus_error *ret_error);
 static void* app_signal_thread(void* arg);
+
+
+/*****************************************************************************/
+// app ODF and dbus functions
 
 
 int app_dbus_setup(void) {
@@ -83,8 +87,8 @@ int app_dbus_end(void) {
 }
 
 
-// ***************************************************************************
-// other star tracker functions
+/*****************************************************************************/
+// app callback functions
 
 
 static int coor_cb(sd_bus_message *m, void *userdata, sd_bus_error *ret_error) {

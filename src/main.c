@@ -3,13 +3,13 @@
 #include "CO_Linux_tasks.h"
 #include "CO_time.h"
 #include "file_transfer_ODF.h"
-#ifdef MAIN_PROCESS_DBUS_APP
+#if MAIN_PROCESS_DBUS_APP
 #include "application.h"
 #endif
-#ifdef LINUX_UPDATER_DBUS_APP
+#if LINUX_UPDATER_DBUS_APP
 #include "linux_updater_app.h"
 #endif
-#ifdef SYSTEMD_DBUS_APP
+#if SYSTEMD_DBUS_APP
 #include "systemd_app.h"
 #endif
 #include <stdio.h>

@@ -1,6 +1,6 @@
-#include "application.h"
 #include "app_OD_helpers.h"
 #include "file_transfer_ODF.h"
+#include "application.h"
 #include <systemd/sd-bus.h>
 #include <pthread.h>
 #include <stdio.h>
@@ -23,7 +23,7 @@ static bool             running = true;
 static int read_gps_cb(sd_bus_message *m, void *userdata, sd_bus_error *ret_error);
 
 
-// ***************************************************************************
+/*****************************************************************************/
 // app ODF and dbus functions
 
 
@@ -52,7 +52,7 @@ int main_process_dbus_main(void) {
             read_gps_cb,
             NULL);
     if (r < 0) {
-        app_log_message(APP_NAME, LOG_ERR, "Failed to add new signal match.\n");
+        app_log_message(APP_NAME, LOG_ERR, "Failed to add PropertiesChanged signal match.\n");
         return r;
     }
 
@@ -60,7 +60,7 @@ int main_process_dbus_main(void) {
         // Process requests
         r = sd_bus_process(bus, NULL);
         if ( r < 0)
-            app_log_message(APP_NAME, LOG_DEBUG, "Failed to processA bus.\n");
+            app_log_message(APP_NAME, LOG_DEBUG, "Failed to process bus.\n");
         else if (r > 0) // we processed a request, try to process another one, right-away
             continue;
 
@@ -74,7 +74,7 @@ int main_process_dbus_main(void) {
 }
 
 
-// ***************************************************************************
+/*****************************************************************************/
 // app callback functions
 
 

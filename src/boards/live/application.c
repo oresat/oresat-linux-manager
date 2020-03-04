@@ -1,14 +1,16 @@
-#include "CANopen.h"
-#include "CO_SDO.h"
 #include "app_OD_helpers.h"
 #include "file_transfer_ODF.h"
-#include "log_message.h"
 #include "application.h"
 #include <systemd/sd-bus.h>
 #include <stdio.h>
 #include <stdint.h>
 #include <stdbool.h>
 
+
+#define DESTINATION     "org.OreSat.Live"
+#define INTERFACE_NAME  "org.OreSat.Live"
+#define OBJECT_PATH     "/org/OreSat/Live"
+#define APP_NAME        "live"
 
 
 // Static variables
@@ -17,20 +19,20 @@
 // Static functions headers
 
 
-// ***************************************************************************
-// app dbus functions
+/*****************************************************************************/
+// app ODF and dbus functions
 
 
-int app_dbus_setup(void) {
+int main_process_ODF_setup(void) {
     return 0;
 }
 
 
-int app_dbus_end(void) {
+int main_process_dbus_main(void) {
     return 0;
 }
 
 
-// ***************************************************************************
-// other functions
+/*****************************************************************************/
+// app callback functions
 
