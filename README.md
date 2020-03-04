@@ -33,10 +33,10 @@ The CANdaemon is based off of [CANopenSocket], but with dbus interfaces to commi
     - `cmake -DBOARD=<board> ..` or `cmake -GNinja -DBOARD=<board> ..`
     - `make` or `ninja`
 - Optional cmake flags 1st option in [] is default:
-    - `-DCMAKE_BUILD_TYPE=[Release|Debug]` to turn on/off -g -Wall flags
-    - `-DSYSTEMD_APP=[on|off]` to turn off systemd app
-    - `-DLINUX_UPDATER_APP=[on|off]` to turn off linux updater app
-    - `-DMAIN_PROCESS_APP=[on|off]` to turn off main process app
+    - `-DCMAKE_BUILD_TYPE=[Debug|Release]` to turn the -g -Wall cflags on/off
+    - `-DSYSTEMD_APP=[on|off]` to turn systemd app on/off
+    - `-DLINUX_UPDATER_APP=[on|off]` to turn Linux updater app on/off
+    - `-DMAIN_PROCESS_APP=[on|off]` to turn main process app on/off
 - Running CANdaemon
     - `./candaemon` as a process
     - `./candaemon -d` as a daemon

@@ -124,14 +124,12 @@ endif()
 
 # default to release
 if(NOT CMAKE_BUILD_TYPE)
-    set(CMAKE_BUILD_TYPE Release)
+    set(CMAKE_BUILD_TYPE Debug)
 endif()
 
 set(CMAKE_C_FLAGS "-Wall")
 set(CMAKE_C_FLAGS_DEBUG "-g")
 set(CMAKE_C_FLAGS_RELEASE "-O3")
-
-#set(CMAKE_EXE_LINKER_FLAGS "-pthread") #-lsystemd")
 
 
 ##############################################################################
