@@ -38,7 +38,7 @@ The CANdaemon is ment to be a node on the CANbus, not the Network Manager.
     - `cd build`
     - `cmake -DBOARD=<board> ..` or `cmake -GNinja -DBOARD=<board> ..`
     - `make` or `ninja`
-- Optional cmake flags, 1st option in [ ] is default:
+- Optional cmake flags, 1st option in `[ ]` is default when not specified:
     - `-DCMAKE_BUILD_TYPE=[Debug|Release]` to turn the -g -Wall cflags on/off
     - `-DSYSTEMD_APP=[on|off]` to turn systemd app on/off
     - `-DLINUX_UPDATER_APP=[on|off]` to turn Linux updater app on/off
