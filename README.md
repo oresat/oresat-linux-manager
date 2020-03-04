@@ -8,12 +8,12 @@ The CANdaemon is ment to be a node on the CANbus, not the Network Manager.
 ![](docs/OreSatLinuxDiagram.jpg)
 
 ## Features
-- Follows the CiA (CAN-in-Automation) specs for [CANopen-Specs]. 
+- Built on top of the [CANopeNode], therefor it follows the CiA ([CAN-in-Automation]) specs for [CANopen-Specs]. 
 - Follows the [ECSS-CANBus-Extended-Protocal] on top of CiA specs.
-- Allows the CAN Network Manager to have control of [daemons] on the Linux board.
-- Give the Linux board power setting thru [Systemd] to CAN Network Manager.
-- Uses sd-bus (systemd ) for DBus communication to [daemons].
-- Allows the main process to be written in  any language that has a  library or a DBus binding. See [freedesktop DBus Bindings](https://www.freedesktop.org/wiki/Software/DBusBindings/) for a DBus supported languague list.
+- Allows the CAN Network Manager to control OreSat [daemons] on the Linux board thru [Systemd].
+- Allows the CAN Network Manager to control the power option thru [Systemd].
+- Uses sd-bus (systemd dbus) for DBus communication to OreSat [daemons].
+- Allows the main process to be written in  any language that has a library or a DBus binding. See [freedesktop DBus Bindings](https://www.freedesktop.org/wiki/Software/DBusBindings/) for a DBus supported languague list.
 
 ## Directory Layout 
 - **src** - Holds an CANdaemon app for each OreSat Linux board
@@ -76,12 +76,14 @@ The CANdaemon is ment to be a node on the CANbus, not the Network Manager.
 <!-- References -->
 [CAN-Wikipedia]:https://en.wikipedia.org/wiki/CAN_bus
 [CANopenSocket]:https://github.com/CANopenNode/CANopenSocket
+[CANopenNode]:https://github.com/CANopenNode/CANopenNode
 [Daemons]:https://www.freedesktop.org/software/systemd/man/daemon.html
 [Systemd]:https://freedesktop.org/wiki/Software/systemd/
 [Systemd-DBus]:https://www.freedesktop.org/wiki/Software/systemd//
 [DBus-Specs]:https://.freedesktop.org/doc/dbus-specification.html
 [CANopen-Specs]:https://www.can-cia.org/groups/specifications/
 [ECSS-CANBus-Extended-Protocal]:https://ecss.nl/standard/ecss-e-st-50-15c-space-engineering-canbus-extension-protocol-1-may-2015/
+[CAN-in-Automation]:https://can-cia.org/
 
 <!-- Other --> 
 [libedssharp]:https://github.com/robincornelius/libedssharp
