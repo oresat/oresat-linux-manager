@@ -1,5 +1,6 @@
 #include "CANopen.h"
 #include "CO_driver.h"
+#include "log_message.h"
 #include "app_OD_helpers.h"
 #include "systemd_app.h"
 #include <systemd/sd-bus.h>
@@ -80,3 +81,8 @@ CO_SDO_abortCode_t systemd_ODF(CO_ODF_arg_t *ODF_arg) {
     return ret;
 }
 
+
+int app_add_daemon(const char *app_name, const char *daemon_name) {
+    // TBD
+    return 0;
+}

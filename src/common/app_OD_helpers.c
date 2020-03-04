@@ -51,19 +51,6 @@ app_OD_configure(
 }
 
 
-void
-app_log_message(const char *app_name, int priority, const char *message) {
-    char *format = "";
-
-    // merge strings
-    strncat(format, app_name, strlen(format));
-    strncat(format, ": ", strlen(format));
-    strncat(format, message, strlen(format));
-
-    log_message(priority, format);
-}
-
-
 uint16_t
 app_OD_find(uint16_t index){
     uint16_t cur, min, max;

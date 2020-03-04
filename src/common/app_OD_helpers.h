@@ -35,16 +35,6 @@ void app_OD_configure(
 
 
 /**
- * A nice function to log message in syslogs with a standard format.
- *
- * @param app_name: for application name
- * @param priority: for log proprity
- * @param message: the message to log
- */
-void app_log_message(const char *app_name, int priority, const char *message);
-
-
-/**
  * Find the location in the OD array from the OD index value.
  * Mostly a copy from CO_SDO.* that is for apps and not CANopenNode.
  *

@@ -1,3 +1,4 @@
+#include "log_message.h"
 #include "app_OD_helpers.h"
 #include "file_transfer_ODF.h"
 #include "application.h"
