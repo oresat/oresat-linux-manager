@@ -23,32 +23,47 @@ else()
     message(FATAL_ERROR "${BOARD} is not a valid board")
 endif()
 
-message(STATUS "Board ${BOARD} selected")
+message(STATUS "${BOARD} Board selected")
 
 
 ##############################################################################
 # Turn DBus apps on/off for debugging. Assumption if not define, it is on.
 
-if(NOT SYSTEMD_APP OR SYSTEMD_APP MATCHES "on")
-    add_definitions(-DSYSTEMD_APP)
+if(SYSTEMD_APP MATCHES "on")
+    add_definitions(-DSYSTEMD_DBUS_APP)
+    message(STATUS "Systemd dbus app is on")
 elseif(SYSTEMD_APP MATCHES "off")
-    # SYSTEMD_APP is defined
+    message(STATUS "Systemd dbus app is off")
+    # SYSTEMD_DBUS_APP is not defined
+elseif(NOT SYSTEMD_APP)
+    add_definitions(-DSYSTEMD_DBUS_APP)
+    message(STATUS "Systemd dbus app is on")
 else()
     message(FATAL_ERROR "${SYSTEMD_APP} is not a valid input for SYSTEMD_APP")
 endif()
 
-if(NOT LINUX_UPDATER_APP OR LINUX_UPDATER_APP MATCHES "on")
-    add_definitions(-DLINUX_UPDATER_APP)
+if(LINUX_UPDATER_APP MATCHES "on")
+    message(STATUS "Linux updater dbus app is on")
+    add_definitions(-DLINUX_UPDATER_DBUS_APP)
 elseif(LINUX_UPDATER_APP MATCHES "off")
-    # LINUX_UPDATER_APP is not defined
+    message(STATUS "Linux updater dbus app is off")
+    # LINUX_UPDATER_DBUS_APP is not defined
+elseif(NOT LINUX_UPDATER_APP)
+    message(STATUS "Linux updater dbus app is on")
+    add_definitions(-DLINUX_UPDATER_DBUS_APP)
 else()
     message(FATAL_ERROR "${LINUX_UPDATER_APP} is not a valid input for LINUX_UPDATER_APP")
 endif()
 
-if(NOT MAIN_PROCESS_APP OR MAIN_PROCESS_APP MATCHES "on")
-    add_definitions(-DMAIN_PROCESS_APP)
+if(MAIN_PROCESS_APP MATCHES "on")
+    message(STATUS "Main process dbus app is on")
+    add_definitions(-DMAIN_PROCESS_DBUS_APP)
 elseif(MAIN_PROCESS_APP MATCHES "off")
-    # MAIN_PROCESS_APP is not defined
+    message(STATUS "Main process dbus app is off")
+    # MAIN_PROCESS_DBUS_APP is not defined
+elseif(NOT MAIN_PROCESS_APP)
+    message(STATUS "Main process dbus app is on")
+    add_definitions(-DMAIN_PROCESS_DBUS_APP)
 else()
     message(FATAL_ERROR "${MAIN_PROCESS_APP} is not a valid input for MAIN_PROCESS_APP")
 endif()
@@ -97,7 +112,7 @@ find_package(Git)
 if(NOT GIT_FOUND)
     message(FATAL_ERROR "git check failed")
 endif()
-if(NOT EXISTS "./src/CANopenNode/.git")
+if(NOT EXISTS "../src/CANopenNode/.git")
     message(STATUS "Running: git submoduke update --init")
     execute_process(COMMAND git submodule update --init WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
 endif()
