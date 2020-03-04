@@ -1,21 +1,37 @@
 # Oresat Linux CANdaemon
 
-The CANdaemon is based off of [CANopenSocket], but with dbus interfaces to commicate and control daemons. The CANdaemon can commicate with main process ([GPS], [StarTracker], [OreSatLive], or the Cirrus Flux Camera daemons) and the Linux Updater. The CANdaemon is ment to be a node on the CANbus, not the Network Manager.
+The CANdaemon is based off of [CANopenSocket], but with multiple  apps to commicate and control other daemons.
+The CANdaemon can commicate with Systemd, the Oresat Linux Updater daemon, and the main process daemon ([GPS], [StarTracker], [OreSatLive], or the Cirrus Flux Camera daemon depending on which board).
+It will act as the CANbus front end for all processes on an OreSat Linux board. 
+The CANdaemon is ment to be a node on the CANbus, not the Network Manager.
 
 ![](docs/OreSatLinuxDiagram.jpg)
 
 ## Features
 - Follows the CiA (CAN-in-Automation) specs for [CANopen-Specs]. 
 - Follows the [ECSS-CANBus-Extended-Protocal] on top of CiA specs.
-- Allows the CAN Network Manager to have control of [daemons] and power setting thru [Systemd].
-- Uses sd-bus for dbus communication (systemd dbus) to [daemons].
-- Easy to add more DBus clients.
+- Allows the CAN Network Manager to have control of [daemons] on the Linux board.
+- Give the Linux board power setting thru [Systemd] to CAN Network Manager.
+- Uses sd-bus (systemd ) for DBus communication to [daemons].
+- Allows the main process to be written in  any language that has a  library or a DBus binding. See [freedesktop DBus Bindings](https://www.freedesktop.org/wiki/Software/DBusBindings/) for a DBus supported languague list.
+
+## Directory Layout 
+- **src** - Holds an CANdaemon app for each OreSat Linux board
+    - **boards** - Holds an CANdaemon app for each OreSat Linux board
+    - **CANopenNode** - The git submodule for CANopenNode
+    - **common** - Common source code, regardless of which board is enabled.
+    - **socketCAN** - CANopenNode SocketCAN driver
+- **docs** - Documentation for CANdaemon
 
 ## Dependices
-- For Debian: git, systemd, libsystemd-dev, cmake, make, gcc
-    - optional: ninja-build
-- For Arch: git, systemd, cmake, make, gcc
-    - optional: ninja
+### To compile
+- For Debian:`apt install git libsystemd-dev cmake make gcc`
+    - optional: `ninja-build`
+- For Arch: `pacman -S git systemd-libs cmake make gcc`
+    - optional: `ninja`
+### To run
+- For Debian: `apt install libsystemd-dev`
+- For Arch: `pacman -S systemd-libs`
 
 ## How to use
 - Compiling
@@ -37,17 +53,10 @@ The CANdaemon is based off of [CANopenSocket], but with dbus interfaces to commi
     - `sudo make package` or`sudo ninja package`
 
 ## Making a new board
+- Read [design_guide_candaemon_app.md](design_guide_candaemon_app.md)
 - `cp -r boards/template boards/<new_board_name>`
 - modify /boards/<new_board_name>/appilcation.* as needed
 - modify /boards/<new_board_name>/objDict with [libedssharp] as needed
-
-## Directory Layout 
-- **src** - Holds an CANdaemon app for each OreSat Linux board
-    - **boards** - Holds an CANdaemon app for each OreSat Linux board
-    - **CANopenNode** - The git submodule for CANopenNode
-    - **common** - Common source code, regardless of which board is enabled.
-    - **socketCAN** - CANopenNode SocketCAN driver
-- **docs** - Documentation for CANdaemon
 
 ## Useful References
 - [CAN-Wikipedia]
@@ -69,8 +78,8 @@ The CANdaemon is based off of [CANopenSocket], but with dbus interfaces to commi
 [CANopenSocket]:https://github.com/CANopenNode/CANopenSocket
 [Daemons]:https://www.freedesktop.org/software/systemd/man/daemon.html
 [Systemd]:https://freedesktop.org/wiki/Software/systemd/
-[Systemd-DBus]:https://www.freedesktop.org/wiki/Software/systemd/dbus/
-[DBus-Specs]:https://dbus.freedesktop.org/doc/dbus-specification.html
+[Systemd-DBus]:https://www.freedesktop.org/wiki/Software/systemd//
+[DBus-Specs]:https://.freedesktop.org/doc/dbus-specification.html
 [CANopen-Specs]:https://www.can-cia.org/groups/specifications/
 [ECSS-CANBus-Extended-Protocal]:https://ecss.nl/standard/ecss-e-st-50-15c-space-engineering-canbus-extension-protocol-1-may-2015/
 
