@@ -8,7 +8,7 @@ The CANdaemon is ment to be a node on the CANbus, not the Network Manager.
 ![](docs/OreSatLinuxDiagram.jpg)
 
 ## Features
-- Built on top of the [CANopeNode], therefor it follows the CiA ([CAN-in-Automation]) specs for [CANopen-Specs]. 
+- Built on top of the [CANopenNode], therefor it follows the CiA ([CAN-in-Automation]) specs for [CANopen-Specs]. 
 - Follows the [ECSS-CANBus-Extended-Protocal] on top of CiA specs.
 - Allows the CAN Network Manager to control OreSat [daemons] on the Linux board thru [Systemd].
 - Allows the CAN Network Manager to control the power option thru [Systemd].
