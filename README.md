@@ -53,7 +53,7 @@ The CANdaemon is ment to be a node on the CANbus, not the Network Manager.
     - `sudo make package` or`sudo ninja package`
 
 ## Making a new board
-- Read [design_guide_candaemon_app.md](design_guide_candaemon_app.md)
+- Read [design_guide_candaemon_app.md](docs/design_guide_candaemon_app.md)
 - `cp -r boards/template boards/<new_board_name>`
 - modify /boards/<new_board_name>/appilcation.* as needed
 - modify /boards/<new_board_name>/objDict with [libedssharp] as needed
