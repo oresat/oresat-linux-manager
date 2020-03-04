@@ -10,10 +10,11 @@ The CANdaemon is ment to be a node on the CANbus, not the Network Manager.
 ## Features
 - Built on top of the [CANopenNode], therefor it follows the [CANopen-Specifcations] by CiA ([CAN-in-Automation]).
 - Follows the [ECSS-CANBus-Extended-Protocal] on top of CiA specs.
-- Allows the CAN Network Manager to control OreSat [daemons] on the Linux board thru [Systemd].
-- Allows the CAN Network Manager to control the power option thru [Systemd].
+- Allows the CAN Network Manager to control any [daemons] on the Linux board thru [Systemd].
+- Allows the CAN Network Manager to control the power options thru [Systemd].
+- Allows other daemons with candaemon apps to read/write to the CAN object dictionary over dbus.
 - Uses sd-bus (systemd dbus) for DBus communication to OreSat [daemons].
-- Allows the main process to be written in  any language that has a library or a DBus binding. See [freedesktop DBus Bindings](https://www.freedesktop.org/wiki/Software/DBusBindings/) for a DBus supported languague list.
+- Allows the other processes/daemons to be written in any language that has a DBus library or a DBus binding. A lot of languages do have DBus support, See [freedesktop DBus Bindings](https://www.freedesktop.org/wiki/Software/DBusBindings/) for a DBus supported languague list.
 
 ## Directory Layout 
 - **src** - Holds an CANdaemon app for each OreSat Linux board
