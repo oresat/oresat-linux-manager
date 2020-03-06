@@ -1,47 +1,20 @@
-<div align="center">
-  <h1>
-    <br> Oresat Linux CANdaemon </br>
-  </h1>
-  <h4>
-    <a href="#features">Features</a> |
-    <a href="#dependices">Dependices</a> |
-    <a href="#how to use">How to use</a>
-    <a href="#directory layout">Directory Layout</a> |
-  </h4>
-</div>
+# Oresat Linux CANdaemon
 
-The CANdaemon is based off of [CANopenSocket], but with dbus interfaces to commicate and control daemons. The CANdaemon can commicate with main process ([GPS], [StarTracker], [OreSatLive], or the Cirrus Flux Camera daemons) and the Linux Updater. The CANdaemon is ment to be a node on the CANbus, not the Network Manager.
+The CANdaemon is based off of [CANopenSocket], but with multiple  apps to commicate and control other daemons.
+The CANdaemon can commicate with Systemd, the Oresat Linux Updater daemon, and the main process daemon ([GPS], [StarTracker], [OreSatLive], or the Cirrus Flux Camera daemon depending on which board).
+It will act as the CANbus front end for all processes on an OreSat Linux board. 
+The CANdaemon is ment to be a node on the CANbus, not the Network Manager.
 
 ![](docs/OreSatLinuxDiagram.jpg)
 
 ## Features
-- Follows the CiA (CAN-in-Automation) specs for [CANopen-Specs]. 
+- Built on top of the [CANopenNode], therefor it follows the [CANopen-Specifcations] by CiA ([CAN-in-Automation]).
 - Follows the [ECSS-CANBus-Extended-Protocal] on top of CiA specs.
-- Allows the CAN Network Manager to have control of [daemons] and power setting thru [Systemd].
-- Uses sd-bus for dbus communication (systemd dbus) to [daemons].
-- Easy to add more DBus clients.
-
-## Dependices
-- For Debian: git, systemd, libsystemd-dev, cmake, make, gcc
-    - optional: ninja-build
-- For Arch: git, systemd, cmake, make, gcc
-    - optional: ninja
-
-## How to use
-- Compiling
-    - `cd build`
-    - `cmake -DBOARD=<board> ..` or `cmake -GNinja -DBOARD=<board> ..`
-    - `make` or `ninja`
-- Optional cmake flags:
-    - `-DCMAKE_BUILD_TYPE=Debug` to turn on -g -Wall flags
-- Running CANdaemon
-    - `./candaemon` as a process
-    - `./candaemon -d` as a daemon
-    - `./candaemon -l <device>` to specify device. Defaults to can0.
-- Installing binary and daemon service file (usefull for testing)
-    - `sudo make install` or `sudo ninja install`
-- Building deb binary package on a beaglebone (or debian based armhf system)
-    - `sudo make package` or`sudo ninja package`
+- Allows the CAN Network Manager to control any [daemons] on the Linux board thru [Systemd].
+- Allows the CAN Network Manager to control the power options thru [Systemd].
+- Allows other daemons with candaemon apps to read/write to the CAN object dictionary over dbus.
+- Uses sd-bus (systemd dbus) for DBus communication to OreSat [daemons].
+- Allows the other processes/daemons to be written in any language that has a DBus library or a DBus binding. A lot of languages do have DBus support, See [freedesktop DBus Bindings](https://www.freedesktop.org/wiki/Software/DBusBindings/) for a DBus supported languague list.
 
 ## Directory Layout 
 - **src** - Holds an CANdaemon app for each OreSat Linux board
@@ -51,7 +24,37 @@ The CANdaemon is based off of [CANopenSocket], but with dbus interfaces to commi
     - **socketCAN** - CANopenNode SocketCAN driver
 - **docs** - Documentation for CANdaemon
 
-### Making a new board
+## Dependices
+### To compile
+- For Debian:`apt install git libsystemd-dev cmake make gcc`
+    - optional: `ninja-build`
+- For Arch: `pacman -S git systemd-libs cmake make gcc`
+    - optional: `ninja`
+### To run
+- For Debian: `apt install libsystemd-dev`
+- For Arch: `pacman -S systemd-libs`
+
+## How to use
+- Compiling
+    - `cd build`
+    - `cmake -DBOARD=<board> ..` or `cmake -GNinja -DBOARD=<board> ..`
+    - `make` or `ninja`
+- Optional cmake flags, 1st option in `[ ]` is default when not specified:
+    - `-DCMAKE_BUILD_TYPE=[Debug|Release]` to turn the -g -Wall cflags on/off
+    - `-DSYSTEMD_APP=[on|off]` to turn systemd app on/off
+    - `-DLINUX_UPDATER_APP=[on|off]` to turn Linux updater app on/off
+    - `-DMAIN_PROCESS_APP=[on|off]` to turn main process app on/off
+- Running CANdaemon
+    - `./candaemon` as a process
+    - `./candaemon -d` as a daemon
+    - `./candaemon -l <device>` to specify device. Defaults to can0.
+- Installing binary and daemon service file (usefull for testing)
+    - `sudo make install` or `sudo ninja install`
+- Building deb binary package on a beaglebone (or debian based armhf system)
+    - `sudo make package` or`sudo ninja package`
+
+## Making a new board
+- Read [design_guide_candaemon_app.md](docs/design_guide_candaemon_app.md)
 - `cp -r boards/template boards/<new_board_name>`
 - modify /boards/<new_board_name>/appilcation.* as needed
 - modify /boards/<new_board_name>/objDict with [libedssharp] as needed
@@ -62,8 +65,8 @@ The CANdaemon is based off of [CANopenSocket], but with dbus interfaces to commi
 - [Daemons]
 - [Systemd]
 - [Systemd-DBus]
-- [DBus-Specs]
-- [CANopen-Specs]
+- [DBus-Specifcations]
+- [CANopen-Specifcations]
 - [ECSS-CANBus-Extended-Protocal]
 
 <!-- Other oresat repos -->
@@ -74,12 +77,14 @@ The CANdaemon is based off of [CANopenSocket], but with dbus interfaces to commi
 <!-- References -->
 [CAN-Wikipedia]:https://en.wikipedia.org/wiki/CAN_bus
 [CANopenSocket]:https://github.com/CANopenNode/CANopenSocket
+[CANopenNode]:https://github.com/CANopenNode/CANopenNode
 [Daemons]:https://www.freedesktop.org/software/systemd/man/daemon.html
 [Systemd]:https://freedesktop.org/wiki/Software/systemd/
-[Systemd-DBus]:https://www.freedesktop.org/wiki/Software/systemd/dbus/
-[DBus-Specs]:https://dbus.freedesktop.org/doc/dbus-specification.html
-[CANopen-Specs]:https://www.can-cia.org/groups/specifications/
+[Systemd-DBus]:https://www.freedesktop.org/wiki/Software/systemd//
+[DBus-Specifcations]:https://.freedesktop.org/doc/dbus-specification.html
+[CANopen-Specifcations]:https://www.can-cia.org/groups/specifications/
 [ECSS-CANBus-Extended-Protocal]:https://ecss.nl/standard/ecss-e-st-50-15c-space-engineering-canbus-extension-protocol-1-may-2015/
+[CAN-in-Automation]:https://can-cia.org/
 
 <!-- Other --> 
 [libedssharp]:https://github.com/robincornelius/libedssharp

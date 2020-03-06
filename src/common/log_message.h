@@ -6,5 +6,13 @@
  */
 void log_message(int priority, const char *fmt, ...);
 
-// canopen.* needs this
-void CO_errExit(char* msg);
+
+/**
+ * A nice function for a app to log message in syslogs with a standard format.
+ *
+ * @param app_name: for application name
+ * @param priority: for log proprity
+ * @param message: the message to log
+ */
+void app_log_message(const char *app_name, int priority, const char *message);
+

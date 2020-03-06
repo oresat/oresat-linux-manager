@@ -2,10 +2,16 @@
 #include "CANopen.h"
 #include "CO_Linux_tasks.h"
 #include "CO_time.h"
-#include "application.h"
-#include "updater.h"
-#include "systemd_ODF.h"
 #include "file_transfer_ODF.h"
+#if MAIN_PROCESS_DBUS_APP
+#include "application.h"
+#endif
+#if LINUX_UPDATER_DBUS_APP
+#include "linux_updater_app.h"
+#endif
+#if SYSTEMD_DBUS_APP
+#include "systemd_app.h"
+#endif
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -41,26 +47,54 @@ pthread_mutex_t             CO_CAN_VALID_mtx = PTHREAD_MUTEX_INITIALIZER;
 static int                  rtPriority = -1;        // Real time priority, configurable by arguments. (-1=RT disabled)
 static int                  mainline_epoll_fd;      // epoll file descriptor for mainline
 static CO_time_t            CO_time;                // Object for current time
+volatile sig_atomic_t       CO_endProgram = 0;
 static void*                rt_thread(void* arg);
 static pthread_t            rt_thread_id;
 static int                  rt_thread_epoll_fd;
-static bool                 daemon_flag = false;
-volatile sig_atomic_t       CO_endProgram = 0;
+
+#ifdef LINUX_UPDATER_DBUS_APP
+static void*                linux_updater_thread(void* arg);
+static pthread_t            linux_updater_thread_id;
+#endif
+#ifdef MAIN_PROCESS_DBUS_APP
+static void*                main_process_thread(void* arg);
+static pthread_t            main_process_thread_id;
+#endif
+#ifdef SYSTEMD_DBUS_APP_OFF // when connecting to systemd dbus inteface, systemd uses 70% of cpu TODO fix this
+static void*                systemd_thread(void* arg);
+static pthread_t            systemd_thread_id;
+#endif
 
 
 // Signal handler
-static void sigHandler(int sig) {
+static void signal_handler(int sig) {
     CO_endProgram = 1;
 
-    // stop dbus services threads
-    updater_dbus_end();
-    app_dbus_end();
+    log_message(LOG_DEBUG, "Signal %d call", sig);
+
+    // stop all dbus services threads
+#ifdef LINUX_UPDATER_DBUS_APP
+    pthread_cancel(linux_updater_thread_id);
+#endif
+#ifdef MAIN_PROCESS_DBUS_APP
+    pthread_cancel(main_process_thread_id);
+#endif
+#ifdef SYSTEMD_DBUS_APP_OFF
+    pthread_cancel(systemd_thread_id);
+#endif
+}
+
+
+// canopen.* needs this
+void CO_errExit(char* msg) {
+    perror(msg);
+    exit(EXIT_FAILURE);
 }
 
 
 void CO_error(const uint32_t info) {
     CO_errorReport(CO->em, CO_EM_GENERIC_SOFTWARE_ERROR, CO_EMC_SOFTWARE_INTERNAL, info);
-    log_message(LOG_DEBUG, "canopen generic error: 0x%X\n", info);
+    log_message(LOG_DEBUG, "canopen generic error: 0x%X", info);
 }
 
 
@@ -74,10 +108,11 @@ int main (int argc, char *argv[]) {
     bool_t firstRun = true;
     char* CANdevice = NULL;
     int nodeId = OD_CANNodeID; // use OD value
+    bool daemon_flag = false;
 
     // Register signal handlers
-    signal(SIGINT, NULL);
-    signal(SIGTERM, NULL);
+    signal(SIGINT, signal_handler);
+    signal(SIGTERM, signal_handler);
 
     // Command line argument processing
     while ((c = getopt(argc, argv, "dl:")) != -1) {
@@ -193,17 +228,31 @@ int main (int argc, char *argv[]) {
     }
 
     // Catch signals SIGINT and SIGTERM
-    if(signal(SIGINT, sigHandler) == SIG_ERR) {
+    if(signal(SIGINT, signal_handler) == SIG_ERR) {
         log_message(LOG_ERR, "Program init - SIGINIT handler creation failed");
         exit(EXIT_FAILURE);
     }
-    if(signal(SIGTERM, sigHandler) == SIG_ERR) {
+    if(signal(SIGTERM, signal_handler) == SIG_ERR) {
         log_message(LOG_ERR, "Program init - SIGTERM handler creation failed");
         exit(EXIT_FAILURE);
     }
 
     // increase variable each startup. Variable is automatically stored in non-volatile memory.
     log_message(LOG_DEBUG, "Power count=%u ...\n", ++OD_powerOnCounter);
+
+    // Create dbus threads
+#ifdef SYSTEMD_DBUS_APP_OFF
+    if(pthread_create(&systemd_thread_id, NULL, systemd_thread, NULL) != 0)
+        log_message(LOG_ERR, "Program init - systemd_thread creation failed\n");
+#endif
+#ifdef LINUX_UPDATER_DBUS_APP
+    if(pthread_create(&linux_updater_thread_id, NULL, linux_updater_thread, NULL) != 0)
+        log_message(LOG_ERR, "Program init - linux_updater_thread creation failed\n");
+#endif
+#ifdef MAIN_PROCESS_DBUS_APP
+    if(pthread_create(&main_process_thread_id, NULL, main_process_thread, NULL) != 0)
+        log_message(LOG_ERR, "Program init - main_process_thread creation failed\n");
+#endif
 
     while(reset != CO_RESET_APP && reset != CO_RESET_QUIT && CO_endProgram == 0) {
         CO_ReturnError_t err;
@@ -274,11 +323,17 @@ int main (int argc, char *argv[]) {
 
             // set up general ODFs
             file_transfer_ODF_setup();
-            systemd_ODF_setup();
 
             // set up dbus services
-            updater_dbus_setup();
-            app_dbus_setup();
+#ifdef SYSTEMD_DBUS_APP
+            systemd_app_setup();
+#endif
+#ifdef LINUX_UPDATER_DBUS_APP
+            linux_updater_app_setup();
+#endif
+#ifdef MAIN_PROCESS_DBUS_APP
+            main_process_app_setup();
+#endif
         }
 
         // start CAN
@@ -300,7 +355,7 @@ int main (int argc, char *argv[]) {
                 }
             }
             else if(taskMain_process(ev.data.fd, &reset, CO_timer1ms)) {
-                /* code was processed in the above function. 
+                /* code was processed in the above function.
                  * Additional code can be process below.
                  */
             }
@@ -313,13 +368,22 @@ int main (int argc, char *argv[]) {
 
     // join threads
     CO_endProgram = 1;
-    if(pthread_join(rt_thread_id, NULL) != 0) {
-        log_message(LOG_ERR, "Program end - pthread_join failed");
-    }
+    if(pthread_join(rt_thread_id, NULL) != 0)
+        log_message(LOG_ERR, "Program end - pthread_join failed for rt thread");
 
-    // stop dbus services threads
-    updater_dbus_end();
-    app_dbus_end();
+    // stop dbus threads
+#ifdef SYSTEMD_DBUS_APP_OFF
+    if(pthread_join(systemd_thread_id, NULL) != 0)
+        log_message(LOG_ERR, "Program end - pthread_join failed for systemd app");
+#endif
+#ifdef LINUX_UPDATER_DBUS_APP
+    if(pthread_join(linux_updater_thread_id, NULL) != 0)
+        log_message(LOG_ERR, "Program end - pthread_join failed for linux updater app");
+#endif
+#ifdef MAIN_PROCESS_DBUS_APP
+    if(pthread_join(main_process_thread_id, NULL) != 0)
+        log_message(LOG_ERR, "Program end - pthread_join failed for main process app");
+#endif
 
     // delete objects from memory
     CANrx_taskTmr_close();
@@ -378,3 +442,29 @@ static void* rt_thread(void* arg) {
 
     return NULL;
 }
+
+#ifdef SYSTEMD_DBUS_APP_OFF
+static void*
+systemd_thread(void* arg) {
+    systemd_app_main();
+    return NULL;
+}
+#endif
+
+
+#ifdef LINUX_UPDATER_DBUS_APP
+static void*
+linux_updater_thread(void* arg) {
+    linux_updater_app_main();
+    return NULL;
+}
+#endif
+
+
+#ifdef MAIN_PROCESS_DBUS_APP
+static void*
+main_process_thread(void* arg) {
+    main_process_app_main();
+    return NULL;
+}
+#endif

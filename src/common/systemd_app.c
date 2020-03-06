@@ -1,16 +1,18 @@
 #include "CANopen.h"
 #include "CO_driver.h"
 #include "log_message.h"
-#include "systemd_ODF.h"
+#include "app_OD_helpers.h"
+#include "systemd_app.h"
 #include <systemd/sd-bus.h>
 
 
 #define DESTINATION         "org.freedesktop.systemd1"
 #define INTERFACE_NAME      DESTINATION".Manager"
 #define OBJECT_PATH         "/org/freedesktop/systemd1"
+#define APP_NAME            "Systemd"
 
 
-int systemd_ODF_setup(void) {
+int systemd_app_setup(void) {
 
     CO_OD_configure(CO->SDO[0], 0x3000, systemd_ODF, NULL, 0, 0U);
 
@@ -24,13 +26,16 @@ CO_SDO_abortCode_t systemd_ODF(CO_ODF_arg_t *ODF_arg) {
     sd_bus *bus = NULL;
     int r;
 
-    // Connect to the bus
-    if (sd_bus_open_system(&bus) < 0)
-        return CO_SDO_AB_GENERAL;
-
     // can't read parameters, write only
-    if (ODF_arg->reading == true)
+    if (ODF_arg->reading == true) {
         return CO_SDO_AB_WRITEONLY;
+    }
+
+    // Connect to the bus
+    if (sd_bus_open_system(&bus) < 0) {
+        app_log_message(APP_NAME, LOG_CRIT, "Open system bus failed");
+        return CO_SDO_AB_GENERAL;
+    }
 
     switch (ODF_arg->subIndex) {
         case 1 : // reboot Linux system
@@ -43,8 +48,10 @@ CO_SDO_abortCode_t systemd_ODF(CO_ODF_arg_t *ODF_arg) {
                     &error,
                     NULL,
                     NULL);
-            if (r < 0)
+            if (r < 0) {
+                app_log_message(APP_NAME, LOG_ERR, "Method call Reboot failed");
                 ret = CO_SDO_AB_GENERAL;
+            }
 
             break;
 
@@ -58,8 +65,10 @@ CO_SDO_abortCode_t systemd_ODF(CO_ODF_arg_t *ODF_arg) {
                     &error,
                     NULL,
                     NULL);
-            if (r < 0)
+            if (r < 0) {
+                app_log_message(APP_NAME, LOG_ERR, "Method call PowerOff failed");
                 ret = CO_SDO_AB_GENERAL;
+            }
 
             break;
 
@@ -72,3 +81,8 @@ CO_SDO_abortCode_t systemd_ODF(CO_ODF_arg_t *ODF_arg) {
     return ret;
 }
 
+
+int app_add_daemon(const char *app_name, const char *daemon_name) {
+    // TBD
+    return 0;
+}

@@ -10,11 +10,11 @@ def Settings( **kwargs ):
             '-lsystemd',
             '-pthread',
             # includes
-            '-I./boards/template',
-            '-I./boards/template/object_dictionary',
-            '-I./common',
-            '-I./socketCAN',
-            '-I./CANopenNode',
-            '-I./CANopenNode/stack',
+            '-I./src/boards/template',
+            '-I./src/boards/template/object_dictionary',
+            '-I./src/common',
+            '-I./src/socketCAN',
+            '-I./src/CANopenNode',
+            '-I./src/CANopenNode/stack',
             ],
         }

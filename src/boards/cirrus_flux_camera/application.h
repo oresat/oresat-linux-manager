@@ -2,25 +2,16 @@
 #define APPLICATION_H
 
 
-#include "CANopen.h"
-#include "CO_driver.h"
-
 /**
- * Function is called on program startup.
+ * Used to set up any ODF needed by the app.
  */
-int app_dbus_setup(void);
+int main_process_app_setup(void);
 
 
 /**
- * Function is called just before program ends.
+ * The apps main function.
  */
-int app_dbus_end(void);
-
-
-/**
- * Callbacks for getting the latest image from the test camera process and adding to the send bufffer.
- */
-CO_SDO_abortCode_t CFC_ODF(CO_ODF_arg_t *ODF_arg);
+int main_process_app_main(void);
 
 
 #endif

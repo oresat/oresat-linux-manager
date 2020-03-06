@@ -20,12 +20,12 @@ typedef struct {
 } received_file_data_t;
 
 
-/** 
- * Struct for ODF 3003 (sending files). 
+/**
+ * Struct for ODF 3003 (sending files).
  * Used to load and access a file that is in sendableFileList
  */
 typedef struct {
-    uint8_t     filePointer; 
+    uint8_t     filePointer;
     char       *fileName;
     char        filePath[FILE_PATH_MAX_LENGTH];
     int8_t      fileData[FILE_TRANSFER_MAX_SIZE];
@@ -43,14 +43,14 @@ int file_transfer_ODF_setup(void);
 
 
 /**
- * Callback for using inside CO_OD_configure() function for writing files 
+ * Callback for using inside CO_OD_configure() function for writing files
  * into object dictionary.
  */
 CO_SDO_abortCode_t recv_file_ODF(CO_ODF_arg_t *ODF_arg);
 
 
 /**
- * Callback for using inside CO_OD_configure() function for reading files 
+ * Callback for using inside CO_OD_configure() function for reading files
  * from object dictionary.
  */
 CO_SDO_abortCode_t send_file_array_ODF(CO_ODF_arg_t *ODF_arg);
@@ -67,7 +67,7 @@ int app_send_file(const char* filePath);
 
 
 /**
- * Callback for using inside CO_OD_configure() function for reading files 
+ * Callback for using inside CO_OD_configure() function for reading files
  * from object dictionary.
  */
 CO_SDO_abortCode_t send_file_ODF(CO_ODF_arg_t *ODF_arg);

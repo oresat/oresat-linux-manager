@@ -1,3 +1,7 @@
+if(${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR})
+    message(FATAL_ERROR "Prevented in-tree build, it is bad practice.\nTry 'cd build && cmake ..' instead.")
+endif()
+
 cmake_minimum_required(VERSION 3.13 FATAL_ERROR)
 project(CANdaemon C)
 
@@ -23,7 +27,53 @@ else()
     message(FATAL_ERROR "${BOARD} is not a valid board")
 endif()
 
-message(STATUS "Board ${BOARD} selected")
+message(STATUS "${BOARD} Board selected")
+
+
+##############################################################################
+# Turn DBus apps on/off for debugging. Assumption if not define, it is on.
+
+if(SYSTEMD_APP MATCHES "on")
+    message(STATUS "Systemd dbus app is on")
+    add_definitions(-DSYSTEMD_DBUS_APP)
+elseif(SYSTEMD_APP MATCHES "off")
+    message(STATUS "Systemd dbus app is off")
+    remove_definitions(-DSYSTEMD_DBUS_APP)
+    # SYSTEMD_DBUS_APP is not defined
+elseif(NOT SYSTEMD_APP)
+    message(STATUS "Systemd dbus app is on")
+    add_definitions(-DSYSTEMD_DBUS_APP)
+else()
+    message(FATAL_ERROR "${SYSTEMD_APP} is not a valid input for SYSTEMD_APP")
+endif()
+
+if(LINUX_UPDATER_APP MATCHES "on")
+    message(STATUS "Linux updater dbus app is on")
+    add_definitions(-DLINUX_UPDATER_DBUS_APP)
+elseif(LINUX_UPDATER_APP MATCHES "off")
+    message(STATUS "Linux updater dbus app is off")
+    remove_definitions(-DLINUX_UPDATER_DBUS_APP)
+    # LINUX_UPDATER_DBUS_APP is not defined
+elseif(NOT LINUX_UPDATER_APP)
+    message(STATUS "Linux updater dbus app is on")
+    add_definitions(-DLINUX_UPDATER_DBUS_APP)
+else()
+    message(FATAL_ERROR "${LINUX_UPDATER_APP} is not a valid input for LINUX_UPDATER_APP")
+endif()
+
+if(MAIN_PROCESS_APP MATCHES "on")
+    message(STATUS "Main process dbus app is on")
+    add_definitions(-DMAIN_PROCESS_DBUS_APP)
+elseif(MAIN_PROCESS_APP MATCHES "off")
+    message(STATUS "Main process dbus app is off")
+    remove_definitions(-DMAIN_PROCESS_DBUS_APP)
+    # MAIN_PROCESS_DBUS_APP is not defined
+elseif(NOT MAIN_PROCESS_APP)
+    message(STATUS "Main process dbus app is on")
+    add_definitions(-DMAIN_PROCESS_DBUS_APP)
+else()
+    message(FATAL_ERROR "${MAIN_PROCESS_APP} is not a valid input for MAIN_PROCESS_APP")
+endif()
 
 
 ##############################################################################
@@ -69,7 +119,7 @@ find_package(Git)
 if(NOT GIT_FOUND)
     message(FATAL_ERROR "git check failed")
 endif()
-if(NOT EXISTS "./src/CANopenNode/.git")
+if(NOT EXISTS "../src/CANopenNode/.git")
     message(STATUS "Running: git submoduke update --init")
     execute_process(COMMAND git submodule update --init WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
 endif()
@@ -81,14 +131,12 @@ endif()
 
 # default to release
 if(NOT CMAKE_BUILD_TYPE)
-    set(CMAKE_BUILD_TYPE Release)
+    set(CMAKE_BUILD_TYPE Debug)
 endif()
 
 set(CMAKE_C_FLAGS "-Wall")
 set(CMAKE_C_FLAGS_DEBUG "-g")
 set(CMAKE_C_FLAGS_RELEASE "-O3")
-
-#set(CMAKE_EXE_LINKER_FLAGS "-pthread") #-lsystemd")
 
 
 ##############################################################################
@@ -139,12 +187,12 @@ set(SOURCE_FILES
     ${STACK_DIR}/crc16-ccitt.c
     ${STACK_DRIVER_DIR}/CO_driver.c
     ${STACK_DRIVER_DIR}/CO_Linux_tasks.c
-    ${COMMON_DIR}/CO_time.c
+    ${STACK_DRIVER_DIR}/CO_time.c
     ${COMMON_DIR}/log_message.c
     ${COMMON_DIR}/file_transfer_ODF.c
-    ${COMMON_DIR}/OD_helpers.c
-    ${COMMON_DIR}/systemd_ODF.c
-    ${COMMON_DIR}/updater.c
+    ${COMMON_DIR}/app_OD_helpers.c
+    ${COMMON_DIR}/systemd_app.c
+    ${COMMON_DIR}/linux_updater_app.c
     src/main.c
 )
 

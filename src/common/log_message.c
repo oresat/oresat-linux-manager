@@ -1,11 +1,14 @@
 #include "log_message.h"
+#include <string.h>
 #include <stdio.h>
 #include <syslog.h>
 #include <stdarg.h>
 #include <errno.h>
 #include <stdlib.h>
 
-void log_message(int priority, const char *fmt, ...) {
+
+void
+log_message(int priority, const char *fmt, ...) {
 	va_list args;
 	va_start(args, fmt);
 	vsyslog(priority, fmt, args);
@@ -13,9 +16,17 @@ void log_message(int priority, const char *fmt, ...) {
 	va_end(args);
 }
 
-// canopen.* needs this
-void CO_errExit(char* msg) {
-    perror(msg);
-    exit(EXIT_FAILURE);
+
+void
+app_log_message(const char *app_name, int priority, const char *message) {
+    char *format = "";
+
+    // merge strings
+    strncat(format, app_name, strlen(format));
+    strncat(format, ": ", strlen(format));
+    strncat(format, message, strlen(format));
+
+    log_message(priority, format);
 }
+
 
