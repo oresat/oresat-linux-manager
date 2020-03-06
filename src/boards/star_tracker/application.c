@@ -60,7 +60,7 @@ int main_process_app_main(void) {
     }
 
     // Process requests
-    while (true) {
+    while (running) {
         r = sd_bus_process(bus, NULL);
         if (r < 0)
             app_log_message(APP_NAME, LOG_DEBUG, "Failed to process bus.\n");
@@ -115,4 +115,5 @@ static int read_prop_cb(sd_bus_message *m, void *userdata, sd_bus_error *ret_err
     }
 
     return 0;
+
 }
