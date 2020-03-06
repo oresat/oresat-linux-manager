@@ -1,21 +1,14 @@
 #ifndef APPLICATION_H
 #define APPLICATION_H
 
-
-#include "CANopen.h"
-#include "CO_driver.h"
-
+/**
+ * Used to set up any ODF needed by the app.
+ */
+int main_process_app_setup(void);
 
 /**
- * Function is called on program startup.
+ * The app's main function.
  */
-int app_dbus_setup(void);
-
-
-/**
- * Function is called just before program ends.
- */
-int app_dbus_end(void);
-
+int main_process_app_main(void);
 
 #endif
