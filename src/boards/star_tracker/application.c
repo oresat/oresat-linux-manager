@@ -7,6 +7,7 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <stdbool.h>
+#include <stdlib.h>
 
 
 #define DESTINATION     "org.OreSat.StarTracker"
@@ -68,7 +69,7 @@ int main_process_app_main(void) {
             continue;
 
         // Wait for the next request to process
-        if (sd_bus_wait(bus, 100000) < 0)
+        if (sd_bus_wait(bus, (uint64_t) -1) < 0)
             app_log_message(APP_NAME, LOG_DEBUG, "Bus wait failed.\n");
     }
 
@@ -86,33 +87,42 @@ int main_process_app_main(void) {
 static int read_prop_cb(sd_bus_message *m, void *userdata, sd_bus_error *ret_error) {
 
     // Initialize holding variables
-    double declination = 0.0, right_ascension = 0.0, orientation = 0.0, timestamp = 0.0;
+    double dec = 0.0, ra = 0.0, ori = 0.0, timestamp = 0.0;
     char *solve_path = NULL;
 
     // Get the coordinates + timestamp
     if (sd_bus_get_property(bus, DESTINATION, OBJECT_PATH, INTERFACE_NAME, "coor", ret_error, &m, "(dddd)") < 0)
         return -1; // failed to get property
-    if (sd_bus_message_read(m, "(dddd)", &declination, &right_ascension, &orientation, &timestamp) < 0)
+    if (sd_bus_message_read(m, "(dddd)", &dec, &ra, &ori, &timestamp) < 0)
         return -1; // failed to decode dbus property
 
     // Get the solution image's filepath
     if (sd_bus_get_property(bus, DESTINATION, OBJECT_PATH, INTERFACE_NAME, "filepath", ret_error, &m, "s") < 0)
         return -1; // failed to get property
-    if (sd_bus_message_read(m, "s", solve_path) < 0)
+    if (sd_bus_message_read(m, "s", &solve_path) < 0)
         return -1; // failed to decode dbus property
 
-    // Update OD
-    app_writeOD(0x3101, 1, &declination, sizeof(declination));
-    app_writeOD(0x3101, 2, &right_ascension, sizeof(right_ascension));
-    app_writeOD(0x3101, 3, &orientation, sizeof(orientation));
-    app_writeOD(0x3101, 4, &timestamp, sizeof(timestamp));
-    app_writeOD(0x3102, 0, solve_path, strlen(solve_path));
+    // Debug printing
+    // fprintf(stderr, "Dec: %.3f, RA: %.3f, Ori: %.3f, Time: %.3f, Path: %s\n", dec, ra, ori, timestamp, solve_path);
 
-    // Free memory
-    if (solve_path != NULL) {
-        free(solve_path);
-        solve_path = NULL;
-    }
+    // Cast to floats
+    float f_dec = (float) dec;
+    float f_ra = (float) ra;
+    float f_ori = (float) ori;
+    float f_timestamp = (float) timestamp;
+
+    // Update OD
+    app_OD_write(0x3101, 1, &f_dec, sizeof(f_dec));
+    app_OD_write(0x3101, 2, &f_ra, sizeof(f_ra));
+    app_OD_write(0x3101, 3, &f_ori, sizeof(f_ori));
+    app_OD_write(0x3101, 4, &f_timestamp, sizeof(f_timestamp));
+    app_OD_write(0x3102, 0, solve_path, strlen(solve_path));
+
+    // Free memory (taken care of by sd-bus)
+    // if (solve_path != NULL) {
+    //     free(solve_path);
+    //     solve_path = NULL;
+    // }
 
     return 0;
 
