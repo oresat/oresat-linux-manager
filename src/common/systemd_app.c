@@ -4,6 +4,7 @@
 #include "app_OD_helpers.h"
 #include "systemd_app.h"
 #include <systemd/sd-bus.h>
+#include <stdio.h>
 
 
 #define DESTINATION         "org.freedesktop.systemd1"
@@ -82,7 +83,32 @@ CO_SDO_abortCode_t systemd_ODF(CO_ODF_arg_t *ODF_arg) {
 }
 
 
-int app_add_daemon(const char *app_name, const char *daemon_name) {
-    // TBD
+int start_daemon(DaemonData *daemon) { // TODO replace with dbus call
+    char command[] = "systemctl start ";
+    FILE* f;
+
+    strncat(command, daemon->service_name, strlen(daemon->service_name));
+    f = popen(command, "r");
+    pclose(f);
+    daemon->status = running;
+
+    //log_message(LOG_ERR, "failed to start %s", daemon->service_name);
+
     return 0;
 }
+
+
+int stop_daemon(DaemonData *daemon) { // TODO replace with dbus call
+    char command[] = "systemctl stop ";
+    FILE* f;
+
+    strncat(command, daemon->service_name, strlen(daemon->service_name));
+    f = popen(command, "r");
+    pclose(f);
+    daemon->status = stopped;
+
+    //log_message(LOG_ERR, "failed to stop %s", daemon->service_name);
+
+    return 0;
+}
+
