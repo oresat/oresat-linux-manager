@@ -163,6 +163,7 @@ set(CANOPENNODE_DIR src/CANopenNode)
 set(STACK_DIR src/CANopenNode/stack)
 set(COMMON_DIR src/common)
 set(STACK_DRIVER_DIR src/socketCAN)
+set(SYSTEM_APP_DIR src/system_apps)
 
 # add all headers in source directories
 include_directories(${BOARDS_DIR})
@@ -171,6 +172,7 @@ include_directories(${CANOPENNODE_DIR})
 include_directories(${STACK_DIR})
 include_directories(${STACK_DRIVER_DIR})
 include_directories(${COMMON_DIR})
+include_directories(${SYSTEM_APP_DIR})
 
 set(SOURCE_FILES
     ${BOARDS_DIR}/application.c
@@ -191,8 +193,8 @@ set(SOURCE_FILES
     ${COMMON_DIR}/log_message.c
     ${COMMON_DIR}/file_transfer_ODF.c
     ${COMMON_DIR}/app_OD_helpers.c
-    ${COMMON_DIR}/systemd_app.c
-    ${COMMON_DIR}/linux_updater_app.c
+    ${SYSTEM_APP_DIR}/systemd_app.c
+    ${SYSTEM_APP_DIR}/linux_updater_app.c
     src/main.c
 )
 
