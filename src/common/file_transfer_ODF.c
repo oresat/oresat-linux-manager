@@ -675,19 +675,19 @@ app_add_request_recv_file(
 
     // make sure inputs are valid
     if(app_name == NULL) {
-        log_message(LOG_ERR, "add recv file request had no app name");
+        log_message(LOG_ERR, "add recv file request had no app name\n");
         return 0;
     }
     if(regex_string == NULL) {
-        log_message(LOG_ERR, "app %s recv file request has no regex string", app_name);
+        log_message(LOG_ERR, "app %s recv file request has no regex string\n", app_name);
         return 0;
     }
     if(path_to_send == NULL) {
-        log_message(LOG_ERR, "app %s recv file request has no path", app_name);
+        log_message(LOG_ERR, "app %s recv file request has no path\n", app_name);
         return 0;
     }
-    if(path_to_send[0] == '/') {
-        log_message(LOG_ERR, "app %s recv file request path is not an absolute path", app_name);
+    if(path_to_send[0] != '/') {
+        log_message(LOG_ERR, "app %s recv file request path is not an absolute path\n", app_name);
         return 0;
     }
 

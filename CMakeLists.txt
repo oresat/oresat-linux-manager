@@ -129,8 +129,6 @@ include_directories(${COMMON_DIR})
 include_directories(${SYSTEM_APP_DIR})
 
 set(SOURCE_FILES
-    ${BOARDS_DIR}/board_apps.c
-    ${BOARDS_DIR}/sdr_gps_app.c
     ${OD_DIR}/CO_OD.c
     ${CANOPENNODE_DIR}/CANopen.c
     ${STACK_DIR}/CO_Emergency.c
@@ -151,6 +149,10 @@ set(SOURCE_FILES
     ${COMMON_DIR}/daemon_controller.c
     ${COMMON_DIR}/app_dbus_controller.c
     ${SYSTEM_APP_DIR}/system_apps.c
+    ${SYSTEM_APP_DIR}/power_management_app.c
+    ${SYSTEM_APP_DIR}/linux_updater_app.c
+    ${BOARDS_DIR}/board_apps.c
+    ${BOARDS_DIR}/sdr_gps_app.c
     src/main.c
 )
 

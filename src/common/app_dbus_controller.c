@@ -15,7 +15,7 @@ apps_dbus_start() {
     r = sd_bus_open_system(&APPS_DBUS.bus);
 
     if(r < 0)
-        log_message(LOG_CRIT, "Open system bus for apps failed");
+        log_message(LOG_CRIT, "Open system bus for apps failed\n");
 
     return r;
 }
@@ -30,13 +30,13 @@ apps_dbus_main() {
         // Process requests
         r = sd_bus_process(APPS_DBUS.bus, NULL);
         if(r < 0)
-            log_message(LOG_ERR, "Process bus failed for apps");
+            log_message(LOG_ERR, "Process bus failed for apps\n");
         else if (r > 0) // processed a request, try to process another one right-away
             continue;
 
         // Wait for the next request to process
         if(sd_bus_wait(APPS_DBUS.bus, UINT64_MAX) < 0)
-            log_message(LOG_ERR, "Bus wait failed for apps");
+            log_message(LOG_ERR, "Bus wait failed for apps\n");
     }
 
     APPS_DBUS.loop_running = false;

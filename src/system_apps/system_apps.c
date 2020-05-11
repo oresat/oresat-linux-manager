@@ -2,8 +2,8 @@
 #include "app_OD_helpers.h"
 #include "daemon_controller.h"
 #include "file_transfer_ODF.h"
-//#include "linux_updater_app.h"
-//#include "power_management_app.h"
+#include "linux_updater_app.h"
+#include "power_management_app.h"
 
 
 #define POWER_MANAGEMENT_ODF_INDEX  0x3000
@@ -12,7 +12,6 @@
 #define BOARD "gps" // TODO fix cmake
 
 int setup_system_apps() {
-    /*
     // power mangament
     app_OD_configure(POWER_MANAGEMENT_ODF_INDEX, power_management_ODF, NULL, 0, 0U);
 
@@ -25,7 +24,6 @@ int setup_system_apps() {
             "/tmp/oresat-linux-updater/cache/",
             NULL);
     linux_updater_dbus_signal_match();
-    */
 
 
     return 1;

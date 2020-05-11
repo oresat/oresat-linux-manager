@@ -220,23 +220,10 @@ main(int argc, char *argv[]) {
     // increase variable each startup. Variable is automatically stored in non-volatile memory.
     log_message(LOG_DEBUG, "Power count=%u ...\n", ++OD_powerOnCounter);
 
-    // add dbus signal matches
-    apps_dbus_start();
-
-    // initize all apps
-#ifndef SYSTEM_APPS_OFF
-    setup_system_apps();
-#endif
-
-#ifndef BOARD_APPS_OFF
-    setup_board_apps();
-#endif
-
     while(reset != CO_RESET_APP && reset != CO_RESET_QUIT && CO_endProgram == 0) {
         CO_ReturnError_t err;
 
         log_message(LOG_DEBUG, "Communication reset ...\n");
-
 
         // Wait other threads (command interface).
         pthread_mutex_lock(&CO_CAN_VALID_mtx);
@@ -301,6 +288,19 @@ main(int argc, char *argv[]) {
 
             if(pthread_create(&apps_dbus_thread_id, NULL, apps_dbus_thread, NULL) != 0)
                 log_message(LOG_CRIT, "Program init - app_dbus_thread creation failed\n");
+
+
+            // initize all apps
+        //#ifndef SYSTEM_APPS_OFF
+            setup_system_apps();
+        //#endif
+
+        //#ifndef BOARD_APPS_OFF
+            setup_board_apps();
+        //#endif
+
+            // add dbus signal matches
+            apps_dbus_start();
 
             // set up general ODFs
             file_transfer_ODF_setup();
