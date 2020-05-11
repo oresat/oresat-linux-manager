@@ -18,10 +18,21 @@
 
 
 extern app_dbus_data_t      APPS_DBUS;
-static int32_t              current_state = 0;// holds the current stat of the updater.
-static uint32_t             updates_available = 0; // The number archive files available.
-static char                 current_file[FILE_NAME_SIZE] = "\0"; // If an updating, this holds the name of archive file.
-static pthread_mutex_t      mutex = PTHREAD_MUTEX_INITIALIZER; // mutex for access
+
+/*
+ * Holds the current state of the updater.
+ */
+static int32_t              current_state = 0;
+
+/*
+ * The number archive files available.
+ */
+static uint32_t             updates_available = 0;
+
+/**
+ * If an updating, this holds the name of archive file.
+ */
+static char                 current_file[FILE_NAME_SIZE] = "\0"; 
 
 
 int
