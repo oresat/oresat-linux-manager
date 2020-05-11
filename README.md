@@ -26,13 +26,13 @@ The CANdaemon is ment to be a node on the CANbus, not the Network Manager.
 
 ## Dependices
 ### To compile
-- For Debian:`apt install git libsystemd-dev cmake make gcc`
+- For Debian:`apt install git libsystemd-dev cmake make gcc  libpcre2-dev`
     - optional: `ninja-build`
-- For Arch: `pacman -S git systemd-libs cmake make gcc`
+- For Arch: `pacman -S git systemd-libs cmake make gcc pcre2`
     - optional: `ninja`
 ### To run
-- For Debian: `apt install libsystemd-dev`
-- For Arch: `pacman -S systemd-libs`
+- For Debian: `apt install libsystemd-dev libpcre2-dev`
+- For Arch: `pacman -S systemd-libs pcre2`
 
 ## How to use
 - Compiling
@@ -41,9 +41,6 @@ The CANdaemon is ment to be a node on the CANbus, not the Network Manager.
     - `make` or `ninja`
 - Optional cmake flags, 1st option in `[ ]` is default when not specified:
     - `-DCMAKE_BUILD_TYPE=[Debug|Release]` to turn the -g -Wall cflags on/off
-    - `-DSYSTEMD_APP=[on|off]` to turn systemd app on/off
-    - `-DLINUX_UPDATER_APP=[on|off]` to turn Linux updater app on/off
-    - `-DMAIN_PROCESS_APP=[on|off]` to turn main process app on/off
 - Running CANdaemon
     - `./candaemon` as a process
     - `./candaemon -d` as a daemon

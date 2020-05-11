@@ -3,15 +3,10 @@
 #include "CO_Linux_tasks.h"
 #include "CO_time.h"
 #include "file_transfer_ODF.h"
-#if MAIN_PROCESS_DBUS_APP
-#include "application.h"
-#endif
-#if LINUX_UPDATER_DBUS_APP
-#include "linux_updater_app.h"
-#endif
-#if SYSTEMD_DBUS_APP
-#include "systemd_app.h"
-#endif
+#include "daemon_controller.h"
+#include "app_dbus_controller.h"
+#include "board_apps.h"
+#include "system_apps.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -51,54 +46,39 @@ volatile sig_atomic_t       CO_endProgram = 0;
 static void*                rt_thread(void* arg);
 static pthread_t            rt_thread_id;
 static int                  rt_thread_epoll_fd;
-
-#ifdef LINUX_UPDATER_DBUS_APP
-static void*                linux_updater_thread(void* arg);
-static pthread_t            linux_updater_thread_id;
-#endif
-#ifdef MAIN_PROCESS_DBUS_APP
-static void*                main_process_thread(void* arg);
-static pthread_t            main_process_thread_id;
-#endif
-#ifdef SYSTEMD_DBUS_APP_OFF // when connecting to systemd dbus inteface, systemd uses 70% of cpu TODO fix this
-static void*                systemd_thread(void* arg);
-static pthread_t            systemd_thread_id;
-#endif
+static void*                apps_dbus_thread(void* arg);
+static pthread_t            apps_dbus_thread_id;
 
 
 // Signal handler
-static void signal_handler(int sig) {
+static void
+signal_handler(int sig) {
     CO_endProgram = 1;
 
     log_message(LOG_DEBUG, "Signal %d call", sig);
 
-    // stop all dbus services threads
-#ifdef LINUX_UPDATER_DBUS_APP
-    pthread_cancel(linux_updater_thread_id);
-#endif
-#ifdef MAIN_PROCESS_DBUS_APP
-    pthread_cancel(main_process_thread_id);
-#endif
-#ifdef SYSTEMD_DBUS_APP_OFF
-    pthread_cancel(systemd_thread_id);
-#endif
+    // kill this thread as it may be wait for a interupt to wake up
+    pthread_cancel(apps_dbus_thread_id);
 }
 
 
 // canopen.* needs this
-void CO_errExit(char* msg) {
+void
+CO_errExit(char* msg) {
     perror(msg);
     exit(EXIT_FAILURE);
 }
 
 
-void CO_error(const uint32_t info) {
+void
+CO_error(const uint32_t info) {
     CO_errorReport(CO->em, CO_EM_GENERIC_SOFTWARE_ERROR, CO_EMC_SOFTWARE_INTERNAL, info);
     log_message(LOG_DEBUG, "canopen generic error: 0x%X", info);
 }
 
 
-int main (int argc, char *argv[]) {
+int
+main(int argc, char *argv[]) {
     int c;
     char *pid_file = DEFAULT_PID_FILE;
     FILE *run_fp = NULL;
@@ -240,18 +220,16 @@ int main (int argc, char *argv[]) {
     // increase variable each startup. Variable is automatically stored in non-volatile memory.
     log_message(LOG_DEBUG, "Power count=%u ...\n", ++OD_powerOnCounter);
 
-    // Create dbus threads
-#ifdef SYSTEMD_DBUS_APP_OFF
-    if(pthread_create(&systemd_thread_id, NULL, systemd_thread, NULL) != 0)
-        log_message(LOG_ERR, "Program init - systemd_thread creation failed\n");
+    // add dbus signal matches
+    apps_dbus_start();
+
+    // initize all apps
+#ifndef SYSTEM_APPS_OFF
+    setup_system_apps();
 #endif
-#ifdef LINUX_UPDATER_DBUS_APP
-    if(pthread_create(&linux_updater_thread_id, NULL, linux_updater_thread, NULL) != 0)
-        log_message(LOG_ERR, "Program init - linux_updater_thread creation failed\n");
-#endif
-#ifdef MAIN_PROCESS_DBUS_APP
-    if(pthread_create(&main_process_thread_id, NULL, main_process_thread, NULL) != 0)
-        log_message(LOG_ERR, "Program init - main_process_thread creation failed\n");
+
+#ifndef BOARD_APPS_OFF
+    setup_board_apps();
 #endif
 
     while(reset != CO_RESET_APP && reset != CO_RESET_QUIT && CO_endProgram == 0) {
@@ -318,22 +296,14 @@ int main (int argc, char *argv[]) {
 
                 param.sched_priority = rtPriority;
                 if(pthread_setschedparam(rt_thread_id, SCHED_FIFO, &param) != 0)
-                    log_message(LOG_ERR, "Program init - rt_thread set scheduler failed\n");
+                    log_message(LOG_CRIT, "Program init - rt_thread set scheduler failed\n");
             }
+
+            if(pthread_create(&apps_dbus_thread_id, NULL, apps_dbus_thread, NULL) != 0)
+                log_message(LOG_CRIT, "Program init - app_dbus_thread creation failed\n");
 
             // set up general ODFs
             file_transfer_ODF_setup();
-
-            // set up dbus services
-#ifdef SYSTEMD_DBUS_APP
-            systemd_app_setup();
-#endif
-#ifdef LINUX_UPDATER_DBUS_APP
-            linux_updater_app_setup();
-#endif
-#ifdef MAIN_PROCESS_DBUS_APP
-            main_process_app_setup();
-#endif
         }
 
         // start CAN
@@ -366,24 +336,15 @@ int main (int argc, char *argv[]) {
         }
     }
 
+    // stop app dbus interface
+    apps_dbus_end();
+
     // join threads
     CO_endProgram = 1;
     if(pthread_join(rt_thread_id, NULL) != 0)
-        log_message(LOG_ERR, "Program end - pthread_join failed for rt thread");
-
-    // stop dbus threads
-#ifdef SYSTEMD_DBUS_APP_OFF
-    if(pthread_join(systemd_thread_id, NULL) != 0)
-        log_message(LOG_ERR, "Program end - pthread_join failed for systemd app");
-#endif
-#ifdef LINUX_UPDATER_DBUS_APP
-    if(pthread_join(linux_updater_thread_id, NULL) != 0)
-        log_message(LOG_ERR, "Program end - pthread_join failed for linux updater app");
-#endif
-#ifdef MAIN_PROCESS_DBUS_APP
-    if(pthread_join(main_process_thread_id, NULL) != 0)
-        log_message(LOG_ERR, "Program end - pthread_join failed for main process app");
-#endif
+        log_message(LOG_CRIT, "Program end - pthread_join failed for rt thread");
+    if(pthread_join(apps_dbus_thread_id, NULL) != 0)
+        log_message(LOG_CRIT, "Program end - pthread_join failed for app dbus thread");
 
     // delete objects from memory
     CANrx_taskTmr_close();
@@ -404,7 +365,8 @@ int main (int argc, char *argv[]) {
 }
 
 
-static void* rt_thread(void* arg) {
+static void*
+rt_thread(void* arg) {
     while(CO_endProgram == 0) {
         int ready;
         struct epoll_event ev;
@@ -443,28 +405,9 @@ static void* rt_thread(void* arg) {
     return NULL;
 }
 
-#ifdef SYSTEMD_DBUS_APP_OFF
+
 static void*
-systemd_thread(void* arg) {
-    systemd_app_main();
+apps_dbus_thread(void* arg) {
+    apps_dbus_main();
     return NULL;
 }
-#endif
-
-
-#ifdef LINUX_UPDATER_DBUS_APP
-static void*
-linux_updater_thread(void* arg) {
-    linux_updater_app_main();
-    return NULL;
-}
-#endif
-
-
-#ifdef MAIN_PROCESS_DBUS_APP
-static void*
-main_process_thread(void* arg) {
-    main_process_app_main();
-    return NULL;
-}
-#endif

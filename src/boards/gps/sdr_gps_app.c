@@ -1,12 +1,10 @@
 #include "log_message.h"
 #include "app_OD_helpers.h"
 #include "file_transfer_ODF.h"
-#include "application.h"
+#include "app_dbus_controller.h"
+#include "sdr_gps_app.h"
 #include <systemd/sd-bus.h>
-#include <pthread.h>
-#include <stdio.h>
 #include <stdint.h>
-#include <stdbool.h>
 
 
 #define DESTINATION     "org.OreSat.GPS"
@@ -15,9 +13,7 @@
 #define APP_NAME        "GPS"
 
 
-// Static variables
-static sd_bus           *bus = NULL;
-static bool             running = true;
+extern app_dbus_data_t      APPS_DBUS;
 
 
 // Static functions headers
@@ -28,23 +24,12 @@ static int read_gps_cb(sd_bus_message *m, void *userdata, sd_bus_error *ret_erro
 // app ODF and dbus functions
 
 
-int main_process_app_setup(void) {
-    return 0;
-}
-
-
-int main_process_app_main(void) {
+int
+sdr_gps_dbus_signal_match() {
     int r;
 
-    /* Connect to the bus */
-    r = sd_bus_open_system(&bus);
-    if (r < 0) {
-        app_log_message(APP_NAME, LOG_ERR, "Failed to connect to systemd bus.\n");
-        return r;
-    }
-
     r = sd_bus_match_signal(
-            bus,
+            APPS_DBUS.bus,
             NULL,
             NULL,
             OBJECT_PATH,
@@ -57,21 +42,7 @@ int main_process_app_main(void) {
         return r;
     }
 
-    while (running) {
-        // Process requests
-        r = sd_bus_process(bus, NULL);
-        if ( r < 0)
-            app_log_message(APP_NAME, LOG_DEBUG, "Failed to process bus.\n");
-        else if (r > 0) // we processed a request, try to process another one, right-away
-            continue;
-
-        // Wait for the next request to process
-        if (sd_bus_wait(bus, 100000) < 0)
-            app_log_message(APP_NAME, LOG_DEBUG, "Bus wait failed.\n");
-    }
-
-    sd_bus_unref(bus);
-    return 0;
+    return 1;
 }
 
 

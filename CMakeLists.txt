@@ -31,52 +31,6 @@ message(STATUS "${BOARD} Board selected")
 
 
 ##############################################################################
-# Turn DBus apps on/off for debugging. Assumption if not define, it is on.
-
-if(SYSTEMD_APP MATCHES "on")
-    message(STATUS "Systemd dbus app is on")
-    add_definitions(-DSYSTEMD_DBUS_APP)
-elseif(SYSTEMD_APP MATCHES "off")
-    message(STATUS "Systemd dbus app is off")
-    remove_definitions(-DSYSTEMD_DBUS_APP)
-    # SYSTEMD_DBUS_APP is not defined
-elseif(NOT SYSTEMD_APP)
-    message(STATUS "Systemd dbus app is on")
-    add_definitions(-DSYSTEMD_DBUS_APP)
-else()
-    message(FATAL_ERROR "${SYSTEMD_APP} is not a valid input for SYSTEMD_APP")
-endif()
-
-if(LINUX_UPDATER_APP MATCHES "on")
-    message(STATUS "Linux updater dbus app is on")
-    add_definitions(-DLINUX_UPDATER_DBUS_APP)
-elseif(LINUX_UPDATER_APP MATCHES "off")
-    message(STATUS "Linux updater dbus app is off")
-    remove_definitions(-DLINUX_UPDATER_DBUS_APP)
-    # LINUX_UPDATER_DBUS_APP is not defined
-elseif(NOT LINUX_UPDATER_APP)
-    message(STATUS "Linux updater dbus app is on")
-    add_definitions(-DLINUX_UPDATER_DBUS_APP)
-else()
-    message(FATAL_ERROR "${LINUX_UPDATER_APP} is not a valid input for LINUX_UPDATER_APP")
-endif()
-
-if(MAIN_PROCESS_APP MATCHES "on")
-    message(STATUS "Main process dbus app is on")
-    add_definitions(-DMAIN_PROCESS_DBUS_APP)
-elseif(MAIN_PROCESS_APP MATCHES "off")
-    message(STATUS "Main process dbus app is off")
-    remove_definitions(-DMAIN_PROCESS_DBUS_APP)
-    # MAIN_PROCESS_DBUS_APP is not defined
-elseif(NOT MAIN_PROCESS_APP)
-    message(STATUS "Main process dbus app is on")
-    add_definitions(-DMAIN_PROCESS_DBUS_APP)
-else()
-    message(FATAL_ERROR "${MAIN_PROCESS_APP} is not a valid input for MAIN_PROCESS_APP")
-endif()
-
-
-##############################################################################
 # Check Linux distribution / verion / kernel version
 
 set(LINUX_DISTRIBUTION "")
@@ -134,7 +88,7 @@ if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Debug)
 endif()
 
-set(CMAKE_C_FLAGS "-Wall")
+set(CMAKE_C_FLAGS "-Wall -lpcre2-8 ")
 set(CMAKE_C_FLAGS_DEBUG "-g")
 set(CMAKE_C_FLAGS_RELEASE "-O3")
 
@@ -175,7 +129,8 @@ include_directories(${COMMON_DIR})
 include_directories(${SYSTEM_APP_DIR})
 
 set(SOURCE_FILES
-    ${BOARDS_DIR}/application.c
+    ${BOARDS_DIR}/board_apps.c
+    ${BOARDS_DIR}/sdr_gps_app.c
     ${OD_DIR}/CO_OD.c
     ${CANOPENNODE_DIR}/CANopen.c
     ${STACK_DIR}/CO_Emergency.c
@@ -193,8 +148,9 @@ set(SOURCE_FILES
     ${COMMON_DIR}/log_message.c
     ${COMMON_DIR}/file_transfer_ODF.c
     ${COMMON_DIR}/app_OD_helpers.c
-    ${SYSTEM_APP_DIR}/systemd_app.c
-    ${SYSTEM_APP_DIR}/linux_updater_app.c
+    ${COMMON_DIR}/daemon_controller.c
+    ${COMMON_DIR}/app_dbus_controller.c
+    ${SYSTEM_APP_DIR}/system_apps.c
     src/main.c
 )
 

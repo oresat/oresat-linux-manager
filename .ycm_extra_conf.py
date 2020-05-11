@@ -9,6 +9,7 @@ def Settings( **kwargs ):
             # libs
             '-lsystemd',
             '-pthread',
+            '-lpcre2-8 ',
             # includes
             '-I./src/boards/template',
             '-I./src/boards/template/object_dictionary',

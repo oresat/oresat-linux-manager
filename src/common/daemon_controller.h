@@ -1,33 +1,45 @@
-#ifndef DAEMON_CONTROLLER_H
-#define DAEMON_CONTROLLER_H
+#ifndef APP_DAEMON_CONTROLLER_H
+#define APP_DAEMON_CONTROLLER_H
 
 
-#include "CANopen.h"
-#include "CO_driver.h"
+#include "app_OD_helpers.h"
 
 
-
-
-/**
- * Give the candaemon / network manager control over board powe (issue poweroff
- * and reboot).
- */
-CO_SDO_abortCode_t systemd_ODF(CO_ODF_arg_t *ODF_arg);
+enum daemon_states {
+    failed = 0,
+    running = 1,
+    stopped = 2,
+};
 
 
 /**
- * If an app wants its daemon to be controlled by the candaemon the app must
- * calls this function in <app_name>_app_setup(). Daemons other than the
- * candameon and linux updater are not enable, so without call this function
- * in the apps setup function the daemon associate with the app will never be
- * started.
+ * Call this function to register an app for the candameon to controll.
  *
- * @param: app_name is application name
- * @param: daemon_name is the daemon name
+ * @param: name is the app name
+ * @param: daemon_name is the daemon service name (ie: oresat-gpsd.service). Set
+ * this to NULL if there is no daemon to controll.
+ * @param: thead main is the app main function to set up the dbus client that
+ * will be given it own thread. Set this to NULL if there is no needed for a
+ * seperate dbus thread for the app.
  *
- * @ return file descriptor for apps daemon
+ * @return: the index if the array, if registered correctly or a negative value on error.
  */
-int app_add_daemon(const char *app_name, const char *daemon_name);
+int app_register_daemon(const char *name, const char *daemon_name);
+
+
+/**
+ * Object Dictionary Function for app/daemon contoller.
+ */
+CO_SDO_abortCode_t daemon_controller_ODF(CO_ODF_arg_t *ODF_arg);
+
+
+/**
+ * Used to stop all apps dbus threads in apps list. Ment to be used when
+ * candaemon is exiting.
+ *
+ * @return: # of apps ended or negative on error.
+ */
+int end_apps();
 
 
 #endif
