@@ -61,7 +61,6 @@ read_gps_cb(sd_bus_message *m, void *userdata, sd_bus_error *ret_error) {
     int16_t velX = 0;
     int16_t velY = 0;
     int16_t velZ = 0;
-    int24_t a;
 
     r = sd_bus_message_read(m, "i", &state);
     if (r < 0)
