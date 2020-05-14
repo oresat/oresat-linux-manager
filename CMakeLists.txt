@@ -117,16 +117,23 @@ set(CANOPENNODE_DIR src/CANopenNode)
 set(STACK_DIR src/CANopenNode/stack)
 set(COMMON_DIR src/common)
 set(STACK_DRIVER_DIR src/socketCAN)
-set(SYSTEM_APP_DIR src/system_apps)
+set(SYSTEM_APPS_DIR src/system_apps)
 
-# add all headers in source directories
-include_directories(${BOARDS_DIR})
-include_directories(${OD_DIR})
-include_directories(${CANOPENNODE_DIR})
-include_directories(${STACK_DIR})
-include_directories(${STACK_DRIVER_DIR})
-include_directories(${COMMON_DIR})
-include_directories(${SYSTEM_APP_DIR})
+set(CANDAEMON_INCLUDE_DIRS
+    ${BOARDS_DIR}
+    ${OD_DIR}
+    ${CANOPENNODE_DIR}
+    ${STACK_DIR}
+    ${STACK_DRIVER_DIR}
+    ${COMMON_DIR}
+    ${SYSTEM_APPS_DIR}
+)
+
+# deal with each board having different apps
+# NOTE every time an app is add "cmake .." need to be call manually
+aux_source_directory(${BOARDS_DIR} BOARD_APPS_SOURCES)
+aux_source_directory(${SYSTEM_APPS_DIR} SYSTEM_APPS_SOURCES)
+
 
 set(SOURCE_FILES
     ${OD_DIR}/CO_OD.c
@@ -148,11 +155,8 @@ set(SOURCE_FILES
     ${COMMON_DIR}/app_OD_helpers.c
     ${COMMON_DIR}/daemon_controller.c
     ${COMMON_DIR}/app_dbus_controller.c
-    ${SYSTEM_APP_DIR}/system_apps.c
-    ${SYSTEM_APP_DIR}/power_management_app.c
-    ${SYSTEM_APP_DIR}/linux_updater_app.c
-    ${BOARDS_DIR}/board_apps.c
-    ${BOARDS_DIR}/sdr_gps_app.c
+    ${SYSTEM_APPS_SOURCES}
+    ${BOARD_APPS_SOURCES}
     src/main.c
 )
 
@@ -161,8 +165,12 @@ set(SOURCE_FILES
 # Create an executable
 
 add_executable(candaemon ${SOURCE_FILES})
+
 target_link_libraries(candaemon ${LIBSYSTEMD_LIBRARIES} Threads::Threads)
-target_include_directories(candaemon PUBLIC ${LIBSYSTEMD_INCLUDE_DIRS})
+
+target_include_directories(candaemon PRIVATE ${CANDAEMON_INCLUDE_DIRS})
+target_include_directories(candaemon PRIVATE ${LIBSYSTEMD_INCLUDE_DIRS})
+
 target_compile_options(candaemon PUBLIC ${LIBSYSTEMD_CFLAGS_OTHER})
 
 
