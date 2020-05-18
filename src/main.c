@@ -426,6 +426,9 @@ int main (int argc, char *argv[]) {
             // set up general ODFs
             file_transfer_ODF_setup();
 
+            // add dbus signal matches
+            apps_dbus_start();
+
 #ifndef SYSTEM_APPS_OFF
             setup_system_apps();
 #endif
@@ -433,8 +436,6 @@ int main (int argc, char *argv[]) {
 #ifndef BOARD_APPS_OFF
             setup_board_apps();
 #endif
-            // add dbus signal matches
-            apps_dbus_start();
 
             /* Init threadMainWait structure and file descriptors */
             threadMainWait_initOnce(MAIN_THREAD_INTERVAL_US, commandInterface,
