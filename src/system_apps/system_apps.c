@@ -12,10 +12,10 @@
 #define BOARD "gps" // TODO fix cmake
 
 int setup_system_apps() {
-    // power mangament
+    // power mangament app
     app_OD_configure(POWER_MANAGEMENT_ODF_INDEX, power_management_ODF, NULL, 0, 0U);
 
-    // Linux updater
+    // Linux updater app
     app_OD_configure(UPDATER_ODF_INDEX, updater_ODF, NULL, 0, 0U);
     app_register_daemon("Linux Updater", "oresat-linux-updaterd.service");
     app_add_request_recv_file(

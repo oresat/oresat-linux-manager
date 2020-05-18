@@ -38,9 +38,9 @@ struct sCO_OD_RAM CO_OD_RAM = {
 /*1005*/ 0x0080L,
 /*1006*/ 0x0000L,
 /*1007*/ 0x0000L,
-/*1008*/ {'G', 'P', 'S'},
-/*1009*/ {'0'},
-/*100A*/ {'0'},
+/*1008*/ {'C', 'A', 'N', 'o', 'p', 'e', 'n', 'N', 'o', 'd', 'e'},
+/*1009*/ {'3', '.', '0', '0'},
+/*100A*/ {'3', '.', '0', '0'},
 /*1010*/ {0x0003L},
 /*1011*/ {0x0001L},
 /*1014*/ 0x0080L,
@@ -79,10 +79,15 @@ struct sCO_OD_RAM CO_OD_RAM = {
 /*2108*/ {0x00},
 /*2109*/ {0x00},
 /*2130*/ {0x3L, {'-'}, 0x00000000L, 0x0000L},
-/*3000*/ {0x2L, 0, 0},
+/*3000*/ {0x0L},
 /*3001*/ {0x3L, 0, 0, 0x0L},
 /*3002*/ {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 /*3003*/ {0x8L, 0x0L, 0, 0, 0x0000L, 0, 0x0000L, 0x0000L, 0},
+/*3004*/ {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+/*3005*/ {0x5L, 0x0L, 0, 0, 0x0000L, 0x0000L},
+/*3006*/ {0x0L},
+/*30F0*/ {0x2L, 0, 0},
+/*30F1*/ {0x9L, 0x0000L, 0x0000L, 0, 0, 0, 0, 0, 0, 0},
 
            CO_OD_FIRST_LAST_WORD,
 };
@@ -292,10 +297,8 @@ struct sCO_OD_EEPROM CO_OD_EEPROM = {
            {(void*)&CO_OD_RAM.time.epochTimeOffsetMs, 0x9E, 0x4 },
 };
 
-/*0x3000*/ const CO_OD_entryRecord_t OD_record3000[3] = {
-           {(void*)&CO_OD_RAM.systemdControl.maxSubIndex, 0x06, 0x1 },
-           {(void*)0, 0x0A, 0x0 },
-           {(void*)0, 0x0A, 0x0 },
+/*0x3000*/ const CO_OD_entryRecord_t OD_record3000[1] = {
+           {(void*)&CO_OD_RAM.CANdaemon.maxSubIndex, 0x06, 0x1 },
 };
 
 /*0x3001*/ const CO_OD_entryRecord_t OD_record3001[4] = {
@@ -307,14 +310,46 @@ struct sCO_OD_EEPROM CO_OD_EEPROM = {
 
 /*0x3003*/ const CO_OD_entryRecord_t OD_record3003[9] = {
            {(void*)&CO_OD_RAM.sendFileControl.maxSubIndex, 0x06, 0x1 },
-           {(void*)&CO_OD_RAM.sendFileControl.filePointer, 0x0E, 0x1 },
+           {(void*)&CO_OD_RAM.sendFileControl.sendFilePointer, 0x0E, 0x1 },
            {(void*)0, 0x06, 0x0 },
            {(void*)0, 0x06, 0x0 },
            {(void*)&CO_OD_RAM.sendFileControl.fileSize, 0x86, 0x4 },
            {(void*)&CO_OD_RAM.sendFileControl.deleteFile, 0x0E, 0x1 },
-           {(void*)&CO_OD_RAM.sendFileControl.fileAvailable, 0x86, 0x4 },
+           {(void*)&CO_OD_RAM.sendFileControl.filesAvailable, 0x86, 0x4 },
            {(void*)&CO_OD_RAM.sendFileControl.overflow, 0x86, 0x4 },
-           {(void*)&CO_OD_RAM.sendFileControl.refreshFileList, 0x0E, 0x1 },
+           {(void*)&CO_OD_RAM.sendFileControl.refreshFileArray, 0x0E, 0x1 },
+};
+
+/*0x3005*/ const CO_OD_entryRecord_t OD_record3005[6] = {
+           {(void*)&CO_OD_RAM.daemonController.maxSubIndex, 0x06, 0x1 },
+           {(void*)&CO_OD_RAM.daemonController.selectApp, 0x0E, 0x1 },
+           {(void*)0, 0x06, 0x0 },
+           {(void*)0, 0x06, 0x0 },
+           {(void*)&CO_OD_RAM.daemonController.daemonCurrentState, 0x86, 0x4 },
+           {(void*)&CO_OD_RAM.daemonController.daemonChangeState, 0x8A, 0x4 },
+};
+
+/*0x3006*/ const CO_OD_entryRecord_t OD_record3006[1] = {
+           {(void*)&CO_OD_RAM.syslogReader.maxSubIndex, 0x06, 0x1 },
+};
+
+/*0x30F0*/ const CO_OD_entryRecord_t OD_record30F0[3] = {
+           {(void*)&CO_OD_RAM.powerManagementApp.maxSubIndex, 0x06, 0x1 },
+           {(void*)0, 0x0A, 0x0 },
+           {(void*)0, 0x0A, 0x0 },
+};
+
+/*0x30F1*/ const CO_OD_entryRecord_t OD_record30F1[10] = {
+           {(void*)&CO_OD_RAM.linuxUpdaterApp.maxSubIndex, 0x06, 0x1 },
+           {(void*)&CO_OD_RAM.linuxUpdaterApp.currentState, 0x86, 0x4 },
+           {(void*)&CO_OD_RAM.linuxUpdaterApp.updatesAvailable, 0x86, 0x4 },
+           {(void*)0, 0x06, 0x0 },
+           {(void*)0, 0x06, 0x0 },
+           {(void*)0, 0x0A, 0x0 },
+           {(void*)0, 0x0A, 0x0 },
+           {(void*)0, 0x0A, 0x0 },
+           {(void*)0, 0x0A, 0x0 },
+           {(void*)0, 0x0A, 0x0 },
 };
 
 /*******************************************************************************
@@ -328,9 +363,9 @@ const CO_OD_entry_t CO_OD[CO_OD_NoOfElements] = {
 {0x1005, 0x00, 0x8E,  4, (void*)&CO_OD_RAM.COB_ID_SYNCMessage},
 {0x1006, 0x00, 0x8E,  4, (void*)&CO_OD_RAM.communicationCyclePeriod},
 {0x1007, 0x00, 0x8E,  4, (void*)&CO_OD_RAM.synchronousWindowLength},
-{0x1008, 0x00, 0x06,  3, (void*)&CO_OD_RAM.manufacturerDeviceName},
-{0x1009, 0x00, 0x06,  1, (void*)&CO_OD_RAM.manufacturerHardwareVersion},
-{0x100A, 0x00, 0x06,  1, (void*)&CO_OD_RAM.manufacturerSoftwareVersion},
+{0x1008, 0x00, 0x06, 11, (void*)&CO_OD_RAM.manufacturerDeviceName},
+{0x1009, 0x00, 0x06,  4, (void*)&CO_OD_RAM.manufacturerHardwareVersion},
+{0x100A, 0x00, 0x06,  4, (void*)&CO_OD_RAM.manufacturerSoftwareVersion},
 {0x1010, 0x01, 0x8E,  4, (void*)&CO_OD_RAM.storeParameters[0]},
 {0x1011, 0x01, 0x8E,  4, (void*)&CO_OD_RAM.restoreDefaultParameters[0]},
 {0x1014, 0x00, 0x86,  4, (void*)&CO_OD_RAM.COB_ID_EMCY},
@@ -369,9 +404,14 @@ const CO_OD_entry_t CO_OD[CO_OD_NoOfElements] = {
 {0x2108, 0x01, 0x8E,  2, (void*)&CO_OD_RAM.temperature[0]},
 {0x2109, 0x01, 0x8E,  2, (void*)&CO_OD_RAM.voltage[0]},
 {0x2130, 0x03, 0x00,  0, (void*)&OD_record2130},
-{0x3000, 0x02, 0x00,  0, (void*)&OD_record3000},
+{0x3000, 0x00, 0x00,  0, (void*)&OD_record3000},
 {0x3001, 0x03, 0x00,  0, (void*)&OD_record3001},
 {0x3002, 0x7F, 0x0E,  0, (void*)0},
 {0x3003, 0x08, 0x00,  0, (void*)&OD_record3003},
+{0x3004, 0x7F, 0x0E,  0, (void*)0},
+{0x3005, 0x05, 0x00,  0, (void*)&OD_record3005},
+{0x3006, 0x00, 0x00,  0, (void*)&OD_record3006},
+{0x30F0, 0x02, 0x00,  0, (void*)&OD_record30F0},
+{0x30F1, 0x09, 0x00,  0, (void*)&OD_record30F1},
 };
 // clang-format on

@@ -13,16 +13,16 @@
         <ProfileTechnology>CANopen</ProfileTechnology>
       </ISO15745Reference>
     </ProfileHeader>
-    <ProfileBody xsi:type="ProfileBody_Device_CANopen" formatName="CANopen" formatVersion="1.0" fileName="GPS_objDict.eds" fileCreator="Ryan Medick" fileCreationDate="2019-11-07" fileCreationTime="11:32:00.0000000-07:00" fileModificationDate="2019-11-07" fileModificationTime="11:32:00.0000000-07:00" fileModifiedBy="" fileVersion="0" supportedLanguages="en">
+    <ProfileBody xsi:type="ProfileBody_Device_CANopen" formatName="CANopen" formatVersion="1.0" fileName="GPS_OD.eds" fileCreator="Ryan Medick" fileCreationDate="2019-11-07" fileCreationTime="11:32:00.0000000-07:00" fileModificationDate="2019-11-07" fileModificationTime="11:32:00.0000000-07:00" fileModifiedBy="" fileVersion="0" supportedLanguages="en">
       <DeviceIdentity>
         <vendorName readOnly="true">Portland State Aerospace Society</vendorName>
         <vendorID>0</vendorID>
         <deviceFamily />
         <productFamily readOnly="true" />
-        <productName readOnly="true">GPS</productName>
+        <productName readOnly="true">Template</productName>
         <productID>0</productID>
         <productText readOnly="true">
-          <description lang="en">FileDescription=OreSat GPS Object Dictionary|EdsVersion=4.0|FileRevision=0|RevisionNum=0</description>
+          <description lang="en">FileDescription=OreSat GPS Board Object Dictionary|EdsVersion=4.0|FileRevision=0|RevisionNum=0</description>
         </productText>
         <version versionType="SW" />
         <version versionType="FW" />
@@ -173,7 +173,7 @@
             <denotation>
               <label lang="en" />
             </denotation>
-            <defaultValue value="GPS" />
+            <defaultValue value="CANopenNode" />
           </parameter>
           <parameter uniqueID="UID_PARAM_1009" access="const">
             <label lang="en">Manufacturer hardware version</label>
@@ -181,7 +181,7 @@
             <denotation>
               <label lang="en" />
             </denotation>
-            <defaultValue value="0" />
+            <defaultValue value="3.00" />
           </parameter>
           <parameter uniqueID="UID_PARAM_100a" access="const">
             <label lang="en">Manufacturer software version</label>
@@ -189,7 +189,7 @@
             <denotation>
               <label lang="en" />
             </denotation>
-            <defaultValue value="0" />
+            <defaultValue value="3.00" />
           </parameter>
           <parameter uniqueID="UID_PARAM_1010" access="readWrite">
             <label lang="en">Store parameters</label>
@@ -1728,7 +1728,7 @@
             <defaultValue value="0" />
           </parameter>
           <parameter uniqueID="UID_PARAM_3000" access="readWrite">
-            <label lang="en">Systemd Control</label>
+            <label lang="en">CANdaemon</label>
             <description lang="en" />
             <denotation>
               <label lang="en" />
@@ -1737,22 +1737,6 @@
           </parameter>
           <parameter uniqueID="UID_PARAM_300000" access="read">
             <label lang="en">max sub-index</label>
-            <description lang="en" />
-            <denotation>
-              <label lang="en" />
-            </denotation>
-            <defaultValue value="2" />
-          </parameter>
-          <parameter uniqueID="UID_PARAM_300001" access="write">
-            <label lang="en">Restart</label>
-            <description lang="en" />
-            <denotation>
-              <label lang="en" />
-            </denotation>
-            <defaultValue value="0" />
-          </parameter>
-          <parameter uniqueID="UID_PARAM_300002" access="write">
-            <label lang="en">Poweroff</label>
             <description lang="en" />
             <denotation>
               <label lang="en" />
@@ -1800,7 +1784,7 @@
             <defaultValue value="0" />
           </parameter>
           <parameter uniqueID="UID_PARAM_3002" access="readWrite">
-            <label lang="en">Send File Transfer</label>
+            <label lang="en">Send File List</label>
             <description lang="en" />
             <denotation>
               <label lang="en" />
@@ -2848,7 +2832,7 @@
             <defaultValue value="8" />
           </parameter>
           <parameter uniqueID="UID_PARAM_300301" access="readWrite">
-            <label lang="en">File Pointer</label>
+            <label lang="en">Send File Pointer</label>
             <description lang="en" />
             <denotation>
               <label lang="en" />
@@ -2888,7 +2872,7 @@
             <defaultValue value="0" />
           </parameter>
           <parameter uniqueID="UID_PARAM_300306" access="read">
-            <label lang="en">File Available</label>
+            <label lang="en">Files Available</label>
             <description lang="en" />
             <denotation>
               <label lang="en" />
@@ -2904,7 +2888,1231 @@
             <defaultValue value="0" />
           </parameter>
           <parameter uniqueID="UID_PARAM_300308" access="readWrite">
-            <label lang="en">Refresh File List</label>
+            <label lang="en">Refresh File Array</label>
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="0" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_3004" access="readWrite">
+            <label lang="en">Daemon List</label>
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_300400" access="read">
+            <label lang="en">max sub-index</label>
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="127" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_300401" access="readWrite">
+            <label lang="en" />
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_300402" access="readWrite">
+            <label lang="en" />
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_300403" access="readWrite">
+            <label lang="en" />
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_300404" access="readWrite">
+            <label lang="en" />
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_300405" access="readWrite">
+            <label lang="en" />
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_300406" access="readWrite">
+            <label lang="en" />
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_300407" access="readWrite">
+            <label lang="en" />
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_300408" access="readWrite">
+            <label lang="en" />
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_300409" access="readWrite">
+            <label lang="en" />
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_30040a" access="readWrite">
+            <label lang="en" />
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_30040b" access="readWrite">
+            <label lang="en" />
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_30040c" access="readWrite">
+            <label lang="en" />
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_30040d" access="readWrite">
+            <label lang="en" />
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_30040e" access="readWrite">
+            <label lang="en" />
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_30040f" access="readWrite">
+            <label lang="en" />
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_300410" access="readWrite">
+            <label lang="en" />
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_300411" access="readWrite">
+            <label lang="en" />
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_300412" access="readWrite">
+            <label lang="en" />
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_300413" access="readWrite">
+            <label lang="en" />
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_300414" access="readWrite">
+            <label lang="en" />
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_300415" access="readWrite">
+            <label lang="en" />
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_300416" access="readWrite">
+            <label lang="en" />
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_300417" access="readWrite">
+            <label lang="en" />
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_300418" access="readWrite">
+            <label lang="en" />
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_300419" access="readWrite">
+            <label lang="en" />
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_30041a" access="readWrite">
+            <label lang="en" />
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_30041b" access="readWrite">
+            <label lang="en" />
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_30041c" access="readWrite">
+            <label lang="en" />
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_30041d" access="readWrite">
+            <label lang="en" />
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_30041e" access="readWrite">
+            <label lang="en" />
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_30041f" access="readWrite">
+            <label lang="en" />
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_300420" access="readWrite">
+            <label lang="en" />
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_300421" access="readWrite">
+            <label lang="en" />
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_300422" access="readWrite">
+            <label lang="en" />
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_300423" access="readWrite">
+            <label lang="en" />
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_300424" access="readWrite">
+            <label lang="en" />
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_300425" access="readWrite">
+            <label lang="en" />
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_300426" access="readWrite">
+            <label lang="en" />
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_300427" access="readWrite">
+            <label lang="en" />
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_300428" access="readWrite">
+            <label lang="en" />
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_300429" access="readWrite">
+            <label lang="en" />
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_30042a" access="readWrite">
+            <label lang="en" />
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_30042b" access="readWrite">
+            <label lang="en" />
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_30042c" access="readWrite">
+            <label lang="en" />
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_30042d" access="readWrite">
+            <label lang="en" />
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_30042e" access="readWrite">
+            <label lang="en" />
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_30042f" access="readWrite">
+            <label lang="en" />
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_300430" access="readWrite">
+            <label lang="en" />
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_300431" access="readWrite">
+            <label lang="en" />
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_300432" access="readWrite">
+            <label lang="en" />
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_300433" access="readWrite">
+            <label lang="en" />
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_300434" access="readWrite">
+            <label lang="en" />
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_300435" access="readWrite">
+            <label lang="en" />
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_300436" access="readWrite">
+            <label lang="en" />
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_300437" access="readWrite">
+            <label lang="en" />
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_300438" access="readWrite">
+            <label lang="en" />
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_300439" access="readWrite">
+            <label lang="en" />
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_30043a" access="readWrite">
+            <label lang="en" />
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_30043b" access="readWrite">
+            <label lang="en" />
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_30043c" access="readWrite">
+            <label lang="en" />
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_30043d" access="readWrite">
+            <label lang="en" />
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_30043e" access="readWrite">
+            <label lang="en" />
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_30043f" access="readWrite">
+            <label lang="en" />
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_300440" access="readWrite">
+            <label lang="en" />
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_300441" access="readWrite">
+            <label lang="en" />
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_300442" access="readWrite">
+            <label lang="en" />
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_300443" access="readWrite">
+            <label lang="en" />
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_300444" access="readWrite">
+            <label lang="en" />
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_300445" access="readWrite">
+            <label lang="en" />
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_300446" access="readWrite">
+            <label lang="en" />
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_300447" access="readWrite">
+            <label lang="en" />
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_300448" access="readWrite">
+            <label lang="en" />
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_300449" access="readWrite">
+            <label lang="en" />
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_30044a" access="readWrite">
+            <label lang="en" />
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_30044b" access="readWrite">
+            <label lang="en" />
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_30044c" access="readWrite">
+            <label lang="en" />
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_30044d" access="readWrite">
+            <label lang="en" />
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_30044e" access="readWrite">
+            <label lang="en" />
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_30044f" access="readWrite">
+            <label lang="en" />
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_300450" access="readWrite">
+            <label lang="en" />
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_300451" access="readWrite">
+            <label lang="en" />
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_300452" access="readWrite">
+            <label lang="en" />
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_300453" access="readWrite">
+            <label lang="en" />
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_300454" access="readWrite">
+            <label lang="en" />
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_300455" access="readWrite">
+            <label lang="en" />
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_300456" access="readWrite">
+            <label lang="en" />
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_300457" access="readWrite">
+            <label lang="en" />
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_300458" access="readWrite">
+            <label lang="en" />
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_300459" access="readWrite">
+            <label lang="en" />
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_30045a" access="readWrite">
+            <label lang="en" />
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_30045b" access="readWrite">
+            <label lang="en" />
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_30045c" access="readWrite">
+            <label lang="en" />
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_30045d" access="readWrite">
+            <label lang="en" />
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_30045e" access="readWrite">
+            <label lang="en" />
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_30045f" access="readWrite">
+            <label lang="en" />
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_300460" access="readWrite">
+            <label lang="en" />
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_300461" access="readWrite">
+            <label lang="en" />
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_300462" access="readWrite">
+            <label lang="en" />
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_300463" access="readWrite">
+            <label lang="en" />
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_300464" access="readWrite">
+            <label lang="en" />
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_300465" access="readWrite">
+            <label lang="en" />
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_300466" access="readWrite">
+            <label lang="en" />
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_300467" access="readWrite">
+            <label lang="en" />
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_300468" access="readWrite">
+            <label lang="en" />
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_300469" access="readWrite">
+            <label lang="en" />
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_30046a" access="readWrite">
+            <label lang="en" />
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_30046b" access="readWrite">
+            <label lang="en" />
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_30046c" access="readWrite">
+            <label lang="en" />
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_30046d" access="readWrite">
+            <label lang="en" />
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_30046e" access="readWrite">
+            <label lang="en" />
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_30046f" access="readWrite">
+            <label lang="en" />
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_300470" access="readWrite">
+            <label lang="en" />
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_300471" access="readWrite">
+            <label lang="en" />
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_300472" access="readWrite">
+            <label lang="en" />
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_300473" access="readWrite">
+            <label lang="en" />
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_300474" access="readWrite">
+            <label lang="en" />
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_300475" access="readWrite">
+            <label lang="en" />
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_300476" access="readWrite">
+            <label lang="en" />
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_300477" access="readWrite">
+            <label lang="en" />
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_300478" access="readWrite">
+            <label lang="en" />
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_300479" access="readWrite">
+            <label lang="en" />
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_30047a" access="readWrite">
+            <label lang="en" />
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_30047b" access="readWrite">
+            <label lang="en" />
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_30047c" access="readWrite">
+            <label lang="en" />
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_30047d" access="readWrite">
+            <label lang="en" />
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_30047e" access="readWrite">
+            <label lang="en" />
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_30047f" access="readWrite">
+            <label lang="en" />
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_3005" access="readWrite">
+            <label lang="en">Daemon Controller</label>
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_300500" access="read">
+            <label lang="en">max sub-index</label>
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="5" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_300501" access="readWrite">
+            <label lang="en">Select App</label>
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="0" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_300502" access="read">
+            <label lang="en">App Name</label>
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="0" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_300503" access="read">
+            <label lang="en">Daemon Service Name</label>
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="0" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_300504" access="read">
+            <label lang="en">Daemon Current State</label>
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="0" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_300505" access="write">
+            <label lang="en">Daemon Change State</label>
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="0" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_3006" access="readWrite">
+            <label lang="en">Syslog Reader</label>
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_300600" access="read">
+            <label lang="en">max sub-index</label>
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="0" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_30f0" access="readWrite">
+            <label lang="en">Power Management App</label>
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_30f000" access="read">
+            <label lang="en">max sub-index</label>
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="2" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_30f001" access="write">
+            <label lang="en">Reboot</label>
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="0" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_30f002" access="write">
+            <label lang="en">Poweroff</label>
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="0" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_30f1" access="readWrite">
+            <label lang="en">Linux Updater App</label>
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_30f100" access="read">
+            <label lang="en">max sub-index</label>
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="9" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_30f101" access="read">
+            <label lang="en">Current State</label>
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="0" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_30f102" access="read">
+            <label lang="en">Updates Available</label>
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="0" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_30f103" access="read">
+            <label lang="en">Current Update File</label>
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="0" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_30f104" access="read">
+            <label lang="en">Error Message</label>
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="0" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_30f105" access="write">
+            <label lang="en">Add Update File</label>
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="0" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_30f106" access="write">
+            <label lang="en">Start Update</label>
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="0" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_30f107" access="write">
+            <label lang="en">Emergency Stop Update</label>
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="0" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_30f108" access="write">
+            <label lang="en">Reset Updater</label>
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="0" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_30f109" access="write">
+            <label lang="en">Get Apt List Output</label>
             <description lang="en" />
             <denotation>
               <label lang="en" />
@@ -2928,7 +4136,7 @@
         <ProfileTechnology>CANopen</ProfileTechnology>
       </ISO15745Reference>
     </ProfileHeader>
-    <ProfileBody xsi:type="ProfileBody_CommunicationNetwork_CANopen" formatName="CANopen" formatVersion="1.0" fileName="GPS_objDict.eds" fileCreator="Ryan Medick" fileCreationDate="2019-11-07" fileCreationTime="11:32:00.0000000-07:00" fileModificationDate="2019-11-07" fileVersion="0" supportedLanguages="en">
+    <ProfileBody xsi:type="ProfileBody_CommunicationNetwork_CANopen" formatName="CANopen" formatVersion="1.0" fileName="GPS_OD.eds" fileCreator="Ryan Medick" fileCreationDate="2019-11-07" fileCreationTime="11:32:00.0000000-07:00" fileModificationDate="2019-11-07" fileVersion="0" supportedLanguages="en">
       <ApplicationLayers>
         <CANopenObjectList>
           <CANopenObject index="1000" name="Device type" objectType="7" dataType="0007" lowLimit="" highLimit="" accessType="ro" actualValue="" denotation="" edseditor_extenstion_storagelocation="RAM" edseditor_extension_notifyonchange="false" PDOmapping="no" uniqueIDRef="UID_PARAM_1000" />
@@ -3170,10 +4378,8 @@
             <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0002" name="Epoch time base ms" objectType="7" dataType="001B" lowLimit="" highLimit="" accessType="ro" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_213002" />
             <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0003" name="Epoch time offset ms" objectType="7" dataType="0007" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="RPDO" uniqueIDRef="UID_PARAM_213003" />
           </CANopenObject>
-          <CANopenObject index="3000" name="Systemd Control" objectType="9" lowLimit="" highLimit="" actualValue="" denotation="" edseditor_extenstion_storagelocation="RAM" edseditor_extension_notifyonchange="false" PDOmapping="no" uniqueIDRef="UID_PARAM_3000" subNumber="3">
+          <CANopenObject index="3000" name="CANdaemon" objectType="9" lowLimit="" highLimit="" actualValue="" denotation="" edseditor_extenstion_storagelocation="RAM" edseditor_extension_notifyonchange="false" PDOmapping="no" uniqueIDRef="UID_PARAM_3000" subNumber="1">
             <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0000" name="max sub-index" objectType="7" dataType="0005" lowLimit="" highLimit="" accessType="ro" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300000" />
-            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0001" name="Restart" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="wo" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300001" />
-            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0002" name="Poweroff" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="wo" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300002" />
           </CANopenObject>
           <CANopenObject index="3001" name="Receive File" objectType="9" lowLimit="" highLimit="" actualValue="" denotation="" edseditor_extenstion_storagelocation="RAM" edseditor_extension_notifyonchange="false" PDOmapping="no" uniqueIDRef="UID_PARAM_3001" subNumber="4">
             <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0000" name="max sub-index" objectType="7" dataType="0005" lowLimit="" highLimit="" accessType="ro" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300100" />
@@ -3181,7 +4387,7 @@
             <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0002" name="File Data" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="wo" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300102" />
             <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0003" name="Save File" objectType="7" dataType="0005" lowLimit="" highLimit="" accessType="wo" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300103" />
           </CANopenObject>
-          <CANopenObject index="3002" name="Send File Transfer" objectType="8" lowLimit="" highLimit="" actualValue="" denotation="" edseditor_extenstion_storagelocation="RAM" edseditor_extension_notifyonchange="false" PDOmapping="no" uniqueIDRef="UID_PARAM_3002" subNumber="128">
+          <CANopenObject index="3002" name="Send File List" objectType="8" lowLimit="" highLimit="" actualValue="" denotation="" edseditor_extenstion_storagelocation="RAM" edseditor_extension_notifyonchange="false" PDOmapping="no" uniqueIDRef="UID_PARAM_3002" subNumber="128">
             <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0000" name="max sub-index" objectType="7" dataType="0005" lowLimit="" highLimit="" accessType="ro" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300200" />
             <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0001" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="ro" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300201" />
             <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0002" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="ro" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300202" />
@@ -3313,14 +4519,172 @@
           </CANopenObject>
           <CANopenObject index="3003" name="Send File Control" objectType="9" lowLimit="" highLimit="" actualValue="" denotation="" edseditor_extenstion_storagelocation="RAM" edseditor_extension_notifyonchange="false" PDOmapping="no" uniqueIDRef="UID_PARAM_3003" subNumber="9">
             <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0000" name="max sub-index" objectType="7" dataType="0005" lowLimit="" highLimit="" accessType="ro" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300300" />
-            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0001" name="File Pointer" objectType="7" dataType="0005" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300301" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0001" name="Send File Pointer" objectType="7" dataType="0005" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300301" />
             <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0002" name="File Name" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="ro" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300302" />
             <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0003" name="File Data" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="ro" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300303" />
-            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0004" name="File Size" objectType="7" dataType="0004" lowLimit="" highLimit="" accessType="ro" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300304" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0004" name="File Size" objectType="7" dataType="0007" lowLimit="" highLimit="" accessType="ro" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300304" />
             <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0005" name="Delete File" objectType="7" dataType="0001" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300305" />
-            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0006" name="File Available" objectType="7" dataType="0007" lowLimit="" highLimit="" accessType="ro" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300306" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0006" name="Files Available" objectType="7" dataType="0007" lowLimit="" highLimit="" accessType="ro" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300306" />
             <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0007" name="Overflow" objectType="7" dataType="0007" lowLimit="" highLimit="" accessType="ro" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300307" />
-            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0008" name="Refresh File List" objectType="7" dataType="0001" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300308" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0008" name="Refresh File Array" objectType="7" dataType="0001" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300308" />
+          </CANopenObject>
+          <CANopenObject index="3004" name="Daemon List" objectType="8" lowLimit="" highLimit="" actualValue="" denotation="" edseditor_extenstion_storagelocation="RAM" edseditor_extension_notifyonchange="false" PDOmapping="no" uniqueIDRef="UID_PARAM_3004" subNumber="128">
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0000" name="max sub-index" objectType="7" dataType="0005" lowLimit="" highLimit="" accessType="ro" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300400" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0001" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300401" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0002" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300402" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0003" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300403" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0004" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300404" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0005" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300405" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0006" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300406" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0007" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300407" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0008" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300408" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0009" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300409" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="000A" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_30040a" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="000B" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_30040b" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="000C" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_30040c" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="000D" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_30040d" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="000E" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_30040e" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="000F" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_30040f" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0010" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300410" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0011" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300411" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0012" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300412" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0013" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300413" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0014" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300414" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0015" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300415" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0016" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300416" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0017" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300417" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0018" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300418" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0019" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300419" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="001A" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_30041a" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="001B" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_30041b" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="001C" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_30041c" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="001D" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_30041d" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="001E" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_30041e" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="001F" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_30041f" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0020" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300420" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0021" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300421" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0022" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300422" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0023" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300423" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0024" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300424" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0025" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300425" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0026" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300426" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0027" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300427" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0028" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300428" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0029" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300429" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="002A" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_30042a" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="002B" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_30042b" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="002C" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_30042c" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="002D" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_30042d" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="002E" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_30042e" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="002F" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_30042f" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0030" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300430" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0031" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300431" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0032" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300432" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0033" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300433" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0034" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300434" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0035" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300435" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0036" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300436" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0037" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300437" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0038" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300438" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0039" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300439" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="003A" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_30043a" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="003B" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_30043b" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="003C" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_30043c" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="003D" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_30043d" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="003E" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_30043e" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="003F" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_30043f" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0040" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300440" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0041" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300441" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0042" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300442" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0043" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300443" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0044" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300444" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0045" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300445" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0046" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300446" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0047" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300447" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0048" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300448" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0049" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300449" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="004A" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_30044a" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="004B" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_30044b" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="004C" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_30044c" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="004D" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_30044d" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="004E" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_30044e" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="004F" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_30044f" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0050" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300450" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0051" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300451" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0052" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300452" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0053" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300453" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0054" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300454" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0055" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300455" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0056" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300456" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0057" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300457" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0058" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300458" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0059" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300459" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="005A" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_30045a" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="005B" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_30045b" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="005C" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_30045c" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="005D" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_30045d" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="005E" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_30045e" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="005F" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_30045f" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0060" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300460" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0061" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300461" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0062" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300462" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0063" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300463" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0064" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300464" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0065" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300465" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0066" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300466" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0067" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300467" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0068" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300468" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0069" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300469" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="006A" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_30046a" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="006B" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_30046b" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="006C" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_30046c" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="006D" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_30046d" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="006E" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_30046e" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="006F" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_30046f" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0070" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300470" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0071" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300471" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0072" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300472" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0073" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300473" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0074" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300474" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0075" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300475" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0076" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300476" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0077" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300477" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0078" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300478" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0079" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300479" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="007A" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_30047a" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="007B" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_30047b" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="007C" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_30047c" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="007D" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_30047d" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="007E" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_30047e" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="007F" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_30047f" />
+          </CANopenObject>
+          <CANopenObject index="3005" name="Daemon Controller" objectType="9" lowLimit="" highLimit="" actualValue="" denotation="" edseditor_extenstion_storagelocation="RAM" edseditor_extension_notifyonchange="false" PDOmapping="no" uniqueIDRef="UID_PARAM_3005" subNumber="6">
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0000" name="max sub-index" objectType="7" dataType="0005" lowLimit="" highLimit="" accessType="ro" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300500" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0001" name="Select App" objectType="7" dataType="0005" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300501" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0002" name="App Name" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="ro" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300502" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0003" name="Daemon Service Name" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="ro" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300503" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0004" name="Daemon Current State" objectType="7" dataType="0004" lowLimit="" highLimit="" accessType="ro" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300504" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0005" name="Daemon Change State" objectType="7" dataType="0004" lowLimit="" highLimit="" accessType="wo" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300505" />
+          </CANopenObject>
+          <CANopenObject index="3006" name="Syslog Reader" objectType="9" lowLimit="" highLimit="" actualValue="" denotation="" edseditor_extenstion_storagelocation="RAM" edseditor_extension_notifyonchange="false" PDOmapping="no" uniqueIDRef="UID_PARAM_3006" subNumber="1">
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0000" name="max sub-index" objectType="7" dataType="0005" lowLimit="" highLimit="" accessType="ro" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300600" />
+          </CANopenObject>
+          <CANopenObject index="30F0" name="Power Management App" objectType="9" lowLimit="" highLimit="" actualValue="" denotation="" edseditor_extenstion_storagelocation="RAM" edseditor_extension_notifyonchange="false" PDOmapping="no" uniqueIDRef="UID_PARAM_30f0" subNumber="3">
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0000" name="max sub-index" objectType="7" dataType="0005" lowLimit="" highLimit="" accessType="ro" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_30f000" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0001" name="Reboot" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="wo" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_30f001" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0002" name="Poweroff" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="wo" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_30f002" />
+          </CANopenObject>
+          <CANopenObject index="30F1" name="Linux Updater App" objectType="9" lowLimit="" highLimit="" actualValue="" denotation="" edseditor_extenstion_storagelocation="RAM" edseditor_extension_notifyonchange="false" PDOmapping="no" uniqueIDRef="UID_PARAM_30f1" subNumber="10">
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0000" name="max sub-index" objectType="7" dataType="0005" lowLimit="" highLimit="" accessType="ro" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_30f100" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0001" name="Current State" objectType="7" dataType="0004" lowLimit="" highLimit="" accessType="ro" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_30f101" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0002" name="Updates Available" objectType="7" dataType="0007" lowLimit="" highLimit="" accessType="ro" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_30f102" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0003" name="Current Update File" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="ro" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_30f103" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0004" name="Error Message" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="ro" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_30f104" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0005" name="Add Update File" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="wo" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_30f105" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0006" name="Start Update" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="wo" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_30f106" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0007" name="Emergency Stop Update" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="wo" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_30f107" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0008" name="Reset Updater" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="wo" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_30f108" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0009" name="Get Apt List Output" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="wo" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_30f109" />
           </CANopenObject>
         </CANopenObjectList>
         <dummyUsage>
