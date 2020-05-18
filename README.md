@@ -1,6 +1,6 @@
 # Oresat Linux CANdaemon
 
-The CANdaemon is based off of [CANopenSocket], but with multiple  apps to commicate and control other daemons.
+The CANdaemon is built ontop of CANopenNode], with an extra thread to allow apps to commicate and control other daemons over dbus.
 The CANdaemon can commicate with Systemd, the Oresat Linux Updater daemon, and the main process daemon ([GPS], [StarTracker], [OreSatLive], or the Cirrus Flux Camera daemon depending on which board).
 It will act as the CANbus front end for all processes on an OreSat Linux board. 
 The CANdaemon is ment to be a node on the CANbus, not the Network Manager.
@@ -42,9 +42,8 @@ The CANdaemon is ment to be a node on the CANbus, not the Network Manager.
 - Optional cmake flags, 1st option in `[ ]` is default when not specified:
     - `-DCMAKE_BUILD_TYPE=[Debug|Release]` to turn the -g -Wall cflags on/off
 - Running CANdaemon
-    - `./candaemon` as a process
-    - `./candaemon -d` as a daemon
-    - `./candaemon -l <device>` to specify device. Defaults to can0.
+    - `./candaemon <device>` as a process
+    - `./candaemon <device> -d` as a daemon
 - Installing binary and daemon service file (usefull for testing)
     - `sudo make install` or `sudo ninja install`
 - Building deb binary package on a beaglebone (or debian based armhf system)
@@ -53,12 +52,11 @@ The CANdaemon is ment to be a node on the CANbus, not the Network Manager.
 ## Making a new board
 - Read [design_guide_candaemon_app.md](docs/design_guide_candaemon_app.md)
 - `cp -r boards/template boards/<new_board_name>`
-- modify /boards/<new_board_name>/appilcation.* as needed
+- modify /boards/<new_board_name>/board_apps.* as needed
 - modify /boards/<new_board_name>/objDict with [libedssharp] as needed
 
 ## Useful References
 - [CAN-Wikipedia]
-- [CANopenSocket]
 - [Daemons]
 - [Systemd]
 - [Systemd-DBus]
@@ -73,7 +71,6 @@ The CANdaemon is ment to be a node on the CANbus, not the Network Manager.
 
 <!-- References -->
 [CAN-Wikipedia]:https://en.wikipedia.org/wiki/CAN_bus
-[CANopenSocket]:https://github.com/CANopenNode/CANopenSocket
 [CANopenNode]:https://github.com/CANopenNode/CANopenNode
 [Daemons]:https://www.freedesktop.org/software/systemd/man/daemon.html
 [Systemd]:https://freedesktop.org/wiki/Software/systemd/
@@ -84,4 +81,4 @@ The CANdaemon is ment to be a node on the CANbus, not the Network Manager.
 [CAN-in-Automation]:https://can-cia.org/
 
 <!-- Other --> 
-[libedssharp]:https://github.com/robincornelius/libedssharp
+[libedssharp]:https://github.com/heliochronix/libedssharp
