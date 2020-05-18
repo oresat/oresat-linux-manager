@@ -1,402 +1,523 @@
-#include "log_message.h"
-#include "CANopen.h"
-#include "CO_Linux_tasks.h"
-#include "CO_time.h"
-#include "file_transfer_ODF.h"
-#if MAIN_PROCESS_DBUS_APP
-#include "application.h"
-#endif
-#if LINUX_UPDATER_DBUS_APP
-#include "linux_updater_app.h"
-#endif
-#if SYSTEMD_DBUS_APP
-#include "systemd_app.h"
-#endif
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <string.h>
-#include <sched.h>
-#include <signal.h>
+/*
+ * CANopen main program file for Linux SocketCAN.
+ *
+ * @file        main.c
+ * @author      Janez Paternoster
+ * @copyright   2015 - 2020 Janez Paternoster
+ *
+ * This file is part of CANopenSocket, a Linux implementation of CANopen
+ * stack with master functionality. Project home page is
+ * <https://github.com/CANopenNode/CANopenSocket>. CANopenSocket is based
+ * on CANopenNode: <https://github.com/CANopenNode/CANopenNode>.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+
 #include <errno.h>
 #include <sys/epoll.h>
 #include <net/if.h>
 #include <linux/reboot.h>
 #include <sys/reboot.h>
+#include <errno.h>
+#include <linux/reboot.h>
+#include <net/if.h>
 #include <pthread.h>
-#include <sys/types.h>
+#include <sched.h>
+#include <signal.h>
+#include <stdarg.h>
+#include <stdbool.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/epoll.h>
+#include <sys/reboot.h>
 #include <sys/stat.h>
 #include <unistd.h>
-#include <stdint.h>
-#include <stdbool.h>
-#include <sys/stat.h>
-#include <syslog.h>
-#include <stdarg.h>
 
+#include "CANopen.h"
+#include "CO_error.h"
+#include "CO_Linux_threads.h"
 
-#define TMR_TASK_INTERVAL_NS    (1000000)       // Interval of taskTmr in nanoseconds
-#define TMR_TASK_OVERFLOW_US    (5000)          // Overflow detect limit for taskTmr in microseconds
-#define INCREMENT_1MS(var)      (var++)         // Increment 1ms variable in taskTmr
+#include "file_transfer_ODF.h"
+#include "app_dbus_controller.h"
+#include "board_apps.h"
+#include "system_apps.h"
+
+#ifdef USE_OD_STORAGE
+#include "CO_OD_storage.h"
+#endif
+
+/* Add trace functionality for recording variables over time */
+#if CO_NO_TRACE > 0
+#include "CO_time_trace.h"
+#endif
+
+/* Use DS309-3 standard - ASCII command interface to CANopen: NMT master,
+ * LSS master and SDO client */
+#if (CO_CONFIG_GTW) & CO_CONFIG_GTW_ASCII
+#include "309/CO_gateway_ascii.h"
+#endif
+
+/* Interval of mainline and real-time thread in microseconds */
+#ifndef MAIN_THREAD_INTERVAL_US
+#define MAIN_THREAD_INTERVAL_US 100000
+#endif
+#ifndef TMR_THREAD_INTERVAL_US
+#define TMR_THREAD_INTERVAL_US 1000
+#endif
+
+// pid file for daemon
 #define DEFAULT_PID_FILE        "/run/oresat-candaemon.pid"
 
 
-volatile uint16_t           CO_timer1ms = 0U;       // Global variable increments each millisecond.
-/* Mutex is locked, when CAN is not valid (configuration state). May be used
- *  from other threads. RT threads may use CO->CANmodule[0]->CANnormal instead. */
-pthread_mutex_t             CO_CAN_VALID_mtx = PTHREAD_MUTEX_INITIALIZER;
-static int                  rtPriority = -1;        // Real time priority, configurable by arguments. (-1=RT disabled)
-static int                  mainline_epoll_fd;      // epoll file descriptor for mainline
-static CO_time_t            CO_time;                // Object for current time
-volatile sig_atomic_t       CO_endProgram = 0;
-static void*                rt_thread(void* arg);
-static pthread_t            rt_thread_id;
-static int                  rt_thread_epoll_fd;
-
-#ifdef LINUX_UPDATER_DBUS_APP
-static void*                linux_updater_thread(void* arg);
-static pthread_t            linux_updater_thread_id;
+/* Other variables and objects */
+static int                  rtPriority = -1;    /* Real time priority, configurable by arguments. (-1=RT disabled) */
+static int                  CO_ownNodeId = -1;  /* Use value from Object Dictionary or set to 1..127 by arguments */
+#ifdef USE_OD_STORAGE
+static CO_OD_storage_t      odStor;             /* Object Dictionary storage object for CO_OD_ROM */
+static CO_OD_storage_t      odStorAuto;         /* Object Dictionary storage object for CO_OD_EEPROM */
+static char                *odStorFile_rom    = "od_storage";       /* Name of the file */
+static char                *odStorFile_eeprom = "od_storage_auto";  /* Name of the file */
 #endif
-#ifdef MAIN_PROCESS_DBUS_APP
-static void*                main_process_thread(void* arg);
-static pthread_t            main_process_thread_id;
-#endif
-#ifdef SYSTEMD_DBUS_APP_OFF // when connecting to systemd dbus inteface, systemd uses 70% of cpu TODO fix this
-static void*                systemd_thread(void* arg);
-static pthread_t            systemd_thread_id;
+#if CO_NO_TRACE > 0
+static CO_time_t            CO_time;            /* Object for current time */
 #endif
 
+/* Helper functions ***********************************************************/
+/* Realtime thread */
+static void* rt_thread(void* arg);
 
-// Signal handler
-static void signal_handler(int sig) {
+/* candaemon apps thread */
+static void*                apps_dbus_thread(void* arg);
+static pthread_t            apps_dbus_thread_id;
+
+/* make daemon */
+int make_daemon();
+
+/* Signal handler */
+volatile sig_atomic_t CO_endProgram = 0;
+static void sigHandler(int sig) {
     CO_endProgram = 1;
+    // kill this thread as it may be wait for a interupt to wake up
+    pthread_cancel(apps_dbus_thread_id);
+}
 
-    log_message(LOG_DEBUG, "Signal %d call", sig);
+/* callback for emergency messages */
+static void EmergencyRxCallback(const uint16_t ident,
+                                const uint16_t errorCode,
+                                const uint8_t errorRegister,
+                                const uint8_t errorBit,
+                                const uint32_t infoCode)
+{
+    int16_t nodeIdRx = ident ? (ident&0x7F) : CO_ownNodeId;
 
-    // stop all dbus services threads
-#ifdef LINUX_UPDATER_DBUS_APP
-    pthread_cancel(linux_updater_thread_id);
+    log_printf(LOG_NOTICE, DBG_EMERGENCY_RX, nodeIdRx, errorCode,
+               errorRegister, errorBit, infoCode);
+}
+
+/* return string description of NMT state. */
+static char *NmtState2Str(CO_NMT_internalState_t state)
+{
+    switch(state) {
+        case CO_NMT_INITIALIZING:    return "initializing";
+        case CO_NMT_PRE_OPERATIONAL: return "pre-operational";
+        case CO_NMT_OPERATIONAL:     return "operational";
+        case CO_NMT_STOPPED:         return "stopped";
+        default:                     return "unknown";
+    }
+}
+
+/* callback for NMT change messages */
+static void NmtChangedCallback(CO_NMT_internalState_t state)
+{
+    log_printf(LOG_NOTICE, DBG_NMT_CHANGE, NmtState2Str(state), state);
+}
+
+/* callback for monitoring Heartbeat remote NMT state change */
+static void HeartbeatNmtChangedCallback(uint8_t nodeId,
+                                        CO_NMT_internalState_t state,
+                                        void *object)
+{
+    log_printf(LOG_NOTICE, DBG_HB_CONS_NMT_CHANGE,
+               nodeId, NmtState2Str(state), state);
+}
+
+/* Print usage */
+static void printUsage(char *progName) {
+printf(
+"Usage: %s <CAN device name> [options]\n", progName);
+printf(
+"\n"
+"Options:\n"
+"  -i <Node ID>        CANopen Node-id (1..127). If not specified, value from\n"
+"                      Object dictionary (0x2101) is used.\n"
+"  -p <RT priority>    Real-time priority of RT thread (1 .. 99). If not set or\n"
+"                      set to -1, then normal scheduler is used for RT thread.\n"
+"  -r                  Enable reboot on CANopen NMT reset_node command. \n"
+"  -d                  Run the process as a daemon");
+#ifdef USE_OD_STORAGE
+printf(
+"  -s <ODstorage file> Set Filename for OD storage ('od_storage' is default).\n"
+"  -a <ODstorageAuto>  Set Filename for automatic storage variables from\n"
+"                      Object dictionary. ('od_storage_auto' is default).\n");
 #endif
-#ifdef MAIN_PROCESS_DBUS_APP
-    pthread_cancel(main_process_thread_id);
-#endif
-#ifdef SYSTEMD_DBUS_APP_OFF
-    pthread_cancel(systemd_thread_id);
+#if (CO_CONFIG_GTW) & CO_CONFIG_GTW_ASCII
+printf(
+"  -c <interface>      Enable command interface for master functionality.\n"
+"                      One of three types of interfaces can be specified as:\n"
+"                   1. \"stdio\" - Standard IO of a program (terminal).\n"
+"                   2. \"local-<file path>\" - Local socket interface on file\n"
+"                      path, for example \"local-/tmp/CO_command_socket\".\n"
+"                   3. \"tcp-<port>\" - Tcp socket interface on specified \n"
+"                      port, for example \"tcp-60000\".\n"
+"                      Note that this option may affect security of the CAN.\n"
+"  -T <timeout_time>   If -c is specified as local or tcp socket, then this\n"
+"                      parameter specifies socket timeout time in milliseconds.\n"
+"                      Default is 0 - no timeout on established connection.\n");
 #endif
 }
 
 
-// canopen.* needs this
-void CO_errExit(char* msg) {
-    perror(msg);
-    exit(EXIT_FAILURE);
-}
-
-
-void CO_error(const uint32_t info) {
-    CO_errorReport(CO->em, CO_EM_GENERIC_SOFTWARE_ERROR, CO_EMC_SOFTWARE_INTERNAL, info);
-    log_message(LOG_DEBUG, "canopen generic error: 0x%X", info);
-}
-
-
+/*******************************************************************************
+ * Mainline thread
+ ******************************************************************************/
 int main (int argc, char *argv[]) {
-    int c;
-    char *pid_file = DEFAULT_PID_FILE;
-    FILE *run_fp = NULL;
-    pid_t pid = 0, sid = 0;
+    pthread_t rt_thread_id;
     CO_NMT_reset_cmd_t reset = CO_RESET_NOT;
-    int CANdevice0Index = 0;
+    CO_ReturnError_t err;
+#ifdef USE_OD_STORAGE
+    CO_ReturnError_t odStorStatus_rom, odStorStatus_eeprom;
+#endif
+    intptr_t CANdevice0Index = 0;
+    int opt;
     bool_t firstRun = true;
-    char* CANdevice = NULL;
-    int nodeId = OD_CANNodeID; // use OD value
+
+    char* CANdevice = NULL;         /* CAN device, configurable by arguments. */
+    bool_t nodeIdFromArgs = false;  /* True, if program arguments are used for CANopen Node Id */
+    bool_t rebootEnable = false;    /* Configurable by arguments */
+#if (CO_CONFIG_GTW) & CO_CONFIG_GTW_ASCII
+    /* values from CO_commandInterface_t */
+    int32_t commandInterface = CO_COMMAND_IF_DISABLED;
+    /* local socket path if commandInterface == CO_COMMAND_IF_LOCAL_SOCKET */
+    char *localSocketPath = NULL;
+    uint32_t socketTimeout_ms = 0;
+#else
+    #define commandInterface 0
+    #define localSocketPath NULL
+#endif
+
     bool daemon_flag = false;
 
-    // Register signal handlers
-    signal(SIGINT, signal_handler);
-    signal(SIGTERM, signal_handler);
+    /* configure system log */
+    setlogmask(LOG_UPTO (LOG_DEBUG)); /* LOG_DEBUG - log all messages */
+    openlog(argv[0], LOG_PID | LOG_PERROR, LOG_USER); /* print also to standard error */
 
-    // Command line argument processing
-    while ((c = getopt(argc, argv, "dl:")) != -1) {
-        switch (c) {
+    /* Get program options */
+    if(argc < 2 || strcmp(argv[1], "--help") == 0){
+        printUsage(argv[0]);
+        exit(EXIT_SUCCESS);
+    }
+    while((opt = getopt(argc, argv, "i:p:rdc:T:s:a:")) != -1) {
+        const char comm_stdio[] = "stdio";
+        const char comm_local[] = "local-";
+        const char comm_tcp[] = "tcp-";
+        switch (opt) {
+            case 'i':
+                CO_ownNodeId = strtol(optarg, NULL, 0);
+                nodeIdFromArgs = true;
+                break;
+            case 'p': rtPriority = strtol(optarg, NULL, 0);
+                break;
+            case 'r': rebootEnable = true;
+                break;
             case 'd':
                 daemon_flag = true;
                 break;
-            case 'l':
-                CANdevice = optarg;
+#if (CO_CONFIG_GTW) & CO_CONFIG_GTW_ASCII
+            case 'c':
+                if (strcmp(optarg, comm_stdio) == 0) {
+                    commandInterface = CO_COMMAND_IF_STDIO;
+                }
+                else if (strncmp(optarg, comm_local, strlen(comm_local)) == 0) {
+                    commandInterface = CO_COMMAND_IF_LOCAL_SOCKET;
+                    localSocketPath = &optarg[6];
+                }
+                else if (strncmp(optarg, comm_tcp, strlen(comm_tcp)) == 0) {
+                    const char *portStr = &optarg[4];
+                    uint16_t port;
+                    int nMatch = sscanf(portStr, "%hu", &port);
+                    if(nMatch != 1) {
+                        log_printf(LOG_CRIT, DBG_NOT_TCP_PORT, portStr);
+                        exit(EXIT_FAILURE);
+                    }
+                    commandInterface = port;
+                }
+                else {
+                    log_printf(LOG_CRIT, DBG_ARGUMENT_UNKNOWN, "-c", optarg);
+                    exit(EXIT_FAILURE);
+                }
                 break;
-            case '?':
-                if (optopt == 'l')
-                    fprintf(stderr, "flag l requires a argument\n");
-                else
-                    fprintf(stderr, "Uknown flag\n");
-                exit(1);
+            case 'T':
+                socketTimeout_ms = strtoul(optarg, NULL, 0);
+                break;
+#endif
+#ifdef USE_OD_STORAGE
+            case 's': odStorFile_rom = optarg;
+                break;
+            case 'a': odStorFile_eeprom = optarg;
+                break;
+#endif
             default:
-                fprintf(stderr, "Usage: %s [-d] [-l link]\n", argv[0]);
-                exit(1);
+                printUsage(argv[0]);
+                exit(EXIT_FAILURE);
         }
     }
 
-    if (CANdevice == NULL)
-        CANdevice = "can1";
-
-    CANdevice0Index = if_nametoindex(CANdevice);
-
-    setlogmask(LOG_UPTO(LOG_NOTICE));
-    openlog(argv[0], LOG_PID|LOG_CONS, LOG_DAEMON);
-
-    /* Run as daemon if needed */
-    if (daemon_flag) {
-        log_message(LOG_DEBUG, "Starting as daemon...\n");
-        /* Fork */
-        if ((pid = fork()) < 0) {
-            log_message(LOG_ERR, "Error: Failed to fork!\n");
-            exit(EXIT_FAILURE);
-        }
-
-        /* Parent process exits */
-        if (pid) {
-            exit(EXIT_SUCCESS);
-        }
-
-        /* Child process continues on */
-        /* Log PID */
-        if ((run_fp = fopen(pid_file, "w+")) == NULL) {
-            log_message(LOG_ERR, "Error: Unable to open file %s\n", pid_file);
-            exit(EXIT_FAILURE);
-        }
-        fprintf(run_fp, "%d\n", getpid());
-        fflush(run_fp);
-        fclose(run_fp);
-
-        /* Create new session for process group leader */
-        if ((sid = setsid()) < 0) {
-            log_message(LOG_ERR, "Error: Failed to create new session!\n");
-            exit(EXIT_FAILURE);
-        }
-
-        /* Set default umask and cd to root to avoid blocking filesystems */
-        umask(0);
-        if (chdir("/") < 0) {
-            log_message(LOG_ERR, "Error: Failed to chdir to root: %s\n", strerror(errno));
-            exit(EXIT_FAILURE);
-        }
-
-        /* Redirect std streams to /dev/null */
-        if (freopen("/dev/null", "r", stdin) == NULL) {
-            log_message(LOG_ERR, "Error: Failed to redirect streams to /dev/null!\n");
-            exit(EXIT_FAILURE);
-        }
-        if (freopen("/dev/null", "w+", stdout) == NULL) {
-            log_message(LOG_ERR, "Error: Failed to redirect streams to /dev/null!\n");
-            exit(EXIT_FAILURE);
-        }
-        if (freopen("/dev/null", "w+", stderr) == NULL) {
-            log_message(LOG_ERR, "Error: Failed to redirect streams to /dev/null!\n");
-            exit(EXIT_FAILURE);
-        }
+    if(optind < argc) {
+        CANdevice = argv[optind];
+        CANdevice0Index = if_nametoindex(CANdevice);
     }
 
-    if(nodeId < 1 || nodeId > 127) {
-        log_message(LOG_ERR, "Invalid node ID (%d)\n", nodeId);
+    if(nodeIdFromArgs && (CO_ownNodeId < 1 || CO_ownNodeId > 127)) {
+        log_printf(LOG_CRIT, DBG_WRONG_NODE_ID, CO_ownNodeId);
+        printUsage(argv[0]);
         exit(EXIT_FAILURE);
     }
 
     if(rtPriority != -1 && (rtPriority < sched_get_priority_min(SCHED_FIFO)
                          || rtPriority > sched_get_priority_max(SCHED_FIFO))) {
-        log_message(LOG_ERR, "Wrong RT priority (%d)\n", rtPriority);
+        log_printf(LOG_CRIT, DBG_WRONG_PRIORITY, rtPriority);
+        printUsage(argv[0]);
         exit(EXIT_FAILURE);
     }
 
     if(CANdevice0Index == 0) {
-        log_message(LOG_ERR, "Can't find CAN device \"%s\"\n", CANdevice);
+        log_printf(LOG_CRIT, DBG_NO_CAN_DEVICE, CANdevice);
         exit(EXIT_FAILURE);
     }
 
-    log_message(LOG_DEBUG, "Starting Node ID %d(0x%02X)\n", nodeId, nodeId);
+    /* Run as daemon if needed */
+    if (daemon_flag) {
+        make_daemon();
+    }
 
-    // Verify, if OD structures have proper alignment of initial values
+
+    log_printf(LOG_INFO, DBG_CAN_OPEN_INFO, CO_ownNodeId, "starting");
+
+
+    /* Allocate memory for CANopen objects */
+    err = CO_new(NULL);
+    if (err != CO_ERROR_NO) {
+        log_printf(LOG_CRIT, DBG_CAN_OPEN, "CO_new()", err);
+        exit(EXIT_FAILURE);
+    }
+
+
+    /* Verify, if OD structures have proper alignment of initial values */
     if(CO_OD_RAM.FirstWord != CO_OD_RAM.LastWord) {
-        log_message(LOG_ERR, "Program init - Error in CO_OD_RAM.\n");
+        log_printf(LOG_CRIT, DBG_OBJECT_DICTIONARY, "CO_OD_RAM");
         exit(EXIT_FAILURE);
     }
     if(CO_OD_EEPROM.FirstWord != CO_OD_EEPROM.LastWord) {
-        log_message(LOG_ERR, "Program init - Error in CO_OD_EEPROM.\n");
+        log_printf(LOG_CRIT, DBG_OBJECT_DICTIONARY, "CO_OD_EEPROM");
         exit(EXIT_FAILURE);
     }
     if(CO_OD_ROM.FirstWord != CO_OD_ROM.LastWord) {
-        log_message(LOG_ERR, "Program init - Error in CO_OD_ROM.\n");
+        log_printf(LOG_CRIT, DBG_OBJECT_DICTIONARY, "CO_OD_ROM");
         exit(EXIT_FAILURE);
     }
 
-    // Catch signals SIGINT and SIGTERM
-    if(signal(SIGINT, signal_handler) == SIG_ERR) {
-        log_message(LOG_ERR, "Program init - SIGINIT handler creation failed");
+
+#ifdef USE_OD_STORAGE
+    /* initialize Object Dictionary storage */
+    odStorStatus_rom = CO_OD_storage_init(&odStor, (uint8_t*) &CO_OD_ROM, sizeof(CO_OD_ROM), odStorFile_rom);
+    odStorStatus_eeprom = CO_OD_storage_init(&odStorAuto, (uint8_t*) &CO_OD_EEPROM, sizeof(CO_OD_EEPROM), odStorFile_eeprom);
+#endif
+
+    /* Catch signals SIGINT and SIGTERM */
+    if(signal(SIGINT, sigHandler) == SIG_ERR) {
+        log_printf(LOG_CRIT, DBG_ERRNO, "signal(SIGINT, sigHandler)");
         exit(EXIT_FAILURE);
     }
-    if(signal(SIGTERM, signal_handler) == SIG_ERR) {
-        log_message(LOG_ERR, "Program init - SIGTERM handler creation failed");
+    if(signal(SIGTERM, sigHandler) == SIG_ERR) {
+        log_printf(LOG_CRIT, DBG_ERRNO, "signal(SIGTERM, sigHandler)");
         exit(EXIT_FAILURE);
     }
 
-    // increase variable each startup. Variable is automatically stored in non-volatile memory.
-    log_message(LOG_DEBUG, "Power count=%u ...\n", ++OD_powerOnCounter);
-
-    // Create dbus threads
-#ifdef SYSTEMD_DBUS_APP_OFF
-    if(pthread_create(&systemd_thread_id, NULL, systemd_thread, NULL) != 0)
-        log_message(LOG_ERR, "Program init - systemd_thread creation failed\n");
-#endif
-#ifdef LINUX_UPDATER_DBUS_APP
-    if(pthread_create(&linux_updater_thread_id, NULL, linux_updater_thread, NULL) != 0)
-        log_message(LOG_ERR, "Program init - linux_updater_thread creation failed\n");
-#endif
-#ifdef MAIN_PROCESS_DBUS_APP
-    if(pthread_create(&main_process_thread_id, NULL, main_process_thread, NULL) != 0)
-        log_message(LOG_ERR, "Program init - main_process_thread creation failed\n");
-#endif
 
     while(reset != CO_RESET_APP && reset != CO_RESET_QUIT && CO_endProgram == 0) {
-        CO_ReturnError_t err;
+/* CANopen communication reset - initialize CANopen objects *******************/
 
-        log_message(LOG_DEBUG, "Communication reset ...\n");
+        log_printf(LOG_INFO, DBG_CAN_OPEN_INFO, CO_ownNodeId, "communication reset");
 
 
-        // Wait other threads (command interface).
-        pthread_mutex_lock(&CO_CAN_VALID_mtx);
-
-        // Wait rt_thread.
+        /* Wait rt_thread. */
         if(!firstRun) {
             CO_LOCK_OD();
             CO->CANmodule[0]->CANnormal = false;
             CO_UNLOCK_OD();
         }
 
-        // Enter CAN configuration.
-        CO_CANsetConfigurationMode(&CANdevice0Index);
 
-        // initialize CANopen
-        err = CO_init(&CANdevice0Index, nodeId, 0);
-        if(err != CO_ERROR_NO)
-            log_message(LOG_ERR, "Communication reset - initialization failed\n");
+        /* Enter CAN configuration. */
+        CO_CANsetConfigurationMode((void *)CANdevice0Index);
 
-        // Configure callback functions for task control
-        CO_EM_initCallback(CO->em, taskMain_cbSignal);
-        CO_SDO_initCallback(CO->SDO[0], taskMain_cbSignal);
-        CO_SDOclient_initCallback(CO->SDOclient[0], taskMain_cbSignal);
 
-        // Initialize time
+        /* initialize CANopen */
+        if(!nodeIdFromArgs) {
+            /* use value from Object dictionary, if not set by program arguments */
+            CO_ownNodeId = OD_CANNodeID;
+        }
+
+        err = CO_CANinit((void *)CANdevice0Index, 0 /* bit rate not used */);
+        if(err != CO_ERROR_NO) {
+            log_printf(LOG_CRIT, DBG_CAN_OPEN, "CO_CANinit()", err);
+            exit(EXIT_FAILURE);
+        }
+
+        err = CO_CANopenInit(CO_ownNodeId);
+        if(err != CO_ERROR_NO) {
+            log_printf(LOG_CRIT, DBG_CAN_OPEN, "CO_CANopenInit()", err);
+            exit(EXIT_FAILURE);
+        }
+
+        /* initialize part of threadMain and callbacks */
+        threadMainWait_init();
+        CO_EM_initCallbackRx(CO->em, EmergencyRxCallback);
+        CO_NMT_initCallbackChanged(CO->NMT, NmtChangedCallback);
+        CO_HBconsumer_initCallbackNmtChanged(CO->HBcons, NULL,
+                                             HeartbeatNmtChangedCallback);
+
+
+#ifdef USE_OD_STORAGE
+        /* initialize OD objects 1010 and 1011 and verify errors. */
+        CO_OD_configure(CO->SDO[0], OD_H1010_STORE_PARAM_FUNC, CO_ODF_1010, (void*)&odStor, 0, 0U);
+        CO_OD_configure(CO->SDO[0], OD_H1011_REST_PARAM_FUNC, CO_ODF_1011, (void*)&odStor, 0, 0U);
+        if(odStorStatus_rom != CO_ERROR_NO) {
+            CO_errorReport(CO->em, CO_EM_NON_VOLATILE_MEMORY, CO_EMC_HARDWARE, (uint32_t)odStorStatus_rom);
+        }
+        if(odStorStatus_eeprom != CO_ERROR_NO) {
+            CO_errorReport(CO->em, CO_EM_NON_VOLATILE_MEMORY, CO_EMC_HARDWARE, (uint32_t)odStorStatus_eeprom + 1000);
+        }
+#endif
+
+
+#if CO_NO_TRACE > 0
+        /* Initialize time */
         CO_time_init(&CO_time, CO->SDO[0], &OD_time.epochTimeBaseMs, &OD_time.epochTimeOffsetMs, 0x2130);
+#endif
 
-        // First time only initialization.
+        /* First time only initialization. */
         if(firstRun) {
             firstRun = false;
-
-            // Configure epoll for mainline
-            mainline_epoll_fd = epoll_create(4);
-            if(mainline_epoll_fd == -1)
-                log_message(LOG_ERR, "Program init - epoll_create mainline failed\n");
-
-            // Init mainline
-            taskMain_init(mainline_epoll_fd, &OD_performance[ODA_performance_mainCycleMaxTime]);
-
-            // Configure epoll for rt_thread
-            rt_thread_epoll_fd = epoll_create(2);
-            if(rt_thread_epoll_fd == -1)
-                log_message(LOG_ERR, "Program init - epoll_create rt_thread failed\n");
-
-            // Init taskRT
-            CANrx_taskTmr_init(rt_thread_epoll_fd, TMR_TASK_INTERVAL_NS, &OD_performance[ODA_performance_timerCycleMaxTime]);
-
-            OD_performance[ODA_performance_timerCycleTime] = TMR_TASK_INTERVAL_NS/1000; /* informative */
-
-            // Create rt_thread
-            if(pthread_create(&rt_thread_id, NULL, rt_thread, NULL) != 0)
-                log_message(LOG_ERR, "Program init - rt_thread creation failed\n");
-
-            // Set priority for rt_thread
-            if(rtPriority > 0) {
-                struct sched_param param;
-
-                param.sched_priority = rtPriority;
-                if(pthread_setschedparam(rt_thread_id, SCHED_FIFO, &param) != 0)
-                    log_message(LOG_ERR, "Program init - rt_thread set scheduler failed\n");
-            }
 
             // set up general ODFs
             file_transfer_ODF_setup();
 
-            // set up dbus services
-#ifdef SYSTEMD_DBUS_APP
-            systemd_app_setup();
+            // add dbus signal matches
+            apps_dbus_start();
+
+#ifndef SYSTEM_APPS_OFF
+            setup_system_apps();
 #endif
-#ifdef LINUX_UPDATER_DBUS_APP
-            linux_updater_app_setup();
+
+#ifndef BOARD_APPS_OFF
+            setup_board_apps();
 #endif
-#ifdef MAIN_PROCESS_DBUS_APP
-            main_process_app_setup();
-#endif
-        }
 
-        // start CAN
-        CO_CANsetNormalMode(CO->CANmodule[0]);
-        pthread_mutex_unlock(&CO_CAN_VALID_mtx);
+            /* Init threadMainWait structure and file descriptors */
+            threadMainWait_initOnce(MAIN_THREAD_INTERVAL_US, commandInterface,
+                                    socketTimeout_ms, localSocketPath);
 
-        reset = CO_RESET_NOT;
-        log_message(LOG_DEBUG, "running\n");
+            /* Init threadRT structure and file descriptors */
+            CANrx_threadTmr_init(TMR_THREAD_INTERVAL_US);
 
-        while(reset == CO_RESET_NOT && CO_endProgram == 0) {
-            int ready;
-            struct epoll_event ev;
+            /* Create rt_thread and set priority */
+            if(pthread_create(&rt_thread_id, NULL, rt_thread, NULL) != 0) {
+                log_printf(LOG_CRIT, DBG_ERRNO, "pthread_create(rt_thread)");
+                exit(EXIT_FAILURE);
+            }
+            if(rtPriority > 0) {
+                struct sched_param param;
 
-            ready = epoll_wait(mainline_epoll_fd, &ev, 1, -1);
-
-            if(ready != 1) {
-                if(errno != EINTR) {
-                    CO_error(0x11100000L + errno);
+                param.sched_priority = rtPriority;
+                if (pthread_setschedparam(rt_thread_id, SCHED_FIFO, &param) != 0) {
+                    log_printf(LOG_CRIT, DBG_ERRNO, "pthread_setschedparam()");
+                    exit(EXIT_FAILURE);
                 }
             }
-            else if(taskMain_process(ev.data.fd, &reset, CO_timer1ms)) {
-                /* code was processed in the above function.
-                 * Additional code can be process below.
-                 */
+
+            //create app dbus thread
+            if(pthread_create(&apps_dbus_thread_id, NULL, apps_dbus_thread, NULL) != 0) {
+                log_printf(LOG_CRIT, DBG_ERRNO, "pthread_create(apps_dbus_thread)");
+                exit(EXIT_FAILURE);
             }
-            else {
-                // No file descriptor was processed.
-                CO_error(0x11200000L);
-            }
+        } /* if(firstRun) */
+
+        /* start CAN */
+        CO_CANsetNormalMode(CO->CANmodule[0]);
+
+        reset = CO_RESET_NOT;
+
+        log_printf(LOG_INFO, DBG_CAN_OPEN_INFO, CO_ownNodeId, "running ...");
+
+
+        while(reset == CO_RESET_NOT && CO_endProgram == 0) {
+/* loop for normal program execution ******************************************/
+            threadMainWait_process(&reset);
+
+#ifdef USE_OD_STORAGE
+            CO_OD_storage_autoSave(&odStorAuto, timer1usDiff, 60000000);
+#endif
         }
     }
 
-    // join threads
+
+/* program exit ***************************************************************/
+    // stop app dbus interface
+    apps_dbus_end();
+
+    /* join threads */
     CO_endProgram = 1;
-    if(pthread_join(rt_thread_id, NULL) != 0)
-        log_message(LOG_ERR, "Program end - pthread_join failed for rt thread");
+    if (pthread_join(rt_thread_id, NULL) != 0) {
+        log_printf(LOG_CRIT, DBG_ERRNO, "pthread_join()");
+        exit(EXIT_FAILURE);
+    }
+    if (pthread_join(apps_dbus_thread_id, NULL) != 0) {
+        log_printf(LOG_CRIT, DBG_ERRNO, "pthread_join()");
+        exit(EXIT_FAILURE);
+    }
 
-    // stop dbus threads
-#ifdef SYSTEMD_DBUS_APP_OFF
-    if(pthread_join(systemd_thread_id, NULL) != 0)
-        log_message(LOG_ERR, "Program end - pthread_join failed for systemd app");
+#ifdef USE_OD_STORAGE
+    /* Store CO_OD_EEPROM */
+    CO_OD_storage_autoSave(&odStorAuto, 0, 0);
+    CO_OD_storage_autoSaveClose(&odStorAuto);
 #endif
-#ifdef LINUX_UPDATER_DBUS_APP
-    if(pthread_join(linux_updater_thread_id, NULL) != 0)
-        log_message(LOG_ERR, "Program end - pthread_join failed for linux updater app");
-#endif
-#ifdef MAIN_PROCESS_DBUS_APP
-    if(pthread_join(main_process_thread_id, NULL) != 0)
-        log_message(LOG_ERR, "Program end - pthread_join failed for main process app");
-#endif
+    /* delete objects from memory */
+    CANrx_threadTmr_close();
+    threadMainWait_close();
+    CO_delete((void *)CANdevice0Index);
 
-    // delete objects from memory
-    CANrx_taskTmr_close();
-    taskMain_close();
-    CO_delete(&CANdevice0Index);
+    log_printf(LOG_INFO, DBG_CAN_OPEN_INFO, CO_ownNodeId, "finished");
 
-    log_message(LOG_DEBUG, "%s on %s (nodeId=0x%02X) - finished.\n\n", argv[0], CANdevice, nodeId);
-
-    // Flush all buffers (and reboot)
-    if(reset == CO_RESET_APP) {
+    /* Flush all buffers (and reboot) */
+    if(rebootEnable && reset == CO_RESET_APP) {
         sync();
         if(reboot(LINUX_REBOOT_CMD_RESTART) != 0) {
-            log_message(LOG_ERR, "Program end - reboot failed");
+            log_printf(LOG_CRIT, DBG_ERRNO, "reboot()");
+            exit(EXIT_FAILURE);
         }
     }
 
@@ -404,67 +525,90 @@ int main (int argc, char *argv[]) {
 }
 
 
+/*******************************************************************************
+ * Realtime thread for CAN receive and threadTmr
+ ******************************************************************************/
 static void* rt_thread(void* arg) {
+
+    /* Endless loop */
     while(CO_endProgram == 0) {
-        int ready;
-        struct epoll_event ev;
 
-        ready = epoll_wait(rt_thread_epoll_fd, &ev, 1, -1);
-
-        if(ready != 1) {
-            if(errno != EINTR) {
-                CO_error(0x12100000L + errno);
-            }
-        }
-        else if(CANrx_taskTmr_process(ev.data.fd)) {
-            // code was processed in the above function. Additional code process below
-            INCREMENT_1MS(CO_timer1ms);
-
-            // Monitor variables with trace objects
-            CO_time_process(&CO_time);
+        /* function may skip some milliseconds. Number of missed is returned */
+        CANrx_threadTmr_process();
 
 #if CO_NO_TRACE > 0
-            for(int i=0; i<OD_traceEnable && i<CO_NO_TRACE; i++) {
-                CO_trace_process(CO->trace[i], *CO_time.epochTimeOffsetMs);
-            }
+        /* Monitor variables with trace objects */
+        CO_time_process(&CO_time);
+        for(i=0; i<OD_traceEnable && i<CO_NO_TRACE; i++) {
+            CO_trace_process(CO->trace[i], *CO_time.epochTimeOffsetMs);
+        }
 #endif
-
-            // Detect timer large overflow
-            if(OD_performance[ODA_performance_timerCycleMaxTime] > TMR_TASK_OVERFLOW_US && rtPriority > 0 && CO->CANmodule[0]->CANnormal) {
-                CO_errorReport(CO->em, CO_EM_ISR_TIMER_OVERFLOW, CO_EMC_SOFTWARE_INTERNAL, 0x22400000L | OD_performance[ODA_performance_timerCycleMaxTime]);
-            }
-        }
-        else {
-            // No file descriptor was processed.
-            CO_error(0x12200000L);
-        }
     }
 
     return NULL;
 }
 
-#ifdef SYSTEMD_DBUS_APP_OFF
+
 static void*
-systemd_thread(void* arg) {
-    systemd_app_main();
+apps_dbus_thread(void* arg) {
+    apps_dbus_main();
     return NULL;
 }
-#endif
 
 
-#ifdef LINUX_UPDATER_DBUS_APP
-static void*
-linux_updater_thread(void* arg) {
-    linux_updater_app_main();
-    return NULL;
+int make_daemon(void) {
+    char *pid_file = DEFAULT_PID_FILE;
+    FILE *run_fp = NULL;
+    pid_t pid = 0, sid = 0;
+
+    log_printf(LOG_DEBUG, "Starting as daemon...\n");
+    /* Fork */
+    if ((pid = fork()) < 0) {
+        log_printf(LOG_ERR, "Error: Failed to fork!\n");
+        exit(EXIT_FAILURE);
+    }
+
+    /* Parent process exits */
+    if (pid) {
+        exit(EXIT_SUCCESS);
+    }
+
+    /* Child process continues on */
+    /* Log PID */
+    if ((run_fp = fopen(pid_file, "w+")) == NULL) {
+        log_printf(LOG_ERR, "Error: Unable to open file %s\n", pid_file);
+        exit(EXIT_FAILURE);
+    }
+    fprintf(run_fp, "%d\n", getpid());
+    fflush(run_fp);
+    fclose(run_fp);
+
+    /* Create new session for process group leader */
+    if ((sid = setsid()) < 0) {
+        log_printf(LOG_ERR, "Error: Failed to create new session!\n");
+        exit(EXIT_FAILURE);
+    }
+
+    /* Set default umask and cd to root to avoid blocking filesystems */
+    umask(0);
+    if (chdir("/") < 0) {
+        log_printf(LOG_ERR, "Error: Failed to chdir to root: %s\n", strerror(errno));
+        exit(EXIT_FAILURE);
+    }
+
+    /* Redirect std streams to /dev/null */
+    if (freopen("/dev/null", "r", stdin) == NULL) {
+        log_printf(LOG_ERR, "Error: Failed to redirect streams to /dev/null!\n");
+        exit(EXIT_FAILURE);
+    }
+    if (freopen("/dev/null", "w+", stdout) == NULL) {
+        log_printf(LOG_ERR, "Error: Failed to redirect streams to /dev/null!\n");
+        exit(EXIT_FAILURE);
+    }
+    if (freopen("/dev/null", "w+", stderr) == NULL) {
+        log_printf(LOG_ERR, "Error: Failed to redirect streams to /dev/null!\n");
+        exit(EXIT_FAILURE);
+    }
+
+    return 1;
 }
-#endif
-
-
-#ifdef MAIN_PROCESS_DBUS_APP
-static void*
-main_process_thread(void* arg) {
-    main_process_app_main();
-    return NULL;
-}
-#endif

@@ -31,52 +31,6 @@ message(STATUS "${BOARD} Board selected")
 
 
 ##############################################################################
-# Turn DBus apps on/off for debugging. Assumption if not define, it is on.
-
-if(SYSTEMD_APP MATCHES "on")
-    message(STATUS "Systemd dbus app is on")
-    add_definitions(-DSYSTEMD_DBUS_APP)
-elseif(SYSTEMD_APP MATCHES "off")
-    message(STATUS "Systemd dbus app is off")
-    remove_definitions(-DSYSTEMD_DBUS_APP)
-    # SYSTEMD_DBUS_APP is not defined
-elseif(NOT SYSTEMD_APP)
-    message(STATUS "Systemd dbus app is on")
-    add_definitions(-DSYSTEMD_DBUS_APP)
-else()
-    message(FATAL_ERROR "${SYSTEMD_APP} is not a valid input for SYSTEMD_APP")
-endif()
-
-if(LINUX_UPDATER_APP MATCHES "on")
-    message(STATUS "Linux updater dbus app is on")
-    add_definitions(-DLINUX_UPDATER_DBUS_APP)
-elseif(LINUX_UPDATER_APP MATCHES "off")
-    message(STATUS "Linux updater dbus app is off")
-    remove_definitions(-DLINUX_UPDATER_DBUS_APP)
-    # LINUX_UPDATER_DBUS_APP is not defined
-elseif(NOT LINUX_UPDATER_APP)
-    message(STATUS "Linux updater dbus app is on")
-    add_definitions(-DLINUX_UPDATER_DBUS_APP)
-else()
-    message(FATAL_ERROR "${LINUX_UPDATER_APP} is not a valid input for LINUX_UPDATER_APP")
-endif()
-
-if(MAIN_PROCESS_APP MATCHES "on")
-    message(STATUS "Main process dbus app is on")
-    add_definitions(-DMAIN_PROCESS_DBUS_APP)
-elseif(MAIN_PROCESS_APP MATCHES "off")
-    message(STATUS "Main process dbus app is off")
-    remove_definitions(-DMAIN_PROCESS_DBUS_APP)
-    # MAIN_PROCESS_DBUS_APP is not defined
-elseif(NOT MAIN_PROCESS_APP)
-    message(STATUS "Main process dbus app is on")
-    add_definitions(-DMAIN_PROCESS_DBUS_APP)
-else()
-    message(FATAL_ERROR "${MAIN_PROCESS_APP} is not a valid input for MAIN_PROCESS_APP")
-endif()
-
-
-##############################################################################
 # Check Linux distribution / verion / kernel version
 
 set(LINUX_DISTRIBUTION "")
@@ -134,7 +88,7 @@ if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Debug)
 endif()
 
-set(CMAKE_C_FLAGS "-Wall")
+set(CMAKE_C_FLAGS "-Wall -lpcre2-8 ")
 set(CMAKE_C_FLAGS_DEBUG "-g")
 set(CMAKE_C_FLAGS_RELEASE "-O3")
 
@@ -157,42 +111,78 @@ endif()
 # Get source files
 
 # all paths to source directories
-set(BOARDS_DIR src/boards/${BOARD})
-set(OD_DIR src/boards/${BOARD}/object_dictionary)
-set(CANOPENNODE_DIR src/CANopenNode)
-set(STACK_DIR src/CANopenNode/stack)
-set(COMMON_DIR src/common)
 set(STACK_DRIVER_DIR src/socketCAN)
+set(CANOPEN_DIR src/CANopenNode)
+set(OD_DIR src/boards/${BOARD}/object_dictionary)
+set(COMMON_DIR src/common)
+set(SYSTEM_APPS_DIR src/system_apps)
+set(BOARD_APPS_DIR src/boards/${BOARD})
 
-# add all headers in source directories
-include_directories(${BOARDS_DIR})
-include_directories(${OD_DIR})
-include_directories(${CANOPENNODE_DIR})
-include_directories(${STACK_DIR})
-include_directories(${STACK_DRIVER_DIR})
-include_directories(${COMMON_DIR})
+set(CANDAEMON_INCLUDE_DIRS
+    src/CANopenNode/301
+    ${STACK_DRIVER_DIR}
+    ${CANOPEN_DIR}
+    ${OD_DIR}
+    ${COMMON_DIR}
+    ${SYSTEM_APPS_DIR}
+    ${BOARD_APPS_DIR}
+)
+
+# deal with each board having different apps
+# NOTE every time an app is add "cmake .." need to be call manually
+aux_source_directory(${BOARD_APPS_DIR} BOARD_APPS_SOURCES)
+aux_source_directory(${SYSTEM_APPS_DIR} SYSTEM_APPS_SOURCES)
+
+set(CANOPENNODE_SOURCES
+    ${STACK_DRIVER_DIR}/CO_driver.c
+    ${STACK_DRIVER_DIR}/CO_error.c
+    ${STACK_DRIVER_DIR}/CO_Linux_threads.c
+    ${CANOPEN_DIR}/301/CO_Emergency.c
+    ${CANOPEN_DIR}/301/CO_fifo.c
+    ${CANOPEN_DIR}/301/CO_HBconsumer.c
+    ${CANOPEN_DIR}/301/CO_NMT_Heartbeat.c
+    ${CANOPEN_DIR}/301/CO_PDO.c
+    ${CANOPEN_DIR}/301/CO_SDOclient.c
+    ${CANOPEN_DIR}/301/CO_SDOserver.c
+    ${CANOPEN_DIR}/301/CO_SYNC.c
+    ${CANOPEN_DIR}/301/CO_TIME.c
+    ${CANOPEN_DIR}/301/crc16-ccitt.c
+    ${CANOPEN_DIR}/309/CO_gateway_ascii.c
+    ${CANOPEN_DIR}/CANopen.c
+)
+
+set(CANOPENNODE_HEADERS
+    ${STACK_DRIVER_DIR}/CO_error.h
+    ${STACK_DRIVER_DIR}/CO_Linux_threads.h
+    ${CANOPEN_DIR}/301/CO_config.h
+    ${CANOPEN_DIR}/301/CO_driver.h
+    ${CANOPEN_DIR}/301/CO_Emergency.h
+    ${CANOPEN_DIR}/301/CO_fifo.h
+    ${CANOPEN_DIR}/301/CO_HBconsumer.h
+    ${CANOPEN_DIR}/301/CO_NMT_Heartbeat.h
+    ${CANOPEN_DIR}/301/CO_PDO.h
+    ${CANOPEN_DIR}/301/CO_SDOclient.h
+    ${CANOPEN_DIR}/301/CO_SDOserver.h
+    ${CANOPEN_DIR}/301/CO_SYNC.h
+    ${CANOPEN_DIR}/301/CO_TIME.h
+    ${CANOPEN_DIR}/301/crc16-ccitt.h
+    ${CANOPEN_DIR}/309/CO_gateway_ascii.h
+    ${CANOPEN_DIR}/CANopen.h
+)
+
+
+add_library(CANopenNode ${CANOPENNODE_SOURCES} ${CANOPENNODE_HEADERS})
+target_include_directories(CANopenNode PUBLIC ${CANDAEMON_INCLUDE_DIRS})
 
 set(SOURCE_FILES
-    ${BOARDS_DIR}/application.c
     ${OD_DIR}/CO_OD.c
-    ${CANOPENNODE_DIR}/CANopen.c
-    ${STACK_DIR}/CO_Emergency.c
-    ${STACK_DIR}/CO_HBconsumer.c
-    ${STACK_DIR}/CO_NMT_Heartbeat.c
-    ${STACK_DIR}/CO_PDO.c
-    ${STACK_DIR}/CO_SDO.c
-    ${STACK_DIR}/CO_SDOmaster.c
-    ${STACK_DIR}/CO_SYNC.c
-    ${STACK_DIR}/CO_trace.c
-    ${STACK_DIR}/crc16-ccitt.c
-    ${STACK_DRIVER_DIR}/CO_driver.c
-    ${STACK_DRIVER_DIR}/CO_Linux_tasks.c
-    ${STACK_DRIVER_DIR}/CO_time.c
     ${COMMON_DIR}/log_message.c
     ${COMMON_DIR}/file_transfer_ODF.c
     ${COMMON_DIR}/app_OD_helpers.c
-    ${COMMON_DIR}/systemd_app.c
-    ${COMMON_DIR}/linux_updater_app.c
+    ${COMMON_DIR}/daemon_controller.c
+    ${COMMON_DIR}/app_dbus_controller.c
+    ${SYSTEM_APPS_SOURCES}
+    ${BOARD_APPS_SOURCES}
     src/main.c
 )
 
@@ -201,8 +191,13 @@ set(SOURCE_FILES
 # Create an executable
 
 add_executable(candaemon ${SOURCE_FILES})
+
+target_link_libraries(candaemon CANopenNode)
 target_link_libraries(candaemon ${LIBSYSTEMD_LIBRARIES} Threads::Threads)
-target_include_directories(candaemon PUBLIC ${LIBSYSTEMD_INCLUDE_DIRS})
+
+target_include_directories(candaemon PRIVATE ${CANDAEMON_INCLUDE_DIRS})
+target_include_directories(candaemon PRIVATE ${LIBSYSTEMD_INCLUDE_DIRS})
+
 target_compile_options(candaemon PUBLIC ${LIBSYSTEMD_CFLAGS_OTHER})
 
 

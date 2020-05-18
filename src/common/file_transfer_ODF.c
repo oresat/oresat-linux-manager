@@ -5,6 +5,7 @@
 #include "file_transfer_ODF.h"
 #include <string.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <sys/types.h>
 #include <dirent.h>
 #include <sys/sendfile.h>
@@ -13,13 +14,41 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <pthread.h>
+#include <stdbool.h>
 
 
-#define FILE_RECEIVE_FOLDER     "/tmp/received_files/"
-#define FILE_SEND_FOLDER        "/tmp/send_files/"
+#define PCRE2_CODE_UNIT_WIDTH       8 // must be set before including pcre2.h
+#include <pcre2.h>
+
+
+#define FILE_RECEIVE_FOLDER         "/tmp/received_files/"
+#define FILE_SEND_FOLDER            "/tmp/send_files/"
 #ifndef CO_SDO_BUFFER_SIZE
-#define CO_SDO_BUFFER_SIZE      889 // CO_driver.h should define this
+#define CO_SDO_BUFFER_SIZE          889 // CO_driver.h should define this
 #endif
+#define RECV_FILE_ODF_INDEX         0x3001
+#define SEND_FILE_ARRAY_ODF_INDEX   0x3002
+#define SEND_FILE_ODF_INDEX         0x3003
+
+
+// ***************************************************************************
+// private structs
+
+
+/**
+ * File transfer ODF will use an array of these when receive files to figure
+ * out what to do with the file.
+ */
+typedef struct {
+    // app name for logging error messages.
+    char *app_name;
+    // PCRE2 regex string for matching file names.
+    char *regex_string;
+    // Absolute path to move the file to.
+    char *path_to_send;
+    // Callaback that will be called when the regex matches. Optional.
+    int (*recv_file_callback)(char *);
+} recv_file_request_t;
 
 
 // ***************************************************************************
@@ -29,6 +58,8 @@
 static pthread_mutex_t          FT_ODF_mtx;
 static received_file_data_t     recvFileBuffer;
 static send_file_data_t         sendFileBuffer;
+static recv_file_request_t      *recv_file_request_list = NULL;
+static int                      request_count = 0;
 
 
 // ***************************************************************************
@@ -42,6 +73,7 @@ static int initFileList(send_file_data_t *sendFileBuffer);
 static uint32_t get_file_name(const char *filePath, char *fileName);
 static uint32_t get_file_data(const char *filePath, int8_t *fileData);
 static CO_SDO_abortCode_t read_file_data(CO_ODF_arg_t *ODF_arg);
+static bool match_regex(char *file_name, char *regex_string);
 
 
 // ***************************************************************************
@@ -65,7 +97,8 @@ static int ft_unlock_mtx(void) {
 // Add static data to SDO struct
 
 
-int file_transfer_ODF_setup(void) {
+int
+file_transfer_ODF_setup(void) {
 
     // make sure /tmp dir exist
     struct stat st = {0};
@@ -76,9 +109,9 @@ int file_transfer_ODF_setup(void) {
 
     initFileList(&sendFileBuffer);
 
-    CO_OD_configure(CO->SDO[0], 0x3001, recv_file_ODF, (void*)&recvFileBuffer, 0, 0U);
-    CO_OD_configure(CO->SDO[0], 0x3002, send_file_array_ODF, (void*)&sendFileBuffer, 0, 0U);
-    CO_OD_configure(CO->SDO[0], 0x3003, send_file_ODF, (void*)&sendFileBuffer, 0, 0U);
+    CO_OD_configure(CO->SDO[0], RECV_FILE_ODF_INDEX, recv_file_ODF, (void*)&recvFileBuffer, 0, 0U);
+    CO_OD_configure(CO->SDO[0], SEND_FILE_ARRAY_ODF_INDEX, send_file_array_ODF, (void*)&sendFileBuffer, 0, 0U);
+    CO_OD_configure(CO->SDO[0], SEND_FILE_ODF_INDEX, send_file_ODF, (void*)&sendFileBuffer, 0, 0U);
 
     return 0;
 }
@@ -92,7 +125,8 @@ int file_transfer_ODF_setup(void) {
  * Wrapper function used by recv_file_ODF to save file data into SDO buffer from struct.
  * It can handle spilting large data files into multiple segments.
  * */
-static CO_SDO_abortCode_t save_file_data(CO_ODF_arg_t *ODF_arg, received_file_data_t *recvFileBuffer) {
+static CO_SDO_abortCode_t
+save_file_data(CO_ODF_arg_t *ODF_arg, received_file_data_t *recvFileBuffer) {
     if(ODF_arg == NULL || recvFileBuffer == NULL || ODF_arg->data == NULL)
         return CO_SDO_AB_NO_DATA;
 
@@ -124,7 +158,8 @@ static CO_SDO_abortCode_t save_file_data(CO_ODF_arg_t *ODF_arg, received_file_da
 }
 
 
-CO_SDO_abortCode_t recv_file_ODF(CO_ODF_arg_t *ODF_arg) {
+CO_SDO_abortCode_t
+recv_file_ODF(CO_ODF_arg_t *ODF_arg) {
     received_file_data_t *recvFileBuffer;
     CO_SDO_abortCode_t ret = CO_SDO_AB_NONE;
     char filePath[] = FILE_RECEIVE_FOLDER;
@@ -200,7 +235,8 @@ CO_SDO_abortCode_t recv_file_ODF(CO_ODF_arg_t *ODF_arg) {
 // Send file array ODF
 
 
-CO_SDO_abortCode_t send_file_array_ODF(CO_ODF_arg_t *ODF_arg) {
+CO_SDO_abortCode_t
+send_file_array_ODF(CO_ODF_arg_t *ODF_arg) {
     CO_SDO_abortCode_t ret = CO_SDO_AB_NONE;
     send_file_data_t *sendFileBuffer;
 
@@ -228,7 +264,8 @@ CO_SDO_abortCode_t send_file_array_ODF(CO_ODF_arg_t *ODF_arg) {
 }
 
 
-int app_send_file(const char *filePath) {
+int
+app_send_file(const char *filePath) {
     int ret = 0;
     char fileName[FILE_PATH_MAX_LENGTH];
     char newFilePath[FILE_PATH_MAX_LENGTH] = FILE_SEND_FOLDER;
@@ -298,7 +335,8 @@ int app_send_file(const char *filePath) {
 *
 * @return 1 on sucess and -1 on error
 */
-static int initFileList(send_file_data_t *sendFileBuffer) {
+static int
+initFileList(send_file_data_t *sendFileBuffer) {
     DIR *d;
     struct dirent *dir;
     int a, b;
@@ -355,7 +393,8 @@ static int initFileList(send_file_data_t *sendFileBuffer) {
 *
 * @return the length of the file name without '\0' or 0 on failure.
 */
-static uint32_t get_file_name(const char *filePath, char *fileName) {
+static uint32_t
+get_file_name(const char *filePath, char *fileName) {
     uint32_t pathNameSize, start, fileNameSize = 0;
 
     if(filePath == NULL || filePath[0] == '\0')
@@ -391,7 +430,8 @@ static uint32_t get_file_name(const char *filePath, char *fileName) {
 *
 * @return file size or 0 on failure.
 */
-static uint32_t get_file_data(const char *filePath, int8_t *fileData) {
+static uint32_t
+get_file_data(const char *filePath, int8_t *fileData) {
     uint32_t fileSize = 0;
     FILE *f;
 
@@ -422,7 +462,8 @@ static uint32_t get_file_data(const char *filePath, int8_t *fileData) {
  * Wrapper function used by send_file_ODF to read file data into SDO buffer from struct.
  * It can handle spilting large data files into multiple segments.
  * */
-static CO_SDO_abortCode_t read_file_data(CO_ODF_arg_t *ODF_arg) {
+static CO_SDO_abortCode_t
+read_file_data(CO_ODF_arg_t *ODF_arg) {
     send_file_data_t *sendFileBuffer;
 
     sendFileBuffer = (send_file_data_t*) ODF_arg->object;
@@ -476,7 +517,8 @@ static CO_SDO_abortCode_t read_file_data(CO_ODF_arg_t *ODF_arg) {
 }
 
 
-CO_SDO_abortCode_t send_file_ODF(CO_ODF_arg_t *ODF_arg) {
+CO_SDO_abortCode_t
+send_file_ODF(CO_ODF_arg_t *ODF_arg) {
     CO_SDO_abortCode_t ret = CO_SDO_AB_NONE;
     send_file_data_t *sendFileBuffer;
 
@@ -621,3 +663,106 @@ CO_SDO_abortCode_t send_file_ODF(CO_ODF_arg_t *ODF_arg) {
     return ret;
 }
 
+
+int
+app_add_request_recv_file(
+        char *app_name,
+        char *regex_string,
+        char *path_to_send,
+        int (*recv_file_callback)(char *)) {
+
+    int new_request = 0;
+
+    // make sure inputs are valid
+    if(app_name == NULL) {
+        log_message(LOG_ERR, "add recv file request had no app name\n");
+        return 0;
+    }
+    if(regex_string == NULL) {
+        log_message(LOG_ERR, "app %s recv file request has no regex string\n", app_name);
+        return 0;
+    }
+    if(path_to_send == NULL) {
+        log_message(LOG_ERR, "app %s recv file request has no path\n", app_name);
+        return 0;
+    }
+    if(path_to_send[0] != '/') {
+        log_message(LOG_ERR, "app %s recv file request path is not an absolute path\n", app_name);
+        return 0;
+    }
+
+    new_request = request_count;
+
+    // add to request list
+    if(request_count == 0) { // init request list
+        request_count = 1;
+        recv_file_request_list = (recv_file_request_t *)malloc(sizeof(recv_file_request_t));
+    }
+    else { // append to request list
+        ++request_count;
+        recv_file_request_list = (recv_file_request_t *)realloc(recv_file_request_list, sizeof(recv_file_request_t) * request_count);
+    }
+
+    // copy data
+    recv_file_request_list[new_request].app_name = app_name;
+    app_name = NULL;
+    recv_file_request_list[new_request].regex_string = regex_string;
+    regex_string = NULL;
+    recv_file_request_list[new_request].path_to_send = path_to_send;
+    path_to_send = NULL;
+    recv_file_request_list[new_request].recv_file_callback = recv_file_callback;
+
+    return 1;
+}
+
+
+static bool
+match_regex(char *file_name, char *regex_string) {
+    pcre2_code *re;
+    PCRE2_SPTR pattern;
+    PCRE2_SPTR subject;
+    PCRE2_SIZE error_offset;
+    pcre2_match_data *match_data;
+    int error_number;
+    size_t subject_length;
+    bool rv = false;
+    int r;
+
+    pattern = (PCRE2_SPTR)regex_string;
+    subject = (PCRE2_SPTR)file_name;
+    subject_length = strlen((char *)subject);
+
+    re = pcre2_compile(
+            pattern,
+            PCRE2_ZERO_TERMINATED,
+            0,
+            &error_number,
+            &error_offset,
+            NULL);
+
+    if(re == NULL) { // compile failed
+        PCRE2_UCHAR buffer[256];
+        pcre2_get_error_message(error_number, buffer, sizeof(buffer));
+        log_message(LOG_ERR, "PCRE2 compilation failed at offset %d in %s\n", (int)error_offset, buffer);
+    }
+
+    match_data = pcre2_match_data_create_from_pattern(re, NULL);
+
+    // try to match regex
+    r = pcre2_match(
+            re,
+            subject,
+            subject_length,
+            0,
+            0,
+            match_data,
+            NULL);
+
+    if(r > 0) // regex matched
+        rv = true;
+
+    pcre2_match_data_free(match_data);
+    pcre2_code_free(re);
+
+    return rv;
+}

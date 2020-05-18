@@ -1,26 +1,19 @@
-#include "CANopen.h"
-#include "CO_driver.h"
 #include "log_message.h"
 #include "app_OD_helpers.h"
-#include "systemd_app.h"
+#include "app_dbus_controller.h"
+#include "file_transfer_ODF.h"
+#include "power_management_app.h"
 #include <systemd/sd-bus.h>
 
 
 #define DESTINATION         "org.freedesktop.systemd1"
 #define INTERFACE_NAME      DESTINATION".Manager"
 #define OBJECT_PATH         "/org/freedesktop/systemd1"
-#define APP_NAME            "Systemd"
+#define APP_NAME            "Power Manager"
 
 
-int systemd_app_setup(void) {
-
-    CO_OD_configure(CO->SDO[0], 0x3000, systemd_ODF, NULL, 0, 0U);
-
-    return 0;
-}
-
-
-CO_SDO_abortCode_t systemd_ODF(CO_ODF_arg_t *ODF_arg) {
+CO_SDO_abortCode_t
+power_management_ODF(CO_ODF_arg_t *ODF_arg) { // TODO deal with huge performace requerments
     CO_SDO_abortCode_t ret = CO_SDO_AB_NONE;
     sd_bus_error error = SD_BUS_ERROR_NULL;
     sd_bus *bus = NULL;
@@ -82,7 +75,3 @@ CO_SDO_abortCode_t systemd_ODF(CO_ODF_arg_t *ODF_arg) {
 }
 
 
-int app_add_daemon(const char *app_name, const char *daemon_name) {
-    // TBD
-    return 0;
-}

@@ -1,50 +1,46 @@
 #include "log_message.h"
 #include "app_OD_helpers.h"
 #include "file_transfer_ODF.h"
+#include "app_dbus_controller.h"
 #include "linux_updater_app.h"
 #include <systemd/sd-bus.h>
 #include <pthread.h>
 #include <stdio.h>
 #include <stdint.h>
 #include <stdbool.h>
-#include <pthread.h>
 
 
 #define DESTINATION         "org.OreSat.LinuxUpdater"
 #define INTERFACE_NAME      "org.OreSat.LinuxUpdater"
 #define OBJECT_PATH         "/org/OreSat/LinuxUpdater"
-#define UPDATER_ODF_INDEX   0x3004
+#define APP_NAME            "Linux Updater"
 #define FILE_NAME_SIZE      100
-#define APP_NAME            "Updater"
 
 
-// Static variables
-static sd_bus               *bus;
-static shared_data          sd  = {false, 0, 0, "\0", PTHREAD_MUTEX_INITIALIZER};
+extern app_dbus_data_t      APPS_DBUS;
+
+/*
+ * Holds the current state of the updater.
+ */
+static int32_t              current_state = 0;
+
+/*
+ * The number archive files available.
+ */
+static uint32_t             updates_available = 0;
+
+/**
+ * If an updating, this holds the name of archive file.
+ */
+static char                 current_file[FILE_NAME_SIZE] = "\0"; 
 
 
-// ***************************************************************************
-// manitory functions
-
-
-int linux_updater_app_setup(void) {
-    // add of app's ODFs to OD
-    app_OD_configure(UPDATER_ODF_INDEX, updater_ODF, NULL, 0, 0U);
-    return 0;
-}
-
-
-int linux_updater_app_main(void) {
+int
+linux_updater_dbus_signal_match(void) {
     int r = 0;
 
-    r = sd_bus_open_system(&bus);
-    if (r < 0) {
-        app_log_message(APP_NAME, LOG_CRIT, "Open system bus failed");
-        goto END;
-    }
-
     r = sd_bus_match_signal(
-            bus,
+            APPS_DBUS.bus,
             NULL,
             NULL,
             OBJECT_PATH,
@@ -52,48 +48,19 @@ int linux_updater_app_main(void) {
             "PropertiesChanged",
             read_status_cb,
             NULL);
-    if (r < 0) {
+    if (r < 0)
         app_log_message(APP_NAME, LOG_CRIT, "Signal match PropertiesChanged failed");
-        goto END;
-    }
 
-    pthread_mutex_lock(&sd.mutex);
-    sd.dbus_running = true; // setup worked, start loop
-    pthread_mutex_unlock(&sd.mutex);
-
-    while (sd.dbus_running) {
-        // Process requests
-        r = sd_bus_process(bus, NULL);
-        if ( r < 0)
-            app_log_message(APP_NAME, LOG_ERR, "Process bus failed");
-        else if (r > 0) // processed a request, try to process another one right-away
-            continue;
-
-        // TODO error count timeout with goto END
-
-        // Wait for the next request to process
-        if (sd_bus_wait(bus, UINT64_MAX) < 0)
-            app_log_message(APP_NAME, LOG_ERR, "Bus wait failed");
-    }
-
-END: // setup / loop failed, clean up, set running to false for ODF callbacks
-    pthread_mutex_lock(&sd.mutex);
-    sd.dbus_running = false;
-    pthread_mutex_unlock(&sd.mutex);
-    sd_bus_unref(bus);
-    return -r;
+    return r;
 }
 
 
-// ***************************************************************************
-// dbus call back functions
-
-
-int read_status_cb(sd_bus_message *m, void *userdata, sd_bus_error *ret_error) {
+int
+read_status_cb(sd_bus_message *m, void *userdata, sd_bus_error *ret_error) {
     int r;
 
     r = sd_bus_get_property(
-            bus,
+            APPS_DBUS.bus,
             DESTINATION,
             OBJECT_PATH,
             INTERFACE_NAME,
@@ -106,14 +73,14 @@ int read_status_cb(sd_bus_message *m, void *userdata, sd_bus_error *ret_error) {
         return r;
     }
 
-    r = sd_bus_message_read(m, "i", &sd.current_state);
+    r = sd_bus_message_read(m, "i", &current_state);
     if (r < 0) {
         app_log_message(APP_NAME, LOG_ERR, "Reading property Status failed");
         return r;
     }
 
     r = sd_bus_get_property(
-            bus,
+            APPS_DBUS.bus,
             DESTINATION,
             OBJECT_PATH,
             INTERFACE_NAME,
@@ -126,7 +93,7 @@ int read_status_cb(sd_bus_message *m, void *userdata, sd_bus_error *ret_error) {
         return r;
     }
 
-    r = sd_bus_message_read(m, "s", &sd.current_file);
+    r = sd_bus_message_read(m, "s", &current_file);
     if (r < 0) {
         app_log_message(APP_NAME, LOG_ERR, "Reading property CurrentUpdateFile failed");
         return r;
@@ -151,8 +118,8 @@ CO_SDO_abortCode_t updater_ODF(CO_ODF_arg_t *ODF_arg) {
         case 1 : // current state
 
             if(ODF_arg->reading == true) {
-                ODF_arg->dataLength = sizeof(sd.current_state);
-                memcpy(ODF_arg->data, &sd.current_state, ODF_arg->dataLength);
+                ODF_arg->dataLength = sizeof(current_state);
+                memcpy(ODF_arg->data, &current_state, ODF_arg->dataLength);
             }
             else
                 ret = CO_SDO_AB_READONLY; // can't write parameters, read only
@@ -162,8 +129,8 @@ CO_SDO_abortCode_t updater_ODF(CO_ODF_arg_t *ODF_arg) {
         case 2 : // updates available
 
             if(ODF_arg->reading == true) {
-                ODF_arg->dataLength = sizeof(sd.updates_available);
-                memcpy(ODF_arg->data, &sd.updates_available, ODF_arg->dataLength);
+                ODF_arg->dataLength = sizeof(updates_available);
+                memcpy(ODF_arg->data, &updates_available, ODF_arg->dataLength);
             }
             else
                 ret = CO_SDO_AB_READONLY; // can't write parameters, read only
@@ -173,8 +140,8 @@ CO_SDO_abortCode_t updater_ODF(CO_ODF_arg_t *ODF_arg) {
         case 3 : // current file
 
             if(ODF_arg->reading == true)  {
-                ODF_arg->dataLength = strlen(sd.current_file);
-                memcpy(ODF_arg->data, sd.current_file, ODF_arg->dataLength);
+                ODF_arg->dataLength = strlen(current_file);
+                memcpy(ODF_arg->data, current_file, ODF_arg->dataLength);
             }
             else
                 ret = CO_SDO_AB_READONLY; // can't write parameters, read only
@@ -194,7 +161,7 @@ CO_SDO_abortCode_t updater_ODF(CO_ODF_arg_t *ODF_arg) {
                 break;
             }
 
-            if(!sd.dbus_running) {
+            if(!APPS_DBUS.loop_running) {
                 app_log_message(APP_NAME, LOG_ERR, "DBus interface is not up");
                 ret = CO_SDO_AB_GENERAL;
                 break;
@@ -217,7 +184,7 @@ CO_SDO_abortCode_t updater_ODF(CO_ODF_arg_t *ODF_arg) {
             }
 
             r = sd_bus_call_method(
-                    bus,
+                    APPS_DBUS.bus,
                     DESTINATION,
                     OBJECT_PATH,
                     INTERFACE_NAME,
@@ -250,14 +217,14 @@ CO_SDO_abortCode_t updater_ODF(CO_ODF_arg_t *ODF_arg) {
                 break;
             }
 
-            if(!sd.dbus_running) {
+            if(!APPS_DBUS.loop_running) {
                 app_log_message(APP_NAME, LOG_ERR, "DBus interface is not up");
                 ret = CO_SDO_AB_GENERAL;
                 break;
             }
 
             r = sd_bus_call_method(
-                    bus,
+                    APPS_DBUS.bus,
                     DESTINATION,
                     OBJECT_PATH,
                     INTERFACE_NAME,
@@ -287,14 +254,14 @@ CO_SDO_abortCode_t updater_ODF(CO_ODF_arg_t *ODF_arg) {
                 break;
             }
 
-            if(!sd.dbus_running) {
+            if(!APPS_DBUS.loop_running) {
                 app_log_message(APP_NAME, LOG_ERR, "DBus interface is not up");
                 ret = CO_SDO_AB_GENERAL;
                 break;
             }
 
             r = sd_bus_call_method(
-                    bus,
+                    APPS_DBUS.bus,
                     DESTINATION,
                     OBJECT_PATH,
                     INTERFACE_NAME,
@@ -324,7 +291,7 @@ CO_SDO_abortCode_t updater_ODF(CO_ODF_arg_t *ODF_arg) {
                 ret = CO_SDO_AB_WRITEONLY; // can't read parameters, write only
             else {
                 r = sd_bus_call_method(
-                        bus,
+                        APPS_DBUS.bus,
                         DESTINATION,
                         OBJECT_PATH,
                         INTERFACE_NAME,
@@ -351,7 +318,7 @@ CO_SDO_abortCode_t updater_ODF(CO_ODF_arg_t *ODF_arg) {
 
         case 9 : // get apt update output as a file
 
-            if(!sd.dbus_running) { // dbus interface is not up
+            if(!APPS_DBUS.loop_running) { // dbus interface is not up
                 ret = CO_SDO_AB_GENERAL;
                 break;
             }
@@ -360,7 +327,7 @@ CO_SDO_abortCode_t updater_ODF(CO_ODF_arg_t *ODF_arg) {
                 ret = CO_SDO_AB_WRITEONLY; // can't read parameters, write only
             else {
                 r = sd_bus_call_method(
-                        bus,
+                        APPS_DBUS.bus,
                         DESTINATION,
                         OBJECT_PATH,
                         INTERFACE_NAME,

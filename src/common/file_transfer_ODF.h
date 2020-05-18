@@ -37,6 +37,26 @@ typedef struct {
 
 
 /**
+ *  Request a file name by add a PCRE2 regex string.
+ *
+ *  @param: app_name is the app name for log messages
+ *  @param: regex_string is a PCRE2 regex string. used by the recv file ODF
+ *  to check if the regex will match.
+ *  #param: path_to_send is where the file will be move to if ODF match the
+ *  file name with regex string.
+ *  @param: Optional. Set to NULL if not wanted. Function be called if
+ *  regex matches.
+ *
+ *  @return: 1 on succes, 0 on failure
+ */
+int app_add_request_recv_file(
+        char *app_name,
+        char *regex_string,
+        char *path_to_send,
+        int (*recv_file_callback)(char *));
+
+
+/**
  * Configure all application OD functions
  */
 int file_transfer_ODF_setup(void);

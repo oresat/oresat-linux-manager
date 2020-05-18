@@ -1,58 +1,16 @@
+// clang-format off
 /*******************************************************************************
 
    File - CO_OD.c/CO_OD.h
    CANopen Object Dictionary.
 
-   Copyright (C) 2004-2008 Janez Paternoster
-
-   License: GNU Lesser General Public License (LGPL).
-
-   <http://canopennode.sourceforge.net>
-
-   (For more information see <CO_SDO.h>.)
-
-   This file is part of CANopenNode, an open source CANopen Stack.
-   Project home page is <https://github.com/CANopenNode/CANopenNode>.
-   For more information on CANopen see <http://www.can-cia.org/>.
- 
-   CANopenNode is free and open source software: you can redistribute
-   it and/or modify it under the terms of the GNU General Public License
-   as published by the Free Software Foundation, either version 2 of the
-   License, or (at your option) any later version.
-  
-   This program is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-   GNU General Public License for more details.
-  
-   You should have received a copy of the GNU General Public License
-   along with this program. If not, see <http://www.gnu.org/licenses/>.
-  
-   Following clarification and special exception to the GNU General Public
-   License is included to the distribution terms of CANopenNode:
-  
-   Linking this library statically or dynamically with other modules is
-   making a combined work based on this library. Thus, the terms and
-   conditions of the GNU General Public License cover the whole combination.
-  
-   As a special exception, the copyright holders of this library give
-   you permission to link this library with independent modules to
-   produce an executable, regardless of the license terms of these
-   independent modules, and to copy and distribute the resulting
-   executable under terms of your choice, provided that you also meet,
-   for each linked independent module, the terms and conditions of the
-   license of that module. An independent module is a module which is
-   not derived from or based on this library. If you modify this
-   library, you may extend this exception to your version of the
-   library, but you are not obliged to do so. If you do not wish
-   to do so, delete this exception statement from your version.
- 
    This file was automatically generated with libedssharp Object
-   Dictionary Editor v0.7-9-g821eedb   DON'T EDIT THIS FILE MANUALLY !!!!
+   Dictionary Editor v0.8-33-g683a144   DON'T EDIT THIS FILE MANUALLY !!!!
 *******************************************************************************/
 
 
-#pragma once
+#ifndef CO_OD_H_
+#define CO_OD_H_
 
 /*******************************************************************************
    CANopen DATA TYPES
@@ -66,8 +24,8 @@
    typedef int16_t      INTEGER16;
    typedef int32_t      INTEGER32;
    typedef int64_t      INTEGER64;
-   typedef float32_t    REAL32; 
-   typedef float64_t    REAL64; 
+   typedef float32_t    REAL32;
+   typedef float64_t    REAL64;
    typedef char_t       VISIBLE_STRING;
    typedef oChar_t      OCTET_STRING;
 
@@ -95,21 +53,21 @@
 
 /*******************************************************************************
    FILE INFO:
-      FileName:     GPS_objDict.eds
+      FileName:     GPS_OD.eds
       FileVersion:  0
       CreationTime: 11:32AM
       CreationDate: 11-07-2019
       CreatedBy:    Ryan Medick
-******************************************************************************/
+*******************************************************************************/
 
 
 /*******************************************************************************
    DEVICE INFO:
       VendorName:     Portland State Aerospace Society
-      VendorNumber    0
+      VendorNumber:   0
       ProductName:    GPS
       ProductNumber:  0
-******************************************************************************/
+*******************************************************************************/
 
 
 /*******************************************************************************
@@ -117,6 +75,7 @@
 *******************************************************************************/
   #define CO_NO_SYNC                     1   //Associated objects: 1005-1007
   #define CO_NO_EMERGENCY                1   //Associated objects: 1014, 1015
+  #define CO_NO_TIME                     0   //Associated objects: 1012, 1013
   #define CO_NO_SDO_SERVER               1   //Associated objects: 1200-127F
   #define CO_NO_SDO_CLIENT               1   //Associated objects: 1280-12FF
   #define CO_NO_LSS_SERVER               0   //LSS Slave
@@ -124,41 +83,42 @@
   #define CO_NO_RPDO                     4   //Associated objects: 14xx, 16xx
   #define CO_NO_TPDO                     4   //Associated objects: 18xx, 1Axx
   #define CO_NO_NMT_MASTER               0
+  #define CO_NO_TRACE                    0
 
 
 /*******************************************************************************
    OBJECT DICTIONARY
 *******************************************************************************/
-   #define CO_OD_NoOfElements             52
+   #define CO_OD_NoOfElements             57
 
 
 /*******************************************************************************
    TYPE DEFINITIONS FOR RECORDS
 *******************************************************************************/
-/*1018    */ typedef struct {
+/*1018      */ typedef struct {
                UNSIGNED8      maxSubIndex;
                UNSIGNED32     vendorID;
                UNSIGNED32     productCode;
                UNSIGNED32     revisionNumber;
                UNSIGNED32     serialNumber;
                }              OD_identity_t;
-/*1200    */ typedef struct {
+/*1200      */ typedef struct {
                UNSIGNED8      maxSubIndex;
                UNSIGNED32     COB_IDClientToServer;
                UNSIGNED32     COB_IDServerToClient;
                }              OD_SDOServerParameter_t;
-/*1280    */ typedef struct {
+/*1280      */ typedef struct {
                UNSIGNED8      maxSubIndex;
                UNSIGNED32     COB_IDClientToServer;
                UNSIGNED32     COB_IDServerToClient;
                UNSIGNED8      nodeIDOfTheSDOServer;
                }              OD_SDOClientParameter_t;
-/*1400    */ typedef struct {
+/*1400      */ typedef struct {
                UNSIGNED8      maxSubIndex;
                UNSIGNED32     COB_IDUsedByRPDO;
                UNSIGNED8      transmissionType;
                }              OD_RPDOCommunicationParameter_t;
-/*1600    */ typedef struct {
+/*1600      */ typedef struct {
                UNSIGNED8      numberOfMappedObjects;
                UNSIGNED32     mappedObject1;
                UNSIGNED32     mappedObject2;
@@ -169,7 +129,7 @@
                UNSIGNED32     mappedObject7;
                UNSIGNED32     mappedObject8;
                }              OD_RPDOMappingParameter_t;
-/*1800    */ typedef struct {
+/*1800      */ typedef struct {
                UNSIGNED8      maxSubIndex;
                UNSIGNED32     COB_IDUsedByTPDO;
                UNSIGNED8      transmissionType;
@@ -178,7 +138,7 @@
                UNSIGNED16     eventTimer;
                UNSIGNED8      SYNCStartValue;
                }              OD_TPDOCommunicationParameter_t;
-/*1a00    */ typedef struct {
+/*1A00      */ typedef struct {
                UNSIGNED8      numberOfMappedObjects;
                UNSIGNED32     mappedObject1;
                UNSIGNED32     mappedObject2;
@@ -189,39 +149,65 @@
                UNSIGNED32     mappedObject7;
                UNSIGNED32     mappedObject8;
                }              OD_TPDOMappingParameter_t;
-/*2130    */ typedef struct {
+/*2130      */ typedef struct {
                UNSIGNED8      maxSubIndex;
                VISIBLE_STRING string[1];
                UNSIGNED64     epochTimeBaseMs;
                UNSIGNED32     epochTimeOffsetMs;
                }              OD_time_t;
-/*3000    */ typedef struct {
+/*3000      */ typedef struct {
                UNSIGNED8      maxSubIndex;
-               DOMAIN         restart;
-               DOMAIN         poweroff;
-               }              OD_systemdControl_t;
-/*3001    */ typedef struct {
+               }              OD_CANdaemon_t;
+/*3001      */ typedef struct {
                UNSIGNED8      maxSubIndex;
                DOMAIN         fileName;
                DOMAIN         fileData;
                UNSIGNED8      saveFile;
                }              OD_receiveFile_t;
-/*3003    */ typedef struct {
+/*3003      */ typedef struct {
                UNSIGNED8      maxSubIndex;
-               UNSIGNED8      filePointer;
+               UNSIGNED8      sendFilePointer;
                DOMAIN         fileName;
                DOMAIN         fileData;
-               INTEGER32      fileSize;
+               UNSIGNED32     fileSize;
                BOOLEAN        deleteFile;
-               UNSIGNED32     fileAvailable;
+               UNSIGNED32     filesAvailable;
                UNSIGNED32     overflow;
-               BOOLEAN        refreshFileList;
+               BOOLEAN        refreshFileArray;
                }              OD_sendFileControl_t;
+/*3005      */ typedef struct {
+               UNSIGNED8      maxSubIndex;
+               UNSIGNED8      selectApp;
+               DOMAIN         appName;
+               DOMAIN         daemonServiceName;
+               INTEGER32      daemonCurrentState;
+               INTEGER32      daemonChangeState;
+               }              OD_daemonController_t;
+/*3006      */ typedef struct {
+               UNSIGNED8      maxSubIndex;
+               }              OD_syslogReader_t;
+/*30F0      */ typedef struct {
+               UNSIGNED8      maxSubIndex;
+               DOMAIN         reboot;
+               DOMAIN         poweroff;
+               }              OD_powerManagementApp_t;
+/*30F1      */ typedef struct {
+               UNSIGNED8      maxSubIndex;
+               INTEGER32      currentState;
+               UNSIGNED32     updatesAvailable;
+               DOMAIN         currentUpdateFile;
+               DOMAIN         errorMessage;
+               DOMAIN         addUpdateFile;
+               DOMAIN         startUpdate;
+               DOMAIN         emergencyStopUpdate;
+               DOMAIN         resetUpdater;
+               DOMAIN         getAptListOutput;
+               }              OD_linuxUpdaterApp_t;
 
 /*******************************************************************************
    TYPE DEFINITIONS FOR OBJECT DICTIONARY INDEXES
 
-   some of those are redundant with CO_SDO.h CO_ObjDicId_t <Common CiA301 object 
+   some of those are redundant with CO_SDO.h CO_ObjDicId_t <Common CiA301 object
    dictionary entries>
 *******************************************************************************/
 /*1000 */
@@ -261,8 +247,8 @@
 /*1009 */
         #define OD_1009_manufacturerHardwareVersion                 0x1009
 
-/*100a */
-        #define OD_100a_manufacturerSoftwareVersion                 0x100a
+/*100A */
+        #define OD_100A_manufacturerSoftwareVersion                 0x100A
 
 /*1010 */
         #define OD_1010_storeParameters                             0x1010
@@ -456,60 +442,60 @@
         #define OD_1803_5_TPDOCommunicationParameter_eventTimer     5
         #define OD_1803_6_TPDOCommunicationParameter_SYNCStartValue 6
 
-/*1a00 */
-        #define OD_1a00_TPDOMappingParameter                        0x1a00
+/*1A00 */
+        #define OD_1A00_TPDOMappingParameter                        0x1A00
 
-        #define OD_1a00_0_TPDOMappingParameter_maxSubIndex          0
-        #define OD_1a00_1_TPDOMappingParameter_mappedObject1        1
-        #define OD_1a00_2_TPDOMappingParameter_mappedObject2        2
-        #define OD_1a00_3_TPDOMappingParameter_mappedObject3        3
-        #define OD_1a00_4_TPDOMappingParameter_mappedObject4        4
-        #define OD_1a00_5_TPDOMappingParameter_mappedObject5        5
-        #define OD_1a00_6_TPDOMappingParameter_mappedObject6        6
-        #define OD_1a00_7_TPDOMappingParameter_mappedObject7        7
-        #define OD_1a00_8_TPDOMappingParameter_mappedObject8        8
+        #define OD_1A00_0_TPDOMappingParameter_maxSubIndex          0
+        #define OD_1A00_1_TPDOMappingParameter_mappedObject1        1
+        #define OD_1A00_2_TPDOMappingParameter_mappedObject2        2
+        #define OD_1A00_3_TPDOMappingParameter_mappedObject3        3
+        #define OD_1A00_4_TPDOMappingParameter_mappedObject4        4
+        #define OD_1A00_5_TPDOMappingParameter_mappedObject5        5
+        #define OD_1A00_6_TPDOMappingParameter_mappedObject6        6
+        #define OD_1A00_7_TPDOMappingParameter_mappedObject7        7
+        #define OD_1A00_8_TPDOMappingParameter_mappedObject8        8
 
-/*1a01 */
-        #define OD_1a01_TPDOMappingParameter                        0x1a01
+/*1A01 */
+        #define OD_1A01_TPDOMappingParameter                        0x1A01
 
-        #define OD_1a01_0_TPDOMappingParameter_maxSubIndex          0
-        #define OD_1a01_1_TPDOMappingParameter_mappedObject1        1
-        #define OD_1a01_2_TPDOMappingParameter_mappedObject2        2
-        #define OD_1a01_3_TPDOMappingParameter_mappedObject3        3
-        #define OD_1a01_4_TPDOMappingParameter_mappedObject4        4
-        #define OD_1a01_5_TPDOMappingParameter_mappedObject5        5
-        #define OD_1a01_6_TPDOMappingParameter_mappedObject6        6
-        #define OD_1a01_7_TPDOMappingParameter_mappedObject7        7
-        #define OD_1a01_8_TPDOMappingParameter_mappedObject8        8
+        #define OD_1A01_0_TPDOMappingParameter_maxSubIndex          0
+        #define OD_1A01_1_TPDOMappingParameter_mappedObject1        1
+        #define OD_1A01_2_TPDOMappingParameter_mappedObject2        2
+        #define OD_1A01_3_TPDOMappingParameter_mappedObject3        3
+        #define OD_1A01_4_TPDOMappingParameter_mappedObject4        4
+        #define OD_1A01_5_TPDOMappingParameter_mappedObject5        5
+        #define OD_1A01_6_TPDOMappingParameter_mappedObject6        6
+        #define OD_1A01_7_TPDOMappingParameter_mappedObject7        7
+        #define OD_1A01_8_TPDOMappingParameter_mappedObject8        8
 
-/*1a02 */
-        #define OD_1a02_TPDOMappingParameter                        0x1a02
+/*1A02 */
+        #define OD_1A02_TPDOMappingParameter                        0x1A02
 
-        #define OD_1a02_0_TPDOMappingParameter_maxSubIndex          0
-        #define OD_1a02_1_TPDOMappingParameter_mappedObject1        1
-        #define OD_1a02_2_TPDOMappingParameter_mappedObject2        2
-        #define OD_1a02_3_TPDOMappingParameter_mappedObject3        3
-        #define OD_1a02_4_TPDOMappingParameter_mappedObject4        4
-        #define OD_1a02_5_TPDOMappingParameter_mappedObject5        5
-        #define OD_1a02_6_TPDOMappingParameter_mappedObject6        6
-        #define OD_1a02_7_TPDOMappingParameter_mappedObject7        7
-        #define OD_1a02_8_TPDOMappingParameter_mappedObject8        8
+        #define OD_1A02_0_TPDOMappingParameter_maxSubIndex          0
+        #define OD_1A02_1_TPDOMappingParameter_mappedObject1        1
+        #define OD_1A02_2_TPDOMappingParameter_mappedObject2        2
+        #define OD_1A02_3_TPDOMappingParameter_mappedObject3        3
+        #define OD_1A02_4_TPDOMappingParameter_mappedObject4        4
+        #define OD_1A02_5_TPDOMappingParameter_mappedObject5        5
+        #define OD_1A02_6_TPDOMappingParameter_mappedObject6        6
+        #define OD_1A02_7_TPDOMappingParameter_mappedObject7        7
+        #define OD_1A02_8_TPDOMappingParameter_mappedObject8        8
 
-/*1a03 */
-        #define OD_1a03_TPDOMappingParameter                        0x1a03
+/*1A03 */
+        #define OD_1A03_TPDOMappingParameter                        0x1A03
 
-        #define OD_1a03_0_TPDOMappingParameter_maxSubIndex          0
-        #define OD_1a03_1_TPDOMappingParameter_mappedObject1        1
-        #define OD_1a03_2_TPDOMappingParameter_mappedObject2        2
-        #define OD_1a03_3_TPDOMappingParameter_mappedObject3        3
-        #define OD_1a03_4_TPDOMappingParameter_mappedObject4        4
-        #define OD_1a03_5_TPDOMappingParameter_mappedObject5        5
-        #define OD_1a03_6_TPDOMappingParameter_mappedObject6        6
-        #define OD_1a03_7_TPDOMappingParameter_mappedObject7        7
-        #define OD_1a03_8_TPDOMappingParameter_mappedObject8        8
+        #define OD_1A03_0_TPDOMappingParameter_maxSubIndex          0
+        #define OD_1A03_1_TPDOMappingParameter_mappedObject1        1
+        #define OD_1A03_2_TPDOMappingParameter_mappedObject2        2
+        #define OD_1A03_3_TPDOMappingParameter_mappedObject3        3
+        #define OD_1A03_4_TPDOMappingParameter_mappedObject4        4
+        #define OD_1A03_5_TPDOMappingParameter_mappedObject5        5
+        #define OD_1A03_6_TPDOMappingParameter_mappedObject6        6
+        #define OD_1A03_7_TPDOMappingParameter_mappedObject7        7
+        #define OD_1A03_8_TPDOMappingParameter_mappedObject8        8
 
-/*1f80 */
-        #define OD_1f80_NMTStartup                                  0x1f80
+/*1F80 */
+        #define OD_1F80_NMTStartup                                  0x1F80
 
 /*2100 */
         #define OD_2100_errorStatusBits                             0x2100
@@ -560,11 +546,9 @@
         #define OD_2130_3_time_epochTimeOffsetMs                    3
 
 /*3000 */
-        #define OD_3000_systemdControl                              0x3000
+        #define OD_3000_CANdaemon                                   0x3000
 
-        #define OD_3000_0_systemdControl_maxSubIndex                0
-        #define OD_3000_1_systemdControl_restart                    1
-        #define OD_3000_2_systemdControl_poweroff                   2
+        #define OD_3000_0_CANdaemon_maxSubIndex                     0
 
 /*3001 */
         #define OD_3001_receiveFile                                 0x3001
@@ -575,149 +559,317 @@
         #define OD_3001_3_receiveFile_saveFile                      3
 
 /*3002 */
-        #define OD_3002_sendFileTransfer                            0x3002
+        #define OD_3002_sendFileList                                0x3002
 
-        #define OD_3002_0_sendFileTransfer_maxSubIndex              0
-        #define OD_3002_1_sendFileTransfer_                         1
-        #define OD_3002_2_sendFileTransfer_                         2
-        #define OD_3002_3_sendFileTransfer_                         3
-        #define OD_3002_4_sendFileTransfer_                         4
-        #define OD_3002_5_sendFileTransfer_                         5
-        #define OD_3002_6_sendFileTransfer_                         6
-        #define OD_3002_7_sendFileTransfer_                         7
-        #define OD_3002_8_sendFileTransfer_                         8
-        #define OD_3002_9_sendFileTransfer_                         9
-        #define OD_3002_10_sendFileTransfer_                        10
-        #define OD_3002_11_sendFileTransfer_                        11
-        #define OD_3002_12_sendFileTransfer_                        12
-        #define OD_3002_13_sendFileTransfer_                        13
-        #define OD_3002_14_sendFileTransfer_                        14
-        #define OD_3002_15_sendFileTransfer_                        15
-        #define OD_3002_16_sendFileTransfer_                        16
-        #define OD_3002_17_sendFileTransfer_                        17
-        #define OD_3002_18_sendFileTransfer_                        18
-        #define OD_3002_19_sendFileTransfer_                        19
-        #define OD_3002_20_sendFileTransfer_                        20
-        #define OD_3002_21_sendFileTransfer_                        21
-        #define OD_3002_22_sendFileTransfer_                        22
-        #define OD_3002_23_sendFileTransfer_                        23
-        #define OD_3002_24_sendFileTransfer_                        24
-        #define OD_3002_25_sendFileTransfer_                        25
-        #define OD_3002_26_sendFileTransfer_                        26
-        #define OD_3002_27_sendFileTransfer_                        27
-        #define OD_3002_28_sendFileTransfer_                        28
-        #define OD_3002_29_sendFileTransfer_                        29
-        #define OD_3002_30_sendFileTransfer_                        30
-        #define OD_3002_31_sendFileTransfer_                        31
-        #define OD_3002_32_sendFileTransfer_                        32
-        #define OD_3002_33_sendFileTransfer_                        33
-        #define OD_3002_34_sendFileTransfer_                        34
-        #define OD_3002_35_sendFileTransfer_                        35
-        #define OD_3002_36_sendFileTransfer_                        36
-        #define OD_3002_37_sendFileTransfer_                        37
-        #define OD_3002_38_sendFileTransfer_                        38
-        #define OD_3002_39_sendFileTransfer_                        39
-        #define OD_3002_40_sendFileTransfer_                        40
-        #define OD_3002_41_sendFileTransfer_                        41
-        #define OD_3002_42_sendFileTransfer_                        42
-        #define OD_3002_43_sendFileTransfer_                        43
-        #define OD_3002_44_sendFileTransfer_                        44
-        #define OD_3002_45_sendFileTransfer_                        45
-        #define OD_3002_46_sendFileTransfer_                        46
-        #define OD_3002_47_sendFileTransfer_                        47
-        #define OD_3002_48_sendFileTransfer_                        48
-        #define OD_3002_49_sendFileTransfer_                        49
-        #define OD_3002_50_sendFileTransfer_                        50
-        #define OD_3002_51_sendFileTransfer_                        51
-        #define OD_3002_52_sendFileTransfer_                        52
-        #define OD_3002_53_sendFileTransfer_                        53
-        #define OD_3002_54_sendFileTransfer_                        54
-        #define OD_3002_55_sendFileTransfer_                        55
-        #define OD_3002_56_sendFileTransfer_                        56
-        #define OD_3002_57_sendFileTransfer_                        57
-        #define OD_3002_58_sendFileTransfer_                        58
-        #define OD_3002_59_sendFileTransfer_                        59
-        #define OD_3002_60_sendFileTransfer_                        60
-        #define OD_3002_61_sendFileTransfer_                        61
-        #define OD_3002_62_sendFileTransfer_                        62
-        #define OD_3002_63_sendFileTransfer_                        63
-        #define OD_3002_64_sendFileTransfer_                        64
-        #define OD_3002_65_sendFileTransfer_                        65
-        #define OD_3002_66_sendFileTransfer_                        66
-        #define OD_3002_67_sendFileTransfer_                        67
-        #define OD_3002_68_sendFileTransfer_                        68
-        #define OD_3002_69_sendFileTransfer_                        69
-        #define OD_3002_70_sendFileTransfer_                        70
-        #define OD_3002_71_sendFileTransfer_                        71
-        #define OD_3002_72_sendFileTransfer_                        72
-        #define OD_3002_73_sendFileTransfer_                        73
-        #define OD_3002_74_sendFileTransfer_                        74
-        #define OD_3002_75_sendFileTransfer_                        75
-        #define OD_3002_76_sendFileTransfer_                        76
-        #define OD_3002_77_sendFileTransfer_                        77
-        #define OD_3002_78_sendFileTransfer_                        78
-        #define OD_3002_79_sendFileTransfer_                        79
-        #define OD_3002_80_sendFileTransfer_                        80
-        #define OD_3002_81_sendFileTransfer_                        81
-        #define OD_3002_82_sendFileTransfer_                        82
-        #define OD_3002_83_sendFileTransfer_                        83
-        #define OD_3002_84_sendFileTransfer_                        84
-        #define OD_3002_85_sendFileTransfer_                        85
-        #define OD_3002_86_sendFileTransfer_                        86
-        #define OD_3002_87_sendFileTransfer_                        87
-        #define OD_3002_88_sendFileTransfer_                        88
-        #define OD_3002_89_sendFileTransfer_                        89
-        #define OD_3002_90_sendFileTransfer_                        90
-        #define OD_3002_91_sendFileTransfer_                        91
-        #define OD_3002_92_sendFileTransfer_                        92
-        #define OD_3002_93_sendFileTransfer_                        93
-        #define OD_3002_94_sendFileTransfer_                        94
-        #define OD_3002_95_sendFileTransfer_                        95
-        #define OD_3002_96_sendFileTransfer_                        96
-        #define OD_3002_97_sendFileTransfer_                        97
-        #define OD_3002_98_sendFileTransfer_                        98
-        #define OD_3002_99_sendFileTransfer_                        99
-        #define OD_3002_100_sendFileTransfer_                       100
-        #define OD_3002_101_sendFileTransfer_                       101
-        #define OD_3002_102_sendFileTransfer_                       102
-        #define OD_3002_103_sendFileTransfer_                       103
-        #define OD_3002_104_sendFileTransfer_                       104
-        #define OD_3002_105_sendFileTransfer_                       105
-        #define OD_3002_106_sendFileTransfer_                       106
-        #define OD_3002_107_sendFileTransfer_                       107
-        #define OD_3002_108_sendFileTransfer_                       108
-        #define OD_3002_109_sendFileTransfer_                       109
-        #define OD_3002_110_sendFileTransfer_                       110
-        #define OD_3002_111_sendFileTransfer_                       111
-        #define OD_3002_112_sendFileTransfer_                       112
-        #define OD_3002_113_sendFileTransfer_                       113
-        #define OD_3002_114_sendFileTransfer_                       114
-        #define OD_3002_115_sendFileTransfer_                       115
-        #define OD_3002_116_sendFileTransfer_                       116
-        #define OD_3002_117_sendFileTransfer_                       117
-        #define OD_3002_118_sendFileTransfer_                       118
-        #define OD_3002_119_sendFileTransfer_                       119
-        #define OD_3002_120_sendFileTransfer_                       120
-        #define OD_3002_121_sendFileTransfer_                       121
-        #define OD_3002_122_sendFileTransfer_                       122
-        #define OD_3002_123_sendFileTransfer_                       123
-        #define OD_3002_124_sendFileTransfer_                       124
-        #define OD_3002_125_sendFileTransfer_                       125
-        #define OD_3002_126_sendFileTransfer_                       126
-        #define OD_3002_127_sendFileTransfer_                       127
+        #define OD_3002_0_sendFileList_maxSubIndex                  0
+        #define OD_3002_1_sendFileList_                             1
+        #define OD_3002_2_sendFileList_                             2
+        #define OD_3002_3_sendFileList_                             3
+        #define OD_3002_4_sendFileList_                             4
+        #define OD_3002_5_sendFileList_                             5
+        #define OD_3002_6_sendFileList_                             6
+        #define OD_3002_7_sendFileList_                             7
+        #define OD_3002_8_sendFileList_                             8
+        #define OD_3002_9_sendFileList_                             9
+        #define OD_3002_10_sendFileList_                            10
+        #define OD_3002_11_sendFileList_                            11
+        #define OD_3002_12_sendFileList_                            12
+        #define OD_3002_13_sendFileList_                            13
+        #define OD_3002_14_sendFileList_                            14
+        #define OD_3002_15_sendFileList_                            15
+        #define OD_3002_16_sendFileList_                            16
+        #define OD_3002_17_sendFileList_                            17
+        #define OD_3002_18_sendFileList_                            18
+        #define OD_3002_19_sendFileList_                            19
+        #define OD_3002_20_sendFileList_                            20
+        #define OD_3002_21_sendFileList_                            21
+        #define OD_3002_22_sendFileList_                            22
+        #define OD_3002_23_sendFileList_                            23
+        #define OD_3002_24_sendFileList_                            24
+        #define OD_3002_25_sendFileList_                            25
+        #define OD_3002_26_sendFileList_                            26
+        #define OD_3002_27_sendFileList_                            27
+        #define OD_3002_28_sendFileList_                            28
+        #define OD_3002_29_sendFileList_                            29
+        #define OD_3002_30_sendFileList_                            30
+        #define OD_3002_31_sendFileList_                            31
+        #define OD_3002_32_sendFileList_                            32
+        #define OD_3002_33_sendFileList_                            33
+        #define OD_3002_34_sendFileList_                            34
+        #define OD_3002_35_sendFileList_                            35
+        #define OD_3002_36_sendFileList_                            36
+        #define OD_3002_37_sendFileList_                            37
+        #define OD_3002_38_sendFileList_                            38
+        #define OD_3002_39_sendFileList_                            39
+        #define OD_3002_40_sendFileList_                            40
+        #define OD_3002_41_sendFileList_                            41
+        #define OD_3002_42_sendFileList_                            42
+        #define OD_3002_43_sendFileList_                            43
+        #define OD_3002_44_sendFileList_                            44
+        #define OD_3002_45_sendFileList_                            45
+        #define OD_3002_46_sendFileList_                            46
+        #define OD_3002_47_sendFileList_                            47
+        #define OD_3002_48_sendFileList_                            48
+        #define OD_3002_49_sendFileList_                            49
+        #define OD_3002_50_sendFileList_                            50
+        #define OD_3002_51_sendFileList_                            51
+        #define OD_3002_52_sendFileList_                            52
+        #define OD_3002_53_sendFileList_                            53
+        #define OD_3002_54_sendFileList_                            54
+        #define OD_3002_55_sendFileList_                            55
+        #define OD_3002_56_sendFileList_                            56
+        #define OD_3002_57_sendFileList_                            57
+        #define OD_3002_58_sendFileList_                            58
+        #define OD_3002_59_sendFileList_                            59
+        #define OD_3002_60_sendFileList_                            60
+        #define OD_3002_61_sendFileList_                            61
+        #define OD_3002_62_sendFileList_                            62
+        #define OD_3002_63_sendFileList_                            63
+        #define OD_3002_64_sendFileList_                            64
+        #define OD_3002_65_sendFileList_                            65
+        #define OD_3002_66_sendFileList_                            66
+        #define OD_3002_67_sendFileList_                            67
+        #define OD_3002_68_sendFileList_                            68
+        #define OD_3002_69_sendFileList_                            69
+        #define OD_3002_70_sendFileList_                            70
+        #define OD_3002_71_sendFileList_                            71
+        #define OD_3002_72_sendFileList_                            72
+        #define OD_3002_73_sendFileList_                            73
+        #define OD_3002_74_sendFileList_                            74
+        #define OD_3002_75_sendFileList_                            75
+        #define OD_3002_76_sendFileList_                            76
+        #define OD_3002_77_sendFileList_                            77
+        #define OD_3002_78_sendFileList_                            78
+        #define OD_3002_79_sendFileList_                            79
+        #define OD_3002_80_sendFileList_                            80
+        #define OD_3002_81_sendFileList_                            81
+        #define OD_3002_82_sendFileList_                            82
+        #define OD_3002_83_sendFileList_                            83
+        #define OD_3002_84_sendFileList_                            84
+        #define OD_3002_85_sendFileList_                            85
+        #define OD_3002_86_sendFileList_                            86
+        #define OD_3002_87_sendFileList_                            87
+        #define OD_3002_88_sendFileList_                            88
+        #define OD_3002_89_sendFileList_                            89
+        #define OD_3002_90_sendFileList_                            90
+        #define OD_3002_91_sendFileList_                            91
+        #define OD_3002_92_sendFileList_                            92
+        #define OD_3002_93_sendFileList_                            93
+        #define OD_3002_94_sendFileList_                            94
+        #define OD_3002_95_sendFileList_                            95
+        #define OD_3002_96_sendFileList_                            96
+        #define OD_3002_97_sendFileList_                            97
+        #define OD_3002_98_sendFileList_                            98
+        #define OD_3002_99_sendFileList_                            99
+        #define OD_3002_100_sendFileList_                           100
+        #define OD_3002_101_sendFileList_                           101
+        #define OD_3002_102_sendFileList_                           102
+        #define OD_3002_103_sendFileList_                           103
+        #define OD_3002_104_sendFileList_                           104
+        #define OD_3002_105_sendFileList_                           105
+        #define OD_3002_106_sendFileList_                           106
+        #define OD_3002_107_sendFileList_                           107
+        #define OD_3002_108_sendFileList_                           108
+        #define OD_3002_109_sendFileList_                           109
+        #define OD_3002_110_sendFileList_                           110
+        #define OD_3002_111_sendFileList_                           111
+        #define OD_3002_112_sendFileList_                           112
+        #define OD_3002_113_sendFileList_                           113
+        #define OD_3002_114_sendFileList_                           114
+        #define OD_3002_115_sendFileList_                           115
+        #define OD_3002_116_sendFileList_                           116
+        #define OD_3002_117_sendFileList_                           117
+        #define OD_3002_118_sendFileList_                           118
+        #define OD_3002_119_sendFileList_                           119
+        #define OD_3002_120_sendFileList_                           120
+        #define OD_3002_121_sendFileList_                           121
+        #define OD_3002_122_sendFileList_                           122
+        #define OD_3002_123_sendFileList_                           123
+        #define OD_3002_124_sendFileList_                           124
+        #define OD_3002_125_sendFileList_                           125
+        #define OD_3002_126_sendFileList_                           126
+        #define OD_3002_127_sendFileList_                           127
 
 /*3003 */
         #define OD_3003_sendFileControl                             0x3003
 
         #define OD_3003_0_sendFileControl_maxSubIndex               0
-        #define OD_3003_1_sendFileControl_filePointer               1
+        #define OD_3003_1_sendFileControl_sendFilePointer           1
         #define OD_3003_2_sendFileControl_fileName                  2
         #define OD_3003_3_sendFileControl_fileData                  3
         #define OD_3003_4_sendFileControl_fileSize                  4
         #define OD_3003_5_sendFileControl_deleteFile                5
-        #define OD_3003_6_sendFileControl_fileAvailable             6
+        #define OD_3003_6_sendFileControl_filesAvailable            6
         #define OD_3003_7_sendFileControl_overflow                  7
-        #define OD_3003_8_sendFileControl_refreshFileList           8
+        #define OD_3003_8_sendFileControl_refreshFileArray          8
+
+/*3004 */
+        #define OD_3004_daemonList                                  0x3004
+
+        #define OD_3004_0_daemonList_maxSubIndex                    0
+        #define OD_3004_1_daemonList_                               1
+        #define OD_3004_2_daemonList_                               2
+        #define OD_3004_3_daemonList_                               3
+        #define OD_3004_4_daemonList_                               4
+        #define OD_3004_5_daemonList_                               5
+        #define OD_3004_6_daemonList_                               6
+        #define OD_3004_7_daemonList_                               7
+        #define OD_3004_8_daemonList_                               8
+        #define OD_3004_9_daemonList_                               9
+        #define OD_3004_10_daemonList_                              10
+        #define OD_3004_11_daemonList_                              11
+        #define OD_3004_12_daemonList_                              12
+        #define OD_3004_13_daemonList_                              13
+        #define OD_3004_14_daemonList_                              14
+        #define OD_3004_15_daemonList_                              15
+        #define OD_3004_16_daemonList_                              16
+        #define OD_3004_17_daemonList_                              17
+        #define OD_3004_18_daemonList_                              18
+        #define OD_3004_19_daemonList_                              19
+        #define OD_3004_20_daemonList_                              20
+        #define OD_3004_21_daemonList_                              21
+        #define OD_3004_22_daemonList_                              22
+        #define OD_3004_23_daemonList_                              23
+        #define OD_3004_24_daemonList_                              24
+        #define OD_3004_25_daemonList_                              25
+        #define OD_3004_26_daemonList_                              26
+        #define OD_3004_27_daemonList_                              27
+        #define OD_3004_28_daemonList_                              28
+        #define OD_3004_29_daemonList_                              29
+        #define OD_3004_30_daemonList_                              30
+        #define OD_3004_31_daemonList_                              31
+        #define OD_3004_32_daemonList_                              32
+        #define OD_3004_33_daemonList_                              33
+        #define OD_3004_34_daemonList_                              34
+        #define OD_3004_35_daemonList_                              35
+        #define OD_3004_36_daemonList_                              36
+        #define OD_3004_37_daemonList_                              37
+        #define OD_3004_38_daemonList_                              38
+        #define OD_3004_39_daemonList_                              39
+        #define OD_3004_40_daemonList_                              40
+        #define OD_3004_41_daemonList_                              41
+        #define OD_3004_42_daemonList_                              42
+        #define OD_3004_43_daemonList_                              43
+        #define OD_3004_44_daemonList_                              44
+        #define OD_3004_45_daemonList_                              45
+        #define OD_3004_46_daemonList_                              46
+        #define OD_3004_47_daemonList_                              47
+        #define OD_3004_48_daemonList_                              48
+        #define OD_3004_49_daemonList_                              49
+        #define OD_3004_50_daemonList_                              50
+        #define OD_3004_51_daemonList_                              51
+        #define OD_3004_52_daemonList_                              52
+        #define OD_3004_53_daemonList_                              53
+        #define OD_3004_54_daemonList_                              54
+        #define OD_3004_55_daemonList_                              55
+        #define OD_3004_56_daemonList_                              56
+        #define OD_3004_57_daemonList_                              57
+        #define OD_3004_58_daemonList_                              58
+        #define OD_3004_59_daemonList_                              59
+        #define OD_3004_60_daemonList_                              60
+        #define OD_3004_61_daemonList_                              61
+        #define OD_3004_62_daemonList_                              62
+        #define OD_3004_63_daemonList_                              63
+        #define OD_3004_64_daemonList_                              64
+        #define OD_3004_65_daemonList_                              65
+        #define OD_3004_66_daemonList_                              66
+        #define OD_3004_67_daemonList_                              67
+        #define OD_3004_68_daemonList_                              68
+        #define OD_3004_69_daemonList_                              69
+        #define OD_3004_70_daemonList_                              70
+        #define OD_3004_71_daemonList_                              71
+        #define OD_3004_72_daemonList_                              72
+        #define OD_3004_73_daemonList_                              73
+        #define OD_3004_74_daemonList_                              74
+        #define OD_3004_75_daemonList_                              75
+        #define OD_3004_76_daemonList_                              76
+        #define OD_3004_77_daemonList_                              77
+        #define OD_3004_78_daemonList_                              78
+        #define OD_3004_79_daemonList_                              79
+        #define OD_3004_80_daemonList_                              80
+        #define OD_3004_81_daemonList_                              81
+        #define OD_3004_82_daemonList_                              82
+        #define OD_3004_83_daemonList_                              83
+        #define OD_3004_84_daemonList_                              84
+        #define OD_3004_85_daemonList_                              85
+        #define OD_3004_86_daemonList_                              86
+        #define OD_3004_87_daemonList_                              87
+        #define OD_3004_88_daemonList_                              88
+        #define OD_3004_89_daemonList_                              89
+        #define OD_3004_90_daemonList_                              90
+        #define OD_3004_91_daemonList_                              91
+        #define OD_3004_92_daemonList_                              92
+        #define OD_3004_93_daemonList_                              93
+        #define OD_3004_94_daemonList_                              94
+        #define OD_3004_95_daemonList_                              95
+        #define OD_3004_96_daemonList_                              96
+        #define OD_3004_97_daemonList_                              97
+        #define OD_3004_98_daemonList_                              98
+        #define OD_3004_99_daemonList_                              99
+        #define OD_3004_100_daemonList_                             100
+        #define OD_3004_101_daemonList_                             101
+        #define OD_3004_102_daemonList_                             102
+        #define OD_3004_103_daemonList_                             103
+        #define OD_3004_104_daemonList_                             104
+        #define OD_3004_105_daemonList_                             105
+        #define OD_3004_106_daemonList_                             106
+        #define OD_3004_107_daemonList_                             107
+        #define OD_3004_108_daemonList_                             108
+        #define OD_3004_109_daemonList_                             109
+        #define OD_3004_110_daemonList_                             110
+        #define OD_3004_111_daemonList_                             111
+        #define OD_3004_112_daemonList_                             112
+        #define OD_3004_113_daemonList_                             113
+        #define OD_3004_114_daemonList_                             114
+        #define OD_3004_115_daemonList_                             115
+        #define OD_3004_116_daemonList_                             116
+        #define OD_3004_117_daemonList_                             117
+        #define OD_3004_118_daemonList_                             118
+        #define OD_3004_119_daemonList_                             119
+        #define OD_3004_120_daemonList_                             120
+        #define OD_3004_121_daemonList_                             121
+        #define OD_3004_122_daemonList_                             122
+        #define OD_3004_123_daemonList_                             123
+        #define OD_3004_124_daemonList_                             124
+        #define OD_3004_125_daemonList_                             125
+        #define OD_3004_126_daemonList_                             126
+        #define OD_3004_127_daemonList_                             127
+
+/*3005 */
+        #define OD_3005_daemonController                            0x3005
+
+        #define OD_3005_0_daemonController_maxSubIndex              0
+        #define OD_3005_1_daemonController_selectApp                1
+        #define OD_3005_2_daemonController_appName                  2
+        #define OD_3005_3_daemonController_daemonServiceName        3
+        #define OD_3005_4_daemonController_daemonCurrentState       4
+        #define OD_3005_5_daemonController_daemonChangeState        5
+
+/*3006 */
+        #define OD_3006_syslogReader                                0x3006
+
+        #define OD_3006_0_syslogReader_maxSubIndex                  0
+
+/*30F0 */
+        #define OD_30F0_powerManagementApp                          0x30F0
+
+        #define OD_30F0_0_powerManagementApp_maxSubIndex            0
+        #define OD_30F0_1_powerManagementApp_reboot                 1
+        #define OD_30F0_2_powerManagementApp_poweroff               2
+
+/*30F1 */
+        #define OD_30F1_linuxUpdaterApp                             0x30F1
+
+        #define OD_30F1_0_linuxUpdaterApp_maxSubIndex               0
+        #define OD_30F1_1_linuxUpdaterApp_currentState              1
+        #define OD_30F1_2_linuxUpdaterApp_updatesAvailable          2
+        #define OD_30F1_3_linuxUpdaterApp_currentUpdateFile         3
+        #define OD_30F1_4_linuxUpdaterApp_errorMessage              4
+        #define OD_30F1_5_linuxUpdaterApp_addUpdateFile             5
+        #define OD_30F1_6_linuxUpdaterApp_startUpdate               6
+        #define OD_30F1_7_linuxUpdaterApp_emergencyStopUpdate       7
+        #define OD_30F1_8_linuxUpdaterApp_resetUpdater              8
+        #define OD_30F1_9_linuxUpdaterApp_getAptListOutput          9
 
 /*******************************************************************************
    STRUCTURES FOR VARIABLES IN DIFFERENT MEMORY LOCATIONS
@@ -736,46 +888,51 @@ struct sCO_OD_ROM{
 struct sCO_OD_RAM{
                UNSIGNED32     FirstWord;
 
-/*1000      */ UNSIGNED32      deviceType;
-/*1001      */ UNSIGNED8       errorRegister;
-/*1002      */ UNSIGNED32      manufacturerStatusRegister;
+/*1000      */ UNSIGNED32     deviceType;
+/*1001      */ UNSIGNED8      errorRegister;
+/*1002      */ UNSIGNED32     manufacturerStatusRegister;
 /*1003      */ UNSIGNED32      preDefinedErrorField[8];
-/*1005      */ UNSIGNED32      COB_ID_SYNCMessage;
-/*1006      */ UNSIGNED32      communicationCyclePeriod;
-/*1007      */ UNSIGNED32      synchronousWindowLength;
-/*1008      */ VISIBLE_STRING  manufacturerDeviceName[3];
-/*1009      */ VISIBLE_STRING  manufacturerHardwareVersion[1];
-/*100a      */ VISIBLE_STRING  manufacturerSoftwareVersion[1];
+/*1005      */ UNSIGNED32     COB_ID_SYNCMessage;
+/*1006      */ UNSIGNED32     communicationCyclePeriod;
+/*1007      */ UNSIGNED32     synchronousWindowLength;
+/*1008      */ VISIBLE_STRING manufacturerDeviceName[11];
+/*1009      */ VISIBLE_STRING manufacturerHardwareVersion[4];
+/*100A      */ VISIBLE_STRING manufacturerSoftwareVersion[4];
 /*1010      */ UNSIGNED32      storeParameters[1];
 /*1011      */ UNSIGNED32      restoreDefaultParameters[1];
-/*1014      */ UNSIGNED32      COB_ID_EMCY;
-/*1015      */ UNSIGNED16      inhibitTimeEMCY;
+/*1014      */ UNSIGNED32     COB_ID_EMCY;
+/*1015      */ UNSIGNED16     inhibitTimeEMCY;
 /*1016      */ UNSIGNED32      consumerHeartbeatTime[4];
-/*1017      */ UNSIGNED16      producerHeartbeatTime;
+/*1017      */ UNSIGNED16     producerHeartbeatTime;
 /*1018      */ OD_identity_t   identity;
-/*1019      */ UNSIGNED8       synchronousCounterOverflowValue;
+/*1019      */ UNSIGNED8      synchronousCounterOverflowValue;
 /*1029      */ UNSIGNED8       errorBehavior[6];
 /*1200      */ OD_SDOServerParameter_t SDOServerParameter[1];
 /*1280      */ OD_SDOClientParameter_t SDOClientParameter[1];
 /*1400      */ OD_RPDOCommunicationParameter_t RPDOCommunicationParameter[4];
 /*1600      */ OD_RPDOMappingParameter_t RPDOMappingParameter[4];
 /*1800      */ OD_TPDOCommunicationParameter_t TPDOCommunicationParameter[4];
-/*1a00      */ OD_TPDOMappingParameter_t TPDOMappingParameter[4];
-/*1f80      */ UNSIGNED32      NMTStartup;
-/*2100      */ OCTET_STRING    errorStatusBits[10];
-/*2101      */ UNSIGNED8       CANNodeID;
-/*2102      */ UNSIGNED16      CANBitRate;
-/*2103      */ UNSIGNED16      SYNCCounter;
-/*2104      */ UNSIGNED16      SYNCTime;
-/*2106      */ UNSIGNED32      powerOnCounter;
+/*1A00      */ OD_TPDOMappingParameter_t TPDOMappingParameter[4];
+/*1F80      */ UNSIGNED32     NMTStartup;
+/*2100      */ OCTET_STRING   errorStatusBits[10];
+/*2101      */ UNSIGNED8      CANNodeID;
+/*2102      */ UNSIGNED16     CANBitRate;
+/*2103      */ UNSIGNED16     SYNCCounter;
+/*2104      */ UNSIGNED16     SYNCTime;
+/*2106      */ UNSIGNED32     powerOnCounter;
 /*2107      */ UNSIGNED16      performance[5];
 /*2108      */ INTEGER16       temperature[1];
 /*2109      */ INTEGER16       voltage[1];
 /*2130      */ OD_time_t       time;
-/*3000      */ OD_systemdControl_t systemdControl;
+/*3000      */ OD_CANdaemon_t  CANdaemon;
 /*3001      */ OD_receiveFile_t receiveFile;
-/*3002      */ DOMAIN          sendFileTransfer[127];
+/*3002      */ DOMAIN          sendFileList[127];
 /*3003      */ OD_sendFileControl_t sendFileControl;
+/*3004      */ DOMAIN          daemonList[127];
+/*3005      */ OD_daemonController_t daemonController;
+/*3006      */ OD_syslogReader_t syslogReader;
+/*30F0      */ OD_powerManagementApp_t powerManagementApp;
+/*30F1      */ OD_linuxUpdaterApp_t linuxUpdaterApp;
 
                UNSIGNED32     LastWord;
 };
@@ -823,15 +980,15 @@ extern struct sCO_OD_EEPROM CO_OD_EEPROM;
 
 /*1008, Data Type: VISIBLE_STRING */
         #define OD_manufacturerDeviceName                           CO_OD_RAM.manufacturerDeviceName
-        #define ODL_manufacturerDeviceName_stringLength             3
+        #define ODL_manufacturerDeviceName_stringLength             11
 
 /*1009, Data Type: VISIBLE_STRING */
         #define OD_manufacturerHardwareVersion                      CO_OD_RAM.manufacturerHardwareVersion
-        #define ODL_manufacturerHardwareVersion_stringLength        1
+        #define ODL_manufacturerHardwareVersion_stringLength        4
 
-/*100a, Data Type: VISIBLE_STRING */
+/*100A, Data Type: VISIBLE_STRING */
         #define OD_manufacturerSoftwareVersion                      CO_OD_RAM.manufacturerSoftwareVersion
-        #define ODL_manufacturerSoftwareVersion_stringLength        1
+        #define ODL_manufacturerSoftwareVersion_stringLength        4
 
 /*1010, Data Type: UNSIGNED32, Array[1] */
         #define OD_storeParameters                                  CO_OD_RAM.storeParameters
@@ -888,10 +1045,10 @@ extern struct sCO_OD_EEPROM CO_OD_EEPROM;
 /*1800, Data Type: TPDOCommunicationParameter_t */
         #define OD_TPDOCommunicationParameter                       CO_OD_RAM.TPDOCommunicationParameter
 
-/*1a00, Data Type: TPDOMappingParameter_t */
+/*1A00, Data Type: TPDOMappingParameter_t */
         #define OD_TPDOMappingParameter                             CO_OD_RAM.TPDOMappingParameter
 
-/*1f80, Data Type: UNSIGNED32 */
+/*1F80, Data Type: UNSIGNED32 */
         #define OD_NMTStartup                                       CO_OD_RAM.NMTStartup
 
 /*2100, Data Type: OCTET_STRING */
@@ -935,17 +1092,36 @@ extern struct sCO_OD_EEPROM CO_OD_EEPROM;
 /*2130, Data Type: time_t */
         #define OD_time                                             CO_OD_RAM.time
 
-/*3000, Data Type: systemdControl_t */
-        #define OD_systemdControl                                   CO_OD_RAM.systemdControl
+/*3000, Data Type: CANdaemon_t */
+        #define OD_CANdaemon                                        CO_OD_RAM.CANdaemon
 
 /*3001, Data Type: receiveFile_t */
         #define OD_receiveFile                                      CO_OD_RAM.receiveFile
 
 /*3002, Data Type: DOMAIN, Array[127] */
-        #define OD_sendFileTransfer                                 CO_OD_RAM.sendFileTransfer
-        #define ODL_sendFileTransfer_arrayLength                    127
-        #define ODA_sendFileTransfer_                               0
+        #define OD_sendFileList                                     CO_OD_RAM.sendFileList
+        #define ODL_sendFileList_arrayLength                        127
+        #define ODA_sendFileList_                                   0
 
 /*3003, Data Type: sendFileControl_t */
         #define OD_sendFileControl                                  CO_OD_RAM.sendFileControl
 
+/*3004, Data Type: DOMAIN, Array[127] */
+        #define OD_daemonList                                       CO_OD_RAM.daemonList
+        #define ODL_daemonList_arrayLength                          127
+        #define ODA_daemonList_                                     0
+
+/*3005, Data Type: daemonController_t */
+        #define OD_daemonController                                 CO_OD_RAM.daemonController
+
+/*3006, Data Type: syslogReader_t */
+        #define OD_syslogReader                                     CO_OD_RAM.syslogReader
+
+/*30F0, Data Type: powerManagementApp_t */
+        #define OD_powerManagementApp                               CO_OD_RAM.powerManagementApp
+
+/*30F1, Data Type: linuxUpdaterApp_t */
+        #define OD_linuxUpdaterApp                                  CO_OD_RAM.linuxUpdaterApp
+
+#endif
+// clang-format on
