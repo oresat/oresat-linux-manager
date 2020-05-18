@@ -1,9 +1,9 @@
 #include "log_message.h"
 #include "app_OD_helpers.h"
 #include "file_transfer_ODF.h"
-#include "application.h"
+#include "app_dbus_controller.h"
+#include "star_tracker_app.h"
 #include <systemd/sd-bus.h>
-#include <pthread.h>
 #include <stdio.h>
 #include <stdint.h>
 #include <stdbool.h>
@@ -16,38 +16,20 @@
 #define APP_NAME        "StarTracker"
 
 
-// Static variables
-static sd_bus           *bus = NULL;
-static bool             running = true;
+extern app_dbus_data_t      APPS_DBUS;
+
 
 
 // Static functions headers
 static int read_prop_cb(sd_bus_message *m, void *userdata, sd_bus_error *ret_error);
 
 
-/*****************************************************************************/
-// app ODF and dbus functions
-
-
-int main_process_app_setup(void) {
-    return 0;
-}
-
-int main_process_app_main(void) {
-
-    // DBus variables
+int star_tracker_dbus_signal_match() {
     int r;
-
-    // Connect to the bus
-    r = sd_bus_open_system(&bus);
-    if (r < 0) {
-        app_log_message(APP_NAME, LOG_ERR, "Failed to connect to systemd bus.\n");
-        return r;
-    }
 
     // Set up signal callback
     r = sd_bus_match_signal(
-            bus,
+            APPS_DBUS.bus,
             NULL,
             NULL,
             OBJECT_PATH,
@@ -60,22 +42,7 @@ int main_process_app_main(void) {
         return r;
     }
 
-    // Process requests
-    while (running) {
-        r = sd_bus_process(bus, NULL);
-        if (r < 0)
-            app_log_message(APP_NAME, LOG_DEBUG, "Failed to process bus.\n");
-        else if (r > 0) // we processed a request, try to process another one, right-away
-            continue;
-
-        // Wait for the next request to process
-        if (sd_bus_wait(bus, (uint64_t) -1) < 0)
-            app_log_message(APP_NAME, LOG_DEBUG, "Bus wait failed.\n");
-    }
-
-    // Cleanup
-    sd_bus_unref(bus);
-    return 0;
+    return 1;
 
 }
 
@@ -91,13 +58,13 @@ static int read_prop_cb(sd_bus_message *m, void *userdata, sd_bus_error *ret_err
     char *solve_path = NULL;
 
     // Get the coordinates + timestamp
-    if (sd_bus_get_property(bus, DESTINATION, OBJECT_PATH, INTERFACE_NAME, "coor", ret_error, &m, "(dddd)") < 0)
+    if (sd_bus_get_property(APPS_DBUS.bus, DESTINATION, OBJECT_PATH, INTERFACE_NAME, "coor", ret_error, &m, "(dddd)") < 0)
         return -1; // failed to get property
     if (sd_bus_message_read(m, "(dddd)", &dec, &ra, &ori, &timestamp) < 0)
         return -1; // failed to decode dbus property
 
     // Get the solution image's filepath
-    if (sd_bus_get_property(bus, DESTINATION, OBJECT_PATH, INTERFACE_NAME, "filepath", ret_error, &m, "s") < 0)
+    if (sd_bus_get_property(APPS_DBUS.bus, DESTINATION, OBJECT_PATH, INTERFACE_NAME, "filepath", ret_error, &m, "s") < 0)
         return -1; // failed to get property
     if (sd_bus_message_read(m, "s", &solve_path) < 0)
         return -1; // failed to decode dbus property
