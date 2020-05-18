@@ -111,45 +111,72 @@ endif()
 # Get source files
 
 # all paths to source directories
-set(BOARDS_DIR src/boards/${BOARD})
-set(OD_DIR src/boards/${BOARD}/object_dictionary)
-set(CANOPENNODE_DIR src/CANopenNode)
-set(STACK_DIR src/CANopenNode/stack)
-set(COMMON_DIR src/common)
 set(STACK_DRIVER_DIR src/socketCAN)
+set(CANOPEN_DIR src/CANopenNode)
+set(OD_DIR src/boards/${BOARD}/object_dictionary)
+set(COMMON_DIR src/common)
 set(SYSTEM_APPS_DIR src/system_apps)
+set(BOARD_APPS_DIR src/boards/${BOARD})
 
 set(CANDAEMON_INCLUDE_DIRS
-    ${BOARDS_DIR}
-    ${OD_DIR}
-    ${CANOPENNODE_DIR}
-    ${STACK_DIR}
+    src/CANopenNode/301
     ${STACK_DRIVER_DIR}
+    ${CANOPEN_DIR}
+    ${OD_DIR}
     ${COMMON_DIR}
     ${SYSTEM_APPS_DIR}
+    ${BOARD_APPS_DIR}
 )
 
 # deal with each board having different apps
 # NOTE every time an app is add "cmake .." need to be call manually
-aux_source_directory(${BOARDS_DIR} BOARD_APPS_SOURCES)
+aux_source_directory(${BOARD_APPS_DIR} BOARD_APPS_SOURCES)
 aux_source_directory(${SYSTEM_APPS_DIR} SYSTEM_APPS_SOURCES)
 
+set(CANOPENNODE_SOURCES
+    ${STACK_DRIVER_DIR}/CO_driver.c
+    ${STACK_DRIVER_DIR}/CO_error.c
+    ${STACK_DRIVER_DIR}/CO_Linux_threads.c
+    ${CANOPEN_DIR}/301/CO_Emergency.c
+    ${CANOPEN_DIR}/301/CO_fifo.c
+    ${CANOPEN_DIR}/301/CO_HBconsumer.c
+    ${CANOPEN_DIR}/301/CO_NMT_Heartbeat.c
+    ${CANOPEN_DIR}/301/CO_PDO.c
+    ${CANOPEN_DIR}/301/CO_SDOclient.c
+    ${CANOPEN_DIR}/301/CO_SDOserver.c
+    ${CANOPEN_DIR}/301/CO_SYNC.c
+    ${CANOPEN_DIR}/301/CO_TIME.c
+    ${CANOPEN_DIR}/301/crc16-ccitt.c
+    ${CANOPEN_DIR}/309/CO_gateway_ascii.c
+    ${CANOPEN_DIR}/CANopen.c
+)
+
+set(CANOPENNODE_HEADERS
+    ${STACK_DRIVER_DIR}/CO_error.h
+    ${STACK_DRIVER_DIR}/CO_Linux_threads.h
+    ${STACK_DRIVER_DIR}/CO_SDO.h
+    ${CANOPEN_DIR}/301/CO_config.h
+    ${CANOPEN_DIR}/301/CO_driver.h
+    ${CANOPEN_DIR}/301/CO_Emergency.h
+    ${CANOPEN_DIR}/301/CO_fifo.h
+    ${CANOPEN_DIR}/301/CO_HBconsumer.h
+    ${CANOPEN_DIR}/301/CO_NMT_Heartbeat.h
+    ${CANOPEN_DIR}/301/CO_PDO.h
+    ${CANOPEN_DIR}/301/CO_SDOclient.h
+    ${CANOPEN_DIR}/301/CO_SDOserver.h
+    ${CANOPEN_DIR}/301/CO_SYNC.h
+    ${CANOPEN_DIR}/301/CO_TIME.h
+    ${CANOPEN_DIR}/301/crc16-ccitt.h
+    ${CANOPEN_DIR}/309/CO_gateway_ascii.h
+    ${CANOPEN_DIR}/CANopen.h
+)
+
+
+add_library(CANopenNode ${CANOPENNODE_SOURCES} ${CANOPENNODE_HEADERS})
+target_include_directories(CANopenNode PUBLIC ${CANDAEMON_INCLUDE_DIRS})
 
 set(SOURCE_FILES
     ${OD_DIR}/CO_OD.c
-    ${CANOPENNODE_DIR}/CANopen.c
-    ${STACK_DIR}/CO_Emergency.c
-    ${STACK_DIR}/CO_HBconsumer.c
-    ${STACK_DIR}/CO_NMT_Heartbeat.c
-    ${STACK_DIR}/CO_PDO.c
-    ${STACK_DIR}/CO_SDO.c
-    ${STACK_DIR}/CO_SDOmaster.c
-    ${STACK_DIR}/CO_SYNC.c
-    ${STACK_DIR}/CO_trace.c
-    ${STACK_DIR}/crc16-ccitt.c
-    ${STACK_DRIVER_DIR}/CO_driver.c
-    ${STACK_DRIVER_DIR}/CO_Linux_tasks.c
-    ${STACK_DRIVER_DIR}/CO_time.c
     ${COMMON_DIR}/log_message.c
     ${COMMON_DIR}/file_transfer_ODF.c
     ${COMMON_DIR}/app_OD_helpers.c
@@ -166,6 +193,7 @@ set(SOURCE_FILES
 
 add_executable(candaemon ${SOURCE_FILES})
 
+target_link_libraries(candaemon CANopenNode)
 target_link_libraries(candaemon ${LIBSYSTEMD_LIBRARIES} Threads::Threads)
 
 target_include_directories(candaemon PRIVATE ${CANDAEMON_INCLUDE_DIRS})

@@ -17,6 +17,8 @@ def Settings( **kwargs ):
             '-I./src/system_apps',
             '-I./src/socketCAN',
             '-I./src/CANopenNode',
-            '-I./src/CANopenNode/stack',
+            '-I./src/CANopenNode/301',
+            '-I./src/CANopenNode/305',
+            '-I./src/CANopenNode/309',
             ],
         }
