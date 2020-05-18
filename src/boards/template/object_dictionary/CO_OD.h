@@ -5,7 +5,7 @@
    CANopen Object Dictionary.
 
    This file was automatically generated with libedssharp Object
-   Dictionary Editor v0.8-7-g2e53bbc   DON'T EDIT THIS FILE MANUALLY !!!!
+   Dictionary Editor v0.8-33-g683a144   DON'T EDIT THIS FILE MANUALLY !!!!
 *******************************************************************************/
 
 
@@ -58,16 +58,16 @@
       CreationTime: 11:32AM
       CreationDate: 11-07-2019
       CreatedBy:    Ryan Medick
-******************************************************************************/
+*******************************************************************************/
 
 
 /*******************************************************************************
    DEVICE INFO:
       VendorName:     Portland State Aerospace Society
-      VendorNumber    0
+      VendorNumber:   0
       ProductName:    Template
       ProductNumber:  0
-******************************************************************************/
+*******************************************************************************/
 
 
 /*******************************************************************************
@@ -83,6 +83,7 @@
   #define CO_NO_RPDO                     4   //Associated objects: 14xx, 16xx
   #define CO_NO_TPDO                     4   //Associated objects: 18xx, 1Axx
   #define CO_NO_NMT_MASTER               0
+  #define CO_NO_TRACE                    0
 
 
 /*******************************************************************************
@@ -94,30 +95,30 @@
 /*******************************************************************************
    TYPE DEFINITIONS FOR RECORDS
 *******************************************************************************/
-/*1018    */ typedef struct {
+/*1018      */ typedef struct {
                UNSIGNED8      maxSubIndex;
                UNSIGNED32     vendorID;
                UNSIGNED32     productCode;
                UNSIGNED32     revisionNumber;
                UNSIGNED32     serialNumber;
                }              OD_identity_t;
-/*1200    */ typedef struct {
+/*1200      */ typedef struct {
                UNSIGNED8      maxSubIndex;
                UNSIGNED32     COB_IDClientToServer;
                UNSIGNED32     COB_IDServerToClient;
                }              OD_SDOServerParameter_t;
-/*1280    */ typedef struct {
+/*1280      */ typedef struct {
                UNSIGNED8      maxSubIndex;
                UNSIGNED32     COB_IDClientToServer;
                UNSIGNED32     COB_IDServerToClient;
                UNSIGNED8      nodeIDOfTheSDOServer;
                }              OD_SDOClientParameter_t;
-/*1400    */ typedef struct {
+/*1400      */ typedef struct {
                UNSIGNED8      maxSubIndex;
                UNSIGNED32     COB_IDUsedByRPDO;
                UNSIGNED8      transmissionType;
                }              OD_RPDOCommunicationParameter_t;
-/*1600    */ typedef struct {
+/*1600      */ typedef struct {
                UNSIGNED8      numberOfMappedObjects;
                UNSIGNED32     mappedObject1;
                UNSIGNED32     mappedObject2;
@@ -128,7 +129,7 @@
                UNSIGNED32     mappedObject7;
                UNSIGNED32     mappedObject8;
                }              OD_RPDOMappingParameter_t;
-/*1800    */ typedef struct {
+/*1800      */ typedef struct {
                UNSIGNED8      maxSubIndex;
                UNSIGNED32     COB_IDUsedByTPDO;
                UNSIGNED8      transmissionType;
@@ -137,7 +138,7 @@
                UNSIGNED16     eventTimer;
                UNSIGNED8      SYNCStartValue;
                }              OD_TPDOCommunicationParameter_t;
-/*1a00    */ typedef struct {
+/*1A00      */ typedef struct {
                UNSIGNED8      numberOfMappedObjects;
                UNSIGNED32     mappedObject1;
                UNSIGNED32     mappedObject2;
@@ -148,22 +149,22 @@
                UNSIGNED32     mappedObject7;
                UNSIGNED32     mappedObject8;
                }              OD_TPDOMappingParameter_t;
-/*2130    */ typedef struct {
+/*2130      */ typedef struct {
                UNSIGNED8      maxSubIndex;
                VISIBLE_STRING string[1];
                UNSIGNED64     epochTimeBaseMs;
                UNSIGNED32     epochTimeOffsetMs;
                }              OD_time_t;
-/*3000    */ typedef struct {
+/*3000      */ typedef struct {
                UNSIGNED8      maxSubIndex;
                }              OD_CANdaemon_t;
-/*3001    */ typedef struct {
+/*3001      */ typedef struct {
                UNSIGNED8      maxSubIndex;
                DOMAIN         fileName;
                DOMAIN         fileData;
                UNSIGNED8      saveFile;
                }              OD_receiveFile_t;
-/*3003    */ typedef struct {
+/*3003      */ typedef struct {
                UNSIGNED8      maxSubIndex;
                UNSIGNED8      sendFilePointer;
                DOMAIN         fileName;
@@ -174,7 +175,7 @@
                UNSIGNED32     overflow;
                BOOLEAN        refreshFileArray;
                }              OD_sendFileControl_t;
-/*3005    */ typedef struct {
+/*3005      */ typedef struct {
                UNSIGNED8      maxSubIndex;
                UNSIGNED8      selectApp;
                DOMAIN         appName;
@@ -182,15 +183,15 @@
                INTEGER32      daemonCurrentState;
                INTEGER32      daemonChangeState;
                }              OD_daemonController_t;
-/*3006    */ typedef struct {
+/*3006      */ typedef struct {
                UNSIGNED8      maxSubIndex;
                }              OD_syslogReader_t;
-/*30f0    */ typedef struct {
+/*30F0      */ typedef struct {
                UNSIGNED8      maxSubIndex;
                DOMAIN         reboot;
                DOMAIN         poweroff;
                }              OD_powerManagementApp_t;
-/*30f1    */ typedef struct {
+/*30F1      */ typedef struct {
                UNSIGNED8      maxSubIndex;
                INTEGER32      currentState;
                UNSIGNED32     updatesAvailable;
@@ -206,7 +207,7 @@
 /*******************************************************************************
    TYPE DEFINITIONS FOR OBJECT DICTIONARY INDEXES
 
-   some of those are redundant with CO_SDO.h CO_ObjDicId_t <Common CiA301 object 
+   some of those are redundant with CO_SDO.h CO_ObjDicId_t <Common CiA301 object
    dictionary entries>
 *******************************************************************************/
 /*1000 */
@@ -246,8 +247,8 @@
 /*1009 */
         #define OD_1009_manufacturerHardwareVersion                 0x1009
 
-/*100a */
-        #define OD_100a_manufacturerSoftwareVersion                 0x100a
+/*100A */
+        #define OD_100A_manufacturerSoftwareVersion                 0x100A
 
 /*1010 */
         #define OD_1010_storeParameters                             0x1010
@@ -441,60 +442,60 @@
         #define OD_1803_5_TPDOCommunicationParameter_eventTimer     5
         #define OD_1803_6_TPDOCommunicationParameter_SYNCStartValue 6
 
-/*1a00 */
-        #define OD_1a00_TPDOMappingParameter                        0x1a00
+/*1A00 */
+        #define OD_1A00_TPDOMappingParameter                        0x1A00
 
-        #define OD_1a00_0_TPDOMappingParameter_maxSubIndex          0
-        #define OD_1a00_1_TPDOMappingParameter_mappedObject1        1
-        #define OD_1a00_2_TPDOMappingParameter_mappedObject2        2
-        #define OD_1a00_3_TPDOMappingParameter_mappedObject3        3
-        #define OD_1a00_4_TPDOMappingParameter_mappedObject4        4
-        #define OD_1a00_5_TPDOMappingParameter_mappedObject5        5
-        #define OD_1a00_6_TPDOMappingParameter_mappedObject6        6
-        #define OD_1a00_7_TPDOMappingParameter_mappedObject7        7
-        #define OD_1a00_8_TPDOMappingParameter_mappedObject8        8
+        #define OD_1A00_0_TPDOMappingParameter_maxSubIndex          0
+        #define OD_1A00_1_TPDOMappingParameter_mappedObject1        1
+        #define OD_1A00_2_TPDOMappingParameter_mappedObject2        2
+        #define OD_1A00_3_TPDOMappingParameter_mappedObject3        3
+        #define OD_1A00_4_TPDOMappingParameter_mappedObject4        4
+        #define OD_1A00_5_TPDOMappingParameter_mappedObject5        5
+        #define OD_1A00_6_TPDOMappingParameter_mappedObject6        6
+        #define OD_1A00_7_TPDOMappingParameter_mappedObject7        7
+        #define OD_1A00_8_TPDOMappingParameter_mappedObject8        8
 
-/*1a01 */
-        #define OD_1a01_TPDOMappingParameter                        0x1a01
+/*1A01 */
+        #define OD_1A01_TPDOMappingParameter                        0x1A01
 
-        #define OD_1a01_0_TPDOMappingParameter_maxSubIndex          0
-        #define OD_1a01_1_TPDOMappingParameter_mappedObject1        1
-        #define OD_1a01_2_TPDOMappingParameter_mappedObject2        2
-        #define OD_1a01_3_TPDOMappingParameter_mappedObject3        3
-        #define OD_1a01_4_TPDOMappingParameter_mappedObject4        4
-        #define OD_1a01_5_TPDOMappingParameter_mappedObject5        5
-        #define OD_1a01_6_TPDOMappingParameter_mappedObject6        6
-        #define OD_1a01_7_TPDOMappingParameter_mappedObject7        7
-        #define OD_1a01_8_TPDOMappingParameter_mappedObject8        8
+        #define OD_1A01_0_TPDOMappingParameter_maxSubIndex          0
+        #define OD_1A01_1_TPDOMappingParameter_mappedObject1        1
+        #define OD_1A01_2_TPDOMappingParameter_mappedObject2        2
+        #define OD_1A01_3_TPDOMappingParameter_mappedObject3        3
+        #define OD_1A01_4_TPDOMappingParameter_mappedObject4        4
+        #define OD_1A01_5_TPDOMappingParameter_mappedObject5        5
+        #define OD_1A01_6_TPDOMappingParameter_mappedObject6        6
+        #define OD_1A01_7_TPDOMappingParameter_mappedObject7        7
+        #define OD_1A01_8_TPDOMappingParameter_mappedObject8        8
 
-/*1a02 */
-        #define OD_1a02_TPDOMappingParameter                        0x1a02
+/*1A02 */
+        #define OD_1A02_TPDOMappingParameter                        0x1A02
 
-        #define OD_1a02_0_TPDOMappingParameter_maxSubIndex          0
-        #define OD_1a02_1_TPDOMappingParameter_mappedObject1        1
-        #define OD_1a02_2_TPDOMappingParameter_mappedObject2        2
-        #define OD_1a02_3_TPDOMappingParameter_mappedObject3        3
-        #define OD_1a02_4_TPDOMappingParameter_mappedObject4        4
-        #define OD_1a02_5_TPDOMappingParameter_mappedObject5        5
-        #define OD_1a02_6_TPDOMappingParameter_mappedObject6        6
-        #define OD_1a02_7_TPDOMappingParameter_mappedObject7        7
-        #define OD_1a02_8_TPDOMappingParameter_mappedObject8        8
+        #define OD_1A02_0_TPDOMappingParameter_maxSubIndex          0
+        #define OD_1A02_1_TPDOMappingParameter_mappedObject1        1
+        #define OD_1A02_2_TPDOMappingParameter_mappedObject2        2
+        #define OD_1A02_3_TPDOMappingParameter_mappedObject3        3
+        #define OD_1A02_4_TPDOMappingParameter_mappedObject4        4
+        #define OD_1A02_5_TPDOMappingParameter_mappedObject5        5
+        #define OD_1A02_6_TPDOMappingParameter_mappedObject6        6
+        #define OD_1A02_7_TPDOMappingParameter_mappedObject7        7
+        #define OD_1A02_8_TPDOMappingParameter_mappedObject8        8
 
-/*1a03 */
-        #define OD_1a03_TPDOMappingParameter                        0x1a03
+/*1A03 */
+        #define OD_1A03_TPDOMappingParameter                        0x1A03
 
-        #define OD_1a03_0_TPDOMappingParameter_maxSubIndex          0
-        #define OD_1a03_1_TPDOMappingParameter_mappedObject1        1
-        #define OD_1a03_2_TPDOMappingParameter_mappedObject2        2
-        #define OD_1a03_3_TPDOMappingParameter_mappedObject3        3
-        #define OD_1a03_4_TPDOMappingParameter_mappedObject4        4
-        #define OD_1a03_5_TPDOMappingParameter_mappedObject5        5
-        #define OD_1a03_6_TPDOMappingParameter_mappedObject6        6
-        #define OD_1a03_7_TPDOMappingParameter_mappedObject7        7
-        #define OD_1a03_8_TPDOMappingParameter_mappedObject8        8
+        #define OD_1A03_0_TPDOMappingParameter_maxSubIndex          0
+        #define OD_1A03_1_TPDOMappingParameter_mappedObject1        1
+        #define OD_1A03_2_TPDOMappingParameter_mappedObject2        2
+        #define OD_1A03_3_TPDOMappingParameter_mappedObject3        3
+        #define OD_1A03_4_TPDOMappingParameter_mappedObject4        4
+        #define OD_1A03_5_TPDOMappingParameter_mappedObject5        5
+        #define OD_1A03_6_TPDOMappingParameter_mappedObject6        6
+        #define OD_1A03_7_TPDOMappingParameter_mappedObject7        7
+        #define OD_1A03_8_TPDOMappingParameter_mappedObject8        8
 
-/*1f80 */
-        #define OD_1f80_NMTStartup                                  0x1f80
+/*1F80 */
+        #define OD_1F80_NMTStartup                                  0x1F80
 
 /*2100 */
         #define OD_2100_errorStatusBits                             0x2100
@@ -849,26 +850,26 @@
 
         #define OD_3006_0_syslogReader_maxSubIndex                  0
 
-/*30f0 */
-        #define OD_30f0_powerManagementApp                          0x30f0
+/*30F0 */
+        #define OD_30F0_powerManagementApp                          0x30F0
 
-        #define OD_30f0_0_powerManagementApp_maxSubIndex            0
-        #define OD_30f0_1_powerManagementApp_reboot                 1
-        #define OD_30f0_2_powerManagementApp_poweroff               2
+        #define OD_30F0_0_powerManagementApp_maxSubIndex            0
+        #define OD_30F0_1_powerManagementApp_reboot                 1
+        #define OD_30F0_2_powerManagementApp_poweroff               2
 
-/*30f1 */
-        #define OD_30f1_linuxUpdaterApp                             0x30f1
+/*30F1 */
+        #define OD_30F1_linuxUpdaterApp                             0x30F1
 
-        #define OD_30f1_0_linuxUpdaterApp_maxSubIndex               0
-        #define OD_30f1_1_linuxUpdaterApp_currentState              1
-        #define OD_30f1_2_linuxUpdaterApp_updatesAvailable          2
-        #define OD_30f1_3_linuxUpdaterApp_currentUpdateFile         3
-        #define OD_30f1_4_linuxUpdaterApp_errorMessage              4
-        #define OD_30f1_5_linuxUpdaterApp_addUpdateFile             5
-        #define OD_30f1_6_linuxUpdaterApp_startUpdate               6
-        #define OD_30f1_7_linuxUpdaterApp_emergencyStopUpdate       7
-        #define OD_30f1_8_linuxUpdaterApp_resetUpdater              8
-        #define OD_30f1_9_linuxUpdaterApp_getAptListOutput          9
+        #define OD_30F1_0_linuxUpdaterApp_maxSubIndex               0
+        #define OD_30F1_1_linuxUpdaterApp_currentState              1
+        #define OD_30F1_2_linuxUpdaterApp_updatesAvailable          2
+        #define OD_30F1_3_linuxUpdaterApp_currentUpdateFile         3
+        #define OD_30F1_4_linuxUpdaterApp_errorMessage              4
+        #define OD_30F1_5_linuxUpdaterApp_addUpdateFile             5
+        #define OD_30F1_6_linuxUpdaterApp_startUpdate               6
+        #define OD_30F1_7_linuxUpdaterApp_emergencyStopUpdate       7
+        #define OD_30F1_8_linuxUpdaterApp_resetUpdater              8
+        #define OD_30F1_9_linuxUpdaterApp_getAptListOutput          9
 
 /*******************************************************************************
    STRUCTURES FOR VARIABLES IN DIFFERENT MEMORY LOCATIONS
@@ -887,38 +888,38 @@ struct sCO_OD_ROM{
 struct sCO_OD_RAM{
                UNSIGNED32     FirstWord;
 
-/*1000      */ UNSIGNED32      deviceType;
-/*1001      */ UNSIGNED8       errorRegister;
-/*1002      */ UNSIGNED32      manufacturerStatusRegister;
+/*1000      */ UNSIGNED32     deviceType;
+/*1001      */ UNSIGNED8      errorRegister;
+/*1002      */ UNSIGNED32     manufacturerStatusRegister;
 /*1003      */ UNSIGNED32      preDefinedErrorField[8];
-/*1005      */ UNSIGNED32      COB_ID_SYNCMessage;
-/*1006      */ UNSIGNED32      communicationCyclePeriod;
-/*1007      */ UNSIGNED32      synchronousWindowLength;
-/*1008      */ VISIBLE_STRING  manufacturerDeviceName[11];
-/*1009      */ VISIBLE_STRING  manufacturerHardwareVersion[4];
-/*100a      */ VISIBLE_STRING  manufacturerSoftwareVersion[4];
+/*1005      */ UNSIGNED32     COB_ID_SYNCMessage;
+/*1006      */ UNSIGNED32     communicationCyclePeriod;
+/*1007      */ UNSIGNED32     synchronousWindowLength;
+/*1008      */ VISIBLE_STRING manufacturerDeviceName[11];
+/*1009      */ VISIBLE_STRING manufacturerHardwareVersion[4];
+/*100A      */ VISIBLE_STRING manufacturerSoftwareVersion[4];
 /*1010      */ UNSIGNED32      storeParameters[1];
 /*1011      */ UNSIGNED32      restoreDefaultParameters[1];
-/*1014      */ UNSIGNED32      COB_ID_EMCY;
-/*1015      */ UNSIGNED16      inhibitTimeEMCY;
+/*1014      */ UNSIGNED32     COB_ID_EMCY;
+/*1015      */ UNSIGNED16     inhibitTimeEMCY;
 /*1016      */ UNSIGNED32      consumerHeartbeatTime[4];
-/*1017      */ UNSIGNED16      producerHeartbeatTime;
+/*1017      */ UNSIGNED16     producerHeartbeatTime;
 /*1018      */ OD_identity_t   identity;
-/*1019      */ UNSIGNED8       synchronousCounterOverflowValue;
+/*1019      */ UNSIGNED8      synchronousCounterOverflowValue;
 /*1029      */ UNSIGNED8       errorBehavior[6];
 /*1200      */ OD_SDOServerParameter_t SDOServerParameter[1];
 /*1280      */ OD_SDOClientParameter_t SDOClientParameter[1];
 /*1400      */ OD_RPDOCommunicationParameter_t RPDOCommunicationParameter[4];
 /*1600      */ OD_RPDOMappingParameter_t RPDOMappingParameter[4];
 /*1800      */ OD_TPDOCommunicationParameter_t TPDOCommunicationParameter[4];
-/*1a00      */ OD_TPDOMappingParameter_t TPDOMappingParameter[4];
-/*1f80      */ UNSIGNED32      NMTStartup;
-/*2100      */ OCTET_STRING    errorStatusBits[10];
-/*2101      */ UNSIGNED8       CANNodeID;
-/*2102      */ UNSIGNED16      CANBitRate;
-/*2103      */ UNSIGNED16      SYNCCounter;
-/*2104      */ UNSIGNED16      SYNCTime;
-/*2106      */ UNSIGNED32      powerOnCounter;
+/*1A00      */ OD_TPDOMappingParameter_t TPDOMappingParameter[4];
+/*1F80      */ UNSIGNED32     NMTStartup;
+/*2100      */ OCTET_STRING   errorStatusBits[10];
+/*2101      */ UNSIGNED8      CANNodeID;
+/*2102      */ UNSIGNED16     CANBitRate;
+/*2103      */ UNSIGNED16     SYNCCounter;
+/*2104      */ UNSIGNED16     SYNCTime;
+/*2106      */ UNSIGNED32     powerOnCounter;
 /*2107      */ UNSIGNED16      performance[5];
 /*2108      */ INTEGER16       temperature[1];
 /*2109      */ INTEGER16       voltage[1];
@@ -930,8 +931,8 @@ struct sCO_OD_RAM{
 /*3004      */ DOMAIN          daemonList[127];
 /*3005      */ OD_daemonController_t daemonController;
 /*3006      */ OD_syslogReader_t syslogReader;
-/*30f0      */ OD_powerManagementApp_t powerManagementApp;
-/*30f1      */ OD_linuxUpdaterApp_t linuxUpdaterApp;
+/*30F0      */ OD_powerManagementApp_t powerManagementApp;
+/*30F1      */ OD_linuxUpdaterApp_t linuxUpdaterApp;
 
                UNSIGNED32     LastWord;
 };
@@ -985,7 +986,7 @@ extern struct sCO_OD_EEPROM CO_OD_EEPROM;
         #define OD_manufacturerHardwareVersion                      CO_OD_RAM.manufacturerHardwareVersion
         #define ODL_manufacturerHardwareVersion_stringLength        4
 
-/*100a, Data Type: VISIBLE_STRING */
+/*100A, Data Type: VISIBLE_STRING */
         #define OD_manufacturerSoftwareVersion                      CO_OD_RAM.manufacturerSoftwareVersion
         #define ODL_manufacturerSoftwareVersion_stringLength        4
 
@@ -1044,10 +1045,10 @@ extern struct sCO_OD_EEPROM CO_OD_EEPROM;
 /*1800, Data Type: TPDOCommunicationParameter_t */
         #define OD_TPDOCommunicationParameter                       CO_OD_RAM.TPDOCommunicationParameter
 
-/*1a00, Data Type: TPDOMappingParameter_t */
+/*1A00, Data Type: TPDOMappingParameter_t */
         #define OD_TPDOMappingParameter                             CO_OD_RAM.TPDOMappingParameter
 
-/*1f80, Data Type: UNSIGNED32 */
+/*1F80, Data Type: UNSIGNED32 */
         #define OD_NMTStartup                                       CO_OD_RAM.NMTStartup
 
 /*2100, Data Type: OCTET_STRING */
@@ -1116,10 +1117,10 @@ extern struct sCO_OD_EEPROM CO_OD_EEPROM;
 /*3006, Data Type: syslogReader_t */
         #define OD_syslogReader                                     CO_OD_RAM.syslogReader
 
-/*30f0, Data Type: powerManagementApp_t */
+/*30F0, Data Type: powerManagementApp_t */
         #define OD_powerManagementApp                               CO_OD_RAM.powerManagementApp
 
-/*30f1, Data Type: linuxUpdaterApp_t */
+/*30F1, Data Type: linuxUpdaterApp_t */
         #define OD_linuxUpdaterApp                                  CO_OD_RAM.linuxUpdaterApp
 
 #endif

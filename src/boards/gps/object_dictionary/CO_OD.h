@@ -1,58 +1,16 @@
+// clang-format off
 /*******************************************************************************
 
    File - CO_OD.c/CO_OD.h
    CANopen Object Dictionary.
 
-   Copyright (C) 2004-2008 Janez Paternoster
-
-   License: GNU Lesser General Public License (LGPL).
-
-   <http://canopennode.sourceforge.net>
-
-   (For more information see <CO_SDO.h>.)
-
-   This file is part of CANopenNode, an open source CANopen Stack.
-   Project home page is <https://github.com/CANopenNode/CANopenNode>.
-   For more information on CANopen see <http://www.can-cia.org/>.
- 
-   CANopenNode is free and open source software: you can redistribute
-   it and/or modify it under the terms of the GNU General Public License
-   as published by the Free Software Foundation, either version 2 of the
-   License, or (at your option) any later version.
-  
-   This program is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-   GNU General Public License for more details.
-  
-   You should have received a copy of the GNU General Public License
-   along with this program. If not, see <http://www.gnu.org/licenses/>.
-  
-   Following clarification and special exception to the GNU General Public
-   License is included to the distribution terms of CANopenNode:
-  
-   Linking this library statically or dynamically with other modules is
-   making a combined work based on this library. Thus, the terms and
-   conditions of the GNU General Public License cover the whole combination.
-  
-   As a special exception, the copyright holders of this library give
-   you permission to link this library with independent modules to
-   produce an executable, regardless of the license terms of these
-   independent modules, and to copy and distribute the resulting
-   executable under terms of your choice, provided that you also meet,
-   for each linked independent module, the terms and conditions of the
-   license of that module. An independent module is a module which is
-   not derived from or based on this library. If you modify this
-   library, you may extend this exception to your version of the
-   library, but you are not obliged to do so. If you do not wish
-   to do so, delete this exception statement from your version.
- 
    This file was automatically generated with libedssharp Object
-   Dictionary Editor v0.7-9-g821eedb   DON'T EDIT THIS FILE MANUALLY !!!!
+   Dictionary Editor v0.8-33-g683a144   DON'T EDIT THIS FILE MANUALLY !!!!
 *******************************************************************************/
 
 
-#pragma once
+#ifndef CO_OD_H_
+#define CO_OD_H_
 
 /*******************************************************************************
    CANopen DATA TYPES
@@ -66,8 +24,8 @@
    typedef int16_t      INTEGER16;
    typedef int32_t      INTEGER32;
    typedef int64_t      INTEGER64;
-   typedef float32_t    REAL32; 
-   typedef float64_t    REAL64; 
+   typedef float32_t    REAL32;
+   typedef float64_t    REAL64;
    typedef char_t       VISIBLE_STRING;
    typedef oChar_t      OCTET_STRING;
 
@@ -100,16 +58,16 @@
       CreationTime: 11:32AM
       CreationDate: 11-07-2019
       CreatedBy:    Ryan Medick
-******************************************************************************/
+*******************************************************************************/
 
 
 /*******************************************************************************
    DEVICE INFO:
       VendorName:     Portland State Aerospace Society
-      VendorNumber    0
+      VendorNumber:   0
       ProductName:    GPS
       ProductNumber:  0
-******************************************************************************/
+*******************************************************************************/
 
 
 /*******************************************************************************
@@ -117,6 +75,7 @@
 *******************************************************************************/
   #define CO_NO_SYNC                     1   //Associated objects: 1005-1007
   #define CO_NO_EMERGENCY                1   //Associated objects: 1014, 1015
+  #define CO_NO_TIME                     0   //Associated objects: 1012, 1013
   #define CO_NO_SDO_SERVER               1   //Associated objects: 1200-127F
   #define CO_NO_SDO_CLIENT               1   //Associated objects: 1280-12FF
   #define CO_NO_LSS_SERVER               0   //LSS Slave
@@ -124,6 +83,7 @@
   #define CO_NO_RPDO                     4   //Associated objects: 14xx, 16xx
   #define CO_NO_TPDO                     4   //Associated objects: 18xx, 1Axx
   #define CO_NO_NMT_MASTER               0
+  #define CO_NO_TRACE                    0
 
 
 /*******************************************************************************
@@ -135,30 +95,30 @@
 /*******************************************************************************
    TYPE DEFINITIONS FOR RECORDS
 *******************************************************************************/
-/*1018    */ typedef struct {
+/*1018      */ typedef struct {
                UNSIGNED8      maxSubIndex;
                UNSIGNED32     vendorID;
                UNSIGNED32     productCode;
                UNSIGNED32     revisionNumber;
                UNSIGNED32     serialNumber;
                }              OD_identity_t;
-/*1200    */ typedef struct {
+/*1200      */ typedef struct {
                UNSIGNED8      maxSubIndex;
                UNSIGNED32     COB_IDClientToServer;
                UNSIGNED32     COB_IDServerToClient;
                }              OD_SDOServerParameter_t;
-/*1280    */ typedef struct {
+/*1280      */ typedef struct {
                UNSIGNED8      maxSubIndex;
                UNSIGNED32     COB_IDClientToServer;
                UNSIGNED32     COB_IDServerToClient;
                UNSIGNED8      nodeIDOfTheSDOServer;
                }              OD_SDOClientParameter_t;
-/*1400    */ typedef struct {
+/*1400      */ typedef struct {
                UNSIGNED8      maxSubIndex;
                UNSIGNED32     COB_IDUsedByRPDO;
                UNSIGNED8      transmissionType;
                }              OD_RPDOCommunicationParameter_t;
-/*1600    */ typedef struct {
+/*1600      */ typedef struct {
                UNSIGNED8      numberOfMappedObjects;
                UNSIGNED32     mappedObject1;
                UNSIGNED32     mappedObject2;
@@ -169,7 +129,7 @@
                UNSIGNED32     mappedObject7;
                UNSIGNED32     mappedObject8;
                }              OD_RPDOMappingParameter_t;
-/*1800    */ typedef struct {
+/*1800      */ typedef struct {
                UNSIGNED8      maxSubIndex;
                UNSIGNED32     COB_IDUsedByTPDO;
                UNSIGNED8      transmissionType;
@@ -178,7 +138,7 @@
                UNSIGNED16     eventTimer;
                UNSIGNED8      SYNCStartValue;
                }              OD_TPDOCommunicationParameter_t;
-/*1a00    */ typedef struct {
+/*1A00      */ typedef struct {
                UNSIGNED8      numberOfMappedObjects;
                UNSIGNED32     mappedObject1;
                UNSIGNED32     mappedObject2;
@@ -189,24 +149,24 @@
                UNSIGNED32     mappedObject7;
                UNSIGNED32     mappedObject8;
                }              OD_TPDOMappingParameter_t;
-/*2130    */ typedef struct {
+/*2130      */ typedef struct {
                UNSIGNED8      maxSubIndex;
                VISIBLE_STRING string[1];
                UNSIGNED64     epochTimeBaseMs;
                UNSIGNED32     epochTimeOffsetMs;
                }              OD_time_t;
-/*3000    */ typedef struct {
+/*3000      */ typedef struct {
                UNSIGNED8      maxSubIndex;
                DOMAIN         restart;
                DOMAIN         poweroff;
                }              OD_systemdControl_t;
-/*3001    */ typedef struct {
+/*3001      */ typedef struct {
                UNSIGNED8      maxSubIndex;
                DOMAIN         fileName;
                DOMAIN         fileData;
                UNSIGNED8      saveFile;
                }              OD_receiveFile_t;
-/*3003    */ typedef struct {
+/*3003      */ typedef struct {
                UNSIGNED8      maxSubIndex;
                UNSIGNED8      filePointer;
                DOMAIN         fileName;
@@ -221,7 +181,7 @@
 /*******************************************************************************
    TYPE DEFINITIONS FOR OBJECT DICTIONARY INDEXES
 
-   some of those are redundant with CO_SDO.h CO_ObjDicId_t <Common CiA301 object 
+   some of those are redundant with CO_SDO.h CO_ObjDicId_t <Common CiA301 object
    dictionary entries>
 *******************************************************************************/
 /*1000 */
@@ -261,8 +221,8 @@
 /*1009 */
         #define OD_1009_manufacturerHardwareVersion                 0x1009
 
-/*100a */
-        #define OD_100a_manufacturerSoftwareVersion                 0x100a
+/*100A */
+        #define OD_100A_manufacturerSoftwareVersion                 0x100A
 
 /*1010 */
         #define OD_1010_storeParameters                             0x1010
@@ -456,60 +416,60 @@
         #define OD_1803_5_TPDOCommunicationParameter_eventTimer     5
         #define OD_1803_6_TPDOCommunicationParameter_SYNCStartValue 6
 
-/*1a00 */
-        #define OD_1a00_TPDOMappingParameter                        0x1a00
+/*1A00 */
+        #define OD_1A00_TPDOMappingParameter                        0x1A00
 
-        #define OD_1a00_0_TPDOMappingParameter_maxSubIndex          0
-        #define OD_1a00_1_TPDOMappingParameter_mappedObject1        1
-        #define OD_1a00_2_TPDOMappingParameter_mappedObject2        2
-        #define OD_1a00_3_TPDOMappingParameter_mappedObject3        3
-        #define OD_1a00_4_TPDOMappingParameter_mappedObject4        4
-        #define OD_1a00_5_TPDOMappingParameter_mappedObject5        5
-        #define OD_1a00_6_TPDOMappingParameter_mappedObject6        6
-        #define OD_1a00_7_TPDOMappingParameter_mappedObject7        7
-        #define OD_1a00_8_TPDOMappingParameter_mappedObject8        8
+        #define OD_1A00_0_TPDOMappingParameter_maxSubIndex          0
+        #define OD_1A00_1_TPDOMappingParameter_mappedObject1        1
+        #define OD_1A00_2_TPDOMappingParameter_mappedObject2        2
+        #define OD_1A00_3_TPDOMappingParameter_mappedObject3        3
+        #define OD_1A00_4_TPDOMappingParameter_mappedObject4        4
+        #define OD_1A00_5_TPDOMappingParameter_mappedObject5        5
+        #define OD_1A00_6_TPDOMappingParameter_mappedObject6        6
+        #define OD_1A00_7_TPDOMappingParameter_mappedObject7        7
+        #define OD_1A00_8_TPDOMappingParameter_mappedObject8        8
 
-/*1a01 */
-        #define OD_1a01_TPDOMappingParameter                        0x1a01
+/*1A01 */
+        #define OD_1A01_TPDOMappingParameter                        0x1A01
 
-        #define OD_1a01_0_TPDOMappingParameter_maxSubIndex          0
-        #define OD_1a01_1_TPDOMappingParameter_mappedObject1        1
-        #define OD_1a01_2_TPDOMappingParameter_mappedObject2        2
-        #define OD_1a01_3_TPDOMappingParameter_mappedObject3        3
-        #define OD_1a01_4_TPDOMappingParameter_mappedObject4        4
-        #define OD_1a01_5_TPDOMappingParameter_mappedObject5        5
-        #define OD_1a01_6_TPDOMappingParameter_mappedObject6        6
-        #define OD_1a01_7_TPDOMappingParameter_mappedObject7        7
-        #define OD_1a01_8_TPDOMappingParameter_mappedObject8        8
+        #define OD_1A01_0_TPDOMappingParameter_maxSubIndex          0
+        #define OD_1A01_1_TPDOMappingParameter_mappedObject1        1
+        #define OD_1A01_2_TPDOMappingParameter_mappedObject2        2
+        #define OD_1A01_3_TPDOMappingParameter_mappedObject3        3
+        #define OD_1A01_4_TPDOMappingParameter_mappedObject4        4
+        #define OD_1A01_5_TPDOMappingParameter_mappedObject5        5
+        #define OD_1A01_6_TPDOMappingParameter_mappedObject6        6
+        #define OD_1A01_7_TPDOMappingParameter_mappedObject7        7
+        #define OD_1A01_8_TPDOMappingParameter_mappedObject8        8
 
-/*1a02 */
-        #define OD_1a02_TPDOMappingParameter                        0x1a02
+/*1A02 */
+        #define OD_1A02_TPDOMappingParameter                        0x1A02
 
-        #define OD_1a02_0_TPDOMappingParameter_maxSubIndex          0
-        #define OD_1a02_1_TPDOMappingParameter_mappedObject1        1
-        #define OD_1a02_2_TPDOMappingParameter_mappedObject2        2
-        #define OD_1a02_3_TPDOMappingParameter_mappedObject3        3
-        #define OD_1a02_4_TPDOMappingParameter_mappedObject4        4
-        #define OD_1a02_5_TPDOMappingParameter_mappedObject5        5
-        #define OD_1a02_6_TPDOMappingParameter_mappedObject6        6
-        #define OD_1a02_7_TPDOMappingParameter_mappedObject7        7
-        #define OD_1a02_8_TPDOMappingParameter_mappedObject8        8
+        #define OD_1A02_0_TPDOMappingParameter_maxSubIndex          0
+        #define OD_1A02_1_TPDOMappingParameter_mappedObject1        1
+        #define OD_1A02_2_TPDOMappingParameter_mappedObject2        2
+        #define OD_1A02_3_TPDOMappingParameter_mappedObject3        3
+        #define OD_1A02_4_TPDOMappingParameter_mappedObject4        4
+        #define OD_1A02_5_TPDOMappingParameter_mappedObject5        5
+        #define OD_1A02_6_TPDOMappingParameter_mappedObject6        6
+        #define OD_1A02_7_TPDOMappingParameter_mappedObject7        7
+        #define OD_1A02_8_TPDOMappingParameter_mappedObject8        8
 
-/*1a03 */
-        #define OD_1a03_TPDOMappingParameter                        0x1a03
+/*1A03 */
+        #define OD_1A03_TPDOMappingParameter                        0x1A03
 
-        #define OD_1a03_0_TPDOMappingParameter_maxSubIndex          0
-        #define OD_1a03_1_TPDOMappingParameter_mappedObject1        1
-        #define OD_1a03_2_TPDOMappingParameter_mappedObject2        2
-        #define OD_1a03_3_TPDOMappingParameter_mappedObject3        3
-        #define OD_1a03_4_TPDOMappingParameter_mappedObject4        4
-        #define OD_1a03_5_TPDOMappingParameter_mappedObject5        5
-        #define OD_1a03_6_TPDOMappingParameter_mappedObject6        6
-        #define OD_1a03_7_TPDOMappingParameter_mappedObject7        7
-        #define OD_1a03_8_TPDOMappingParameter_mappedObject8        8
+        #define OD_1A03_0_TPDOMappingParameter_maxSubIndex          0
+        #define OD_1A03_1_TPDOMappingParameter_mappedObject1        1
+        #define OD_1A03_2_TPDOMappingParameter_mappedObject2        2
+        #define OD_1A03_3_TPDOMappingParameter_mappedObject3        3
+        #define OD_1A03_4_TPDOMappingParameter_mappedObject4        4
+        #define OD_1A03_5_TPDOMappingParameter_mappedObject5        5
+        #define OD_1A03_6_TPDOMappingParameter_mappedObject6        6
+        #define OD_1A03_7_TPDOMappingParameter_mappedObject7        7
+        #define OD_1A03_8_TPDOMappingParameter_mappedObject8        8
 
-/*1f80 */
-        #define OD_1f80_NMTStartup                                  0x1f80
+/*1F80 */
+        #define OD_1F80_NMTStartup                                  0x1F80
 
 /*2100 */
         #define OD_2100_errorStatusBits                             0x2100
@@ -736,38 +696,38 @@ struct sCO_OD_ROM{
 struct sCO_OD_RAM{
                UNSIGNED32     FirstWord;
 
-/*1000      */ UNSIGNED32      deviceType;
-/*1001      */ UNSIGNED8       errorRegister;
-/*1002      */ UNSIGNED32      manufacturerStatusRegister;
+/*1000      */ UNSIGNED32     deviceType;
+/*1001      */ UNSIGNED8      errorRegister;
+/*1002      */ UNSIGNED32     manufacturerStatusRegister;
 /*1003      */ UNSIGNED32      preDefinedErrorField[8];
-/*1005      */ UNSIGNED32      COB_ID_SYNCMessage;
-/*1006      */ UNSIGNED32      communicationCyclePeriod;
-/*1007      */ UNSIGNED32      synchronousWindowLength;
-/*1008      */ VISIBLE_STRING  manufacturerDeviceName[3];
-/*1009      */ VISIBLE_STRING  manufacturerHardwareVersion[1];
-/*100a      */ VISIBLE_STRING  manufacturerSoftwareVersion[1];
+/*1005      */ UNSIGNED32     COB_ID_SYNCMessage;
+/*1006      */ UNSIGNED32     communicationCyclePeriod;
+/*1007      */ UNSIGNED32     synchronousWindowLength;
+/*1008      */ VISIBLE_STRING manufacturerDeviceName[3];
+/*1009      */ VISIBLE_STRING manufacturerHardwareVersion[1];
+/*100A      */ VISIBLE_STRING manufacturerSoftwareVersion[1];
 /*1010      */ UNSIGNED32      storeParameters[1];
 /*1011      */ UNSIGNED32      restoreDefaultParameters[1];
-/*1014      */ UNSIGNED32      COB_ID_EMCY;
-/*1015      */ UNSIGNED16      inhibitTimeEMCY;
+/*1014      */ UNSIGNED32     COB_ID_EMCY;
+/*1015      */ UNSIGNED16     inhibitTimeEMCY;
 /*1016      */ UNSIGNED32      consumerHeartbeatTime[4];
-/*1017      */ UNSIGNED16      producerHeartbeatTime;
+/*1017      */ UNSIGNED16     producerHeartbeatTime;
 /*1018      */ OD_identity_t   identity;
-/*1019      */ UNSIGNED8       synchronousCounterOverflowValue;
+/*1019      */ UNSIGNED8      synchronousCounterOverflowValue;
 /*1029      */ UNSIGNED8       errorBehavior[6];
 /*1200      */ OD_SDOServerParameter_t SDOServerParameter[1];
 /*1280      */ OD_SDOClientParameter_t SDOClientParameter[1];
 /*1400      */ OD_RPDOCommunicationParameter_t RPDOCommunicationParameter[4];
 /*1600      */ OD_RPDOMappingParameter_t RPDOMappingParameter[4];
 /*1800      */ OD_TPDOCommunicationParameter_t TPDOCommunicationParameter[4];
-/*1a00      */ OD_TPDOMappingParameter_t TPDOMappingParameter[4];
-/*1f80      */ UNSIGNED32      NMTStartup;
-/*2100      */ OCTET_STRING    errorStatusBits[10];
-/*2101      */ UNSIGNED8       CANNodeID;
-/*2102      */ UNSIGNED16      CANBitRate;
-/*2103      */ UNSIGNED16      SYNCCounter;
-/*2104      */ UNSIGNED16      SYNCTime;
-/*2106      */ UNSIGNED32      powerOnCounter;
+/*1A00      */ OD_TPDOMappingParameter_t TPDOMappingParameter[4];
+/*1F80      */ UNSIGNED32     NMTStartup;
+/*2100      */ OCTET_STRING   errorStatusBits[10];
+/*2101      */ UNSIGNED8      CANNodeID;
+/*2102      */ UNSIGNED16     CANBitRate;
+/*2103      */ UNSIGNED16     SYNCCounter;
+/*2104      */ UNSIGNED16     SYNCTime;
+/*2106      */ UNSIGNED32     powerOnCounter;
 /*2107      */ UNSIGNED16      performance[5];
 /*2108      */ INTEGER16       temperature[1];
 /*2109      */ INTEGER16       voltage[1];
@@ -829,7 +789,7 @@ extern struct sCO_OD_EEPROM CO_OD_EEPROM;
         #define OD_manufacturerHardwareVersion                      CO_OD_RAM.manufacturerHardwareVersion
         #define ODL_manufacturerHardwareVersion_stringLength        1
 
-/*100a, Data Type: VISIBLE_STRING */
+/*100A, Data Type: VISIBLE_STRING */
         #define OD_manufacturerSoftwareVersion                      CO_OD_RAM.manufacturerSoftwareVersion
         #define ODL_manufacturerSoftwareVersion_stringLength        1
 
@@ -888,10 +848,10 @@ extern struct sCO_OD_EEPROM CO_OD_EEPROM;
 /*1800, Data Type: TPDOCommunicationParameter_t */
         #define OD_TPDOCommunicationParameter                       CO_OD_RAM.TPDOCommunicationParameter
 
-/*1a00, Data Type: TPDOMappingParameter_t */
+/*1A00, Data Type: TPDOMappingParameter_t */
         #define OD_TPDOMappingParameter                             CO_OD_RAM.TPDOMappingParameter
 
-/*1f80, Data Type: UNSIGNED32 */
+/*1F80, Data Type: UNSIGNED32 */
         #define OD_NMTStartup                                       CO_OD_RAM.NMTStartup
 
 /*2100, Data Type: OCTET_STRING */
@@ -949,3 +909,5 @@ extern struct sCO_OD_EEPROM CO_OD_EEPROM;
 /*3003, Data Type: sendFileControl_t */
         #define OD_sendFileControl                                  CO_OD_RAM.sendFileControl
 
+#endif
+// clang-format on

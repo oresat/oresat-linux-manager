@@ -154,7 +154,6 @@ set(CANOPENNODE_SOURCES
 set(CANOPENNODE_HEADERS
     ${STACK_DRIVER_DIR}/CO_error.h
     ${STACK_DRIVER_DIR}/CO_Linux_threads.h
-    ${STACK_DRIVER_DIR}/CO_SDO.h
     ${CANOPEN_DIR}/301/CO_config.h
     ${CANOPEN_DIR}/301/CO_driver.h
     ${CANOPEN_DIR}/301/CO_Emergency.h
