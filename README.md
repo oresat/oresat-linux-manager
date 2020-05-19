@@ -1,6 +1,6 @@
 # Oresat Linux CANdaemon
 
-The CANdaemon is built ontop of CANopenNode], with an extra thread to allow apps to commicate and control other daemons over dbus.
+The CANdaemon is built ontop of [CANopenNode], with an extra thread to allow apps to commicate and control other daemons over dbus.
 The CANdaemon can commicate with Systemd, the Oresat Linux Updater daemon, and the main process daemon ([GPS], [StarTracker], [OreSatLive], or the Cirrus Flux Camera daemon depending on which board).
 It will act as the CANbus front end for all processes on an OreSat Linux board. 
 The CANdaemon is ment to be a node on the CANbus, not the Network Manager.
