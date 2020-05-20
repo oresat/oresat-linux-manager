@@ -65,6 +65,9 @@ find_package(PkgConfig REQUIRED)
 # libsystemd
 pkg_check_modules(LIBSYSTEMD REQUIRED libsystemd)
 
+# doxygen
+find_package(Doxygen REQUIRED)
+
 
 ##############################################################################
 # Deal with git submodule
