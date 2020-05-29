@@ -1,3 +1,15 @@
+/**
+ * The dbus controller for all apps.
+ *
+ * @file        app_dbus_controller.c
+ * @ingroup     app_dbus_controller
+ *
+ * This file is part of CANdaemon, a common can interface program for daemons
+ * running on OreSat Linux board.
+ * Project home page is <https://github.com/oresat/oresat-linux-candaemon>.
+ */
+
+
 #include "log_message.h"
 #include "app_dbus_controller.h"
 

@@ -52,8 +52,8 @@ The CANdaemon is ment to be a node on the CANbus, not the Network Manager.
 ## Making a new board
 - Read [design_guide_candaemon_app.md](docs/design_guide_candaemon_app.md)
 - `cp -r boards/template boards/<new_board_name>`
-- modify /boards/<new_board_name>/board_apps.* as needed
-- modify /boards/<new_board_name>/objDict with [libedssharp] as needed
+- modify /boards/NEW_BOARD_NAME/board_apps.* as needed
+- modify /boards/NEW_BOARD_NAME/objDict with [libedssharp] as needed
 
 ## Useful References
 - [CAN-Wikipedia]

@@ -1,3 +1,15 @@
+/**
+ * App for the Linux updater dameon.
+ *
+ * @file        linux_updater_app.c
+ * @ingroup     linux_updater_app
+ *
+ * This file is part of CANdaemon, a common can interface program for daemons
+ * running on OreSat Linux board.
+ * Project home page is <https://github.com/oresat/oresat-linux-candaemon>.
+ */
+
+
 #include "log_message.h"
 #include "app_OD_helpers.h"
 #include "file_transfer_ODF.h"
@@ -10,13 +22,19 @@
 #include <stdbool.h>
 
 
+/** Dbus destionation for OreSat Linux Updater dameon */
 #define DESTINATION         "org.OreSat.LinuxUpdater"
+/** Dbus interface name for OreSat Linux Updater dameon */
 #define INTERFACE_NAME      "org.OreSat.LinuxUpdater"
+/** Dbus object path for OreSat Linux Updater dameon */
 #define OBJECT_PATH         "/org/OreSat/LinuxUpdater"
+/** App's name */
 #define APP_NAME            "Linux Updater"
+/** Max size for file name string */
 #define FILE_NAME_SIZE      100
 
 
+/** Hold all the app dbus info */
 extern app_dbus_data_t      APPS_DBUS;
 
 /*
@@ -32,7 +50,7 @@ static uint32_t             updates_available = 0;
 /**
  * If an updating, this holds the name of archive file.
  */
-static char                 current_file[FILE_NAME_SIZE] = "\0"; 
+static char                 current_file[FILE_NAME_SIZE] = "\0";
 
 
 int
@@ -107,7 +125,8 @@ read_status_cb(sd_bus_message *m, void *userdata, sd_bus_error *ret_error) {
 // CANopen ODF(s)
 
 
-CO_SDO_abortCode_t updater_ODF(CO_ODF_arg_t *ODF_arg) {
+CO_SDO_abortCode_t
+updater_ODF(CO_ODF_arg_t *ODF_arg) {
     CO_SDO_abortCode_t ret = CO_SDO_AB_NONE;
     sd_bus_error err = SD_BUS_ERROR_NULL;
     sd_bus_message *mess = NULL;

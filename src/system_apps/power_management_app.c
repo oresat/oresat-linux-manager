@@ -1,3 +1,15 @@
+/**
+ * App for interfacing with systemd power setting.
+ *
+ * @file        power_management_app.c
+ * @ingroup     power_management_app
+ *
+ * This file is part of CANdaemon, a common can interface program for daemons
+ * running on OreSat Linux board.
+ * Project home page is <https://github.com/oresat/oresat-linux-candaemon>.
+ */
+
+
 #include "log_message.h"
 #include "app_OD_helpers.h"
 #include "app_dbus_controller.h"
@@ -5,10 +17,13 @@
 #include "power_management_app.h"
 #include <systemd/sd-bus.h>
 
-
+/** Dbus destionation for systemd power settings */
 #define DESTINATION         "org.freedesktop.systemd1"
+/** Dbus interface name for systemd power settings */
 #define INTERFACE_NAME      DESTINATION".Manager"
+/** Dbus object name for systemd power settings */
 #define OBJECT_PATH         "/org/freedesktop/systemd1"
+/** App's name */
 #define APP_NAME            "Power Manager"
 
 

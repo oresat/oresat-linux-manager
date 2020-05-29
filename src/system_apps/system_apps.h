@@ -1,4 +1,28 @@
-/*
+/**
+ * App for the Linux updater dameon.
+ *
+ * @file        system_apps.h
+ * @ingroup     system_apps
+ *
+ * This file is part of CANdaemon, a common can interface program for daemons
+ * running on OreSat Linux board.
+ * Project home page is <https://github.com/oresat/oresat-linux-candaemon>.
+ */
+
+#ifndef SYSTEM_APP_H
+#define SYSTEM_APP_H
+
+
+/**
+ * @defgroup    system_apps System Apps
+ * @{
+ *
+ * System apps are app that are available on every board.
+ *
+ */
+
+
+/**
  * Main function for adding system apps.
  *
  * System apps should call a mix of these function, depending on what the app
@@ -22,11 +46,16 @@
  *      - Uses PCRE2 regex.
  *      - Defined in file_transfer_ODF.*
  *
- *  <APP>_dbus_signal_match();
+ *  APP_dbus_signal_match();
  *      - This is mostly for readablity in system_app.c as it is just a wrapper
  *      for all signal match calls to sd-bus for that app.
- *      - Replace <APP> with the apps name (ie: gps_dbus_signal_match())
+ *      - Replace APP with the apps name (ie: gps_dbus_signal_match())
  *      - Should be define in the app c/h files.
  *
+ * @return 1 on success
  */
-int setup_system_apps();
+int setup_system_apps(void);
+
+
+/** @} */
+#endif

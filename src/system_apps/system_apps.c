@@ -1,3 +1,15 @@
+/**
+ * App for the Linux updater dameon.
+ *
+ * @file        system_apps.c
+ * @ingroup     system_apps
+ *
+ * This file is part of CANdaemon, a common can interface program for daemons
+ * running on OreSat Linux board.
+ * Project home page is <https://github.com/oresat/oresat-linux-candaemon>.
+ */
+
+
 #include "system_apps.h"
 #include "app_OD_helpers.h"
 #include "daemon_controller.h"
@@ -6,12 +18,18 @@
 #include "power_management_app.h"
 
 
+/** OD index for power management app ODF */
 #define POWER_MANAGEMENT_ODF_INDEX  0x3000
+/** OD index for updater app ODF */
 #define UPDATER_ODF_INDEX           0x3004
 
+
+/** board */
 #define BOARD "gps" // TODO fix cmake
 
-int setup_system_apps() {
+
+int
+setup_system_apps(void) {
     // power mangament app
     app_OD_configure(POWER_MANAGEMENT_ODF_INDEX, power_management_ODF, NULL, 0, 0U);
 

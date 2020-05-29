@@ -33,9 +33,6 @@
 #include "CO_error.h"
 
 
-/**
- * Reset CAN interface and set to listen only mode
- */
 static CO_CANinterfaceState_t CO_CANerrorSetListenOnly(
         CO_CANinterfaceErrorhandler_t     *CANerrorhandler,
         unsigned char                      resetIf)
