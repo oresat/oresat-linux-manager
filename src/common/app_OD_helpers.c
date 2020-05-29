@@ -1,3 +1,16 @@
+/**
+ * A interface to the CANopen obejct dictionary for all apps to use.
+ *
+ * @file        app_OD_helpers.c
+ * @ingroup     app_OD_helpers
+ *
+ * This file is part of CANdaemon, a common can interface program for daemons
+ * running on OreSat Linux board.
+ * Project home page is <https://github.com/oresat/oresat-linux-candaemon>.
+ */
+
+
+
 #include "CANopen.h"
 #include "log_message.h"
 #include "app_OD_helpers.h"

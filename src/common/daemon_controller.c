@@ -1,3 +1,15 @@
+/**
+ * Daemon controller for CANdaemon.
+ *
+ * @file        daemon_controller.c
+ * @ingroup     daemon_controller
+ *
+ * This file is part of CANdaemon, a common can interface program for daemons
+ * running on OreSat Linux board.
+ * Project home page is <https://github.com/oresat/oresat-linux-candaemon>.
+ */
+
+
 #include "log_message.h"
 #include "app_OD_helpers.h"
 #include "file_transfer_ODF.h"
@@ -10,6 +22,7 @@
 #include <stdio.h>
 
 
+/** OD index for daemon controller ODF */
 #define DAEMON_CONTROLLER_OD_INDEX 0x3001
 
 
@@ -22,11 +35,11 @@
  * Filled by app_register() and used by the app_controller_ODF().
  */
 typedef struct {
-    // app's name
+    /** App's name */
     char *name;
-    // service name for daemon associate with app
+    /** Service name for daemon associate with app */
     char *service_name;
-    // status of the daemon associate with app
+    /** Status of the daemon associate with app */
     int32_t status;
 } daemon_data_t;
 
@@ -35,10 +48,10 @@ typedef struct {
 // static data
 
 
-// list of dbus apps
+/** List of dbus apps */
 static daemon_data_t        *daemon_list = NULL;
 
-// number of apps in apps list
+/** Number of apps in apps list */
 static int                  apps_count = 0;
 
 /**
@@ -47,7 +60,7 @@ static int                  apps_count = 0;
  */
 static int                  current_app = 0;
 
-// mutex for accesing data in apps list
+/** Mutex for accesing data in apps list */
 static pthread_mutex_t      apps_mutex = PTHREAD_MUTEX_INITIALIZER;
 
 

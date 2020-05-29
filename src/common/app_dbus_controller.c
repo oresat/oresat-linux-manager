@@ -14,10 +14,17 @@
 #include "app_dbus_controller.h"
 
 
-/* Gobal for all apps to use.
+/**
+ * @ingroup App_Helpers
+ * @{
+ */
+
+/**
+ * Gobal for all apps to use.
  * Outside of app_dbus_controller.c it should be treated as readonly.
  */
 app_dbus_data_t APPS_DBUS;
+/** @} */
 
 
 int

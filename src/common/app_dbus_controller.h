@@ -9,13 +9,33 @@
  * Project home page is <https://github.com/oresat/oresat-linux-candaemon>.
  */
 
+
 #ifndef APP_DBUS_CONTROLLER_H
 #define APP_DBUS_CONTROLLER_H
+
 
 #include <systemd/sd-bus.h>
 #include <stdbool.h>
 
 
+/**
+ * @ingroup candaemon_general
+ * @defgroup app_dbus_controller App DBus Controller
+ * @{
+ *
+ * Centralize dbus connection for all apps.
+ *
+ * All apps that need access to a dbus connection will share the same dbus
+ * client connection thru the app_dbus_controller.
+ */
+
+
+/**
+ * Status on dbus connection
+ *
+ * Only dbus controller functions should write
+ * All apps can read from the gobal defined in app_dbus_controller.c
+ * */
 typedef struct {
     /** pointer to app dbus connection */
     sd_bus *bus;
@@ -25,7 +45,7 @@ typedef struct {
 
 
 /**
- * Reset CAN interface and set to listen only mode
+ * Starts the dbus interface
  *
  * @return >= 0 on success, < 0 on failure
  */
@@ -49,4 +69,6 @@ int apps_dbus_main();
  */
 int apps_dbus_end();
 
+
+/** @} */
 #endif

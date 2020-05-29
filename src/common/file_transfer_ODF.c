@@ -1,3 +1,15 @@
+/**
+ * File transfer Object Dictionary Function.
+ *
+ * @file        file_transfer_ODF.c
+ * @ingroup     file_transfer_ODF
+ *
+ * This file is part of CANdaemon, a common can interface program for daemons
+ * running on OreSat Linux board.
+ * Project home page is <https://github.com/oresat/oresat-linux-candaemon>.
+ */
+
+
 #include "CANopen.h"
 #include "CO_driver.h"
 #include "app_OD_helpers.h"
@@ -40,13 +52,13 @@
  * out what to do with the file.
  */
 typedef struct {
-    // app name for logging error messages.
+    /** app name for logging error messages. */
     char *app_name;
-    // PCRE2 regex string for matching file names.
+    /** PCRE2 regex string for matching file names. */
     char *regex_string;
-    // Absolute path to move the file to.
+    /** Absolute path to move the file to. */
     char *path_to_send;
-    // Callaback that will be called when the regex matches. Optional.
+    /** Callaback that will be called when the regex matches. Optional. */
     int (*recv_file_callback)(char *);
 } recv_file_request_t;
 
@@ -54,11 +66,15 @@ typedef struct {
 // ***************************************************************************
 // Static Variables
 
-
+/** The file transfer ODF mutex */
 static pthread_mutex_t          FT_ODF_mtx;
+/** Struct for holding all the file data that is been received */
 static received_file_data_t     recvFileBuffer;
+/** Struct for holding all the file data for file that could be sent */
 static send_file_data_t         sendFileBuffer;
+/** List of file request struct that will be used when receiving files */
 static recv_file_request_t      *recv_file_request_list = NULL;
+/** length of recv_file_request_list */
 static int                      request_count = 0;
 
 
