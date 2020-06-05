@@ -151,17 +151,17 @@ app_OD_write(uint16_t index, uint16_t sub_index, void *data, uint16_t length) {
     uint16_t OD_attribute;
 
     if(data == NULL || length == 0)
-        return APP_OD_NULL_DATA; // No data to write
+        return CO_SDO_AB_NO_DATA; // No data to write
 
     OD_entry_num = app_OD_find(index);
     if(OD_entry_num == 0xFFFE)
-        return APP_OD_INDEX; // Index not found
+        return CO_SDO_AB_NOT_EXIST; // Index not found
 
     // Get object
     object = &CO_OD[OD_entry_num];
 
     if(sub_index >= object->maxSubIndex)
-        return APP_OD_SUBINDEX; // Sub index does not exist
+        return CO_SDO_AB_SUB_UNKNOWN; // Sub index does not exist
 
     // Figure out OD entry type
     if(object->maxSubIndex == 0U) { //Object type is Varaible
@@ -191,13 +191,13 @@ app_OD_write(uint16_t index, uint16_t sub_index, void *data, uint16_t length) {
     }
 
     if((OD_attribute & CO_ODA_WRITEABLE) == 0)
-        return APP_OD_READONLY; // Attempted to write a read-only object
+        return CO_SDO_AB_READONLY;
 
     if(OD_data == NULL)
-        return APP_OD_DOMAIN; // Is a domain type, can't write it
+        return CO_SDO_AB_NO_DATA; // Is a domain type aka NULL in OD
 
     if(length > OD_length)
-        return APP_OD_LENGTH; // Length of service parameter does not match
+        return CO_SDO_AB_TYPE_MISMATCH; // Length of service parameter does not match
 
     CO_LOCK_OD();
 
