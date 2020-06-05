@@ -114,7 +114,7 @@ endif()
 # Doygen
 
 if(DOXYGEN_FOUND)
-    configure_file(${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile.in ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile @ONLY)
+    configure_file(${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile @ONLY)
     add_custom_target(doc
         ${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile
         WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
@@ -193,7 +193,7 @@ target_include_directories(CANopenNode PUBLIC ${CANDAEMON_INCLUDE_DIRS})
 set(SOURCE_FILES
     ${OD_DIR}/CO_OD.c
     ${COMMON_DIR}/log_message.c
-    ${COMMON_DIR}/file_transfer_ODF.c
+    ${COMMON_DIR}/file_transfer.c
     ${COMMON_DIR}/app_OD_helpers.c
     ${COMMON_DIR}/daemon_controller.c
     ${COMMON_DIR}/app_dbus_controller.c

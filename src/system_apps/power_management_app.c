@@ -13,7 +13,7 @@
 #include "log_message.h"
 #include "app_OD_helpers.h"
 #include "app_dbus_controller.h"
-#include "file_transfer_ODF.h"
+#include "file_transfer.h"
 #include "power_management_app.h"
 #include <systemd/sd-bus.h>
 

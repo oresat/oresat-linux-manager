@@ -1,7 +1,7 @@
 #include "board_apps.h"
 #include "app_OD_helpers.h"
 #include "daemon_controller.h"
-#include "file_transfer_ODF.h"
+#include "file_transfer.h"
 #include "pru_camera_test_app.h"
 
 #define PRU_CAMERA_TEST_ODF_INDEX  0x3100

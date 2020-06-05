@@ -13,7 +13,7 @@
 #include "system_apps.h"
 #include "app_OD_helpers.h"
 #include "daemon_controller.h"
-#include "file_transfer_ODF.h"
+#include "file_transfer.h"
 #include "linux_updater_app.h"
 #include "power_management_app.h"
 

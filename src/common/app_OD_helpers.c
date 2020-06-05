@@ -28,30 +28,6 @@
 extern CO_OD_entry_t CO_OD[CO_OD_NoOfElements];
 
 
-/**
- * For logging/printing app_OD_error as a string.
- * Also long explination for app_OD_error enum.
- */
-const char *APP_OD_ERROR_STRING[] = {
-    "No error",
-    "Input data was null",
-    "OD index not found",
-    "OD subindex not found",
-    "Attempted to write a read-only object",
-    "Attempted to read a write-only object",
-    "Attempted to access a domain type",
-    "Attempted to write an object that wont fit in OD entry", // can't write a int64 into int8
-};
-
-
-const char*
-get_error_string(APP_OD_ERROR_ENUM error) {
-    if( error >= 0)
-        return APP_OD_ERROR_STRING[-error];
-    return "";
-}
-
-
 void
 app_OD_configure(
         uint16_t index,
@@ -99,7 +75,7 @@ app_OD_find(uint16_t index){
 }
 
 
-APP_OD_ERROR_ENUM
+int
 app_OD_read(uint16_t index, uint16_t sub_index, void *data, uint16_t *length) {
     CO_OD_entry_t* object = NULL;
     int8_t *OD_data = NULL;
@@ -108,19 +84,19 @@ app_OD_read(uint16_t index, uint16_t sub_index, void *data, uint16_t *length) {
     uint16_t OD_attribute;
 
     if(data == NULL)
-        return APP_OD_NULL_DATA; // No data pointer for return
+        return CO_SDO_AB_NO_DATA; // No data pointer for return
 
     // Get object location
     OD_entry_num = app_OD_find(index);
     if(OD_entry_num == 0xFFFE)
-        return APP_OD_INDEX; // Index not found
+        return CO_SDO_AB_NOT_EXIST; // Index not found
 
     // Get object
     object = &CO_OD[OD_entry_num];
 
     // Check if sub index is valid
     if(sub_index >= object->maxSubIndex)
-        return APP_OD_SUBINDEX; // Sub index does not exist
+        return CO_SDO_AB_SUB_UNKNOWN; // Sub index does not exist
 
     // Figure out OD entry type
     if(object->maxSubIndex == 0U) { // Object type is Variable
@@ -149,10 +125,10 @@ app_OD_read(uint16_t index, uint16_t sub_index, void *data, uint16_t *length) {
     }
 
     if((OD_attribute & CO_ODA_READABLE) == 0)
-        return APP_OD_WRITEONLY;
+        return CO_SDO_AB_WRITEONLY;
 
     if(OD_data == NULL)
-        return APP_OD_DOMAIN; // Is a domain type
+        return CO_SDO_AB_NO_DATA; // Is a domain type aka NULL in OD
 
     CO_LOCK_OD();
 
@@ -162,11 +138,11 @@ app_OD_read(uint16_t index, uint16_t sub_index, void *data, uint16_t *length) {
 
     CO_UNLOCK_OD();
 
-    return APP_OD_NONE;
+    return 0;
 }
 
 
-APP_OD_ERROR_ENUM
+int
 app_OD_write(uint16_t index, uint16_t sub_index, void *data, uint16_t length) {
     CO_OD_entry_t* object = NULL;
     int8_t *OD_data = NULL;

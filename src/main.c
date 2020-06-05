@@ -50,7 +50,7 @@
 #include "CO_error.h"
 #include "CO_Linux_threads.h"
 
-#include "file_transfer_ODF.h"
+#include "file_transfer.h"
 #include "app_dbus_controller.h"
 #include "board_apps.h"
 #include "system_apps.h"

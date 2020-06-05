@@ -32,33 +32,9 @@
  */
 
 
-
 /**
- * Return values for app_OD_read() and app_OD_write().
- * For long explination see app_OD_error_str.
- */
-typedef enum {
-    /** No error */
-    APP_OD_NONE,
-    /** Data is NULL. Most likely a DOMAIN type entry */
-    APP_OD_NULL_DATA,
-    /** Index does not exist */
-    APP_OD_INDEX,
-    /** Sub index does not exist */
-    APP_OD_SUBINDEX,
-    /** Can't write a readonly entry */
-    APP_OD_READONLY,
-    /** Can't read a writeonly entry */
-    APP_OD_WRITEONLY,
-    /** Data is a DOMAIN type */
-    APP_OD_DOMAIN,
-    /** OD data size does not match input data type size */
-    APP_OD_LENGTH,
-} APP_OD_ERROR_ENUM;
-
-
-/**
- * A nice wrapper for apps to not worry about CO->SDO[].
+ * A nice wrapper ontop of CO_OD_configure() for apps to not worry
+ * about CO->SDO[] when registering ODFs.
  *
  * @param index Index of object in the Object dictionary.
  * @param pODFunc Pointer to @ref CO_SDO_OD_function, specified by application.
@@ -98,9 +74,9 @@ uint16_t app_OD_find(uint16_t index);
  * @param data Buffer for copy data from OD
  * @param length Length of data buffer in bytes
  *
- * @return app_OD_error value.
+ * @return 0 or CO_SDO_abortCode_t value on error.
  */
-APP_OD_ERROR_ENUM app_OD_read(
+int app_OD_read(
         uint16_t index,
         uint16_t subIndex,
         void *data,
@@ -116,9 +92,9 @@ APP_OD_ERROR_ENUM app_OD_read(
  * @param data Data buffer to copy into OD
  * @param length Length of data buffer in bytes
  *
- * @return app_OD_error value.
+ * @return 0 or CO_SDO_abortCode_t value on error.
  */
-APP_OD_ERROR_ENUM app_OD_write(
+int app_OD_write(
         uint16_t index,
         uint16_t subIndex,
         void *data,

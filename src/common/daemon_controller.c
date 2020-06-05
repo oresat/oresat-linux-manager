@@ -12,7 +12,6 @@
 
 #include "log_message.h"
 #include "app_OD_helpers.h"
-#include "file_transfer_ODF.h"
 #include "daemon_controller.h"
 #include "system_apps.h"
 #include "board_apps.h"

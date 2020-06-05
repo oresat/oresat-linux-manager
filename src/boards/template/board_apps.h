@@ -20,7 +20,7 @@
  *      where the app has requested.
  *      - This function is used to add a apps request for add a regex string
  *      - Uses PCRE2 regex.
- *      - Defined in file_transfer_ODF.*
+ *      - Defined in file_transfer.*
  *
  *  <APP>_dbus_signal_match();
  *      - This is mostly for readablity in system_app.c as it is just a wrapper

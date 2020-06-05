@@ -1,8 +1,8 @@
 /**
  * File transfer Object Dictionary Function.
  *
- * @file        file_transfer_ODF.c
- * @ingroup     file_transfer_ODF
+ * @file        file_transfer.c
+ * @ingroup     file_transfer
  *
  * This file is part of CANdaemon, a common can interface program for daemons
  * running on OreSat Linux board.
@@ -10,8 +10,8 @@
  */
 
 
-#ifndef FILE_TRANSFER_ODF_H
-#define FILE_TRANSFER_ODF_H
+#ifndef FILE_TRANSFER_H
+#define FILE_TRANSFER_H
 
 
 #include "CANopen.h"
@@ -27,7 +27,7 @@
 
 /**
  * @ingroup candaemon_general
- * @defgroup file_transfer_ODF File Transfer ODF
+ * @defgroup file_transfer File Transfer
  * @{
  *
  * Object dictionary functions for handlinge file transfers over CAN.
