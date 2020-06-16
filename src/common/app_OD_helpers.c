@@ -210,3 +210,41 @@ app_OD_write(uint16_t index, uint16_t sub_index, void *data, uint16_t length) {
     return true;
 }
 
+
+int
+app_OD_get_length(uint16_t index, uint16_t sub_index) {
+    CO_OD_entry_t* object = NULL;
+    uint16_t OD_entry_num;
+    uint16_t OD_length;
+
+    OD_entry_num = app_OD_find(index);
+    if(OD_entry_num == 0xFFFE)
+        return -CO_SDO_AB_NOT_EXIST; // Index not found
+
+    // Get object
+    object = &CO_OD[OD_entry_num];
+
+    if(sub_index >= object->maxSubIndex)
+        return -CO_SDO_AB_SUB_UNKNOWN; // Sub index does not exist
+
+    // Figure out OD entry type
+    if(object->maxSubIndex == 0U) { //Object type is Varaible
+        OD_length = object->length;
+    }
+    else if(object->attribute != 0U) { // Object type is Array
+        if(sub_index == 0) {
+            // First sub_index is readonly, it holds the length of Array
+            OD_length = sizeof(object->maxSubIndex);
+        }
+        else { // Array data
+            OD_length = object->length;
+        }
+    }
+    else { // Object type is Record
+        CO_OD_entryRecord_t *temp = (CO_OD_entryRecord_t *)object->pData;
+        OD_length = temp[sub_index].length;
+    }
+
+    return (int)OD_length;
+}
+

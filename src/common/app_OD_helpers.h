@@ -101,5 +101,15 @@ int app_OD_write(
         uint16_t length);
 
 
+/**
+ * Get the length of the entry in index/sub_index provided.
+ *
+ * @param index OD index for OD entry
+ * @param subIndex OD sub-index for OD entry
+ *
+ * @return length of the entry or negative CO_SDO_abortCode_t on error.
+ */
+int app_OD_get_length(uint16_t index, uint16_t sub_index);
+
 /** @} */
 #endif
