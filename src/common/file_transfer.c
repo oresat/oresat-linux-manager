@@ -114,7 +114,7 @@ static int ft_unlock_mtx(void) {
 
 
 int
-file_transfer_ODF_setup(void) {
+file_transfer_ODF_setup(void) { // TODO have the index as args
 
     // make sure /tmp dir exist
     struct stat st = {0};

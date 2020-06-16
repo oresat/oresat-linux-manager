@@ -1,7 +1,7 @@
 /**
  * A interface to the CANopen obejct dictionary for all apps to use.
  *
- * @file        app_OD_helpers.c
+ * @file        app_OD_helpers.h
  * @ingroup     app_OD_helpers
  *
  * This file is part of CANdaemon, a common can interface program for daemons

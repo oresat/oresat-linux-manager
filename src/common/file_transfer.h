@@ -1,7 +1,7 @@
 /**
  * File transfer Object Dictionary Function.
  *
- * @file        file_transfer.c
+ * @file        file_transfer.h
  * @ingroup     file_transfer
  *
  * This file is part of CANdaemon, a common can interface program for daemons
@@ -126,6 +126,8 @@ typedef struct {
 
 /**
  * Configure all application OD functions
+ *
+ * @return 0 on success
  */
 int file_transfer_ODF_setup(void);
 
@@ -133,6 +135,10 @@ int file_transfer_ODF_setup(void);
 /**
  * Callback for using inside CO_OD_configure() function for writing files
  * into object dictionary.
+ *
+ * @param ODF_arg Current ODF arguemnt for SDO
+ *
+ * @return SDO abort code
  */
 CO_SDO_abortCode_t recv_file_ODF(CO_ODF_arg_t *ODF_arg);
 
@@ -140,6 +146,10 @@ CO_SDO_abortCode_t recv_file_ODF(CO_ODF_arg_t *ODF_arg);
 /**
  * Callback for using inside CO_OD_configure() function for reading files
  * from object dictionary.
+ *
+ * @param ODF_arg Current ODF arguemnt for SDO
+ *
+ * @return SDO abort code
  */
 CO_SDO_abortCode_t send_file_array_ODF(CO_ODF_arg_t *ODF_arg);
 
@@ -147,6 +157,10 @@ CO_SDO_abortCode_t send_file_array_ODF(CO_ODF_arg_t *ODF_arg);
 /**
  * Callback for using inside CO_OD_configure() function for reading files
  * from object dictionary.
+ *
+ * @param ODF_arg Current ODF arguemnt for SDO
+ *
+ * @return SDO abort code
  */
 CO_SDO_abortCode_t send_file_ODF(CO_ODF_arg_t *ODF_arg);
 
