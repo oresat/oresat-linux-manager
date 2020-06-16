@@ -23,6 +23,32 @@
  * @{
  *
  * Allows the CANdameon to control any daemon requested by an app.
+ *
+ * ### App list OD entry
+ * | Sub Index | Usage                         | Data Type   | Access   |
+ * | :-------- | :---------------------------: | :---------: | :------: |
+ * |     0     | Number of subindex in record  | uint8       | readonly |
+ * |     1     | App name 1                    | DOMAIN      | readonly |
+ * |    ...    | ...                           | DOMAIN      | readonly |
+ * |    127    | App name 127                  | DOMAIN      | readonly |
+ *
+ *
+ *  ### Daemon controller OD entry
+ *  | Sub Index | Usage                             | Data Type | Access    |
+ *  | :-------- | :-------------------------------: | :-------: | :-------: |
+ *  |     0     | Number of subindex in record      | uint8     | readonly  |
+ *  |     1     | Current index in app list array   | uint8     | readwrite |
+ *  |     2     | App name                          | DOMAIN    | readonly  |
+ *  |     3     | Daemon service name               | DOMAIN    | readonly  |
+ *  |     4     | Daemon current state              | int32     | readonly  |
+ *  |     5     | Daemon change state               | int32     | readwrite |
+ *
+ *  ### How the daemon contoller OD entries work:
+ *  - CAN Master node can set subindex 1 (app list index) with the index of the app wanted form the app list. Updating that index will load all other subidexes with the that app info.
+ *  - subindex 2: App's name.
+ *  - subindex 3: Daemon service name.
+ *  - subindex 4: Daemon current state 0 running, 1 for stopped, 2 for error.
+ *  - subindex 5: Change daemon's state 0 start/restart, 1 for stop.
  */
 
 
