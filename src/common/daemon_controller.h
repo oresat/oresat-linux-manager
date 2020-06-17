@@ -18,7 +18,6 @@
 
 
 /**
- * @ingroup candaemon_general
  * @defgroup daemon_controller Daemon Controller
  * @{
  *

@@ -19,7 +19,7 @@
 
 
 /**
- * @ingroup candaemon_general
+ * @ingroup apps
  * @defgroup app_dbus_controller App DBus Controller
  * @{
  *

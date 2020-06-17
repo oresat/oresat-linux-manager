@@ -1,9 +1,8 @@
 # Oresat Linux CANdaemon
 
-The CANdaemon is built ontop of [CANopenNode], with an extra thread to allow apps to commicate and control other daemons over dbus.
-The CANdaemon can commicate with Systemd, the Oresat Linux Updater daemon, and the main process daemon ([GPS], [StarTracker], [OreSatLive], or the Cirrus Flux Camera daemon depending on which board).
-It will act as the CANbus front end for all processes on an OreSat Linux board. 
-The CANdaemon is ment to be a node on the CANbus, not the Network Manager.
+The CANdaemon is the Linux board controller / CAN interface program for all Linux boards on OreSat.
+It is built ontop of [CANopenNode] and interfaces with [Systemd], allowing the master CAN node to control everything on the board over CAN. 
+The CANdaemon is ment to be a node on the CANbus, not the master node.
 
 ![](docs/OreSatLinuxDiagram.jpg)
 
@@ -11,7 +10,7 @@ The CANdaemon is ment to be a node on the CANbus, not the Network Manager.
 - Built on top of the [CANopenNode], therefor it follows the [CANopen-Specifcations] by CiA ([CAN-in-Automation]).
 - Follows the [ECSS-CANBus-Extended-Protocal] on top of CiA specs.
 - Allows the CAN Network Manager to control any [daemons] on the Linux board thru [Systemd].
-- Uses sd-bus (systemd dbus) for DBus communication to OreSat [daemons].
+- Has a app based system that uses sd-bus (systemd dbus) for DBus communication to OreSat [daemons].
 - Allows other daemons with candaemon apps to read/write to the CAN object dictionary over dbus.
 - Allows the other processes/daemons to be written in any language that has a DBus library or a DBus binding. A lot of languages do have DBus support, See [freedesktop DBus Bindings](https://www.freedesktop.org/wiki/Software/DBusBindings/) for a DBus supported languague list.
 
@@ -51,7 +50,6 @@ The CANdaemon is ment to be a node on the CANbus, not the Network Manager.
     - `sudo make package` or`sudo ninja package`
 
 ## Making a new board
-- Read [design_guide_candaemon_app.md](docs/design_guide_candaemon_app.md)
 - `cp -r boards/template boards/<new_board_name>`
 - modify /boards/NEW_BOARD_NAME/board_apps.* as needed
 - modify /boards/NEW_BOARD_NAME/objDict with [libedssharp] as needed

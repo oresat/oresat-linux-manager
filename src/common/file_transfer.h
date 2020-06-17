@@ -19,14 +19,6 @@
 
 
 /**
- * @defgroup candaemon_general CANdaemon general
- *
- * Non-app related object dictionary functions
- */
-
-
-/**
- * @ingroup candaemon_general
  * @defgroup file_transfer File Transfer
  * @{
  *

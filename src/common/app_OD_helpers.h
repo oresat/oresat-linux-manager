@@ -20,7 +20,8 @@
 
 
 /**
- * @defgroup     App_Helpers CANdaemon App Helpers
+ * @ingroup     apps
+ * @defgroup    App_Helpers App Helpers
  *
  * Useful helper functions for making apps.
  */
