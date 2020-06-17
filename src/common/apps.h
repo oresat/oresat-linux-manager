@@ -1,31 +1,28 @@
 /**
  * App for the Linux updater dameon.
  *
- * @file        system_apps.h
- * @ingroup     system_apps
- *
  * This file is part of CANdaemon, a common can interface program for daemons
  * running on OreSat Linux board.
  * Project home page is <https://github.com/oresat/oresat-linux-candaemon>.
  */
 
-#ifndef SYSTEM_APP_H
-#define SYSTEM_APP_H
+
+#ifndef CANDAEMON_APP_H
+#define CANDAEMON_APP_H
+
+
+#include "app_OD_helpers.h"
+#include "daemon_controller.h"
+#include "file_transfer.h"
 
 
 /**
- * @defgroup    system_apps System Apps
+ * @defgroup    apps CANdaemon Apps
  * @{
  *
- * System apps are app that are available on every board.
+ * CANdaemon apps for communicating with daemons over dbus.
  *
- */
-
-
-/**
- * Main function for adding system apps.
- *
- * System apps should call a mix of these function, depending on what the app
+ * Apps should call a mix of these function, depending on what the app
  * needs. All functions are optional.
  *
  *  app_OD_configure()
@@ -52,10 +49,68 @@
  *      - Replace APP with the apps name (ie: gps_dbus_signal_match())
  *      - Should be define in the app c/h files.
  *
+ * @}
+ */
+
+
+/****************************************************************************/
+/**
+ * @ingroup     apps
+ * @defgroup    board_apps Board Apps
+ * @{
+ *
+ * These are apps that are only enabled for a specific board.
+ *
+ */
+
+
+/**
+ * Used to add board apps for a specific app.
+ *
+ * @return 1 on success
+ */
+int setup_board_apps(void);
+
+
+/** @} */
+/****************************************************************************/
+/**
+ * @ingroup     apps
+ * @defgroup    system_apps System Apps
+ * @{
+ *
+ * These are apps that are available on every board.
+ *
+ */
+
+
+/**
+ * Used to add system apps.
+ *
  * @return 1 on success
  */
 int setup_system_apps(void);
 
+
+/** @} */
+/****************************************************************************/
+/**
+ * @ingroup     apps
+ * @defgroup    test_apps Test Apps
+ * @{
+ *
+ * These are special system apps that are only enabled when the CANdaemon is
+ * compiled with the DEBUG flag.
+ *
+ */
+
+/**
+ * Used to add test apps that are only enabled when the CANdaemon is
+ * compiled with the DEBUG flag.
+ *
+ * @return 1 on success
+ */
+int setup_test_apps(void);
 
 /** @} */
 #endif

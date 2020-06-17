@@ -11,10 +11,8 @@
 
 
 #include "log_message.h"
-#include "app_OD_helpers.h"
 #include "daemon_controller.h"
-#include "system_apps.h"
-#include "board_apps.h"
+#include "apps.h"
 #include <stdlib.h>
 #include <string.h>
 #include <pthread.h>

@@ -50,10 +50,7 @@
 #include "CO_error.h"
 #include "CO_Linux_threads.h"
 
-#include "file_transfer.h"
-#include "app_dbus_controller.h"
-#include "board_apps.h"
-#include "system_apps.h"
+#include "apps.h"
 
 #ifdef USE_OD_STORAGE
 #include "CO_OD_storage.h"
