@@ -15,31 +15,14 @@
 #include "power_management_app.h"
 
 
-/** OD index for power management app ODF */
-#define POWER_MANAGEMENT_ODF_INDEX  0x3000
-/** OD index for updater app ODF */
-#define UPDATER_ODF_INDEX           0x3004
-
-
-/** board */
-#define BOARD "gps" // TODO fix cmake
-
-
 int
 setup_system_apps(void) {
-    // power mangament app
-    app_OD_configure(POWER_MANAGEMENT_ODF_INDEX, power_management_ODF, NULL, 0, 0U);
+#ifdef DEBUG
+    OD_app_setup();
+#endif
 
-    // Linux updater app
-    app_OD_configure(UPDATER_ODF_INDEX, updater_ODF, NULL, 0, 0U);
-    app_register_daemon("Linux Updater", "oresat-linux-updaterd.service");
-    app_add_request_recv_file(
-            "Linux Updater",
-            "^("BOARD"\\-update\\-\\d{4}\\-\\d{2}\\-\\d{2}\\-\\d{2}\\-\\d{2}\\.tar\\.gz)$",
-            "/tmp/oresat-linux-updater/cache/",
-            NULL);
-    linux_updater_dbus_signal_match();
-
+    power_management_app_setup();
+    linux_updater_app_setup();
 
     return 1;
 }

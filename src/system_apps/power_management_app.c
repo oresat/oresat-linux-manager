@@ -17,6 +17,7 @@
 #include "power_management_app.h"
 #include <systemd/sd-bus.h>
 
+
 /** Dbus destionation for systemd power settings */
 #define DESTINATION         "org.freedesktop.systemd1"
 /** Dbus interface name for systemd power settings */
@@ -25,6 +26,20 @@
 #define OBJECT_PATH         "/org/freedesktop/systemd1"
 /** App's name */
 #define APP_NAME            "Power Manager"
+/** OD index for power management app ODF */
+#define POWER_MANAGEMENT_ODF_INDEX  0x3000
+
+
+/** Hold all the app dbus info */
+extern app_dbus_data_t      APPS_DBUS;
+
+
+int
+power_management_app_setup() {
+    app_OD_configure(POWER_MANAGEMENT_ODF_INDEX, power_management_ODF, NULL, 0, 0U);
+    return 1;
+}
+
 
 
 CO_SDO_abortCode_t

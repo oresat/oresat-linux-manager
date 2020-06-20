@@ -47,16 +47,13 @@ typedef struct {
 
 /** List of dbus apps */
 static daemon_data_t        *daemon_list = NULL;
-
 /** Number of apps in apps list */
 static int                  apps_count = 0;
-
 /**
  * Pointer to the current app in apps list.
  * Only used by app daemon controller ODF.
  */
 static int                  current_app = 0;
-
 /** Mutex for accesing data in apps list */
 static pthread_mutex_t      apps_mutex = PTHREAD_MUTEX_INITIALIZER;
 

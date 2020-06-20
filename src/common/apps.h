@@ -11,6 +11,7 @@
 #define CANDAEMON_APP_H
 
 
+#include "app_dbus_controller.h"
 #include "app_OD_helpers.h"
 #include "daemon_controller.h"
 #include "file_transfer.h"
@@ -53,6 +54,7 @@
  */
 
 
+
 /****************************************************************************/
 /**
  * @ingroup     apps
@@ -91,26 +93,6 @@ int setup_board_apps(void);
  */
 int setup_system_apps(void);
 
-
-/** @} */
-/****************************************************************************/
-/**
- * @ingroup     apps
- * @defgroup    test_apps Test Apps
- * @{
- *
- * These are special system apps that are only enabled when the CANdaemon is
- * compiled with the DEBUG flag.
- *
- */
-
-/**
- * Used to add test apps that are only enabled when the CANdaemon is
- * compiled with the DEBUG flag.
- *
- * @return 1 on success
- */
-int setup_test_apps(void);
 
 /** @} */
 #endif

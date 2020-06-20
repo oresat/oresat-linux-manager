@@ -10,57 +10,53 @@
  */
 
 
-#include "log_message.h"
-#include "app_OD_helpers.h"
-#include "file_transfer.h"
-#include "app_dbus_controller.h"
+#include "app_helpers.h"
 #include "linux_updater_app.h"
 #include <systemd/sd-bus.h>
-#include <pthread.h>
-#include <stdio.h>
-#include <stdint.h>
-#include <stdbool.h>
 
 
-/** Dbus destionation for OreSat Linux Updater dameon */
-#define DESTINATION         "org.OreSat.LinuxUpdater"
-/** Dbus interface name for OreSat Linux Updater dameon */
-#define INTERFACE_NAME      "org.OreSat.LinuxUpdater"
-/** Dbus object path for OreSat Linux Updater dameon */
-#define OBJECT_PATH         "/org/OreSat/LinuxUpdater"
+/** oresat board */
+#define BOARD               "gps" // TODO fix cmake
 /** App's name */
 #define APP_NAME            "Linux Updater"
+/** Dbus destionation for OreSat Linux Updater dameon */
+#define DESTINATION          "org.OreSat.LinuxUpdater"
+/** Dbus interface name for OreSat Linux Updater dameon */
+#define INTERFACE_NAME      DESTINATION
+/** Dbus object path for OreSat Linux Updater dameon */
+#define OBJECT_PATH         "/org/OreSat/LinuxUpdater"
 /** Max size for file name string */
 #define FILE_NAME_SIZE      100
+/** OD index for updater app ODF */
+#define UPDATER_ODF_INDEX   0x3004
 
 
 /** Hold all the app dbus info */
 extern app_dbus_data_t      APPS_DBUS;
-
-/*
- * Holds the current state of the updater.
- */
+/* Holds the current state of the updater. */
 static int32_t              current_state = 0;
-
-/*
- * The number archive files available.
- */
+/* The number archive files available. */
 static uint32_t             updates_available = 0;
-
-/**
- * If an updating, this holds the name of archive file.
- */
+/** If an updating, this holds the name of archive file. */
 static char                 current_file[FILE_NAME_SIZE] = "\0";
 
 
 int
-linux_updater_dbus_signal_match(void) {
+linux_updater_app_setup() {
     int r = 0;
+
+    app_OD_configure(UPDATER_ODF_INDEX, updater_ODF, NULL, 0, 0U);
+    app_register_daemon("Linux Updater", "oresat-linux-updaterd.service");
+    app_add_request_recv_file(
+            "Linux Updater",
+            "^("BOARD"\\-update\\-\\d{4}\\-\\d{2}\\-\\d{2}\\-\\d{2}\\-\\d{2}\\.tar\\.gz)$",
+            "/tmp/oresat-linux-updater/cache/",
+            NULL);
 
     r = sd_bus_match_signal(
             APPS_DBUS.bus,
             NULL,
-            NULL,
+            INTERFACE_NAME,
             OBJECT_PATH,
             "org.freedesktop.DBus.Properties",
             "PropertiesChanged",
@@ -69,7 +65,7 @@ linux_updater_dbus_signal_match(void) {
     if (r < 0)
         app_log_message(APP_NAME, LOG_CRIT, "Signal match PropertiesChanged failed");
 
-    return r;
+    return 1;
 }
 
 
@@ -79,7 +75,7 @@ read_status_cb(sd_bus_message *m, void *userdata, sd_bus_error *ret_error) {
 
     r = sd_bus_get_property(
             APPS_DBUS.bus,
-            DESTINATION,
+            CANDAEMON_DESTINATION,
             OBJECT_PATH,
             INTERFACE_NAME,
             "Status",
@@ -119,10 +115,6 @@ read_status_cb(sd_bus_message *m, void *userdata, sd_bus_error *ret_error) {
 
     return 0;
 }
-
-
-// ***************************************************************************
-// CANopen ODF(s)
 
 
 CO_SDO_abortCode_t

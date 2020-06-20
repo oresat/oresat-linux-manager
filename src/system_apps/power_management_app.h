@@ -25,6 +25,12 @@
 
 #include "CANopen.h"
 
+/**
+ * @brief Nice function for call all function needed for linux updater app.
+ *
+ * @return Negative errno number on error
+ */
+int power_management_app_setup();
 
 /**
  * Give the candaemon / CAN network manager control over board's power settings

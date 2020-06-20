@@ -16,7 +16,6 @@
 
 #include "CANopen.h"
 #include <systemd/sd-bus.h>
-#include <pthread.h>
 
 
 /**
@@ -34,11 +33,11 @@
 
 
 /**
- * @brief Nice function for registering all dbus signal matches for the linux updater.
+ * @brief Nice function for call all function needed for linux updater app.
  *
  * @return Negative errno number on error
  */
-int linux_updater_dbus_signal_match(void);
+int linux_updater_app_setup();
 
 
 /**
@@ -80,6 +79,8 @@ CO_SDO_abortCode_t updater_ODF(CO_ODF_arg_t *ODF_arg);
  * @return negative errno number on error
  */
 int read_status_cb(sd_bus_message *m, void *userdata, sd_bus_error *ret_error);
+
+
 
 
 /** @} */

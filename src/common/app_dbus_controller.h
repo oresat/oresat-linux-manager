@@ -53,9 +53,9 @@ int apps_dbus_start();
 
 
 /**
- * The main function loop for dbus inteface.
+ * The main function loop for CANdaemon dbus connection.
  *
- * Should be given it own thread.
+ * Expected to be given its own thread.
  *
  * @return 1 on sucess
  */
@@ -68,6 +68,32 @@ int apps_dbus_main();
  * @return 1 on sucess
  */
 int apps_dbus_end();
+
+
+#ifdef DEBUG_MODE
+/**
+ * @brief DBus method callback for reading an entry from the object dictionary.
+ *
+ * @param m Pointer to raw dbus message
+ * @param userdata Pointer to optional userdata that was register with callback
+ * @param ret_error ret error that can be set on when callback errors
+ *
+ * @return negative errno number on error
+ */
+int read_OD(sd_bus_message *m, void *userdata, sd_bus_error *ret_error);
+
+
+/**
+ * @brief DBus method callback for writing an entry from the object dictionary.
+ *
+ * @param m Pointer to raw dbus message
+ * @param userdata Pointer to optional userdata that was register with callback
+ * @param ret_error ret error that can be set on when callback errors
+ *
+ * @return negative errno number on error
+ */
+int write_OD(sd_bus_message *m, void *userdata, sd_bus_error *ret_error);
+#endif
 
 
 /** @} */
