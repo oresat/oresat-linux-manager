@@ -1,8 +1,8 @@
 /**
  * The dbus controller for all apps.
  *
- * @file        app_dbus_controller.h
- * @ingroup     app_dbus_controller
+ * @file        dbus_controller.h
+ * @ingroup     dbus_controller
  *
  * This file is part of CANdaemon, a common can interface program for daemons
  * running on OreSat Linux board.
@@ -10,8 +10,8 @@
  */
 
 
-#ifndef APP_DBUS_CONTROLLER_H
-#define APP_DBUS_CONTROLLER_H
+#ifndef DBUS_CONTROLLER_H
+#define DBUS_CONTROLLER_H
 
 
 #include <systemd/sd-bus.h>
@@ -41,33 +41,43 @@ typedef struct {
     sd_bus *bus;
     /** status dbus loop */
     bool loop_running;
-} app_dbus_data_t;
+} dbus_data_t;
 
 
 /**
- * Starts the dbus interface
+ * Initialize the app dbus connection.
  *
  * @return >= 0 on success, < 0 on failure
  */
-int apps_dbus_start();
+int dbus_controller_init();
 
 
 /**
- * The main function loop for CANdaemon dbus connection.
+ * Setup all app that will use dbus connection.
+ *
+ * Wrapper function to call system_apps_setup() and board_apps_setup()
+ *
+ * @return >= 0 on success, < 0 on failure
+ */
+int dbus_controller_setup_apps();
+
+
+/**
+ * A loop waiting for dbus signal that were register by app on the app dbus connection.
  *
  * Expected to be given its own thread.
  *
  * @return 1 on sucess
  */
-int apps_dbus_main();
+int dbus_controller_loop();
 
 
 /**
- * Starts the dbus interface
+ * Ends the app dbus connection.
  *
  * @return 1 on sucess
  */
-int apps_dbus_end();
+int dbus_controller_end();
 
 
 #ifdef DEBUG_MODE

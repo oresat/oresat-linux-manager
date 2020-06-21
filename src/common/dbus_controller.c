@@ -1,8 +1,8 @@
 /**
  * The dbus controller for all apps.
  *
- * @file        app_dbus_controller.c
- * @ingroup     app_dbus_controller
+ * @file        dbus_controller.c
+ * @ingroup     dbus_controller
  *
  * This file is part of CANdaemon, a common can interface program for daemons
  * running on OreSat Linux board.
@@ -11,7 +11,7 @@
 
 
 #include "log_message.h"
-#include "app_dbus_controller.h"
+#include "dbus_controller.h"
 
 
 #ifdef DEBUG_MODE
@@ -25,7 +25,7 @@
 
 
 /** Hold all the app dbus info */
-extern app_dbus_data_t      APPS_DBUS;
+extern dbus_data_t      APP_DBUS;
 #ifdef DEBUG_MODE
 /** Dbus vtable for the object dictionary app/ */
 static const sd_bus_vtable candaemon_vtable[] = {
@@ -42,19 +42,19 @@ apps_dbus_start() {
     int r;
 
     // open bus
-    r = sd_bus_open_system(&APPS_DBUS.bus);
+    r = sd_bus_open_system(&APP_DBUS.bus);
     if(r < 0)
         log_message(LOG_CRIT, "Open system bus for apps failed\n");
 
 #ifdef DEBUG_MODE
     // Take a well-known service name so that clients can find us
-    r = sd_bus_request_name(APPS_DBUS.bus, CANDAEMON_DESTINATION, SD_BUS_NAME_ALLOW_REPLACEMENT);
+    r = sd_bus_request_name(APP_DBUS.bus, CANDAEMON_DESTINATION, SD_BUS_NAME_ALLOW_REPLACEMENT);
     if(r < 0)
         log_message(LOG_CRIT, "Failed to acquire service name.\n");
 
     // Install the CANdaemon vtable
     r = sd_bus_add_object_vtable(
-            APPS_DBUS.bus,
+            APP_DBUS.bus,
             NULL,
             OBJECT_PATH,
             INTERFACE_NAME,
@@ -71,41 +71,41 @@ apps_dbus_start() {
 int
 apps_dbus_main() {
     int r;
-    APPS_DBUS.loop_running = true;
+    APP_DBUS.loop_running = true;
 
-    while(APPS_DBUS.loop_running) {
+    while(APP_DBUS.loop_running) {
         // Process requests
-        r = sd_bus_process(APPS_DBUS.bus, NULL);
+        r = sd_bus_process(APP_DBUS.bus, NULL);
         if(r < 0)
             log_message(LOG_ERR, "Process bus failed for apps\n");
         else if (r > 0) // processed a request, try to process another one right-away
             continue;
 
         // Wait for the next request to process
-        if(sd_bus_wait(APPS_DBUS.bus, UINT64_MAX) < 0)
+        if(sd_bus_wait(APP_DBUS.bus, UINT64_MAX) < 0)
             log_message(LOG_ERR, "Bus wait failed for apps\n");
     }
 
-    APPS_DBUS.loop_running = false;
+    APP_DBUS.loop_running = false;
     return 1;
 }
 
 
 int
 apps_dbus_end() {
-    APPS_DBUS.loop_running = false;
+    APP_DBUS.loop_running = false;
 
 #ifdef DEBUG_MODE
     // relase dbus server name
-    int r = sd_bus_release_name(APPS_DBUS.bus, CANDAEMON_DESTINATION);
+    int r = sd_bus_release_name(APP_DBUS.bus, CANDAEMON_DESTINATION);
     if(r < 0)
         log_message(LOG_CRIT, "Failed to release service name.");
 #endif
 
     // close bus
-    if(APPS_DBUS.bus == NULL) {
-        sd_bus_unref(APPS_DBUS.bus);
-        APPS_DBUS.bus = NULL;
+    if(APP_DBUS.bus == NULL) {
+        sd_bus_unref(APP_DBUS.bus);
+        APP_DBUS.bus = NULL;
     }
 
     return 1;
