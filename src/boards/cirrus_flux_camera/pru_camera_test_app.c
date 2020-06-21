@@ -1,7 +1,4 @@
-#include "log_message.h"
-#include "app_OD_helpers.h"
-#include "file_transfer.h"
-#include "app_dbus_controller.h"
+#include "app_include.h"
 #include "pru_camera_test_app.h"
 #include <systemd/sd-bus.h>
 #include <stdio.h>
@@ -13,9 +10,6 @@
 #define INTERFACE_NAME  "org.OreSat.CirrusFluxCamera"
 #define OBJECT_PATH     "/org/OreSat/CirrusFluxCamera"
 #define APP_NAME        "CirrusFluxCamera"
-
-
-extern app_dbus_data_t      APPS_DBUS;
 
 
 CO_SDO_abortCode_t PRU_CAMERA_TEST_ODF(CO_ODF_arg_t *ODF_arg) {
@@ -33,7 +27,7 @@ CO_SDO_abortCode_t PRU_CAMERA_TEST_ODF(CO_ODF_arg_t *ODF_arg) {
 
     /* Issue the method call and store the response message in m */
     r = sd_bus_call_method(
-            APPS_DBUS.bus,
+            APP_DBUS.bus,
             DESTINATION,
             OBJECT_PATH,
             INTERFACE_NAME,

@@ -14,6 +14,8 @@
 #define LOGIND_APP_H
 
 
+#include "app_include.h"
+
 /**
  * @ingroup     system_apps
  * @defgroup    power_management_app Power managment app
@@ -22,8 +24,6 @@
  * System app that can use systemd power options.
  */
 
-
-#include "CANopen.h"
 
 /**
  * @brief Nice function for call all function needed for linux updater app.

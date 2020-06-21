@@ -10,12 +10,8 @@
  */
 
 
-#include "app_OD_helpers.h"
-#include "daemon_controller.h"
-#include "dbus_controller.h"
-#include "file_transfer.h"
+#include "app_include.h"
 #include "linux_updater_app.h"
-#include "log_message.h"
 #include <systemd/sd-bus.h>
 
 
@@ -35,11 +31,6 @@
 #define UPDATER_ODF_INDEX   0x3004
 
 
-/**
- * Gobal for all apps to use to get acces to the CANdaemon dbus connetion.
- * Apps should treat this as readonly.
- */
-extern dbus_data_t APP_DBUS;
 /* Holds the current state of the updater. */
 static int32_t              current_state = 0;
 /* The number archive files available. */

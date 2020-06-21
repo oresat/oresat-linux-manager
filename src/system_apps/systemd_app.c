@@ -10,10 +10,8 @@
  */
 
 
-#include "app_OD_helpers.h"
-#include "dbus_controller.h"
-#include "log_message.h"
-#include "file_transfer.h"
+
+#include "app_include.h"
 #include "systemd_app.h"
 #include <systemd/sd-bus.h>
 

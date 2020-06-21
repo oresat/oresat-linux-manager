@@ -10,11 +10,7 @@
  */
 
 
-#include "app_OD_helpers.h"
-#include "daemon_controller.h"
-#include "dbus_controller.h"
-#include "log_message.h"
-#include "file_transfer.h"
+#include "app_include.h"
 #include "logind_app.h"
 #include <systemd/sd-bus.h>
 
@@ -29,13 +25,6 @@
 #define APP_NAME            "Logind"
 /** OD index for power management app ODF */
 #define LOGIND_ODF_INDEX    0x3000
-
-
-/**
- * Gobal for all apps to use to get acces to the CANdaemon dbus connetion.
- * Apps should treat this as readonly.
- */
-extern dbus_data_t APP_DBUS;
 
 
 int

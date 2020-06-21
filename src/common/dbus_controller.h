@@ -19,8 +19,7 @@
 
 
 /**
- * @ingroup apps
- * @defgroup app_dbus_controller App DBus Controller
+ * @defgroup dbus_controller DBus Controller
  * @{
  *
  * Centralize dbus connection for all apps.
@@ -57,7 +56,7 @@ int dbus_controller_init();
  *
  * Wrapper function to call system_apps_setup() and board_apps_setup()
  *
- * @return >= 0 on success, < 0 on failure
+ * @return number of apps added
  */
 int dbus_controller_setup_apps();
 

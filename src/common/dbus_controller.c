@@ -12,6 +12,7 @@
 
 #include "log_message.h"
 #include "dbus_controller.h"
+#include "apps.h"
 
 
 #ifdef DEBUG_MODE
@@ -24,8 +25,8 @@
 #endif
 
 
-/** Hold all the app dbus info */
-extern dbus_data_t      APP_DBUS;
+/** GLOBAL to hold all the app dbus info */
+dbus_data_t      APP_DBUS;
 #ifdef DEBUG_MODE
 /** Dbus vtable for the object dictionary app/ */
 static const sd_bus_vtable candaemon_vtable[] = {
@@ -38,7 +39,7 @@ static const sd_bus_vtable candaemon_vtable[] = {
 
 
 int
-apps_dbus_start() {
+apps_dbus_init() {
     int r;
 
     // open bus
@@ -69,7 +70,19 @@ apps_dbus_start() {
 
 
 int
-apps_dbus_main() {
+apps_dbus_setup_apps() {
+    int r = 0;
+
+    r += system_apps_setup();
+    r += board_apps_setup();
+
+    return r;
+}
+
+
+
+int
+apps_dbus_loop() {
     int r;
     APP_DBUS.loop_running = true;
 

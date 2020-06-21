@@ -1,8 +1,8 @@
-#ifndef SDR_GPS_H
-#define SDR_GPS_H
+#ifndef SDR_GPS_APP_H
+#define SDR_GPS_APP_H
 
 
-#include "CANopen.h"
+#include "app_include.h"
 
 
 int sdr_gps_dbus_signal_match();

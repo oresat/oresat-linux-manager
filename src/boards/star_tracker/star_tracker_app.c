@@ -1,7 +1,4 @@
-#include "log_message.h"
-#include "app_OD_helpers.h"
-#include "file_transfer.h"
-#include "app_dbus_controller.h"
+#include "app_include.h"
 #include "star_tracker_app.h"
 #include <systemd/sd-bus.h>
 #include <stdio.h>
@@ -16,20 +13,18 @@
 #define APP_NAME        "StarTracker"
 
 
-extern app_dbus_data_t      APPS_DBUS;
-
-
-
 // Static functions headers
 static int read_prop_cb(sd_bus_message *m, void *userdata, sd_bus_error *ret_error);
 
 
-int star_tracker_dbus_signal_match() {
+int star_tracker_app_setup() {
     int r;
+
+    app_register_daemon("star_tracker","oresat-startracker.service");
 
     // Set up signal callback
     r = sd_bus_match_signal(
-            APPS_DBUS.bus,
+            APP_DBUS.bus,
             NULL,
             NULL,
             OBJECT_PATH,
@@ -39,7 +34,7 @@ int star_tracker_dbus_signal_match() {
             NULL);
     if (r < 0) {
         app_log_message(APP_NAME, LOG_ERR, "Failed to add PropertiesChanged signal match.\n");
-        return r;
+        return 0;
     }
 
     return 1;
@@ -58,13 +53,13 @@ static int read_prop_cb(sd_bus_message *m, void *userdata, sd_bus_error *ret_err
     char *solve_path = NULL;
 
     // Get the coordinates + timestamp
-    if (sd_bus_get_property(APPS_DBUS.bus, DESTINATION, OBJECT_PATH, INTERFACE_NAME, "coor", ret_error, &m, "(dddd)") < 0)
+    if (sd_bus_get_property(APP_DBUS.bus, DESTINATION, OBJECT_PATH, INTERFACE_NAME, "coor", ret_error, &m, "(dddd)") < 0)
         return -1; // failed to get property
     if (sd_bus_message_read(m, "(dddd)", &dec, &ra, &ori, &timestamp) < 0)
         return -1; // failed to decode dbus property
 
     // Get the solution image's filepath
-    if (sd_bus_get_property(APPS_DBUS.bus, DESTINATION, OBJECT_PATH, INTERFACE_NAME, "filepath", ret_error, &m, "s") < 0)
+    if (sd_bus_get_property(APP_DBUS.bus, DESTINATION, OBJECT_PATH, INTERFACE_NAME, "filepath", ret_error, &m, "s") < 0)
         return -1; // failed to get property
     if (sd_bus_message_read(m, "s", &solve_path) < 0)
         return -1; // failed to decode dbus property

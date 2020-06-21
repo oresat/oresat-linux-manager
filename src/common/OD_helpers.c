@@ -1,8 +1,8 @@
 /**
- * A interface to the CANopen obejct dictionary for all apps to use.
+ * Helper fuctions for the object dictionary.
  *
- * @file        app_OD_helpers.c
- * @ingroup     app_OD_helpers
+ * @file        OD_helpers.c
+ * @ingroup     OD_helpers
  *
  * This file is part of CANdaemon, a common can interface program for daemons
  * running on OreSat Linux board.
@@ -13,35 +13,17 @@
 
 #include "CANopen.h"
 #include "log_message.h"
-#include "app_OD_helpers.h"
+#include "OD_helpers.h"
 #include <stdbool.h>
 #include <stdint.h>
-#include <stddef.h>
 #include <string.h>
-#include <stdio.h>
-#include <syslog.h>
-#include <stdarg.h>
-#include <errno.h>
-#include <stdlib.h>
 
 
 extern CO_OD_entry_t CO_OD[CO_OD_NoOfElements];
 
 
-void
-app_OD_configure(
-        uint16_t index,
-        CO_SDO_abortCode_t (*pODFunc)(CO_ODF_arg_t *ODF_arg),
-        void *object,
-        uint8_t *flags,
-        uint8_t flagsSize) {
-
-    CO_OD_configure(CO->SDO[0], index, pODFunc, object, flags, flagsSize);
-}
-
-
 uint16_t
-app_OD_find(uint16_t index){
+OD_find(uint16_t index){
     uint16_t cur, min, max;
     const CO_OD_entry_t* object;
 
@@ -76,7 +58,7 @@ app_OD_find(uint16_t index){
 
 
 int
-app_OD_read(uint16_t index, uint16_t sub_index, void *data, uint16_t length) {
+OD_read(uint16_t index, uint16_t sub_index, void *data, uint16_t length) {
     CO_OD_entry_t* object = NULL;
     int8_t *OD_data = NULL;
     uint16_t OD_entry_num;
@@ -87,7 +69,7 @@ app_OD_read(uint16_t index, uint16_t sub_index, void *data, uint16_t length) {
         return CO_SDO_AB_NO_DATA; // No data pointer for return
 
     // Get object location
-    OD_entry_num = app_OD_find(index);
+    OD_entry_num = OD_find(index);
     if(OD_entry_num == 0xFFFE)
         return CO_SDO_AB_NOT_EXIST; // Index not found
 
@@ -144,7 +126,7 @@ app_OD_read(uint16_t index, uint16_t sub_index, void *data, uint16_t length) {
 
 
 int
-app_OD_write(uint16_t index, uint16_t sub_index, void *data, uint16_t length) {
+OD_write(uint16_t index, uint16_t sub_index, void *data, uint16_t length) {
     CO_OD_entry_t* object = NULL;
     int8_t *OD_data = NULL;
     uint16_t OD_entry_num;
@@ -154,7 +136,7 @@ app_OD_write(uint16_t index, uint16_t sub_index, void *data, uint16_t length) {
     if(data == NULL || length == 0)
         return CO_SDO_AB_NO_DATA; // No data to write
 
-    OD_entry_num = app_OD_find(index);
+    OD_entry_num = OD_find(index);
     if(OD_entry_num == 0xFFFE)
         return CO_SDO_AB_NOT_EXIST; // Index not found
 
@@ -213,12 +195,12 @@ app_OD_write(uint16_t index, uint16_t sub_index, void *data, uint16_t length) {
 
 
 int
-app_OD_get_length(uint16_t index, uint16_t sub_index) {
+OD_get_length(uint16_t index, uint16_t sub_index) {
     CO_OD_entry_t* object = NULL;
     uint16_t OD_entry_num;
     uint16_t OD_length;
 
-    OD_entry_num = app_OD_find(index);
+    OD_entry_num = OD_find(index);
     if(OD_entry_num == 0xFFFE)
         return -CO_SDO_AB_NOT_EXIST; // Index not found
 
@@ -249,3 +231,36 @@ app_OD_get_length(uint16_t index, uint16_t sub_index) {
     return (int)OD_length;
 }
 
+
+/****************************************************************************/
+// app helpers
+
+
+void
+app_OD_configure(
+        uint16_t index,
+        CO_SDO_abortCode_t (*pODFunc)(CO_ODF_arg_t *ODF_arg),
+        void *object,
+        uint8_t *flags,
+        uint8_t flagsSize) {
+
+    CO_OD_configure(CO->SDO[0], index, pODFunc, object, flags, flagsSize);
+}
+
+
+int
+app_OD_read(uint16_t index, uint16_t sub_index, void *data, uint16_t length) {
+    return OD_read(index, sub_index, data, length);
+}
+
+
+int
+app_OD_write(uint16_t index, uint16_t sub_index, void *data, uint16_t length) {
+    return OD_write(index, sub_index, data, length);
+}
+
+
+int
+app_OD_get_length(uint16_t index, uint16_t sub_index) {
+    return OD_get_length(index, sub_index);
+}

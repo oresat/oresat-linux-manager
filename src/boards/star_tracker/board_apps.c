@@ -1,11 +1,12 @@
 #include "apps.h"
+#include "star_tracker_app.h"
 
 
 int
 board_apps_setup() {
-    // Star Tracker app
-    star_tracker_dbus_signal_match();
- *  app_register_daemon("star_tracker","oresat-startracker.service////////////////")
+    int r;
 
-    return 1;
+    r = star_tracker_app_setup();
+
+    return r;
 }

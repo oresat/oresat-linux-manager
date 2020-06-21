@@ -1,7 +1,4 @@
-#include "log_message.h"
-#include "app_OD_helpers.h"
-#include "file_transfer.h"
-#include "app_dbus_controller.h"
+#include "app_include.h"
 #include "sdr_gps_app.h"
 #include <systemd/sd-bus.h>
 #include <stdint.h>
@@ -12,9 +9,6 @@
 #define OBJECT_PATH         "/org/OreSat/GPS"
 #define APP_NAME            "GPS"
 #define SDR_GPS_OD_INDEX    0x3100
-
-
-extern app_dbus_data_t      APPS_DBUS;
 
 
 // Static functions headers
@@ -30,7 +24,7 @@ sdr_gps_dbus_signal_match() {
     int r;
 
     r = sd_bus_match_signal(
-            APPS_DBUS.bus,
+            APP_DBUS.bus,
             NULL,
             NULL,
             OBJECT_PATH,

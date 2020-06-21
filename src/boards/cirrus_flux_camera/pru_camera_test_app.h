@@ -2,7 +2,7 @@
 #define PRU_CAMERA_TEST_APP_H
 
 
-#include "CANopen.h"
+#include "app_include.h"
 
 
 /**

@@ -50,7 +50,11 @@
 #include "CO_error.h"
 #include "CO_Linux_threads.h"
 
-#include "apps.h"
+#include "daemon_controller.h"
+#include "dbus_controller.h"
+#include "file_transfer.h"
+#include "log_message.h"
+#include "OD_helpers.h"
 
 #ifdef USE_OD_STORAGE
 #include "CO_OD_storage.h"
@@ -422,17 +426,13 @@ int main (int argc, char *argv[]) {
 
             // set up general ODFs
             file_transfer_ODF_setup();
+            daemon_controller_setup();
 
-            // add dbus signal matches
-            apps_dbus_start();
+            // setup dbus controller
+            dbus_controller_init();
 
-#ifndef SYSTEM_APPS_OFF
-            setup_system_apps();
-#endif
-
-#ifndef BOARD_APPS_OFF
-            setup_board_apps();
-#endif
+            // setup apps
+            dbus_controller_setup_apps();
 
             /* Init threadMainWait structure and file descriptors */
             threadMainWait_initOnce(MAIN_THREAD_INTERVAL_US, commandInterface,
@@ -484,7 +484,7 @@ int main (int argc, char *argv[]) {
 
 /* program exit ***************************************************************/
     // stop app dbus interface
-    apps_dbus_end();
+    dbus_controller_end();
 
     /* join threads */
     CO_endProgram = 1;
@@ -548,7 +548,7 @@ static void* rt_thread(void* arg) {
 
 static void*
 apps_dbus_thread(void* arg) {
-    apps_dbus_main();
+    dbus_controller_loop();
     return NULL;
 }
 

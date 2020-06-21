@@ -12,7 +12,7 @@
 
 #include "CANopen.h"
 #include "CO_driver.h"
-#include "app_OD_helpers.h"
+#include "OD_helpers.h"
 #include "log_message.h"
 #include "file_transfer.h"
 #include <string.h>
@@ -114,7 +114,7 @@ static int ft_unlock_mtx(void) {
 
 
 int
-file_transfer_ODF_setup(void) { // TODO have the index as args
+file_transfer_ODF_setup(void) {
 
     // make sure /tmp dir exist
     struct stat st = {0};

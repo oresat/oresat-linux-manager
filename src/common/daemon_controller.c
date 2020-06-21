@@ -11,9 +11,9 @@
 
 
 #include "log_message.h"
-#include "app_OD_helpers.h"
-#include "systemd_app.h"
+#include "OD_helpers.h"
 #include "daemon_controller.h"
+#include "systemd_app.h"
 #include <stdlib.h>
 #include <string.h>
 #include <pthread.h>
