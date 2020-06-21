@@ -2,6 +2,6 @@
 
 
 int
-setup_board_apps() {
+board_apps_setup() {
     return 1;
 }

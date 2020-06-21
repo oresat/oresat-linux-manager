@@ -2,7 +2,7 @@
 
 
 int
-setup_board_apps() {
+board_apps_setup() {
     // Star Tracker app
     star_tracker_dbus_signal_match();
  *  app_register_daemon("star_tracker","oresat-startracker.service////////////////")

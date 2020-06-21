@@ -6,7 +6,7 @@
 #define BOARD "cirrus_flux_camera" // TODO fix cmake
 
 int
-setup_board_apps() {
+board_apps_setup() {
 
     // pru camera test app
     app_OD_configure(PRU_CAMERA_TEST_ODF_INDEX, PRU_CAMERA_TEST_ODF, NULL, 0, 0U);

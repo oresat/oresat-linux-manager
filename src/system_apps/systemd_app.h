@@ -1,8 +1,8 @@
 /**
- * Daemon controller for CANdaemon.
+ * Systemd app for CANdaemon, that allow it to control daemons using dbus.
  *
- * @file        daemon_controller.h
- * @ingroup     daemon_controller
+ * @file        systemd_app.h
+ * @ingroup     systemd_app
  *
  * This file is part of CANdaemon, a common can interface program for daemons
  * running on OreSat Linux board.
@@ -31,7 +31,7 @@
  *
  * @return 1 on success
  */
-int daemon_controller_app_setup();
+int systemd_app_setup();
 
 
 /**

@@ -12,16 +12,15 @@
 
 #include "apps.h"
 #include "linux_updater_app.h"
-#include "power_management_app.h"
+#include "logind_app.h"
+#include "systemd_app.h"
 
 
 int
-setup_system_apps(void) {
-#ifdef DEBUG
-    OD_app_setup();
-#endif
+system_apps_setup(void) {
 
-    power_management_app_setup();
+    systemd_app_setup();
+    logind_app_setup();
     linux_updater_app_setup();
 
     return 1;

@@ -11,12 +11,6 @@
 #define CANDAEMON_APP_H
 
 
-#include "app_dbus_controller.h"
-#include "app_OD_helpers.h"
-#include "daemon_controller.h"
-#include "file_transfer.h"
-
-
 /**
  * @defgroup    apps CANdaemon Apps
  * @{
@@ -71,7 +65,7 @@
  *
  * @return 1 on success
  */
-int setup_board_apps(void);
+int board_apps_setup(void);
 
 
 /** @} */
@@ -91,7 +85,7 @@ int setup_board_apps(void);
  *
  * @return 1 on success
  */
-int setup_system_apps(void);
+int system_apps_setup(void);
 
 
 /** @} */
