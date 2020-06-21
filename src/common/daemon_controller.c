@@ -11,130 +11,65 @@
 
 
 #include "log_message.h"
+#include "app_OD_helpers.h"
+#include "systemd_app.h"
 #include "daemon_controller.h"
-#include "apps.h"
 #include <stdlib.h>
 #include <string.h>
 #include <pthread.h>
 #include <stdio.h>
 
 
+/** OD index for daemon list ODF */
+#define DAEMON_LIST_ODF_INDEX       0x3001
 /** OD index for daemon controller ODF */
-#define DAEMON_CONTROLLER_OD_INDEX 0x3001
+#define DAEMON_CONTROLLER_ODF_INDEX 0x3002
 
 
-// ***************************************************************************
-// private structs
-
-
-/**
- * A private stuct for holding all of an app data.
- * Filled by app_register() and used by the app_controller_ODF().
- */
-typedef struct {
-    /** App's name */
-    char *name;
-    /** Service name for daemon associate with app */
-    char *service_name;
-    /** Status of the daemon associate with app */
-    int32_t status;
-} daemon_data_t;
-
-
-// ***************************************************************************
-// static data
-
-
-/** List of dbus apps */
-static daemon_data_t        *daemon_list = NULL;
-/** Number of apps in apps list */
-static int                  apps_count = 0;
-/**
- * Pointer to the current app in apps list.
- * Only used by app daemon controller ODF.
- */
-static int                  current_app = 0;
-/** Mutex for accesing data in apps list */
-static pthread_mutex_t      apps_mutex = PTHREAD_MUTEX_INITIALIZER;
-
-
-// ***************************************************************************
-// static functions
+/** List of data for daemons registered by apps */
+static daemon_data_t *daemon_list = NULL;
+/** Size of daemon list */
+static uint8_t daemon_list_len = 0;
+/** Number of daemon in dbus list */
+static uint8_t daemon_count = 0;
+/** Selected daemon index in daemon list */
+static uint8_t list_index = 0;
+/** Mutex for accesing data */
+static pthread_mutex_t dc_mutex = PTHREAD_MUTEX_INITIALIZER;
 
 
 int
-start_daemon(daemon_data_t *daemon) { // TODO replace with dbus call
-    char command[] = "systemctl start ";
-    FILE* f;
+daemon_controller_setup() {
+    // get the size of the daemon list in object dictionary
+    app_OD_read(DAEMON_LIST_ODF_INDEX, 0, &daemon_list_len,sizeof(daemon_list_len));
 
-    strncat(command, daemon->service_name, strlen(daemon->service_name));
-    f = popen(command, "r");
-    pclose(f);
-    daemon->status = running;
-
-    //log_message(LOG_ERR, "failed to start %s", daemon->service_name);
-
+    // setup daemon list ODF
+    CO_OD_configure(CO->SDO[0], DAEMON_LIST_ODF_INDEX, daemon_list_ODF, NULL, 0, 0U);
+    CO_OD_configure(CO->SDO[0], DAEMON_CONTROLLER_ODF_INDEX, daemon_controller_ODF, NULL, 0, 0U);
     return 0;
 }
 
 
-int
-stop_daemon(daemon_data_t *daemon) { // TODO replace with dbus call
-    char command[] = "systemctl stop ";
-    FILE* f;
+CO_SDO_abortCode_t
+daemon_list_ODF(CO_ODF_arg_t *ODF_arg) {
+    CO_SDO_abortCode_t ret = CO_SDO_AB_NONE;
+    int daemon_index;
 
-    strncat(command, daemon->service_name, strlen(daemon->service_name));
-    f = popen(command, "r");
-    pclose(f);
-    daemon->status = stopped;
-
-    //log_message(LOG_ERR, "failed to stop %s", daemon->service_name);
-
-    return 0;
-}
-
-
-// ***************************************************************************
-// non static functions
-
-
-int
-app_register_daemon(const char *name, const char *daemon_name) {
-    int new_app;
-
-    if(apps_count > 127)
-        return -1; // exceeded maxium apps allowed
-
-    pthread_mutex_lock(&apps_mutex);
-
-    if(apps_count == 0) { // init apps array
-        apps_count = 1;
-        daemon_list = (daemon_data_t *)malloc(sizeof(daemon_data_t));
+    if(ODF_arg->reading) {
+        if(ODF_arg->subIndex == 0) {
+            ODF_arg->dataLength = sizeof(daemon_list_len);
+            memcpy(ODF_arg->data, &daemon_list_len, ODF_arg->dataLength);
+        }
+        else {
+            daemon_index = (int)ODF_arg->subIndex - 1;
+            ODF_arg->dataLength = strlen(daemon_list[daemon_index].name);
+            memcpy(ODF_arg->data, &daemon_list[daemon_index], ODF_arg->dataLength);
+        }
     }
-    else { // add an app to apps array
-        ++apps_count;
-        daemon_list = (daemon_data_t *)realloc(daemon_list, sizeof(daemon_data_t) * apps_count);
-    }
+    else
+        ret = CO_SDO_AB_READONLY; // can't write parameters, readonly");
 
-    new_app = apps_count - 1;
-
-    // setup app general data
-    daemon_list[new_app].name = (char *)malloc(strlen(name));
-    strncpy(daemon_list[new_app].name, name, strlen(name));
-
-    // setup app daemon data
-    if(daemon_name == NULL) { // no daemon to controll
-        daemon_list[new_app].service_name = NULL;
-    }
-    else {
-        daemon_list[new_app].service_name = (char *)malloc(strlen(daemon_name));
-        strncpy(daemon_list[new_app].service_name, daemon_name, strlen(daemon_name));
-        daemon_list[new_app].status = 0; //TODO enum
-    }
-
-    pthread_mutex_unlock(&apps_mutex);
-
-    return new_app;
+    return ret;
 }
 
 
@@ -143,18 +78,31 @@ daemon_controller_ODF(CO_ODF_arg_t *ODF_arg) {
     CO_SDO_abortCode_t ret = CO_SDO_AB_NONE;
 
     switch (ODF_arg->subIndex) {
-        case 1 : // select which app, uint8, readwrite
+        case 0 : // sub index size, uint8, readonly
+            if(ODF_arg->reading) {
+                uint8_t temp;
+                ODF_arg->dataLength = sizeof(uint8_t);
+                app_OD_read(ODF_arg->index, ODF_arg->subIndex, &temp, ODF_arg->dataLength);
+                memcpy(ODF_arg->data, &temp, ODF_arg->dataLength);
+            }
+            else
+                ret = CO_SDO_AB_READONLY; // can't write parameters, readonly
+
+            break;
+
+        case 1 : // selected daemon index in daemon list, uint8, readwrite
 
             if(ODF_arg->reading) {
-                ODF_arg->dataLength = sizeof(current_app);
-                memcpy(ODF_arg->data, &current_app, ODF_arg->dataLength);
+                ODF_arg->dataLength = sizeof(list_index);
+                memcpy(ODF_arg->data, &list_index, ODF_arg->dataLength);
             }
             else {
-                if(ODF_arg->dataLength != sizeof(current_app)) {
+                if(ODF_arg->dataLength != sizeof(list_index)) {
                     log_error_ODF("app_controller_ODF", ODF_arg, "data size does not match");
-                    return CO_SDO_AB_GENERAL; // error with data size
+                    ret = CO_SDO_AB_GENERAL; // error with data size
+                    break;
                 }
-                memcpy(&current_app, ODF_arg->data, ODF_arg->dataLength);
+                memcpy(&list_index, ODF_arg->data, ODF_arg->dataLength);
             }
 
             break;
@@ -162,20 +110,19 @@ daemon_controller_ODF(CO_ODF_arg_t *ODF_arg) {
         case 2 : // app name, domain, readonly
 
             if(ODF_arg->reading) {
-                ODF_arg->dataLength = strlen(daemon_list[current_app].name);
-                memcpy(ODF_arg->data, &daemon_list[current_app].name, ODF_arg->dataLength);
+                ODF_arg->dataLength = strlen(daemon_list[list_index].name)+1;
+                memcpy(ODF_arg->data, daemon_list[list_index].name, ODF_arg->dataLength);
             }
-            else {
-                return CO_SDO_AB_READONLY; // can't write parameters, readonly");
-            }
+            else
+                ret = CO_SDO_AB_READONLY; // can't write parameters, readonly
 
             break;
 
         case 3 : // daemon service name, domain, readonly
 
             if(ODF_arg->reading) {
-                ODF_arg->dataLength = sizeof(daemon_list[current_app].service_name);
-                memcpy(ODF_arg->data, &daemon_list[current_app].service_name, ODF_arg->dataLength);
+                ODF_arg->dataLength = strlen(daemon_list[list_index].service_name)+1;
+                memcpy(ODF_arg->data, daemon_list[list_index].service_name, ODF_arg->dataLength);
             }
             else
                 return CO_SDO_AB_READONLY; // can't write parameters, readonly
@@ -184,9 +131,10 @@ daemon_controller_ODF(CO_ODF_arg_t *ODF_arg) {
 
         case 4 : // daemon current state, int32, readonly
 
+            // TODO change to dbus call to systemd
             if(ODF_arg->reading) {
-                ODF_arg->dataLength = sizeof(daemon_list[current_app].status);
-                memcpy(ODF_arg->data, &daemon_list[current_app].status, ODF_arg->dataLength);
+                ODF_arg->dataLength = sizeof(daemon_list[list_index].status);
+                memcpy(ODF_arg->data, &daemon_list[list_index].status, ODF_arg->dataLength);
             }
             else
                 return CO_SDO_AB_READONLY; // can't write parameters, readonly
@@ -198,18 +146,20 @@ daemon_controller_ODF(CO_ODF_arg_t *ODF_arg) {
             if(ODF_arg->reading)
                 return CO_SDO_AB_WRITEONLY; // can't read parameters, writeonly
             else {
-                if(ODF_arg->dataLength != sizeof(daemon_list[current_app].status)) {
+                if(ODF_arg->dataLength != sizeof(daemon_list[list_index].status)) {
                     log_error_ODF("app_controller_ODF", ODF_arg, "data size does not match");
-                    return CO_SDO_AB_GENERAL; // error with data size
+                    ret = CO_SDO_AB_GENERAL; // error with data size
+                    break;
                 }
 
-                int32_t temp;
-                memcpy(&temp, ODF_arg->data, ODF_arg->dataLength);
-
-                if(temp == running)
-                    start_daemon(&daemon_list[current_app]);
-                else if(temp == stopped)
-                    stop_daemon(&daemon_list[current_app]);
+                int32_t command;
+                memcpy(&command, ODF_arg->data, ODF_arg->dataLength);
+                if(command == START_DAEMON)
+                     start_daemon(daemon_list[list_index].service_name);
+                else if(command == STOP_DAEMON)
+                    stop_daemon(daemon_list[list_index].service_name);
+                else if(command == RESTART_DAEMON)
+                    stop_daemon(daemon_list[list_index].service_name);
                 else
                     log_error_ODF("app_controller_ODF", ODF_arg, "unkown input to daemon change state");
             }
@@ -223,4 +173,36 @@ daemon_controller_ODF(CO_ODF_arg_t *ODF_arg) {
     return ret;
 }
 
+
+int
+app_register_daemon(const char *name, const char *daemon_name) {
+    uint8_t new_index;
+
+    if(name == NULL || daemon_name == NULL || daemon_count > daemon_list_len)
+        return -1; // invalid inputs or exceeded maxium daemons allowed
+
+    pthread_mutex_lock(&dc_mutex);
+
+    if(daemon_list == NULL) { // make daemon list
+        daemon_count = 1;
+        daemon_list = (daemon_data_t *)malloc(sizeof(daemon_data_t));
+    }
+    else { // add an daemon to existing daemon list
+        ++daemon_count;
+        daemon_list = (daemon_data_t *)realloc(daemon_list, sizeof(daemon_data_t) * daemon_count);
+    }
+
+    new_index = daemon_count - 1;
+
+    // fill daemon data
+    daemon_list[new_index].name = (char *)malloc(strlen(name)+1);
+    strncpy(daemon_list[new_index].name, name, strlen(name)+1);
+    daemon_list[new_index].service_name = (char *)malloc(strlen(daemon_name)+1);
+    strncpy(daemon_list[new_index].service_name, daemon_name, strlen(daemon_name)+1);
+    daemon_list[new_index].status = 0; //TODO enum
+
+    pthread_mutex_unlock(&dc_mutex);
+
+    return new_index;
+}
 

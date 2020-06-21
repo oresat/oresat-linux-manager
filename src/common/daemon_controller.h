@@ -10,11 +10,13 @@
  */
 
 
-#ifndef APP_DAEMON_CONTROLLER_H
-#define APP_DAEMON_CONTROLLER_H
+#ifndef DAEMON_CONTROLLER_H
+#define DAEMON_CONTROLLER_H
 
 
-#include "app_OD_helpers.h"
+#include "CANopen.h"
+#include <stdint.h>
+#include <stdbool.h>
 
 
 /**
@@ -23,7 +25,7 @@
  *
  * Allows the CANdameon to control any daemon requested by an app.
  *
- * ### App list OD entry
+ * ### Daemon list OD entry
  * | Sub Index | Usage                         | Data Type   | Access   |
  * | :-------- | :---------------------------: | :---------: | :------: |
  * |     0     | Number of subindex in record  | uint8       | readonly |
@@ -52,35 +54,73 @@
 
 
 /**
- * States the daemon could be in
+ * Holds all of an app daemon data.
+ * Filled by app_register() and used by the app_controller_ODF().
+ */
+typedef struct {
+    /** App's name */
+    char *name;
+    /** Service name for daemon associate with app */
+    char *service_name;
+    /** Status of the daemon associate with app */
+    int32_t status;
+} daemon_data_t;
+
+
+
+/**
+ * States the daemon could be in.
  */
 enum daemon_states {
-    /** daemon has stop running and has failed */
-    failed = 0,
-    /** daemon is currently running */
-    running = 1,
-    /** daemon has stopped */
-    stopped = 2,
+    /** Daemon has stop running and has failed */
+    FAILED = 0,
+    /** Daemon is currently running */
+    RUNNING = 1,
+    /** Daemon has stopped */
+    STOPPED = 2,
 };
 
 
 /**
- * Object Dictionary Function for app/daemon contoller.
+ * Systemd commands for daemons.
+ */
+enum daemon_commands {
+    /** Stop the daemon */
+    STOP_DAEMON = 0,
+    /** Start the daemon */
+    START_DAEMON = 1,
+    /** Restart the daemon */
+    RESTART_DAEMON = 2,
+};
+
+
+/**
+ * Nice function to setup the daemon controller ODFs.
  *
- * @param Current ODF arguemnt for SDO
+ * @return 0 on sucess
+ */
+int daemon_controller_setup();
+
+
+/**
+ * Object Dictionary Function for daemon list OD entry.
+ *
+ * @param ODF_arg Current ODF arguemnt for SDO
+ *
+ * @return SDO abort code
+ */
+CO_SDO_abortCode_t daemon_list_ODF(CO_ODF_arg_t *ODF_arg);
+
+
+/**
+ * Object Dictionary Function for daemon contoller OD entry.
+ *
+ * @param ODF_arg Current ODF arguemnt for SDO
  *
  * @return SDO abort code
  */
 CO_SDO_abortCode_t daemon_controller_ODF(CO_ODF_arg_t *ODF_arg);
 
-
-/**
- * Used to stop all apps dbus threads in apps list. Ment to be used when
- * candaemon is exiting.
- *
- * @return # of apps ended or negative on error.
- */
-int end_apps();
 
 /** @} */
 
@@ -103,6 +143,7 @@ int end_apps();
  * @return the index if the array, if registered correctly or a negative value on error.
  */
 int app_register_daemon(const char *name, const char *daemon_name);
+
 
 /** @} */
 #endif
