@@ -34,6 +34,8 @@
 
 
 /**
+ * Allows app to register Object Dictionary Functions  (ODF).
+ *
  * A nice wrapper ontop of CO_OD_configure() for apps to not worry
  * about CO->SDO[] when registering ODFs.
  *
@@ -57,6 +59,7 @@ void app_OD_configure(
 
 /**
  * Find the location in the OD array from the OD index value.
+ *
  * Mostly a copy from CO_SDO.* that is for apps and not CANopenNode.
  *
  * @param index OD index for OD entry
@@ -68,6 +71,7 @@ uint16_t app_OD_find(uint16_t index);
 
 /**
  * Reads data into object dictionary.
+ *
  * Mostly a copy from CO_SDO.* that is for apps and not CANopenNode.
  *
  * @param index OD index for OD entry
@@ -81,11 +85,12 @@ int app_OD_read(
         uint16_t index,
         uint16_t subIndex,
         void *data,
-        uint16_t *length);
+        uint16_t length);
 
 
 /**
  * Writes data into object dictionary.
+ *
  * Mostly a copy from CO_SDO.* that is for apps and not CANopenNode.
  *
  * @param index OD index for OD entry

@@ -76,7 +76,7 @@ app_OD_find(uint16_t index){
 
 
 int
-app_OD_read(uint16_t index, uint16_t sub_index, void *data, uint16_t *length) {
+app_OD_read(uint16_t index, uint16_t sub_index, void *data, uint16_t length) {
     CO_OD_entry_t* object = NULL;
     int8_t *OD_data = NULL;
     uint16_t OD_entry_num;
@@ -124,18 +124,19 @@ app_OD_read(uint16_t index, uint16_t sub_index, void *data, uint16_t *length) {
         OD_data = ((const CO_OD_entryRecord_t*)(object->pData))[sub_index].pData;
     }
 
+    if(OD_length != length)
+        return CO_SDO_AB_TYPE_MISMATCH;
+
     if((OD_attribute & CO_ODA_READABLE) == 0)
         return CO_SDO_AB_WRITEONLY;
 
     if(OD_data == NULL)
         return CO_SDO_AB_NO_DATA; // Is a domain type aka NULL in OD
 
-    CO_LOCK_OD();
 
     // Copy data
-    *length = OD_length;
+    CO_LOCK_OD();
     memcpy(data, OD_data, OD_length);
-
     CO_UNLOCK_OD();
 
     return 0;
