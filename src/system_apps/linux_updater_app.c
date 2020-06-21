@@ -10,8 +10,12 @@
  */
 
 
-#include "app_helpers.h"
+#include "app_OD_helpers.h"
+#include "daemon_controller.h"
+#include "dbus_controller.h"
+#include "file_transfer.h"
 #include "linux_updater_app.h"
+#include "log_message.h"
 #include <systemd/sd-bus.h>
 
 
@@ -31,8 +35,11 @@
 #define UPDATER_ODF_INDEX   0x3004
 
 
-/** Hold all the app dbus info */
-extern app_dbus_data_t      APPS_DBUS;
+/**
+ * Gobal for all apps to use to get acces to the CANdaemon dbus connetion.
+ * Apps should treat this as readonly.
+ */
+extern dbus_data_t APP_DBUS;
 /* Holds the current state of the updater. */
 static int32_t              current_state = 0;
 /* The number archive files available. */
@@ -46,7 +53,9 @@ linux_updater_app_setup() {
     int r = 0;
 
     app_OD_configure(UPDATER_ODF_INDEX, updater_ODF, NULL, 0, 0U);
+
     app_register_daemon("Linux Updater", "oresat-linux-updaterd.service");
+
     app_add_request_recv_file(
             "Linux Updater",
             "^("BOARD"\\-update\\-\\d{4}\\-\\d{2}\\-\\d{2}\\-\\d{2}\\-\\d{2}\\.tar\\.gz)$",
@@ -54,7 +63,7 @@ linux_updater_app_setup() {
             NULL);
 
     r = sd_bus_match_signal(
-            APPS_DBUS.bus,
+            APP_DBUS.bus,
             NULL,
             INTERFACE_NAME,
             OBJECT_PATH,
@@ -74,8 +83,8 @@ read_status_cb(sd_bus_message *m, void *userdata, sd_bus_error *ret_error) {
     int r;
 
     r = sd_bus_get_property(
-            APPS_DBUS.bus,
-            CANDAEMON_DESTINATION,
+            APP_DBUS.bus,
+            DESTINATION,
             OBJECT_PATH,
             INTERFACE_NAME,
             "Status",
@@ -94,7 +103,7 @@ read_status_cb(sd_bus_message *m, void *userdata, sd_bus_error *ret_error) {
     }
 
     r = sd_bus_get_property(
-            APPS_DBUS.bus,
+            APP_DBUS.bus,
             DESTINATION,
             OBJECT_PATH,
             INTERFACE_NAME,
@@ -172,7 +181,7 @@ updater_ODF(CO_ODF_arg_t *ODF_arg) {
                 break;
             }
 
-            if(!APPS_DBUS.loop_running) {
+            if(!APP_DBUS.loop_running) {
                 app_log_message(APP_NAME, LOG_ERR, "DBus interface is not up");
                 ret = CO_SDO_AB_GENERAL;
                 break;
@@ -195,7 +204,7 @@ updater_ODF(CO_ODF_arg_t *ODF_arg) {
             }
 
             r = sd_bus_call_method(
-                    APPS_DBUS.bus,
+                    APP_DBUS.bus,
                     DESTINATION,
                     OBJECT_PATH,
                     INTERFACE_NAME,
@@ -228,14 +237,14 @@ updater_ODF(CO_ODF_arg_t *ODF_arg) {
                 break;
             }
 
-            if(!APPS_DBUS.loop_running) {
+            if(!APP_DBUS.loop_running) {
                 app_log_message(APP_NAME, LOG_ERR, "DBus interface is not up");
                 ret = CO_SDO_AB_GENERAL;
                 break;
             }
 
             r = sd_bus_call_method(
-                    APPS_DBUS.bus,
+                    APP_DBUS.bus,
                     DESTINATION,
                     OBJECT_PATH,
                     INTERFACE_NAME,
@@ -265,14 +274,14 @@ updater_ODF(CO_ODF_arg_t *ODF_arg) {
                 break;
             }
 
-            if(!APPS_DBUS.loop_running) {
+            if(!APP_DBUS.loop_running) {
                 app_log_message(APP_NAME, LOG_ERR, "DBus interface is not up");
                 ret = CO_SDO_AB_GENERAL;
                 break;
             }
 
             r = sd_bus_call_method(
-                    APPS_DBUS.bus,
+                    APP_DBUS.bus,
                     DESTINATION,
                     OBJECT_PATH,
                     INTERFACE_NAME,
@@ -302,7 +311,7 @@ updater_ODF(CO_ODF_arg_t *ODF_arg) {
                 ret = CO_SDO_AB_WRITEONLY; // can't read parameters, write only
             else {
                 r = sd_bus_call_method(
-                        APPS_DBUS.bus,
+                        APP_DBUS.bus,
                         DESTINATION,
                         OBJECT_PATH,
                         INTERFACE_NAME,
@@ -329,7 +338,7 @@ updater_ODF(CO_ODF_arg_t *ODF_arg) {
 
         case 9 : // get apt update output as a file
 
-            if(!APPS_DBUS.loop_running) { // dbus interface is not up
+            if(!APP_DBUS.loop_running) { // dbus interface is not up
                 ret = CO_SDO_AB_GENERAL;
                 break;
             }
@@ -338,7 +347,7 @@ updater_ODF(CO_ODF_arg_t *ODF_arg) {
                 ret = CO_SDO_AB_WRITEONLY; // can't read parameters, write only
             else {
                 r = sd_bus_call_method(
-                        APPS_DBUS.bus,
+                        APP_DBUS.bus,
                         DESTINATION,
                         OBJECT_PATH,
                         INTERFACE_NAME,
