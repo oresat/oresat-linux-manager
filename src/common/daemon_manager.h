@@ -1,8 +1,8 @@
 /**
- * Daemon controller for CANdaemon.
+ * Daemon manager for CANdaemon.
  *
- * @file        daemon_controller.h
- * @ingroup     daemon_controller
+ * @file        daemon_manager.h
+ * @ingroup     daemon_manager
  *
  * This file is part of CANdaemon, a common can interface program for daemons
  * running on OreSat Linux board.
@@ -10,8 +10,8 @@
  */
 
 
-#ifndef DAEMON_CONTROLLER_H
-#define DAEMON_CONTROLLER_H
+#ifndef DAEMON_MANAGER_H
+#define DAEMON_MANAGER_H
 
 
 #include "CANopen.h"
@@ -20,7 +20,7 @@
 
 
 /**
- * @defgroup daemon_controller Daemon Controller
+ * @defgroup daemon_manager Daemon Manager
  * @{
  *
  * Allows the CANdameon to control any daemon requested by an app.
@@ -34,7 +34,7 @@
  * |    127    | App name 127                  | DOMAIN      | readonly |
  *
  *
- *  ### Daemon controller OD entry
+ *  ### Daemon manager OD entry
  *  | Sub Index | Usage                             | Data Type | Access    |
  *  | :-------- | :-------------------------------: | :-------: | :-------: |
  *  |     0     | Number of subindex in record      | uint8     | readonly  |
@@ -55,7 +55,7 @@
 
 /**
  * Holds all of an app daemon data.
- * Filled by app_register() and used by the app_controller_ODF().
+ * Filled by app_register() and used by the app_manager_ODF().
  */
 typedef struct {
     /** App's name */
@@ -66,6 +66,21 @@ typedef struct {
     int32_t status;
 } daemon_data_t;
 
+
+/**
+ * File transfer ODF will use an array of these when receive files to figure
+ * out what to do with the file.
+ */
+typedef struct {
+    /** app name for logging error messages. */
+    char *app_name;
+    /** PCRE2 regex string for matching file names. */
+    char *regex_string;
+    /** Absolute path to move the file to. */
+    char *path_to_send;
+    /** Callaback that will be called when the regex matches. Optional. */
+    int (*recv_file_callback)(char *);
+} recv_file_request_t;
 
 
 /**
@@ -95,11 +110,11 @@ enum daemon_commands {
 
 
 /**
- * Nice function to setup the daemon controller ODFs.
+ * Nice function to setup the daemon manager ODFs.
  *
  * @return 0 on sucess
  */
-int daemon_controller_setup();
+int daemon_manager_setup();
 
 
 /**
@@ -119,7 +134,7 @@ CO_SDO_abortCode_t daemon_list_ODF(CO_ODF_arg_t *ODF_arg);
  *
  * @return SDO abort code
  */
-CO_SDO_abortCode_t daemon_controller_ODF(CO_ODF_arg_t *ODF_arg);
+CO_SDO_abortCode_t daemon_manager_ODF(CO_ODF_arg_t *ODF_arg);
 
 
 /** @} */
@@ -143,6 +158,36 @@ CO_SDO_abortCode_t daemon_controller_ODF(CO_ODF_arg_t *ODF_arg);
  * @return the index if the array, if registered correctly or a negative value on error.
  */
 int app_register_daemon(const char *name, const char *daemon_name);
+
+
+/**
+ *  Request a file name by add a PCRE2 regex string.
+ *
+ *  @param app_name is the app name for log messages
+ *  @param regex_string is a PCRE2 regex string. used by the recv file ODF
+ *  to check if the regex will match.
+ *  #param path_to_send is where the file will be move to if ODF match the
+ *  file name with regex string.
+ *  @param Optional. Set to NULL if not wanted. Function be called if
+ *  regex matches.
+ *
+ *  @return 1 on success, 0 on failure
+ */
+int app_add_request_recv_file(
+        char *app_name,
+        char *regex_string,
+        char *path_to_send,
+        int (*recv_file_callback)(char *));
+
+
+/**
+ * Add file to object dictionary that can be read by a master CAN node.
+ * Ment to be used by other part of the CANdaemon (from the app).
+ * An example would be giving the master CAN node a captured image.
+ *
+ * @return 0 on success.
+ */
+int app_send_file(const char* filePath);
 
 
 /** @} */

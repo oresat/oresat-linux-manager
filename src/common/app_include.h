@@ -14,7 +14,7 @@
 
 
 #include "CANopen.h"
-#include "daemon_controller.h"
+#include "daemon_manager.h"
 #include "dbus_controller.h"
 #include "file_transfer.h"
 #include "log_message.h"

@@ -28,39 +28,24 @@
 #include <pthread.h>
 #include <stdbool.h>
 
-
-#define PCRE2_CODE_UNIT_WIDTH       8 // must be set before including pcre2.h
-#include <pcre2.h>
-
-
-#define FILE_RECEIVE_FOLDER         "/tmp/received_files/"
-#define FILE_SEND_FOLDER            "/tmp/send_files/"
 #ifndef CO_SDO_BUFFER_SIZE
-#define CO_SDO_BUFFER_SIZE          889 // CO_driver.h should define this
+/** The SDO buffer size. MUST BE <= 889 */
+#define CO_SDO_BUFFER_SIZE          889
 #endif
+/** The file path to directory for a file that is being transferred. */
+#define WORKING_DIR                 "/tmp/candaemon/"
+/** The cache for files that have been received */
+#define RECV_FILE_DIR               "/var/cache/candaemon/received_files/"
+/** The cache for files that can be sent */
+#define SEND_FILE_DIR               "/var/cache/candaemon/send_files/"
+/** The size of the buffer for saving files */
+#define FILE_BUFFER_SIZE            889
+/** OD index for receive file ODF */
 #define RECV_FILE_ODF_INDEX         0x3001
+/** OD index for list of send files ODF */
 #define SEND_FILE_ARRAY_ODF_INDEX   0x3002
+/** OD index for sending files in the send list ODF */
 #define SEND_FILE_ODF_INDEX         0x3003
-
-
-// ***************************************************************************
-// private structs
-
-
-/**
- * File transfer ODF will use an array of these when receive files to figure
- * out what to do with the file.
- */
-typedef struct {
-    /** app name for logging error messages. */
-    char *app_name;
-    /** PCRE2 regex string for matching file names. */
-    char *regex_string;
-    /** Absolute path to move the file to. */
-    char *path_to_send;
-    /** Callaback that will be called when the regex matches. Optional. */
-    int (*recv_file_callback)(char *);
-} recv_file_request_t;
 
 
 // ***************************************************************************
@@ -72,10 +57,6 @@ static pthread_mutex_t          FT_ODF_mtx;
 static received_file_data_t     recvFileBuffer;
 /** Struct for holding all the file data for file that could be sent */
 static send_file_data_t         sendFileBuffer;
-/** List of file request struct that will be used when receiving files */
-static recv_file_request_t      *recv_file_request_list = NULL;
-/** length of recv_file_request_list */
-static int                      request_count = 0;
 
 
 // ***************************************************************************
@@ -89,7 +70,6 @@ static int initFileList(send_file_data_t *sendFileBuffer);
 static uint32_t get_file_name(const char *filePath, char *fileName);
 static uint32_t get_file_data(const char *filePath, int8_t *fileData);
 static CO_SDO_abortCode_t read_file_data(CO_ODF_arg_t *ODF_arg);
-static bool match_regex(char *file_name, char *regex_string);
 
 
 // ***************************************************************************
@@ -118,10 +98,10 @@ file_transfer_ODF_setup(void) {
 
     // make sure /tmp dir exist
     struct stat st = {0};
-    if(stat(FILE_RECEIVE_FOLDER, &st) == -1)
-        mkdir(FILE_RECEIVE_FOLDER, 0700);
-    if(stat(FILE_SEND_FOLDER, &st) == -1)
-        mkdir(FILE_SEND_FOLDER, 0700);
+    if(stat(RECV_FILE_DIR, &st) == -1)
+        mkdir(RECV_FILE_DIR, 0700);
+    if(stat(SEND_FILE_DIR, &st) == -1)
+        mkdir(SEND_FILE_DIR, 0700);
 
     initFileList(&sendFileBuffer);
 
@@ -178,7 +158,7 @@ CO_SDO_abortCode_t
 recv_file_ODF(CO_ODF_arg_t *ODF_arg) {
     received_file_data_t *recvFileBuffer;
     CO_SDO_abortCode_t ret = CO_SDO_AB_NONE;
-    char filePath[] = FILE_RECEIVE_FOLDER;
+    char filePath[] = RECV_FILE_DIR;
     FILE *f;
 
     recvFileBuffer = (received_file_data_t*) ODF_arg->object;
@@ -284,7 +264,7 @@ int
 app_send_file(const char *filePath) {
     int ret = 0;
     char fileName[FILE_PATH_MAX_LENGTH];
-    char newFilePath[FILE_PATH_MAX_LENGTH] = FILE_SEND_FOLDER;
+    char newFilePath[FILE_PATH_MAX_LENGTH] = SEND_FILE_DIR;
     int source, dest;
     struct stat stat_source;
 
@@ -367,7 +347,7 @@ initFileList(send_file_data_t *sendFileBuffer) {
     sendFileBuffer->fileName = sendFileBuffer->fileList[0];
     sendFileBuffer->filePath[0] = '\0';
 
-    if((d = opendir(FILE_SEND_FOLDER)) != NULL) {
+    if((d = opendir(SEND_FILE_DIR)) != NULL) {
         /* directory found */
         while((dir = readdir(d)) != NULL) {
             /* file found */
@@ -390,7 +370,7 @@ initFileList(send_file_data_t *sendFileBuffer) {
         /* load 1st file, if there is one */
         if(sendFileBuffer->fileList[0][0] != '\0') {
             /* update file path */
-            strncpy(sendFileBuffer->filePath, FILE_SEND_FOLDER, strlen(sendFileBuffer->filePath) + 1);
+            strncpy(sendFileBuffer->filePath, SEND_FILE_DIR, strlen(sendFileBuffer->filePath) + 1);
             strncat(sendFileBuffer->filePath, sendFileBuffer->fileName, strlen(sendFileBuffer->filePath) + 1);
 
             /* load file into buffer and get size */
@@ -571,7 +551,7 @@ send_file_ODF(CO_ODF_arg_t *ODF_arg) {
                 if(sendFileBuffer->fileName[0] != '\0') {
 
                     /* update file path */
-                    strncpy(sendFileBuffer->filePath, FILE_SEND_FOLDER, strlen(sendFileBuffer->filePath)+1);
+                    strncpy(sendFileBuffer->filePath, SEND_FILE_DIR, strlen(sendFileBuffer->filePath)+1);
                     strncat(sendFileBuffer->filePath, sendFileBuffer->fileName, strlen(sendFileBuffer->filePath) + 1);
 
                     /* load file into buffer and get size */
@@ -679,106 +659,3 @@ send_file_ODF(CO_ODF_arg_t *ODF_arg) {
     return ret;
 }
 
-
-int
-app_add_request_recv_file(
-        char *app_name,
-        char *regex_string,
-        char *path_to_send,
-        int (*recv_file_callback)(char *)) {
-
-    int new_request = 0;
-
-    // make sure inputs are valid
-    if(app_name == NULL) {
-        log_message(LOG_ERR, "add recv file request had no app name\n");
-        return 0;
-    }
-    if(regex_string == NULL) {
-        log_message(LOG_ERR, "app %s recv file request has no regex string\n", app_name);
-        return 0;
-    }
-    if(path_to_send == NULL) {
-        log_message(LOG_ERR, "app %s recv file request has no path\n", app_name);
-        return 0;
-    }
-    if(path_to_send[0] != '/') {
-        log_message(LOG_ERR, "app %s recv file request path is not an absolute path\n", app_name);
-        return 0;
-    }
-
-    new_request = request_count;
-
-    // add to request list
-    if(request_count == 0) { // init request list
-        request_count = 1;
-        recv_file_request_list = (recv_file_request_t *)malloc(sizeof(recv_file_request_t));
-    }
-    else { // append to request list
-        ++request_count;
-        recv_file_request_list = (recv_file_request_t *)realloc(recv_file_request_list, sizeof(recv_file_request_t) * request_count);
-    }
-
-    // copy data
-    recv_file_request_list[new_request].app_name = app_name;
-    app_name = NULL;
-    recv_file_request_list[new_request].regex_string = regex_string;
-    regex_string = NULL;
-    recv_file_request_list[new_request].path_to_send = path_to_send;
-    path_to_send = NULL;
-    recv_file_request_list[new_request].recv_file_callback = recv_file_callback;
-
-    return 1;
-}
-
-
-static bool
-match_regex(char *file_name, char *regex_string) {
-    pcre2_code *re;
-    PCRE2_SPTR pattern;
-    PCRE2_SPTR subject;
-    PCRE2_SIZE error_offset;
-    pcre2_match_data *match_data;
-    int error_number;
-    size_t subject_length;
-    bool rv = false;
-    int r;
-
-    pattern = (PCRE2_SPTR)regex_string;
-    subject = (PCRE2_SPTR)file_name;
-    subject_length = strlen((char *)subject);
-
-    re = pcre2_compile(
-            pattern,
-            PCRE2_ZERO_TERMINATED,
-            0,
-            &error_number,
-            &error_offset,
-            NULL);
-
-    if(re == NULL) { // compile failed
-        PCRE2_UCHAR buffer[256];
-        pcre2_get_error_message(error_number, buffer, sizeof(buffer));
-        log_message(LOG_ERR, "PCRE2 compilation failed at offset %d in %s\n", (int)error_offset, buffer);
-    }
-
-    match_data = pcre2_match_data_create_from_pattern(re, NULL);
-
-    // try to match regex
-    r = pcre2_match(
-            re,
-            subject,
-            subject_length,
-            0,
-            0,
-            match_data,
-            NULL);
-
-    if(r > 0) // regex matched
-        rv = true;
-
-    pcre2_match_data_free(match_data);
-    pcre2_code_free(re);
-
-    return rv;
-}

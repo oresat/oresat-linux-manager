@@ -10,8 +10,8 @@
  */
 
 
-#ifndef DBUS_CONTROLLER_H
-#define DBUS_CONTROLLER_H
+#ifndef DBUS_CONTROLLER_H__TEST
+#define DBUS_CONTROLLER_H__TEST
 
 
 #include <systemd/sd-bus.h>

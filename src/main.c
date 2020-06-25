@@ -50,7 +50,7 @@
 #include "CO_error.h"
 #include "CO_Linux_threads.h"
 
-#include "daemon_controller.h"
+#include "daemon_manager.h"
 #include "dbus_controller.h"
 #include "file_transfer.h"
 #include "log_message.h"
@@ -426,7 +426,7 @@ int main (int argc, char *argv[]) {
 
             // set up general ODFs
             file_transfer_ODF_setup();
-            daemon_controller_setup();
+            daemon_manager_setup();
 
             // setup dbus controller
             dbus_controller_init();
@@ -547,7 +547,7 @@ static void* rt_thread(void* arg) {
 
 
 static void*
-apps_dbus_thread(void* arg) {
+apps_dbus_thread(__attribute__ ((unused)) void* arg) {
     dbus_controller_loop();
     return NULL;
 }
