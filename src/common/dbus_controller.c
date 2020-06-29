@@ -39,7 +39,7 @@ static const sd_bus_vtable candaemon_vtable[] = {
 
 
 int
-apps_dbus_init() {
+dbus_controller_init() {
     int r;
 
     // open bus
@@ -70,7 +70,7 @@ apps_dbus_init() {
 
 
 int
-apps_dbus_setup_apps() {
+dbus_controller_setup_apps() {
     int r = 0;
 
     r += system_apps_setup();
@@ -82,7 +82,7 @@ apps_dbus_setup_apps() {
 
 
 int
-apps_dbus_loop() {
+dbus_controller_loop() {
     int r;
     APP_DBUS.loop_running = true;
 
@@ -105,7 +105,7 @@ apps_dbus_loop() {
 
 
 int
-apps_dbus_end() {
+dbus_controller_end() {
     APP_DBUS.loop_running = false;
 
 #ifdef DEBUG_MODE

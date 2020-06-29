@@ -101,8 +101,8 @@ static CO_time_t            CO_time;            /* Object for current time */
 static void* rt_thread(void* arg);
 
 /* candaemon apps thread */
-static void*                apps_dbus_thread(void* arg);
-static pthread_t            apps_dbus_thread_id;
+static void*                dbus_thread(void* arg);
+static pthread_t            dbus_thread_id;
 
 /* make daemon */
 int make_daemon();
@@ -112,7 +112,7 @@ volatile sig_atomic_t CO_endProgram = 0;
 static void sigHandler(int sig) {
     CO_endProgram = 1;
     // kill this thread as it may be wait for a interupt to wake up
-    pthread_cancel(apps_dbus_thread_id);
+    pthread_cancel(dbus_thread_id);
 }
 
 /* callback for emergency messages */
@@ -457,8 +457,8 @@ int main (int argc, char *argv[]) {
             }
 
             //create app dbus thread
-            if(pthread_create(&apps_dbus_thread_id, NULL, apps_dbus_thread, NULL) != 0) {
-                log_printf(LOG_CRIT, DBG_ERRNO, "pthread_create(apps_dbus_thread)");
+            if(pthread_create(&dbus_thread_id, NULL, dbus_thread, NULL) != 0) {
+                log_printf(LOG_CRIT, DBG_ERRNO, "pthread_create(dbus_thread)");
                 exit(EXIT_FAILURE);
             }
         } /* if(firstRun) */
@@ -492,7 +492,7 @@ int main (int argc, char *argv[]) {
         log_printf(LOG_CRIT, DBG_ERRNO, "pthread_join()");
         exit(EXIT_FAILURE);
     }
-    if (pthread_join(apps_dbus_thread_id, NULL) != 0) {
+    if (pthread_join(dbus_thread_id, NULL) != 0) {
         log_printf(LOG_CRIT, DBG_ERRNO, "pthread_join()");
         exit(EXIT_FAILURE);
     }
@@ -547,7 +547,7 @@ static void* rt_thread(void* arg) {
 
 
 static void*
-apps_dbus_thread(__attribute__ ((unused)) void* arg) {
+dbus_thread(__attribute__ ((unused)) void* arg) {
     dbus_controller_loop();
     return NULL;
 }
