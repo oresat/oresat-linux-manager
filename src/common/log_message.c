@@ -5,15 +5,23 @@
 #include <stdarg.h>
 #include <errno.h>
 #include <stdlib.h>
-
+#include <stdbool.h>
 
 void
 log_message(int priority, const char *fmt, ...) {
-	va_list args;
-	va_start(args, fmt);
-	vsyslog(priority, fmt, args);
-	vfprintf((priority > LOG_WARNING ? stdout : stderr), fmt, args);
-	va_end(args);
+    va_list args;
+
+    va_start(args, fmt);
+    vsyslog(priority, fmt, args);
+    va_end(args);
+
+    /*
+    va_start(args, fmt);
+    vfprintf((priority > LOG_WARNING ? stdout : stderr), fmt, args);
+    if(fmt[strlen(fmt)] != '\n')
+        printf("\n");
+    va_end(args);
+    */
 }
 
 

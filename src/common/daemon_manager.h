@@ -68,22 +68,6 @@ typedef struct {
 
 
 /**
- * File transfer ODF will use an array of these when receive files to figure
- * out what to do with the file.
- */
-typedef struct {
-    /** app name for logging error messages. */
-    char *app_name;
-    /** PCRE2 regex string for matching file names. */
-    char *regex_string;
-    /** Absolute path to move the file to. */
-    char *path_to_send;
-    /** Callaback that will be called when the regex matches. Optional. */
-    int (*recv_file_callback)(char *);
-} recv_file_request_t;
-
-
-/**
  * States the daemon could be in.
  */
 enum daemon_states {
@@ -158,36 +142,6 @@ CO_SDO_abortCode_t daemon_manager_ODF(CO_ODF_arg_t *ODF_arg);
  * @return the index if the array, if registered correctly or a negative value on error.
  */
 int app_register_daemon(const char *name, const char *daemon_name);
-
-
-/**
- *  Request a file name by add a PCRE2 regex string.
- *
- *  @param app_name is the app name for log messages
- *  @param regex_string is a PCRE2 regex string. used by the recv file ODF
- *  to check if the regex will match.
- *  #param path_to_send is where the file will be move to if ODF match the
- *  file name with regex string.
- *  @param Optional. Set to NULL if not wanted. Function be called if
- *  regex matches.
- *
- *  @return 1 on success, 0 on failure
- */
-int app_add_request_recv_file(
-        char *app_name,
-        char *regex_string,
-        char *path_to_send,
-        int (*recv_file_callback)(char *));
-
-
-/**
- * Add file to object dictionary that can be read by a master CAN node.
- * Ment to be used by other part of the CANdaemon (from the app).
- * An example would be giving the master CAN node a captured image.
- *
- * @return 0 on success.
- */
-int app_send_file(const char* filePath);
 
 
 /** @} */

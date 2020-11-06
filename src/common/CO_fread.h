@@ -1,7 +1,7 @@
 /**
- * File transfer Object Dictionary Function.
+ * Reading files over CAN ODF (Object Dictionary Function).
  *
- * @file        file_transfer.h
+ * @file        CO_fread.h
  * @ingroup     file_transfer
  *
  * This file is part of CANdaemon, a common can interface program for daemons
@@ -10,12 +10,13 @@
  */
 
 
-#ifndef FILE_TRANSFER_H
-#define FILE_TRANSFER_H
+#ifndef CO_FREAD_H
+#define CO_FREAD_H
 
 
 #include "CANopen.h"
 #include "CO_driver.h"
+#include <stdint.h>
 
 
 /**
@@ -28,17 +29,6 @@
  * One record only deals with writing files to the CANdaemon and two OD records
  * for read from (one for list all readable file available and one for
  * selecting and reading a file).
- *
- * **File Writer OD Record:**
- * | Sub Index | Usage                          | Data Type   | Access    |
- * | :-------- | :----------------------------: | :---------: | :-------: |
- * |     0     | Number of subindex in record   | uint8       | readonly  |
- * |     1     | File name                      | DOMAIN      | writeonly |
- * |     2     | File data                      | DOMAIN      | writeonly |
- * |     3     | Save file                      | DOMAIN      | writeonly |
- *
- * **How file writing works:**
- * The master node can write data to both file name and file data indexes and then write any 8 bit number to the Save file index to save the file into CANdaemon's received directory.
  *
  * **Readable File List OD Record:**
  * | Sub Index | Usage                          | Data Type   | Access   |
@@ -70,58 +60,20 @@
  */
 
 
-/** The maxium size of file that can be sent */
-#define FILE_TRANSFER_MAX_SIZE  1000000
-/** The maxium size filepath */
-#define FILE_PATH_MAX_LENGTH    200
-/** The size of the fileList. Must be <= 127 */
-#define SEND_FILE_LIST_SIZE     127
-
-
-/** Struct for receive files ODF. */
-typedef struct {
-    /** file name */
-    char        fileName[FILE_PATH_MAX_LENGTH];
-    /** file data */
-    int8_t      fileData[FILE_TRANSFER_MAX_SIZE];
-    /** file size */
-    uint32_t    fileSize;
-    /** flag for triggering the file to be saved */
-    bool_t      saveFile;
-} received_file_data_t;
-
-
 /**
- * Struct for sending files ODF.
- *
- * Used to load and access a file that is in sendableFileList
- */
-typedef struct {
-    /** Index to current file selected in send fileList */
-    uint8_t     filePointer;
-    /** File name that filePointer points to fileList*/
-    char       *fileName;
-    /** Absoulte path to file that filePointer points to in fileList */
-    char        filePath[FILE_PATH_MAX_LENGTH];
-    /** File data of current file that filePointer points to in fileList*/
-    int8_t      fileData[FILE_TRANSFER_MAX_SIZE];
-    /** Size of file of current file that filePointer points to in fileList*/
-    uint32_t    fileSize;
-    /** Total number of file availavle */
-    uint32_t    filesAvailable;
-    /** Number of files that do not fit in the fileList. */
-    uint32_t    overflow;
-    /** The list of file that can be sent to the CAN master node */
-    char        fileList[FILE_PATH_MAX_LENGTH][SEND_FILE_LIST_SIZE];
-} send_file_data_t;
-
-
-/**
- * Configure all application OD functions
+ * Configure all application OD functions and setup file transfer cache.
  *
  * @return 0 on success
  */
-int file_transfer_ODF_setup(void);
+int CO_fread_setup(void);
+
+
+/**
+ * Clean up all file transfer data, including closing any opened files.
+ *
+ * @return 0 on success or negative errno on error
+ */
+int CO_fread_end(void);
 
 
 /**
@@ -143,7 +95,7 @@ CO_SDO_abortCode_t recv_file_ODF(CO_ODF_arg_t *ODF_arg);
  *
  * @return SDO abort code
  */
-CO_SDO_abortCode_t send_file_array_ODF(CO_ODF_arg_t *ODF_arg);
+CO_SDO_abortCode_t fread_array_ODF(CO_ODF_arg_t *ODF_arg);
 
 
 /**
@@ -154,17 +106,14 @@ CO_SDO_abortCode_t send_file_array_ODF(CO_ODF_arg_t *ODF_arg);
  *
  * @return SDO abort code
  */
-CO_SDO_abortCode_t send_file_ODF(CO_ODF_arg_t *ODF_arg);
+CO_SDO_abortCode_t fread_ODF(CO_ODF_arg_t *ODF_arg);
 
-
-/** @} */
 
 /**
- * @ingroup App_Helpers
- * @{
- *
- * Object Dictionary Function for handlinge file transfers over CAN.
+ * Add a file to read over CAN. For apps to use.
+ * @return 0 on success or negative errno value on error.
  */
+int app_send_file(char *filepath);
 
 
 /** @} */

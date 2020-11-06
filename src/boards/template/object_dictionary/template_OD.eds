@@ -1951,7 +1951,7 @@ DefaultValue=0
 PDOMapping=0
 
 [3001]
-ParameterName=Receive File
+ParameterName=Write File
 ObjectType=0x9
 ;StorageLocation=RAM
 SubNumber=0x4
@@ -1984,16 +1984,16 @@ DefaultValue=0
 PDOMapping=0
 
 [3001sub3]
-ParameterName=Save File
+ParameterName=Cancel
 ObjectType=0x7
 ;StorageLocation=RAM
-DataType=0x0005
+DataType=0x000F
 AccessType=wo
 DefaultValue=0
 PDOMapping=0
 
 [3002]
-ParameterName=Send File List
+ParameterName=Read File List
 ObjectType=0x8
 ;StorageLocation=RAM
 SubNumber=0x80
@@ -2012,7 +2012,7 @@ ParameterName=
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
-AccessType=ro
+AccessType=rw
 DefaultValue=
 PDOMapping=0
 
@@ -2021,7 +2021,7 @@ ParameterName=
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
-AccessType=ro
+AccessType=rw
 DefaultValue=
 PDOMapping=0
 
@@ -2030,7 +2030,7 @@ ParameterName=
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
-AccessType=ro
+AccessType=rw
 DefaultValue=
 PDOMapping=0
 
@@ -2039,7 +2039,7 @@ ParameterName=
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
-AccessType=ro
+AccessType=rw
 DefaultValue=
 PDOMapping=0
 
@@ -2048,7 +2048,7 @@ ParameterName=
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
-AccessType=ro
+AccessType=rw
 DefaultValue=
 PDOMapping=0
 
@@ -2057,7 +2057,7 @@ ParameterName=
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
-AccessType=ro
+AccessType=rw
 DefaultValue=
 PDOMapping=0
 
@@ -2066,7 +2066,7 @@ ParameterName=
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
-AccessType=ro
+AccessType=rw
 DefaultValue=
 PDOMapping=0
 
@@ -2075,7 +2075,7 @@ ParameterName=
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
-AccessType=ro
+AccessType=rw
 DefaultValue=
 PDOMapping=0
 
@@ -2084,7 +2084,7 @@ ParameterName=
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
-AccessType=ro
+AccessType=rw
 DefaultValue=
 PDOMapping=0
 
@@ -2093,7 +2093,7 @@ ParameterName=
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
-AccessType=ro
+AccessType=rw
 DefaultValue=
 PDOMapping=0
 
@@ -2102,7 +2102,7 @@ ParameterName=
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
-AccessType=ro
+AccessType=rw
 DefaultValue=
 PDOMapping=0
 
@@ -2111,7 +2111,7 @@ ParameterName=
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
-AccessType=ro
+AccessType=rw
 DefaultValue=
 PDOMapping=0
 
@@ -2120,7 +2120,7 @@ ParameterName=
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
-AccessType=ro
+AccessType=rw
 DefaultValue=
 PDOMapping=0
 
@@ -2129,7 +2129,7 @@ ParameterName=
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
-AccessType=ro
+AccessType=rw
 DefaultValue=
 PDOMapping=0
 
@@ -2138,7 +2138,7 @@ ParameterName=
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
-AccessType=ro
+AccessType=rw
 DefaultValue=
 PDOMapping=0
 
@@ -2147,7 +2147,7 @@ ParameterName=
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
-AccessType=ro
+AccessType=rw
 DefaultValue=
 PDOMapping=0
 
@@ -2156,7 +2156,7 @@ ParameterName=
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
-AccessType=ro
+AccessType=rw
 DefaultValue=
 PDOMapping=0
 
@@ -2165,7 +2165,7 @@ ParameterName=
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
-AccessType=ro
+AccessType=rw
 DefaultValue=
 PDOMapping=0
 
@@ -2174,7 +2174,7 @@ ParameterName=
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
-AccessType=ro
+AccessType=rw
 DefaultValue=
 PDOMapping=0
 
@@ -2183,7 +2183,7 @@ ParameterName=
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
-AccessType=ro
+AccessType=rw
 DefaultValue=
 PDOMapping=0
 
@@ -2192,7 +2192,7 @@ ParameterName=
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
-AccessType=ro
+AccessType=rw
 DefaultValue=
 PDOMapping=0
 
@@ -2201,7 +2201,7 @@ ParameterName=
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
-AccessType=ro
+AccessType=rw
 DefaultValue=
 PDOMapping=0
 
@@ -2210,7 +2210,7 @@ ParameterName=
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
-AccessType=ro
+AccessType=rw
 DefaultValue=
 PDOMapping=0
 
@@ -2219,7 +2219,7 @@ ParameterName=
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
-AccessType=ro
+AccessType=rw
 DefaultValue=
 PDOMapping=0
 
@@ -2228,7 +2228,7 @@ ParameterName=
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
-AccessType=ro
+AccessType=rw
 DefaultValue=
 PDOMapping=0
 
@@ -2237,7 +2237,7 @@ ParameterName=
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
-AccessType=ro
+AccessType=rw
 DefaultValue=
 PDOMapping=0
 
@@ -2246,7 +2246,7 @@ ParameterName=
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
-AccessType=ro
+AccessType=rw
 DefaultValue=
 PDOMapping=0
 
@@ -2255,7 +2255,7 @@ ParameterName=
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
-AccessType=ro
+AccessType=rw
 DefaultValue=
 PDOMapping=0
 
@@ -2264,7 +2264,7 @@ ParameterName=
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
-AccessType=ro
+AccessType=rw
 DefaultValue=
 PDOMapping=0
 
@@ -2273,7 +2273,7 @@ ParameterName=
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
-AccessType=ro
+AccessType=rw
 DefaultValue=
 PDOMapping=0
 
@@ -2282,7 +2282,7 @@ ParameterName=
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
-AccessType=ro
+AccessType=rw
 DefaultValue=
 PDOMapping=0
 
@@ -2291,7 +2291,7 @@ ParameterName=
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
-AccessType=ro
+AccessType=rw
 DefaultValue=
 PDOMapping=0
 
@@ -2300,7 +2300,7 @@ ParameterName=
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
-AccessType=ro
+AccessType=rw
 DefaultValue=
 PDOMapping=0
 
@@ -2309,7 +2309,7 @@ ParameterName=
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
-AccessType=ro
+AccessType=rw
 DefaultValue=
 PDOMapping=0
 
@@ -2318,7 +2318,7 @@ ParameterName=
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
-AccessType=ro
+AccessType=rw
 DefaultValue=
 PDOMapping=0
 
@@ -2327,7 +2327,7 @@ ParameterName=
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
-AccessType=ro
+AccessType=rw
 DefaultValue=
 PDOMapping=0
 
@@ -2336,7 +2336,7 @@ ParameterName=
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
-AccessType=ro
+AccessType=rw
 DefaultValue=
 PDOMapping=0
 
@@ -2345,7 +2345,7 @@ ParameterName=
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
-AccessType=ro
+AccessType=rw
 DefaultValue=
 PDOMapping=0
 
@@ -2354,7 +2354,7 @@ ParameterName=
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
-AccessType=ro
+AccessType=rw
 DefaultValue=
 PDOMapping=0
 
@@ -2363,7 +2363,7 @@ ParameterName=
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
-AccessType=ro
+AccessType=rw
 DefaultValue=
 PDOMapping=0
 
@@ -2372,7 +2372,7 @@ ParameterName=
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
-AccessType=ro
+AccessType=rw
 DefaultValue=
 PDOMapping=0
 
@@ -2381,7 +2381,7 @@ ParameterName=
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
-AccessType=ro
+AccessType=rw
 DefaultValue=
 PDOMapping=0
 
@@ -2390,7 +2390,7 @@ ParameterName=
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
-AccessType=ro
+AccessType=rw
 DefaultValue=
 PDOMapping=0
 
@@ -2399,7 +2399,7 @@ ParameterName=
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
-AccessType=ro
+AccessType=rw
 DefaultValue=
 PDOMapping=0
 
@@ -2408,7 +2408,7 @@ ParameterName=
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
-AccessType=ro
+AccessType=rw
 DefaultValue=
 PDOMapping=0
 
@@ -2417,7 +2417,7 @@ ParameterName=
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
-AccessType=ro
+AccessType=rw
 DefaultValue=
 PDOMapping=0
 
@@ -2426,7 +2426,7 @@ ParameterName=
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
-AccessType=ro
+AccessType=rw
 DefaultValue=
 PDOMapping=0
 
@@ -2435,7 +2435,7 @@ ParameterName=
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
-AccessType=ro
+AccessType=rw
 DefaultValue=
 PDOMapping=0
 
@@ -2444,7 +2444,7 @@ ParameterName=
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
-AccessType=ro
+AccessType=rw
 DefaultValue=
 PDOMapping=0
 
@@ -2453,7 +2453,7 @@ ParameterName=
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
-AccessType=ro
+AccessType=rw
 DefaultValue=
 PDOMapping=0
 
@@ -2462,7 +2462,7 @@ ParameterName=
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
-AccessType=ro
+AccessType=rw
 DefaultValue=
 PDOMapping=0
 
@@ -2471,7 +2471,7 @@ ParameterName=
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
-AccessType=ro
+AccessType=rw
 DefaultValue=
 PDOMapping=0
 
@@ -2480,7 +2480,7 @@ ParameterName=
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
-AccessType=ro
+AccessType=rw
 DefaultValue=
 PDOMapping=0
 
@@ -2489,7 +2489,7 @@ ParameterName=
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
-AccessType=ro
+AccessType=rw
 DefaultValue=
 PDOMapping=0
 
@@ -2498,7 +2498,7 @@ ParameterName=
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
-AccessType=ro
+AccessType=rw
 DefaultValue=
 PDOMapping=0
 
@@ -2507,7 +2507,7 @@ ParameterName=
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
-AccessType=ro
+AccessType=rw
 DefaultValue=
 PDOMapping=0
 
@@ -2516,7 +2516,7 @@ ParameterName=
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
-AccessType=ro
+AccessType=rw
 DefaultValue=
 PDOMapping=0
 
@@ -2525,7 +2525,7 @@ ParameterName=
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
-AccessType=ro
+AccessType=rw
 DefaultValue=
 PDOMapping=0
 
@@ -2534,7 +2534,7 @@ ParameterName=
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
-AccessType=ro
+AccessType=rw
 DefaultValue=
 PDOMapping=0
 
@@ -2543,7 +2543,7 @@ ParameterName=
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
-AccessType=ro
+AccessType=rw
 DefaultValue=
 PDOMapping=0
 
@@ -2552,7 +2552,7 @@ ParameterName=
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
-AccessType=ro
+AccessType=rw
 DefaultValue=
 PDOMapping=0
 
@@ -2561,7 +2561,7 @@ ParameterName=
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
-AccessType=ro
+AccessType=rw
 DefaultValue=
 PDOMapping=0
 
@@ -2570,7 +2570,7 @@ ParameterName=
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
-AccessType=ro
+AccessType=rw
 DefaultValue=
 PDOMapping=0
 
@@ -2579,7 +2579,7 @@ ParameterName=
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
-AccessType=ro
+AccessType=rw
 DefaultValue=
 PDOMapping=0
 
@@ -2588,7 +2588,7 @@ ParameterName=
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
-AccessType=ro
+AccessType=rw
 DefaultValue=
 PDOMapping=0
 
@@ -2597,7 +2597,7 @@ ParameterName=
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
-AccessType=ro
+AccessType=rw
 DefaultValue=
 PDOMapping=0
 
@@ -2606,7 +2606,7 @@ ParameterName=
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
-AccessType=ro
+AccessType=rw
 DefaultValue=
 PDOMapping=0
 
@@ -2615,7 +2615,7 @@ ParameterName=
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
-AccessType=ro
+AccessType=rw
 DefaultValue=
 PDOMapping=0
 
@@ -2624,7 +2624,7 @@ ParameterName=
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
-AccessType=ro
+AccessType=rw
 DefaultValue=
 PDOMapping=0
 
@@ -2633,7 +2633,7 @@ ParameterName=
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
-AccessType=ro
+AccessType=rw
 DefaultValue=
 PDOMapping=0
 
@@ -2642,7 +2642,7 @@ ParameterName=
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
-AccessType=ro
+AccessType=rw
 DefaultValue=
 PDOMapping=0
 
@@ -2651,7 +2651,7 @@ ParameterName=
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
-AccessType=ro
+AccessType=rw
 DefaultValue=
 PDOMapping=0
 
@@ -2660,7 +2660,7 @@ ParameterName=
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
-AccessType=ro
+AccessType=rw
 DefaultValue=
 PDOMapping=0
 
@@ -2669,7 +2669,7 @@ ParameterName=
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
-AccessType=ro
+AccessType=rw
 DefaultValue=
 PDOMapping=0
 
@@ -2678,7 +2678,7 @@ ParameterName=
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
-AccessType=ro
+AccessType=rw
 DefaultValue=
 PDOMapping=0
 
@@ -2687,7 +2687,7 @@ ParameterName=
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
-AccessType=ro
+AccessType=rw
 DefaultValue=
 PDOMapping=0
 
@@ -2696,7 +2696,7 @@ ParameterName=
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
-AccessType=ro
+AccessType=rw
 DefaultValue=
 PDOMapping=0
 
@@ -2705,7 +2705,7 @@ ParameterName=
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
-AccessType=ro
+AccessType=rw
 DefaultValue=
 PDOMapping=0
 
@@ -2714,7 +2714,7 @@ ParameterName=
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
-AccessType=ro
+AccessType=rw
 DefaultValue=
 PDOMapping=0
 
@@ -2723,7 +2723,7 @@ ParameterName=
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
-AccessType=ro
+AccessType=rw
 DefaultValue=
 PDOMapping=0
 
@@ -2732,7 +2732,7 @@ ParameterName=
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
-AccessType=ro
+AccessType=rw
 DefaultValue=
 PDOMapping=0
 
@@ -2741,7 +2741,7 @@ ParameterName=
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
-AccessType=ro
+AccessType=rw
 DefaultValue=
 PDOMapping=0
 
@@ -2750,7 +2750,7 @@ ParameterName=
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
-AccessType=ro
+AccessType=rw
 DefaultValue=
 PDOMapping=0
 
@@ -2759,7 +2759,7 @@ ParameterName=
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
-AccessType=ro
+AccessType=rw
 DefaultValue=
 PDOMapping=0
 
@@ -2768,7 +2768,7 @@ ParameterName=
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
-AccessType=ro
+AccessType=rw
 DefaultValue=
 PDOMapping=0
 
@@ -2777,7 +2777,7 @@ ParameterName=
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
-AccessType=ro
+AccessType=rw
 DefaultValue=
 PDOMapping=0
 
@@ -2786,7 +2786,7 @@ ParameterName=
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
-AccessType=ro
+AccessType=rw
 DefaultValue=
 PDOMapping=0
 
@@ -2795,7 +2795,7 @@ ParameterName=
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
-AccessType=ro
+AccessType=rw
 DefaultValue=
 PDOMapping=0
 
@@ -2804,7 +2804,7 @@ ParameterName=
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
-AccessType=ro
+AccessType=rw
 DefaultValue=
 PDOMapping=0
 
@@ -2813,7 +2813,7 @@ ParameterName=
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
-AccessType=ro
+AccessType=rw
 DefaultValue=
 PDOMapping=0
 
@@ -2822,7 +2822,7 @@ ParameterName=
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
-AccessType=ro
+AccessType=rw
 DefaultValue=
 PDOMapping=0
 
@@ -2831,7 +2831,7 @@ ParameterName=
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
-AccessType=ro
+AccessType=rw
 DefaultValue=
 PDOMapping=0
 
@@ -2840,7 +2840,7 @@ ParameterName=
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
-AccessType=ro
+AccessType=rw
 DefaultValue=
 PDOMapping=0
 
@@ -2849,7 +2849,7 @@ ParameterName=
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
-AccessType=ro
+AccessType=rw
 DefaultValue=
 PDOMapping=0
 
@@ -2858,7 +2858,7 @@ ParameterName=
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
-AccessType=ro
+AccessType=rw
 DefaultValue=
 PDOMapping=0
 
@@ -2867,7 +2867,7 @@ ParameterName=
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
-AccessType=ro
+AccessType=rw
 DefaultValue=
 PDOMapping=0
 
@@ -2876,7 +2876,7 @@ ParameterName=
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
-AccessType=ro
+AccessType=rw
 DefaultValue=
 PDOMapping=0
 
@@ -2885,7 +2885,7 @@ ParameterName=
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
-AccessType=ro
+AccessType=rw
 DefaultValue=
 PDOMapping=0
 
@@ -2894,7 +2894,7 @@ ParameterName=
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
-AccessType=ro
+AccessType=rw
 DefaultValue=
 PDOMapping=0
 
@@ -2903,7 +2903,7 @@ ParameterName=
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
-AccessType=ro
+AccessType=rw
 DefaultValue=
 PDOMapping=0
 
@@ -2912,7 +2912,7 @@ ParameterName=
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
-AccessType=ro
+AccessType=rw
 DefaultValue=
 PDOMapping=0
 
@@ -2921,7 +2921,7 @@ ParameterName=
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
-AccessType=ro
+AccessType=rw
 DefaultValue=
 PDOMapping=0
 
@@ -2930,7 +2930,7 @@ ParameterName=
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
-AccessType=ro
+AccessType=rw
 DefaultValue=
 PDOMapping=0
 
@@ -2939,7 +2939,7 @@ ParameterName=
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
-AccessType=ro
+AccessType=rw
 DefaultValue=
 PDOMapping=0
 
@@ -2948,7 +2948,7 @@ ParameterName=
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
-AccessType=ro
+AccessType=rw
 DefaultValue=
 PDOMapping=0
 
@@ -2957,7 +2957,7 @@ ParameterName=
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
-AccessType=ro
+AccessType=rw
 DefaultValue=
 PDOMapping=0
 
@@ -2966,7 +2966,7 @@ ParameterName=
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
-AccessType=ro
+AccessType=rw
 DefaultValue=
 PDOMapping=0
 
@@ -2975,7 +2975,7 @@ ParameterName=
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
-AccessType=ro
+AccessType=rw
 DefaultValue=
 PDOMapping=0
 
@@ -2984,7 +2984,7 @@ ParameterName=
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
-AccessType=ro
+AccessType=rw
 DefaultValue=
 PDOMapping=0
 
@@ -2993,7 +2993,7 @@ ParameterName=
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
-AccessType=ro
+AccessType=rw
 DefaultValue=
 PDOMapping=0
 
@@ -3002,7 +3002,7 @@ ParameterName=
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
-AccessType=ro
+AccessType=rw
 DefaultValue=
 PDOMapping=0
 
@@ -3011,7 +3011,7 @@ ParameterName=
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
-AccessType=ro
+AccessType=rw
 DefaultValue=
 PDOMapping=0
 
@@ -3020,7 +3020,7 @@ ParameterName=
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
-AccessType=ro
+AccessType=rw
 DefaultValue=
 PDOMapping=0
 
@@ -3029,7 +3029,7 @@ ParameterName=
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
-AccessType=ro
+AccessType=rw
 DefaultValue=
 PDOMapping=0
 
@@ -3038,7 +3038,7 @@ ParameterName=
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
-AccessType=ro
+AccessType=rw
 DefaultValue=
 PDOMapping=0
 
@@ -3047,7 +3047,7 @@ ParameterName=
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
-AccessType=ro
+AccessType=rw
 DefaultValue=
 PDOMapping=0
 
@@ -3056,7 +3056,7 @@ ParameterName=
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
-AccessType=ro
+AccessType=rw
 DefaultValue=
 PDOMapping=0
 
@@ -3065,7 +3065,7 @@ ParameterName=
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
-AccessType=ro
+AccessType=rw
 DefaultValue=
 PDOMapping=0
 
@@ -3074,7 +3074,7 @@ ParameterName=
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
-AccessType=ro
+AccessType=rw
 DefaultValue=
 PDOMapping=0
 
@@ -3083,7 +3083,7 @@ ParameterName=
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
-AccessType=ro
+AccessType=rw
 DefaultValue=
 PDOMapping=0
 
@@ -3092,7 +3092,7 @@ ParameterName=
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
-AccessType=ro
+AccessType=rw
 DefaultValue=
 PDOMapping=0
 
@@ -3101,7 +3101,7 @@ ParameterName=
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
-AccessType=ro
+AccessType=rw
 DefaultValue=
 PDOMapping=0
 
@@ -3110,7 +3110,7 @@ ParameterName=
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
-AccessType=ro
+AccessType=rw
 DefaultValue=
 PDOMapping=0
 
@@ -3119,7 +3119,7 @@ ParameterName=
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
-AccessType=ro
+AccessType=rw
 DefaultValue=
 PDOMapping=0
 
@@ -3128,7 +3128,7 @@ ParameterName=
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
-AccessType=ro
+AccessType=rw
 DefaultValue=
 PDOMapping=0
 
@@ -3137,7 +3137,7 @@ ParameterName=
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
-AccessType=ro
+AccessType=rw
 DefaultValue=
 PDOMapping=0
 
@@ -3146,12 +3146,12 @@ ParameterName=
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
-AccessType=ro
+AccessType=rw
 DefaultValue=
 PDOMapping=0
 
 [3003]
-ParameterName=Send File Control
+ParameterName=Read File Control
 ObjectType=0x9
 ;StorageLocation=RAM
 SubNumber=0x9
@@ -3166,7 +3166,7 @@ DefaultValue=8
 PDOMapping=0
 
 [3003sub1]
-ParameterName=Send File Pointer
+ParameterName=File list index
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0005
@@ -3175,7 +3175,7 @@ DefaultValue=0
 PDOMapping=0
 
 [3003sub2]
-ParameterName=File Name
+ParameterName=Filename
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
@@ -3184,7 +3184,7 @@ DefaultValue=0
 PDOMapping=0
 
 [3003sub3]
-ParameterName=File Data
+ParameterName=File data
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
@@ -3193,7 +3193,7 @@ DefaultValue=0
 PDOMapping=0
 
 [3003sub4]
-ParameterName=File Size
+ParameterName=File size
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
@@ -3202,16 +3202,16 @@ DefaultValue=0
 PDOMapping=0
 
 [3003sub5]
-ParameterName=Delete File
+ParameterName=Delete file
 ObjectType=0x7
 ;StorageLocation=RAM
-DataType=0x0001
-AccessType=rw
+DataType=0x000F
+AccessType=wo
 DefaultValue=0
 PDOMapping=0
 
 [3003sub6]
-ParameterName=Files Available
+ParameterName=Total files available
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
@@ -3229,11 +3229,11 @@ DefaultValue=0
 PDOMapping=0
 
 [3003sub8]
-ParameterName=Refresh File Array
+ParameterName=Refresh file list
 ObjectType=0x7
 ;StorageLocation=RAM
-DataType=0x0001
-AccessType=rw
+DataType=0x000F
+AccessType=wo
 DefaultValue=0
 PDOMapping=0
 

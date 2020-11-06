@@ -10,7 +10,7 @@ project(CANdaemon C)
 # Figure out which board
 
 if(NOT BOARD)
-    message(FATAL_ERROR "No board specified\n  ie: cmake -DBOARD=star-tracker .")
+    message(FATAL_ERROR "No board specified\n  ie: cmake -DBOARD=star-tracker ..")
 endif()
 
 # ignore case
@@ -91,7 +91,7 @@ if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Debug)
 endif()
 
-set(CMAKE_C_FLAGS "-Wall -lpcre2-8 ")
+set(CMAKE_C_FLAGS "-Wall")
 set(CMAKE_C_FLAGS_DEBUG "-g")
 set(CMAKE_C_FLAGS_RELEASE "-O3")
 
@@ -135,7 +135,7 @@ set(SYSTEM_APPS_DIR src/system_apps)
 set(BOARD_APPS_DIR src/boards/${BOARD})
 
 set(CANDAEMON_INCLUDE_DIRS
-    src/CANopenNode/301
+    ${CANOPEN_DIR}/301
     ${STACK_DRIVER_DIR}
     ${CANOPEN_DIR}
     ${OD_DIR}
@@ -193,7 +193,8 @@ target_include_directories(CANopenNode PUBLIC ${CANDAEMON_INCLUDE_DIRS})
 set(SOURCE_FILES
     ${OD_DIR}/CO_OD.c
     ${COMMON_DIR}/log_message.c
-    ${COMMON_DIR}/file_transfer.c
+    ${COMMON_DIR}/CO_fread.c
+    ${COMMON_DIR}/CO_fwrite.c
     ${COMMON_DIR}/OD_helpers.c
     ${COMMON_DIR}/daemon_manager.c
     ${COMMON_DIR}/dbus_controller.c

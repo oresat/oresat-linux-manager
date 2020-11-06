@@ -52,7 +52,8 @@
 
 #include "daemon_manager.h"
 #include "dbus_controller.h"
-#include "file_transfer.h"
+#include "CO_fread.h"
+#include "CO_fwrite.h"
 #include "log_message.h"
 #include "OD_helpers.h"
 
@@ -425,7 +426,8 @@ int main (int argc, char *argv[]) {
             firstRun = false;
 
             // set up general ODFs
-            file_transfer_ODF_setup();
+            CO_fread_setup();
+            CO_fwrite_setup();
             daemon_manager_setup();
 
             // setup dbus controller
@@ -485,6 +487,8 @@ int main (int argc, char *argv[]) {
 /* program exit ***************************************************************/
     // stop app dbus interface
     dbus_controller_end();
+    CO_fread_end();
+    CO_fwrite_end();
 
     /* join threads */
     CO_endProgram = 1;

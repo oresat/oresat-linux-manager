@@ -26,13 +26,13 @@ The CANdaemon is ment to be a node on the CANbus, not the master node.
 
 ## Dependices
 ### To compile
-- For Debian:`apt install git libsystemd-dev cmake make gcc  libpcre2-dev`
+- For Debian:`apt install git libsystemd-dev cmake make gcc`
     - optional: `ninja-build`
-- For Arch: `pacman -S git systemd-libs cmake make gcc pcre2`
+- For Arch: `pacman -S git systemd-libs cmake make gcc`
     - optional: `ninja`
 ### To run
-- For Debian: `apt install libsystemd-dev libpcre2-dev`
-- For Arch: `pacman -S systemd-libs pcre2`
+- For Debian: `apt install libsystemd-dev`
+- For Arch: `pacman -S systemd-libs`
 
 ## How to use
 - Compiling

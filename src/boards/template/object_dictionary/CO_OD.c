@@ -80,7 +80,7 @@ struct sCO_OD_RAM CO_OD_RAM = {
 /*2109*/ {0x00},
 /*2130*/ {0x3L, {'-'}, 0x00000000L, 0x0000L},
 /*3000*/ {0x0L},
-/*3001*/ {0x3L, 0, 0, 0x0L},
+/*3001*/ {0x3L, 0, 0, 0},
 /*3002*/ {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 /*3003*/ {0x8L, 0x0L, 0, 0, 0x0000L, 0, 0x0000L, 0x0000L, 0},
 /*3004*/ {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -302,22 +302,22 @@ struct sCO_OD_EEPROM CO_OD_EEPROM = {
 };
 
 /*0x3001*/ const CO_OD_entryRecord_t OD_record3001[4] = {
-           {(void*)&CO_OD_RAM.receiveFile.maxSubIndex, 0x06, 0x1 },
+           {(void*)&CO_OD_RAM.writeFile.maxSubIndex, 0x06, 0x1 },
            {(void*)0, 0x0A, 0x0 },
            {(void*)0, 0x0A, 0x0 },
-           {(void*)&CO_OD_RAM.receiveFile.saveFile, 0x0A, 0x1 },
+           {(void*)0, 0x0A, 0x0 },
 };
 
 /*0x3003*/ const CO_OD_entryRecord_t OD_record3003[9] = {
-           {(void*)&CO_OD_RAM.sendFileControl.maxSubIndex, 0x06, 0x1 },
-           {(void*)&CO_OD_RAM.sendFileControl.sendFilePointer, 0x0E, 0x1 },
+           {(void*)&CO_OD_RAM.readFileControl.maxSubIndex, 0x06, 0x1 },
+           {(void*)&CO_OD_RAM.readFileControl.fileListIndex, 0x0E, 0x1 },
            {(void*)0, 0x06, 0x0 },
            {(void*)0, 0x06, 0x0 },
-           {(void*)&CO_OD_RAM.sendFileControl.fileSize, 0x86, 0x4 },
-           {(void*)&CO_OD_RAM.sendFileControl.deleteFile, 0x0E, 0x1 },
-           {(void*)&CO_OD_RAM.sendFileControl.filesAvailable, 0x86, 0x4 },
-           {(void*)&CO_OD_RAM.sendFileControl.overflow, 0x86, 0x4 },
-           {(void*)&CO_OD_RAM.sendFileControl.refreshFileArray, 0x0E, 0x1 },
+           {(void*)&CO_OD_RAM.readFileControl.fileSize, 0x86, 0x4 },
+           {(void*)0, 0x0A, 0x0 },
+           {(void*)&CO_OD_RAM.readFileControl.totalFilesAvailable, 0x86, 0x4 },
+           {(void*)&CO_OD_RAM.readFileControl.overflow, 0x86, 0x4 },
+           {(void*)0, 0x0A, 0x0 },
 };
 
 /*0x3005*/ const CO_OD_entryRecord_t OD_record3005[6] = {
@@ -407,7 +407,7 @@ const CO_OD_entry_t CO_OD[CO_OD_NoOfElements] = {
 {0x3000, 0x00, 0x00,  0, (void*)&OD_record3000},
 {0x3001, 0x03, 0x00,  0, (void*)&OD_record3001},
 {0x3002, 0x7F, 0x0E,  0, (void*)0},
-{0x3003, 0x08, 0x00,  0, (void*)&OD_record3003},
+{0x3003, 0x08, 0x00,  1, (void*)&OD_record3003},
 {0x3004, 0x7F, 0x0E,  0, (void*)0},
 {0x3005, 0x05, 0x00,  0, (void*)&OD_record3005},
 {0x3006, 0x00, 0x00,  0, (void*)&OD_record3006},

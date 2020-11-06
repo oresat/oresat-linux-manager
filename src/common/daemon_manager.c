@@ -20,39 +20,28 @@
 #include <stdio.h>
 
 
-#define PCRE2_CODE_UNIT_WIDTH       8 // must be set before including pcre2.h
-#include <pcre2.h>
-
-
 /** OD index for daemon list ODF */
-#define DAEMON_LIST_ODF_INDEX       0x3001
+#define DAEMON_LIST_ODF_INDEX       0x3004
 /** OD index for daemon manager ODF */
-#define DAEMON_MANAGER_ODF_INDEX    0x3002
+#define DAEMON_MANAGER_ODF_INDEX    0x3005
 
 
 /** List of data for daemons registered by apps */
 static daemon_data_t *daemon_list = NULL;
 /** Size of daemon list */
-static uint8_t daemon_list_len = 0;
+static uint8_t daemon_list_len = 127;
 /** Number of daemon in dbus list */
 static uint8_t daemon_count = 0;
 /** Selected daemon index in daemon list */
 static uint8_t list_index = 0;
 /** Mutex for accesing data */
 static pthread_mutex_t dc_mutex = PTHREAD_MUTEX_INITIALIZER;
-/** List of file request struct that will be used when receiving files */
-static recv_file_request_t *recv_file_request_list = NULL;
-/** length of recv_file_request_list */
-static int request_count = 0;
-
-
-static bool match_regex(char *file_name, char *regex_string);
 
 
 int
 daemon_manager_setup() {
     // get the size of the daemon list in object dictionary
-    app_OD_read(DAEMON_LIST_ODF_INDEX, 0, &daemon_list_len,sizeof(daemon_list_len));
+    //app_OD_read(DAEMON_LIST_ODF_INDEX, 0, &daemon_list_len, sizeof(daemon_list_len));
 
     // setup daemon list ODF
     CO_OD_configure(CO->SDO[0], DAEMON_LIST_ODF_INDEX, daemon_list_ODF, NULL, 0, 0U);
@@ -67,11 +56,11 @@ daemon_list_ODF(CO_ODF_arg_t *ODF_arg) {
     int daemon_index;
 
     if(ODF_arg->reading) {
-        if(ODF_arg->subIndex == 0) {
+        if(ODF_arg->subIndex == 0) { // sub index size, uint8. readonly
             ODF_arg->dataLength = sizeof(daemon_list_len);
             memcpy(ODF_arg->data, &daemon_list_len, ODF_arg->dataLength);
         }
-        else {
+        else { // daemon name in list, domain, readonly
             daemon_index = (int)ODF_arg->subIndex - 1;
             ODF_arg->dataLength = strlen(daemon_list[daemon_index].name);
             memcpy(ODF_arg->data, &daemon_list[daemon_index], ODF_arg->dataLength);
@@ -217,106 +206,3 @@ app_register_daemon(const char *name, const char *daemon_name) {
     return new_index;
 }
 
-
-int
-app_add_request_recv_file(
-        char *app_name,
-        char *regex_string,
-        char *path_to_send,
-        int (*recv_file_callback)(char *)) {
-
-    int new_request = 0;
-
-    // make sure inputs are valid
-    if(app_name == NULL) {
-        log_message(LOG_ERR, "add recv file request had no app name\n");
-        return 0;
-    }
-    if(regex_string == NULL) {
-        log_message(LOG_ERR, "app %s recv file request has no regex string\n", app_name);
-        return 0;
-    }
-    if(path_to_send == NULL) {
-        log_message(LOG_ERR, "app %s recv file request has no path\n", app_name);
-        return 0;
-    }
-    if(path_to_send[0] != '/') {
-        log_message(LOG_ERR, "app %s recv file request path is not an absolute path\n", app_name);
-        return 0;
-    }
-
-    new_request = request_count;
-
-    // add to request list
-    if(request_count == 0) { // init request list
-        request_count = 1;
-        recv_file_request_list = (recv_file_request_t *)malloc(sizeof(recv_file_request_t));
-    }
-    else { // append to request list
-        ++request_count;
-        recv_file_request_list = (recv_file_request_t *)realloc(recv_file_request_list, sizeof(recv_file_request_t) * request_count);
-    }
-
-    // copy data
-    recv_file_request_list[new_request].app_name = app_name;
-    app_name = NULL;
-    recv_file_request_list[new_request].regex_string = regex_string;
-    regex_string = NULL;
-    recv_file_request_list[new_request].path_to_send = path_to_send;
-    path_to_send = NULL;
-    recv_file_request_list[new_request].recv_file_callback = recv_file_callback;
-
-    return 1;
-}
-
-
-static bool
-match_regex(char *file_name, char *regex_string) {
-    pcre2_code *re;
-    PCRE2_SPTR pattern;
-    PCRE2_SPTR subject;
-    PCRE2_SIZE error_offset;
-    pcre2_match_data *match_data;
-    int error_number;
-    size_t subject_length;
-    bool rv = false;
-    int r;
-
-    pattern = (PCRE2_SPTR)regex_string;
-    subject = (PCRE2_SPTR)file_name;
-    subject_length = strlen((char *)subject);
-
-    re = pcre2_compile(
-            pattern,
-            PCRE2_ZERO_TERMINATED,
-            0,
-            &error_number,
-            &error_offset,
-            NULL);
-
-    if(re == NULL) { // compile failed
-        PCRE2_UCHAR buffer[256];
-        pcre2_get_error_message(error_number, buffer, sizeof(buffer));
-        log_message(LOG_ERR, "PCRE2 compilation failed at offset %d in %s\n", (int)error_offset, buffer);
-    }
-
-    match_data = pcre2_match_data_create_from_pattern(re, NULL);
-
-    // try to match regex
-    r = pcre2_match(
-            re,
-            subject,
-            subject_length,
-            0,
-            0,
-            match_data,
-            NULL);
-
-    if(r > 0) // regex matched
-        rv = true;
-
-    pcre2_match_data_free(match_data);
-    pcre2_code_free(re);
-
-    return rv;
-}

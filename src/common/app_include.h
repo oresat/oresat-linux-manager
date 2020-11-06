@@ -16,7 +16,8 @@
 #include "CANopen.h"
 #include "daemon_manager.h"
 #include "dbus_controller.h"
-#include "file_transfer.h"
+#include "CO_fread.h"
+#include "CO_fwrite.h"
 #include "log_message.h"
 #include "OD_helpers.h"
 

@@ -13,10 +13,9 @@
 #include "app_include.h"
 #include "linux_updater_app.h"
 #include <systemd/sd-bus.h>
+#include <linux/limits.h>
 
 
-/** oresat board */
-#define BOARD               "gps" // TODO fix cmake
 /** App's name */
 #define APP_NAME            "Linux Updater"
 /** Dbus destionation for OreSat Linux Updater dameon */
@@ -45,13 +44,14 @@ linux_updater_app_setup() {
 
     app_OD_configure(UPDATER_ODF_INDEX, updater_ODF, NULL, 0, 0U);
 
-    app_register_daemon("Linux Updater", "oresat-linux-updaterd.service");
+    app_register_daemon(APP_NAME, "oresat-updaterd.service");
 
-    app_add_request_recv_file(
-            "Linux Updater",
-            "^("BOARD"\\-update\\-\\d{4}\\-\\d{2}\\-\\d{2}\\-\\d{2}\\-\\d{2}\\.tar\\.gz)$",
+    app_fwrite_request(
+            APP_NAME,
+            "update",
             "/tmp/oresat-linux-updater/cache/",
-            NULL);
+            NULL
+            );
 
     r = sd_bus_match_signal(
             APP_DBUS.bus,
@@ -178,14 +178,14 @@ updater_ODF(CO_ODF_arg_t *ODF_arg) {
                 break;
             }
 
-            if(ODF_arg->dataLength > FILE_PATH_MAX_LENGTH) {
+            if(ODF_arg->dataLength > PATH_MAX) {
                 app_log_message(APP_NAME, LOG_ERR, "New archvie file path wont fit in buffer");
                 ret = CO_SDO_AB_GENERAL;
                 break;
             }
 
             // copy file name into a temp var
-            char new_archive_file_path[FILE_PATH_MAX_LENGTH] = "\0";
+            char new_archive_file_path[PATH_MAX] = "\0";
             memcpy(new_archive_file_path, ODF_arg->data, ODF_arg->dataLength);
 
             if(new_archive_file_path[0] != '/') {
