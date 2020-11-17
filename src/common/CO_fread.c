@@ -25,6 +25,7 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <sys/sendfile.h>
+#include <sys/syslog.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 
@@ -59,13 +60,13 @@ static uint32_t total_files = 0;
 /** Pointer to file being sent currently */
 static FILE *fptr = NULL;
 /** The progess of file transfer */
-static uint32_t bytes_tansfered = 0;
+static uint32_t bytes_transfered = 0;
 /** The size of file the index points to */
 static uint32_t filesize = 0;
 
 
 static int filelist_init(void);
-static int get_filesize(void);
+static int update_filesize(void);
 
 
 int
@@ -107,19 +108,19 @@ CO_fread_end(void) {
 CO_SDO_abortCode_t
 fread_array_ODF(CO_ODF_arg_t *ODF_arg) {
     CO_SDO_abortCode_t ret = CO_SDO_AB_NONE;
+    uint8_t subindices = FILELIST_LEN;
 
     if(ODF_arg->reading == false)
         return CO_SDO_AB_READONLY; // can't write parameters, read only
 
     if(ODF_arg->subIndex == 0) {
-        uint8_t temp = UINT8_MAX;
-        ODF_arg->dataLength = sizeof(temp);
-        memcpy(ODF_arg->data, &temp, ODF_arg->dataLength);
+        ODF_arg->dataLength = sizeof(subindices);
+        memcpy(ODF_arg->data, &subindices, ODF_arg->dataLength);
     }
     else if(ODF_arg->subIndex > 0) {
         pthread_mutex_lock(&fread_mtx);
         
-        if(filelist[ODF_arg->subIndex] == NULL) { // No file
+        if(filelist[ODF_arg->subIndex-1] == NULL) { // No file
             char temp = '\0';
             ODF_arg->dataLength = 1;
             memcpy(ODF_arg->data, &temp, ODF_arg->dataLength);
@@ -139,10 +140,9 @@ fread_array_ODF(CO_ODF_arg_t *ODF_arg) {
 CO_SDO_abortCode_t
 fread_ODF(CO_ODF_arg_t *ODF_arg) {
     CO_SDO_abortCode_t ret = CO_SDO_AB_NONE;
-    char filepath[] = FREAD_DIR;
-    uint8_t subindices = FILELIST_LEN;
-    uint32_t filesize = 0;
-    uint8_t temp_uint8;
+    char filepath[PATH_MAX];
+    uint32_t bytes_left;
+    uint8_t subindices = 9, temp_uint8;
 
     switch(ODF_arg->subIndex) {
         case 0: // number of subindexes, uint8_t, readonly
@@ -169,7 +169,7 @@ fread_ODF(CO_ODF_arg_t *ODF_arg) {
                 memcpy(&filelist_index, ODF_arg->data, ODF_arg->dataLength);
                 --filelist_index; // remove offset for subindex length
 
-                get_filesize();
+                update_filesize();
             }
             
             pthread_mutex_unlock(&fread_mtx);
@@ -207,45 +207,54 @@ fread_ODF(CO_ODF_arg_t *ODF_arg) {
                 break;
             }
 
+            if(filelist[filelist_index] == NULL) {
+                ret = CO_SDO_AB_NO_DATA; // no file data
+                break;
+            }
+            
             if(ODF_arg->firstSegment == true) { // 1st segment only
-                //open file
-                fptr = fopen(filelist[filelist_index], "r");
-                if(fptr != NULL)
+                sprintf(filepath, "%s%s", FREAD_DIR, filelist[filelist_index]);
+
+                update_filesize();
+                ODF_arg->dataLengthTotal = filesize;
+                bytes_transfered = 0;
+
+                if((fptr = fopen(filepath, "r")) != NULL)
                     log_message(LOG_INFO, "Opened %s", filelist[filelist_index]);
                 else {
                     log_message(LOG_ERR, "Failed to open %s", filelist[filelist_index]);
                     ret = CO_SDO_AB_GENERAL;
                     break;
                 }
+            }
 
-                ODF_arg->dataLengthTotal = filesize;
-                bytes_tansfered = 0;
+            // Check if there are more segements needed
+            bytes_left = ODF_arg->dataLengthTotal - bytes_transfered;
+            if(bytes_left > 889) { // more segements needed
+                ODF_arg->dataLength = 889;
+                ODF_arg->lastSegment = false;
+            }
+            else { // last segement
+                ODF_arg->dataLength = bytes_left;
+                ODF_arg->lastSegment = true;
             }
 
             // read file
-            if(fread(ODF_arg->data, ODF_arg->dataLength, 1, fptr) == 0) {
-                log_message(LOG_ERR, "Failed to read to file %s", filepath);
+            if(fread(ODF_arg->data, 1, ODF_arg->dataLength, fptr) == 0) {
+                log_message(LOG_ERR, "Failed to read to file %s", filelist[filelist_index]);
                 ret = CO_SDO_AB_GENERAL;
                 break;
             }
 
-            bytes_tansfered += ODF_arg->dataLength;
+            bytes_transfered += ODF_arg->dataLength;
         
-            // Check if there are more segements comming
-            if(bytes_tansfered > ODF_arg->dataLengthTotal) { // error
-                log_message(LOG_ERR, "Sent more bytes than expected.");
-                ret = CO_SDO_AB_GENERAL;
-                break;
-            }
-            else if(bytes_tansfered == ODF_arg->dataLengthTotal) { // is complete
+            if(ODF_arg->lastSegment) { // is complete
                 if(fptr != NULL) {
-                    log_message(LOG_INFO, "File %s closed", filepath);
+                    log_message(LOG_INFO, "File %s closed", basename(filepath));
                     fclose(fptr);
                     fptr = NULL;
                 }
             }
-            else // file transfer is on going
-                ODF_arg->lastSegment = false;
 
             break;
 
@@ -257,6 +266,8 @@ fread_ODF(CO_ODF_arg_t *ODF_arg) {
             }
 
             pthread_mutex_lock(&fread_mtx);
+
+            update_filesize();
 
             ODF_arg->dataLength = sizeof(filesize);
             memcpy(ODF_arg->data, &filesize, ODF_arg->dataLength);
@@ -275,8 +286,8 @@ fread_ODF(CO_ODF_arg_t *ODF_arg) {
             pthread_mutex_lock(&fread_mtx);
 
             if(filelist[filelist_index] != NULL) {
-                strncat(filepath, filelist[filelist_index],
-                        strlen(filelist[filelist_index])+1);
+                log_message(LOG_INFO, "Deleting %s from read cache", filelist[filelist_index]);
+                sprintf(filepath, "%s%s", FREAD_DIR, filelist[filelist_index]);
 
                 // delete file and remove it from list
                 remove(filepath);
@@ -354,6 +365,13 @@ fread_ODF(CO_ODF_arg_t *ODF_arg) {
             ret = CO_SDO_AB_SUB_UNKNOWN;
     }
 
+    // incase of errors make sure file is closed
+    if(ret != CO_SDO_AB_NONE && fptr != NULL) {
+        log_message(LOG_INFO, "Error, file %s closed", basename(filepath));
+        fclose(fptr);
+        fptr = NULL;
+    }
+
     return ret;
 }
 
@@ -371,30 +389,27 @@ filelist_init(void) {
     // zero static globals
     overflow = 0;
     total_files = 0;
-    bytes_tansfered = 0;
+    bytes_transfered = 0;
 
     // make sure dir exist
     if(stat(FREAD_DIR, &st) == -1) {
-        r = mkdir(FREAD_DIR, 0700);
-        if(r != 0)
-            log_message(LOG_ERR, "Failed to make "FREAD_DIR" directory with %d.", -r);
+        if((r = mkdir(FREAD_DIR, 0700)) != 0)
+            log_message(LOG_ERR, "Failed to make "FREAD_DIR" directory with %d", -r);
     }
+    
+    if((d = opendir(FREAD_DIR)) != NULL) { // add all existing file to list
+        while((dir = readdir(d)) != NULL) { // directory found
+            if(strncmp(dir->d_name, ".", sizeof(dir->d_name)) == 0 ||
+                    strncmp(dir->d_name, "..", sizeof(dir->d_name)) == 0)
+                continue; // skip . and ..
 
-    /* add all existing file to list */
-    if((d = opendir(FREAD_DIR)) != NULL) {
-        /* directory found */
-        while((dir = readdir(d)) != NULL) {
+            log_message(LOG_DEBUG, "%s in fread cache", dir->d_name);
 
-            // skip . and ..
-            if(strncmp(dir->d_name, ".", sizeof(dir->d_name)) ||
-                    strncmp(dir->d_name, "..", sizeof(dir->d_name)))
-                continue;
-
-            if(total_files >= FILELIST_LEN) {
+            if(total_files < FILELIST_LEN) {
                 filelist[total_files] = (char *)malloc(strlen(dir->d_name));
-                strncpy(filelist[total_files], dir->d_name, strlen(dir->d_name));
+                strncpy(filelist[total_files], dir->d_name, strlen(dir->d_name)+1);
             }
-            else
+            else 
                 ++overflow;
 
             ++total_files;
@@ -404,7 +419,7 @@ filelist_init(void) {
 
     // set index back to zero
     filelist_index = 0;
-    get_filesize();
+    update_filesize();
 
     return r;
 }
@@ -416,7 +431,7 @@ filelist_init(void) {
  * @return 0 on success and negative errno on errror.
  */
 static int
-get_filesize(void) {
+update_filesize(void) {
     char filepath[PATH_MAX] = FREAD_DIR;
     int r = 0;
     filesize = 0; // set incase of error
@@ -431,8 +446,10 @@ get_filesize(void) {
             fclose(fptr);
             fptr = NULL;
         }
-        else
+        else {
+            log_message(LOG_ERR, "Can't get sizeof %s", filelist[filelist_index]);
             r = -EIO;
+        }
     }
 
     return r;

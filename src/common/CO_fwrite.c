@@ -229,7 +229,7 @@ fwrite_ODF(CO_ODF_arg_t *ODF_arg) {
 
         case 3: // cancel file transfer, domain, writeonly
 
-            log_message(LOG_INFO, "Cancelling file transfer");
+            log_message(LOG_INFO, "Cancelling file write");
 
             if(fptr != NULL) {
                 log_message(LOG_INFO, "File %s closed", filepath);
@@ -318,8 +318,10 @@ deliver_file(void) {
             }
 
             // call callback function
-            if(fkeys[i].cb_func != NULL)
+            if(fkeys[i].cb_func != NULL) {
+                log_message(LOG_INFO, "Callback for %s was called", fkeys[i].app_name);
                 fkeys[i].cb_func(filename);
+            }
 
             break;
         }
