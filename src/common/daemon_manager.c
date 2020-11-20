@@ -14,6 +14,7 @@
 #include "OD_helpers.h"
 #include "log_message.h"
 #include "dbus_controller.h"
+#include "cpufreq.h"
 #include "daemon_manager.h"
 #include <stdlib.h>
 #include <string.h>
@@ -65,9 +66,12 @@ static uint8_t list_index = 0;
 /** Mutex for accesing data */
 static pthread_mutex_t dc_mutex = PTHREAD_MUTEX_INITIALIZER;
 
+
+// see function definitions for doxygen comments
 static int stop_daemon(char *daemon_name);
 static int start_daemon(char *daemon_name);
 static int restart_daemon(char *daemon_name);
+static void save_power(void);
 
 int
 daemon_manager_setup() {
@@ -180,6 +184,8 @@ daemon_manager_ODF(CO_ODF_arg_t *ODF_arg) {
                     restart_daemon(daemon_list[list_index].service_name);
                 else
                     log_message(LOG_ERR, "unkown input to daemon change state");
+
+                save_power();
             }
 
             break;
@@ -332,3 +338,25 @@ app_register_daemon(const char *name, const char *daemon_name) {
     return new_index;
 }
 
+
+/**
+ * @breif Save power when no other OreSat daaemons are running.
+ *
+ * If all the daemon are stopped sets the cpufreq governor to powersave mode
+ * or if any OreSat daemon is running sets the cpufreq governor to performance
+ * mode.
+ */
+static void
+save_power(void) {
+    int cur_stop = 0;
+
+    for(unsigned int i=0; i<daemon_count; ++i) {
+        if(daemon_list[i].status ==  STOPPED)
+            ++cur_stop;
+    }
+
+    if(cur_stop == 0)
+        set_cpufreq_gov(powersave);
+    else
+        set_cpufreq_gov(performance);
+}
