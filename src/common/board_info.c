@@ -11,9 +11,9 @@
 
 #include "CANopen.h"
 #include "CO_driver.h"
-#include "board_info.h"
 #include "cpufreq.h"
 #include "log_message.h"
+#include "board_info.h"
 #include <dirent.h>
 #include <errno.h>
 #include <linux/limits.h>
@@ -108,15 +108,15 @@ board_info_setup(void) {
         len = strlen(name.sysname)+1;
         os_name = (char *)malloc(len * sizeof(char));
         if(os_name != NULL)
-            memcpy(os_distro, name.sysname, len);
+            strncpy(os_name, name.sysname, len);
         else
             log_message(LOG_CRIT, "malloc failed for os_distro");
 
         // kernel version
         len = strlen(name.release)+1;
-        os_distro = (char *)malloc(len * sizeof(char));
-        if(os_distro != NULL)
-            memcpy(os_distro, name.release, len);
+        kernel_version = (char *)malloc(len * sizeof(char));
+        if(kernel_version != NULL)
+            strncpy(kernel_version, name.release, len);
         else
             log_message(LOG_CRIT, "malloc failed for kernel_version");
 
@@ -124,15 +124,15 @@ board_info_setup(void) {
         len = strlen(name.nodename)+1;
         hostname = (char *)malloc(len * sizeof(char));
         if(hostname != NULL)
-            memcpy(hostname, name.nodename, len);
+            strncpy(hostname, name.nodename, len);
         else
             log_message(LOG_CRIT, "malloc failed for hostname");
 
         // architecture
         len = strlen(name.machine)+1;
-        hostname = (char *)malloc(len * sizeof(char));
-        if(hostname != NULL)
-            memcpy(hostname, name.machine, len);
+        architecture = (char *)malloc(len * sizeof(char));
+        if(architecture != NULL)
+            strncpy(architecture, name.machine, len);
         else
             log_message(LOG_CRIT, "malloc failed for architecture");
     }
