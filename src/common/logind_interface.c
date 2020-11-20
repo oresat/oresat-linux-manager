@@ -1,8 +1,8 @@
 /**
  * App for interfacing with logind which has access to board power options.
  *
- * @file        logind_app.c
- * @ingroup     logind_app
+ * @file        logind_interface.c
+ * @ingroup     logind_interface
  *
  * This file is part of CANdaemon, a common can interface program for daemons
  * running on OreSat Linux board.
@@ -11,7 +11,7 @@
 
 
 #include "app_include.h"
-#include "logind_app.h"
+#include "logind_interface.h"
 #include <systemd/sd-bus.h>
 
 
@@ -21,10 +21,16 @@
 #define INTERFACE_NAME      DESTINATION".Manager"
 /** Dbus object name for systemd power settings */
 #define OBJECT_PATH         "/org/freedesktop/logind1"
-/** App's name */
-#define APP_NAME            "Logind"
+
+#ifndef LOGIND_ODF_INDEX
 /** OD index for power management app ODF */
 #define LOGIND_ODF_INDEX    0x3000
+#endif
+
+// logind OD subindices
+#define LOGIND_SI_REBOOT    1
+#define LOGIND_SI_POWEROFF  LOGIND_SI_REBOOT+1
+#define LOGIND_I            LOGIND_SI_POWEROFF+1 // must be last
 
 
 int
@@ -35,9 +41,10 @@ logind_app_setup() {
 
 
 CO_SDO_abortCode_t
-logind_ODF(CO_ODF_arg_t *ODF_arg) { // TODO deal with huge performace requerments
+logind_ODF(CO_ODF_arg_t *ODF_arg) { // TODO deal with huge performace requirements
     CO_SDO_abortCode_t ret = CO_SDO_AB_NONE;
     sd_bus_error error = SD_BUS_ERROR_NULL;
+    uint8_t subindices = LOGIND_I;
     int r;
 
     // can't read parameters, write only
@@ -46,7 +53,12 @@ logind_ODF(CO_ODF_arg_t *ODF_arg) { // TODO deal with huge performace requerment
     }
 
     switch (ODF_arg->subIndex) {
-        case 1 : // reboot Linux system
+        case 0: // number of subindexes, uint8_t, readonly
+            ODF_arg->dataLength = sizeof(subindices);
+            memcpy(ODF_arg->data, &subindices, ODF_arg->dataLength);
+            break;
+
+        case LOGIND_SI_REBOOT: // reboot Linux system, uint8_t, writeonly
             r = sd_bus_call_method(
                     APP_DBUS.bus,
                     DESTINATION,
@@ -57,13 +69,13 @@ logind_ODF(CO_ODF_arg_t *ODF_arg) { // TODO deal with huge performace requerment
                     NULL,
                     NULL);
             if (r < 0) {
-                app_log_message(APP_NAME, LOG_ERR, "Method call Reboot failed");
+                log_message(LOG_ERR, "logind dbus method Reboot failed");
                 ret = CO_SDO_AB_GENERAL;
             }
 
             break;
 
-        case 2 : // poweroff Linux system
+        case LOGIND_SI_POWEROFF: // poweroff Linux system, uint8_t, readonly
             r = sd_bus_call_method(
                     APP_DBUS.bus,
                     DESTINATION,
@@ -74,7 +86,7 @@ logind_ODF(CO_ODF_arg_t *ODF_arg) { // TODO deal with huge performace requerment
                     NULL,
                     NULL);
             if (r < 0) {
-                app_log_message(APP_NAME, LOG_ERR, "Method call PowerOff failed");
+                log_message(LOG_ERR, "logind dbus method Poweroff failed");
                 ret = CO_SDO_AB_GENERAL;
             }
 

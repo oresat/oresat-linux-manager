@@ -5,25 +5,35 @@
 #define CPUFREQ_H
 
 
+enum cpu_gov {
+    unknown = 0,
+    powersave = 1,
+    performance = 2,
+};
+
+
 /**
- * Gets current cpu freqency.
- * @returns cpufreq on success or 0 on error.
+ * Gets current cpu freqency in MHz. 
+ *
+ * @return cpufreq on success or 0 on error.
  */
 uint32_t get_cpufreq(void);
 
 
 /**
- * Sets cpufreq to maximum.
- * @returns 0 on success or negative errno value on error.
+ * Gets cpufreq governor.
+ *
+ * @return cpu_gov enum value on success or -1 on error.
  */
-int set_cpufreq_max(void);
+int get_cpufreq_gov(void);
 
 
 /**
- * Sets cpufreq to minimum.
- * @returns 0 on success or negative errno value on error.
+ * Sets cpufreq governor.
+ *
+ * @return 0 on success or negative errno value on error.
  */
-int set_cpufreq_min(void);
+int set_cpufreq_gov(int governor);
 
 
 #endif

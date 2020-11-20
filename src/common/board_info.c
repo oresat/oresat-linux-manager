@@ -11,7 +11,8 @@
 
 #include "CANopen.h"
 #include "CO_driver.h"
-#include "board_info_ODF.h"
+#include "board_info.h"
+#include "cpufreq.h"
 #include "log_message.h"
 #include <dirent.h>
 #include <errno.h>
@@ -28,7 +29,7 @@
 #include <sys/utsname.h>
 #include <unistd.h>
 
-#ifdef BI_I
+#ifndef BI_I
 /** Board Info ODF index */
 #define BI_I                    0x3000
 #endif
@@ -60,10 +61,6 @@
 #define BI_SI_ROOT_FREE         BI_SI_ROOT_TOTAL+1
 #define BI_SI                   BI_SI_ROOT_FREE+1 // must be last
 
-/** filepath to a cpu governor sysfs file */
-#define CPU_GOVERNOR_FILE       "/sys/devices/system/cpu/cpufreq/policy0/scaling_governor"
-/** filepath to a cpu frequency sysfs file */
-#define CPU_CUR_FREQ_FILE       "/sys/devices/system/cpu/cpufreq/policy0/scaling_cur_freq"
 /** filepath remoteproc directory */
 #define REMOTEPROC_DIR          "/sys/class/remoteproc/"
 
@@ -186,7 +183,6 @@ board_info_ODF(CO_ODF_arg_t *ODF_arg) {
     CO_SDO_abortCode_t ret = CO_SDO_AB_NONE;
     struct sysinfo info;
     struct statvfs fs_info;
-    struct utsname name;
     FILE *fptr = NULL; 
     int buf_len = 256;
     char filepath[PATH_MAX], buf[buf_len];
@@ -243,26 +239,14 @@ board_info_ODF(CO_ODF_arg_t *ODF_arg) {
             memcpy(ODF_arg->data, architecture, ODF_arg->dataLength);
             break;
 
-        case BI_SI_CPU_GOV: // CPU Governor, domain, readonly
-            if((fptr = fopen(CPU_GOVERNOR_FILE, "r")) != NULL) {
-                fgets(buf, buf_len, fptr);
-                fclose(fptr);
-                buf[strlen(buf)-1] = '\0';
-            }
-            else
-                buf[0] = '\0'; 
-
-            ODF_arg->dataLength = strlen(buf)+1;
-            memcpy(ODF_arg->data, buf, ODF_arg->dataLength);
+        case BI_SI_CPU_GOV: // CPU Governor, uint8_t, readonly
+            temp_uint8_t = get_cpufreq_gov();
+            ODF_arg->dataLength = sizeof(temp_uint8_t);
+            memcpy(ODF_arg->data, &temp_uint8_t, ODF_arg->dataLength);
             break;
 
         case BI_SI_CPU_FREQ: // CPU freq, uint16_t, readonly
-            if((fptr = fopen(CPU_CUR_FREQ_FILE, "r")) != NULL) {
-                fgets(buf, buf_len, fptr);
-                fclose(fptr);
-                temp_uint16_t = strtol(buf, NULL, 10)/1000;
-            }
-
+            temp_uint16_t = get_cpufreq();
             ODF_arg->dataLength = sizeof(temp_uint16_t);
             memcpy(ODF_arg->data, &temp_uint16_t, ODF_arg->dataLength);
             break;

@@ -12,15 +12,11 @@
 
 #include "apps.h"
 #include "linux_updater_app.h"
-#include "logind_app.h"
-#include "systemd_app.h"
 
 
 int
 system_apps_setup(void) {
 
-    systemd_app_setup();
-    logind_app_setup();
     linux_updater_app_setup();
 
     return 1;

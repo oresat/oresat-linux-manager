@@ -1710,7 +1710,7 @@ DefaultValue=0x00000000
 PDOMapping=0
 
 [ManufacturerObjects]
-SupportedObjects=19
+SupportedObjects=18
 1=0x2100
 2=0x2101
 3=0x2102
@@ -1728,8 +1728,7 @@ SupportedObjects=19
 15=0x3004
 16=0x3005
 17=0x3006
-18=0x30F0
-19=0x30F1
+18=0x30F1
 
 [2100]
 ParameterName=Error status bits
@@ -1936,16 +1935,232 @@ DefaultValue=0
 PDOMapping=1
 
 [3000]
-ParameterName=CANdaemon
+ParameterName=Board Info
 ObjectType=0x9
 ;StorageLocation=RAM
-SubNumber=0x1
+SubNumber=0x19
 
 [3000sub0]
 ParameterName=max sub-index
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0005
+AccessType=ro
+DefaultValue=24
+PDOMapping=0
+
+[3000sub1]
+ParameterName=OS name
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x000F
+AccessType=ro
+DefaultValue=0
+PDOMapping=0
+
+[3000sub2]
+ParameterName=OS distro
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x000F
+AccessType=ro
+DefaultValue=0
+PDOMapping=0
+
+[3000sub3]
+ParameterName=OS kernel version
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x000F
+AccessType=ro
+DefaultValue=0
+PDOMapping=0
+
+[3000sub4]
+ParameterName=hostname
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x000F
+AccessType=ro
+DefaultValue=0
+PDOMapping=0
+
+[3000sub5]
+ParameterName=Uptime
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x0007
+AccessType=ro
+DefaultValue=0
+PDOMapping=0
+
+[3000sub6]
+ParameterName=Number of CPUs
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x0005
+AccessType=ro
+DefaultValue=0
+PDOMapping=0
+
+[3000sub7]
+ParameterName=CPU Architecture
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x000F
+AccessType=ro
+DefaultValue=0
+PDOMapping=0
+
+[3000sub8]
+ParameterName=CPU governor
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x0005
+AccessType=ro
+DefaultValue=0
+PDOMapping=0
+
+[3000sub9]
+ParameterName=CPU frequency
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x0006
+AccessType=ro
+DefaultValue=0
+PDOMapping=0
+
+[3000subA]
+ParameterName=Number of remoteprocs
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x0005
+AccessType=ro
+DefaultValue=0
+PDOMapping=0
+
+[3000subB]
+ParameterName=RemoteprocX selector
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x0005
+AccessType=rw
+DefaultValue=0
+PDOMapping=0
+
+[3000subC]
+ParameterName=RemoteprocX name
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x000F
+AccessType=ro
+DefaultValue=0
+PDOMapping=0
+
+[3000subD]
+ParameterName=RemoteprocX state
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x000F
+AccessType=ro
+DefaultValue=0
+PDOMapping=0
+
+[3000subE]
+ParameterName=Load average 1mn
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x0007
+AccessType=ro
+DefaultValue=0
+PDOMapping=0
+
+[3000subF]
+ParameterName=Load average 5min
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x0007
+AccessType=ro
+DefaultValue=0
+PDOMapping=0
+
+[3000sub10]
+ParameterName=Load average 15min
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x0007
+AccessType=ro
+DefaultValue=0
+PDOMapping=0
+
+[3000sub11]
+ParameterName=Free ram
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x0007
+AccessType=ro
+DefaultValue=0
+PDOMapping=0
+
+[3000sub12]
+ParameterName=Shared ram
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x0007
+AccessType=ro
+DefaultValue=0
+PDOMapping=0
+
+[3000sub13]
+ParameterName=Buffered ram
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x0007
+AccessType=ro
+DefaultValue=0
+PDOMapping=0
+
+[3000sub14]
+ParameterName=Total swap
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x0007
+AccessType=ro
+DefaultValue=0
+PDOMapping=0
+
+[3000sub15]
+ParameterName=Free Swap
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x0007
+AccessType=ro
+DefaultValue=0
+PDOMapping=0
+
+[3000sub16]
+ParameterName=Procs
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x0007
+AccessType=ro
+DefaultValue=0
+PDOMapping=0
+
+[3000sub17]
+ParameterName=Root parition total
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x0007
+AccessType=ro
+DefaultValue=0
+PDOMapping=0
+
+[3000sub18]
+ParameterName=Root parition free
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x0007
 AccessType=ro
 DefaultValue=0
 PDOMapping=0
@@ -4396,10 +4611,10 @@ DefaultValue=
 PDOMapping=0
 
 [3005]
-ParameterName=Daemon Controller
+ParameterName=Daemon Manager
 ObjectType=0x9
 ;StorageLocation=RAM
-SubNumber=0x6
+SubNumber=0x5
 
 [3005sub0]
 ParameterName=max sub-index
@@ -4407,7 +4622,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0005
 AccessType=ro
-DefaultValue=5
+DefaultValue=4
 PDOMapping=0
 
 [3005sub1]
@@ -4442,16 +4657,7 @@ ParameterName=Daemon Current State
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0004
-AccessType=ro
-DefaultValue=0
-PDOMapping=0
-
-[3005sub5]
-ParameterName=Daemon Change State
-ObjectType=0x7
-;StorageLocation=RAM
-DataType=0x0004
-AccessType=wo
+AccessType=rw
 DefaultValue=0
 PDOMapping=0
 
@@ -4467,39 +4673,6 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0005
 AccessType=ro
-DefaultValue=0
-PDOMapping=0
-
-[30F0]
-ParameterName=Power Management App
-ObjectType=0x9
-;StorageLocation=RAM
-SubNumber=0x3
-
-[30F0sub0]
-ParameterName=max sub-index
-ObjectType=0x7
-;StorageLocation=RAM
-DataType=0x0005
-AccessType=ro
-DefaultValue=2
-PDOMapping=0
-
-[30F0sub1]
-ParameterName=Reboot
-ObjectType=0x7
-;StorageLocation=RAM
-DataType=0x000F
-AccessType=wo
-DefaultValue=0
-PDOMapping=0
-
-[30F0sub2]
-ParameterName=Poweroff
-ObjectType=0x7
-;StorageLocation=RAM
-DataType=0x000F
-AccessType=wo
 DefaultValue=0
 PDOMapping=0
 

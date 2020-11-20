@@ -50,6 +50,7 @@
 #include "CO_error.h"
 #include "CO_Linux_threads.h"
 
+#include "board_info.h"
 #include "daemon_manager.h"
 #include "dbus_controller.h"
 #include "CO_fread.h"
@@ -429,6 +430,7 @@ int main (int argc, char *argv[]) {
             CO_fread_setup();
             CO_fwrite_setup();
             daemon_manager_setup();
+            board_info_setup();
 
             // setup dbus controller
             dbus_controller_init();
@@ -489,6 +491,7 @@ int main (int argc, char *argv[]) {
     dbus_controller_end();
     CO_fread_end();
     CO_fwrite_end();
+    board_info_end();
 
     /* join threads */
     CO_endProgram = 1;

@@ -1,8 +1,8 @@
 /**
  * App for interfacing with systemd power setting.
  *
- * @file        logind_app.h
- * @ingroup     logind_app
+ * @file        logind_interface.h
+ * @ingroup     logind_interface
  *
  * This file is part of CANdaemon, a common can interface program for daemons
  * running on OreSat Linux board.

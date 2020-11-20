@@ -198,6 +198,9 @@ set(SOURCE_FILES
     ${COMMON_DIR}/OD_helpers.c
     ${COMMON_DIR}/daemon_manager.c
     ${COMMON_DIR}/dbus_controller.c
+    ${COMMON_DIR}/cpufreq.c
+    ${COMMON_DIR}/board_info.c
+    ${COMMON_DIR}/logind_interface.c
     ${SYSTEM_APPS_SOURCES}
     ${BOARD_APPS_SOURCES}
     src/main.c

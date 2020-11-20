@@ -682,14 +682,86 @@
       </CANopenSubObject>
       <accessFunctionPreCode />
     </CANopenObject>
-    <CANopenObject index="3000" name="CANdaemon" objectType="REC" memoryType="RAM" dataType="0x00" accessType="rw" PDOmapping="no" defaultValue="" highValue="" lowValue="" subNumber="1" accessFunctionName="" disabled="false" TPDOdetectCOS="false">
+    <CANopenObject index="3000" name="Board Info" objectType="REC" memoryType="RAM" dataType="0x04" accessType="rw" PDOmapping="no" defaultValue="" highValue="" lowValue="" subNumber="25" accessFunctionName="" disabled="false" TPDOdetectCOS="false">
       <description />
-      <CANopenSubObject subIndex="00" name="max sub-index" objectType="VAR" dataType="0x05" accessType="ro" PDOmapping="no" defaultValue="0" highValue="" lowValue="" TPDOdetectCOS="false">
+      <CANopenSubObject subIndex="00" name="max sub-index" objectType="VAR" dataType="0x05" accessType="ro" PDOmapping="no" defaultValue="24" highValue="" lowValue="" TPDOdetectCOS="false">
+        <description />
+      </CANopenSubObject>
+      <CANopenSubObject subIndex="01" name="OS name" objectType="VAR" dataType="0x0f" accessType="ro" PDOmapping="no" defaultValue="0" highValue="" lowValue="" TPDOdetectCOS="false">
+        <description />
+      </CANopenSubObject>
+      <CANopenSubObject subIndex="02" name="OS distro" objectType="VAR" dataType="0x0f" accessType="ro" PDOmapping="no" defaultValue="0" highValue="" lowValue="" TPDOdetectCOS="false">
+        <description />
+      </CANopenSubObject>
+      <CANopenSubObject subIndex="03" name="OS kernel version" objectType="VAR" dataType="0x0f" accessType="ro" PDOmapping="no" defaultValue="0" highValue="" lowValue="" TPDOdetectCOS="false">
+        <description />
+      </CANopenSubObject>
+      <CANopenSubObject subIndex="04" name="hostname" objectType="VAR" dataType="0x0f" accessType="ro" PDOmapping="no" defaultValue="0" highValue="" lowValue="" TPDOdetectCOS="false">
+        <description />
+      </CANopenSubObject>
+      <CANopenSubObject subIndex="05" name="Uptime" objectType="VAR" dataType="0x07" accessType="ro" PDOmapping="no" defaultValue="0" highValue="" lowValue="" TPDOdetectCOS="false">
+        <description />
+      </CANopenSubObject>
+      <CANopenSubObject subIndex="06" name="Number of CPUs" objectType="VAR" dataType="0x05" accessType="ro" PDOmapping="no" defaultValue="0" highValue="" lowValue="" TPDOdetectCOS="false">
+        <description />
+      </CANopenSubObject>
+      <CANopenSubObject subIndex="07" name="CPU Architecture" objectType="VAR" dataType="0x0f" accessType="ro" PDOmapping="no" defaultValue="0" highValue="" lowValue="" TPDOdetectCOS="false">
+        <description />
+      </CANopenSubObject>
+      <CANopenSubObject subIndex="08" name="CPU governor" objectType="VAR" dataType="0x05" accessType="ro" PDOmapping="no" defaultValue="0" highValue="" lowValue="" TPDOdetectCOS="false">
+        <description />
+      </CANopenSubObject>
+      <CANopenSubObject subIndex="09" name="CPU frequency" objectType="VAR" dataType="0x06" accessType="ro" PDOmapping="no" defaultValue="0" highValue="" lowValue="" TPDOdetectCOS="false">
+        <description />
+      </CANopenSubObject>
+      <CANopenSubObject subIndex="0a" name="Number of remoteprocs" objectType="VAR" dataType="0x05" accessType="ro" PDOmapping="no" defaultValue="0" highValue="" lowValue="" TPDOdetectCOS="false">
+        <description />
+      </CANopenSubObject>
+      <CANopenSubObject subIndex="0b" name="RemoteprocX selector" objectType="VAR" dataType="0x05" accessType="rw" PDOmapping="no" defaultValue="0" highValue="" lowValue="" TPDOdetectCOS="false">
+        <description />
+      </CANopenSubObject>
+      <CANopenSubObject subIndex="0c" name="RemoteprocX name" objectType="VAR" dataType="0x0f" accessType="ro" PDOmapping="no" defaultValue="0" highValue="" lowValue="" TPDOdetectCOS="false">
+        <description />
+      </CANopenSubObject>
+      <CANopenSubObject subIndex="0d" name="RemoteprocX state" objectType="VAR" dataType="0x0f" accessType="ro" PDOmapping="no" defaultValue="0" highValue="" lowValue="" TPDOdetectCOS="false">
+        <description />
+      </CANopenSubObject>
+      <CANopenSubObject subIndex="0e" name="Load average 1mn" objectType="VAR" dataType="0x07" accessType="ro" PDOmapping="no" defaultValue="0" highValue="" lowValue="" TPDOdetectCOS="false">
+        <description />
+      </CANopenSubObject>
+      <CANopenSubObject subIndex="0f" name="Load average 5min" objectType="VAR" dataType="0x07" accessType="ro" PDOmapping="no" defaultValue="0" highValue="" lowValue="" TPDOdetectCOS="false">
+        <description />
+      </CANopenSubObject>
+      <CANopenSubObject subIndex="10" name="Load average 15min" objectType="VAR" dataType="0x07" accessType="ro" PDOmapping="no" defaultValue="0" highValue="" lowValue="" TPDOdetectCOS="false">
+        <description />
+      </CANopenSubObject>
+      <CANopenSubObject subIndex="11" name="Free ram" objectType="VAR" dataType="0x07" accessType="ro" PDOmapping="no" defaultValue="0" highValue="" lowValue="" TPDOdetectCOS="false">
+        <description />
+      </CANopenSubObject>
+      <CANopenSubObject subIndex="12" name="Shared ram" objectType="VAR" dataType="0x07" accessType="ro" PDOmapping="no" defaultValue="0" highValue="" lowValue="" TPDOdetectCOS="false">
+        <description />
+      </CANopenSubObject>
+      <CANopenSubObject subIndex="13" name="Buffered ram" objectType="VAR" dataType="0x07" accessType="ro" PDOmapping="no" defaultValue="0" highValue="" lowValue="" TPDOdetectCOS="false">
+        <description />
+      </CANopenSubObject>
+      <CANopenSubObject subIndex="14" name="Total swap" objectType="VAR" dataType="0x07" accessType="ro" PDOmapping="no" defaultValue="0" highValue="" lowValue="" TPDOdetectCOS="false">
+        <description />
+      </CANopenSubObject>
+      <CANopenSubObject subIndex="15" name="Free Swap" objectType="VAR" dataType="0x07" accessType="ro" PDOmapping="no" defaultValue="0" highValue="" lowValue="" TPDOdetectCOS="false">
+        <description />
+      </CANopenSubObject>
+      <CANopenSubObject subIndex="16" name="Procs" objectType="VAR" dataType="0x07" accessType="ro" PDOmapping="no" defaultValue="0" highValue="" lowValue="" TPDOdetectCOS="false">
+        <description />
+      </CANopenSubObject>
+      <CANopenSubObject subIndex="17" name="Root parition total" objectType="VAR" dataType="0x07" accessType="ro" PDOmapping="no" defaultValue="0" highValue="" lowValue="" TPDOdetectCOS="false">
+        <description />
+      </CANopenSubObject>
+      <CANopenSubObject subIndex="18" name="Root parition free" objectType="VAR" dataType="0x07" accessType="ro" PDOmapping="no" defaultValue="0" highValue="" lowValue="" TPDOdetectCOS="false">
         <description />
       </CANopenSubObject>
       <accessFunctionPreCode />
     </CANopenObject>
-    <CANopenObject index="3001" name="Write File" objectType="REC" memoryType="RAM" dataType="0x0f" accessType="rw" PDOmapping="no" defaultValue="" highValue="" lowValue="" subNumber="4" accessFunctionName="" disabled="false" TPDOdetectCOS="false">
+    <CANopenObject index="3001" name="Write File" objectType="REC" memoryType="RAM" dataType="0x00" accessType="rw" PDOmapping="no" defaultValue="" highValue="" lowValue="" subNumber="4" accessFunctionName="" disabled="false" TPDOdetectCOS="false">
       <description />
       <CANopenSubObject subIndex="00" name="max sub-index" objectType="VAR" dataType="0x05" accessType="ro" PDOmapping="no" defaultValue="3" highValue="" lowValue="" TPDOdetectCOS="false">
         <description />
@@ -1093,7 +1165,7 @@
       </CANopenSubObject>
       <accessFunctionPreCode />
     </CANopenObject>
-    <CANopenObject index="3003" name="Read File Control" objectType="REC" memoryType="RAM" dataType="0x05" accessType="rw" PDOmapping="no" defaultValue="" highValue="" lowValue="" subNumber="9" accessFunctionName="" disabled="false" TPDOdetectCOS="false">
+    <CANopenObject index="3003" name="Read File Control" objectType="REC" memoryType="RAM" dataType="0x00" accessType="rw" PDOmapping="no" defaultValue="" highValue="" lowValue="" subNumber="9" accessFunctionName="" disabled="false" TPDOdetectCOS="false">
       <description />
       <CANopenSubObject subIndex="00" name="max sub-index" objectType="VAR" dataType="0x05" accessType="ro" PDOmapping="no" defaultValue="8" highValue="" lowValue="" TPDOdetectCOS="false">
         <description />
@@ -1512,9 +1584,9 @@
       </CANopenSubObject>
       <accessFunctionPreCode />
     </CANopenObject>
-    <CANopenObject index="3005" name="Daemon Controller" objectType="REC" memoryType="RAM" dataType="0x00" accessType="rw" PDOmapping="no" defaultValue="" highValue="" lowValue="" subNumber="6" accessFunctionName="" disabled="false" TPDOdetectCOS="false">
+    <CANopenObject index="3005" name="Daemon Manager" objectType="REC" memoryType="RAM" dataType="0x05" accessType="rw" PDOmapping="no" defaultValue="" highValue="" lowValue="" subNumber="5" accessFunctionName="" disabled="false" TPDOdetectCOS="false">
       <description />
-      <CANopenSubObject subIndex="00" name="max sub-index" objectType="VAR" dataType="0x05" accessType="ro" PDOmapping="no" defaultValue="5" highValue="" lowValue="" TPDOdetectCOS="false">
+      <CANopenSubObject subIndex="00" name="max sub-index" objectType="VAR" dataType="0x05" accessType="ro" PDOmapping="no" defaultValue="4" highValue="" lowValue="" TPDOdetectCOS="false">
         <description />
       </CANopenSubObject>
       <CANopenSubObject subIndex="01" name="Select App" objectType="VAR" dataType="0x05" accessType="rw" PDOmapping="no" defaultValue="0" highValue="" lowValue="" TPDOdetectCOS="false">
@@ -1526,10 +1598,7 @@
       <CANopenSubObject subIndex="03" name="Daemon Service Name" objectType="VAR" dataType="0x0f" accessType="ro" PDOmapping="no" defaultValue="0" highValue="" lowValue="" TPDOdetectCOS="false">
         <description />
       </CANopenSubObject>
-      <CANopenSubObject subIndex="04" name="Daemon Current State" objectType="VAR" dataType="0x04" accessType="ro" PDOmapping="no" defaultValue="0" highValue="" lowValue="" TPDOdetectCOS="false">
-        <description />
-      </CANopenSubObject>
-      <CANopenSubObject subIndex="05" name="Daemon Change State" objectType="VAR" dataType="0x04" accessType="wo" PDOmapping="no" defaultValue="0" highValue="" lowValue="" TPDOdetectCOS="false">
+      <CANopenSubObject subIndex="04" name="Daemon Current State" objectType="VAR" dataType="0x04" accessType="rw" PDOmapping="no" defaultValue="0" highValue="" lowValue="" TPDOdetectCOS="false">
         <description />
       </CANopenSubObject>
       <accessFunctionPreCode />
@@ -1537,19 +1606,6 @@
     <CANopenObject index="3006" name="Syslog Reader" objectType="REC" memoryType="RAM" dataType="0x00" accessType="rw" PDOmapping="no" defaultValue="" highValue="" lowValue="" subNumber="1" accessFunctionName="" disabled="false" TPDOdetectCOS="false">
       <description />
       <CANopenSubObject subIndex="00" name="max sub-index" objectType="VAR" dataType="0x05" accessType="ro" PDOmapping="no" defaultValue="0" highValue="" lowValue="" TPDOdetectCOS="false">
-        <description />
-      </CANopenSubObject>
-      <accessFunctionPreCode />
-    </CANopenObject>
-    <CANopenObject index="30f0" name="Power Management App" objectType="REC" memoryType="RAM" dataType="0x00" accessType="rw" PDOmapping="no" defaultValue="" highValue="" lowValue="" subNumber="3" accessFunctionName="" disabled="false" TPDOdetectCOS="false">
-      <description />
-      <CANopenSubObject subIndex="00" name="max sub-index" objectType="VAR" dataType="0x05" accessType="ro" PDOmapping="no" defaultValue="2" highValue="" lowValue="" TPDOdetectCOS="false">
-        <description />
-      </CANopenSubObject>
-      <CANopenSubObject subIndex="01" name="Reboot" objectType="VAR" dataType="0x0f" accessType="wo" PDOmapping="no" defaultValue="0" highValue="" lowValue="" TPDOdetectCOS="false">
-        <description />
-      </CANopenSubObject>
-      <CANopenSubObject subIndex="02" name="Poweroff" objectType="VAR" dataType="0x0f" accessType="wo" PDOmapping="no" defaultValue="0" highValue="" lowValue="" TPDOdetectCOS="false">
         <description />
       </CANopenSubObject>
       <accessFunctionPreCode />

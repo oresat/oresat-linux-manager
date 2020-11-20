@@ -12,18 +12,46 @@
 
 #include "log_message.h"
 #include "OD_helpers.h"
+#include "log_message.h"
+#include "dbus_controller.h"
 #include "daemon_manager.h"
-#include "systemd_app.h"
 #include <stdlib.h>
 #include <string.h>
 #include <pthread.h>
 #include <stdio.h>
 
 
+#ifndef DAEMON_LIST_ODF_INDEX
 /** OD index for daemon list ODF */
-#define DAEMON_LIST_ODF_INDEX       0x3004
+#define DAEMON_LIST_ODF_INDEX           0x3004
+#endif
+
+#ifndef DAEMON_MANAGER_ODF_INDEX
 /** OD index for daemon manager ODF */
-#define DAEMON_MANAGER_ODF_INDEX    0x3005
+#define DAEMON_MANAGER_ODF_INDEX        0x3005
+#endif
+
+/** Dbus destionation for systemd */
+#define DESTINATION                     "org.freedesktop.systemd1"
+/** Dbus interface name for systemd */
+#define INTERFACE_NAME                  DESTINATION
+/** Dbus object path for systemd */
+#define OBJECT_PATH                     "/org.freedesktop/systemd1"
+
+// ODF subindecies
+#define DM_SI_SVC_SEL       1
+#define DM_SI_APP_NAME      DM_SI_SVC_SEL+1
+#define DM_SI_SVC_NAME      DM_SI_APP_NAME+1
+#define DM_SI_SVC_CUR_STATE DM_SI_SVC_NAME+1
+#define DM_SI_SVC_CHG_STATE DM_SI_SVC_CUR_STATE+1
+#define DM_SI               DM_SI_SVC_CHG_STATE+1 // must be last
+
+
+/**
+ * Gobal for all apps to use to get acces to the CANdaemon dbus connetion.
+ * Apps should treat this as readonly.
+ */
+extern dbus_data_t APP_DBUS;
 
 
 /** List of data for daemons registered by apps */
@@ -37,12 +65,12 @@ static uint8_t list_index = 0;
 /** Mutex for accesing data */
 static pthread_mutex_t dc_mutex = PTHREAD_MUTEX_INITIALIZER;
 
+static int stop_daemon(char *daemon_name);
+static int start_daemon(char *daemon_name);
+static int restart_daemon(char *daemon_name);
 
 int
 daemon_manager_setup() {
-    // get the size of the daemon list in object dictionary
-    //app_OD_read(DAEMON_LIST_ODF_INDEX, 0, &daemon_list_len, sizeof(daemon_list_len));
-
     // setup daemon list ODF
     CO_OD_configure(CO->SDO[0], DAEMON_LIST_ODF_INDEX, daemon_list_ODF, NULL, 0, 0U);
     CO_OD_configure(CO->SDO[0], DAEMON_MANAGER_ODF_INDEX, daemon_manager_ODF, NULL, 0, 0U);
@@ -76,21 +104,20 @@ daemon_list_ODF(CO_ODF_arg_t *ODF_arg) {
 CO_SDO_abortCode_t
 daemon_manager_ODF(CO_ODF_arg_t *ODF_arg) {
     CO_SDO_abortCode_t ret = CO_SDO_AB_NONE;
+    uint8_t subindecies = DM_SI;
 
     switch (ODF_arg->subIndex) {
-        case 0 : // sub index size, uint8, readonly
+        case 0: // sub index size, uint8, readonly
             if(ODF_arg->reading) {
-                uint8_t temp;
-                ODF_arg->dataLength = sizeof(uint8_t);
-                app_OD_read(ODF_arg->index, ODF_arg->subIndex, &temp, ODF_arg->dataLength);
-                memcpy(ODF_arg->data, &temp, ODF_arg->dataLength);
+                ODF_arg->dataLength = sizeof(subindecies);
+                memcpy(ODF_arg->data, &subindecies, ODF_arg->dataLength);
             }
             else
                 ret = CO_SDO_AB_READONLY; // can't write parameters, readonly
 
             break;
 
-        case 1 : // selected daemon index in daemon list, uint8, readwrite
+        case DM_SI_SVC_SEL: // selected daemon index in daemon list, uint8, readwrite
 
             if(ODF_arg->reading) {
                 ODF_arg->dataLength = sizeof(list_index);
@@ -98,7 +125,7 @@ daemon_manager_ODF(CO_ODF_arg_t *ODF_arg) {
             }
             else {
                 if(ODF_arg->dataLength != sizeof(list_index)) {
-                    log_error_ODF("app_manager_ODF", ODF_arg, "data size does not match");
+                    log_message(LOG_ERR, "daemon status data size does not match");
                     ret = CO_SDO_AB_GENERAL; // error with data size
                     break;
                 }
@@ -107,7 +134,7 @@ daemon_manager_ODF(CO_ODF_arg_t *ODF_arg) {
 
             break;
 
-        case 2 : // app name, domain, readonly
+        case DM_SI_APP_NAME: // app name, domain, readonly
 
             if(ODF_arg->reading) {
                 ODF_arg->dataLength = strlen(daemon_list[list_index].name)+1;
@@ -118,36 +145,27 @@ daemon_manager_ODF(CO_ODF_arg_t *ODF_arg) {
 
             break;
 
-        case 3 : // daemon service name, domain, readonly
+        case DM_SI_SVC_NAME: // daemon service name, domain, readonly
 
             if(ODF_arg->reading) {
                 ODF_arg->dataLength = strlen(daemon_list[list_index].service_name)+1;
                 memcpy(ODF_arg->data, daemon_list[list_index].service_name, ODF_arg->dataLength);
             }
             else
-                return CO_SDO_AB_READONLY; // can't write parameters, readonly
+                ret = CO_SDO_AB_READONLY; // can't write parameters, readonly
 
             break;
 
-        case 4 : // daemon current state, int32, readonly
+        case DM_SI_SVC_CUR_STATE: // daemon current state, int32, readwrite
 
             // TODO change to dbus call to systemd
             if(ODF_arg->reading) {
                 ODF_arg->dataLength = sizeof(daemon_list[list_index].status);
                 memcpy(ODF_arg->data, &daemon_list[list_index].status, ODF_arg->dataLength);
             }
-            else
-                return CO_SDO_AB_READONLY; // can't write parameters, readonly
-
-            break;
-
-        case 5 : // daemon change state, int32, writeonly
-
-            if(ODF_arg->reading)
-                return CO_SDO_AB_WRITEONLY; // can't read parameters, writeonly
             else {
                 if(ODF_arg->dataLength != sizeof(daemon_list[list_index].status)) {
-                    log_error_ODF("app_manager_ODF", ODF_arg, "data size does not match");
+                    log_message(LOG_ERR, "daemon status data size does not match");
                     ret = CO_SDO_AB_GENERAL; // error with data size
                     break;
                 }
@@ -159,9 +177,9 @@ daemon_manager_ODF(CO_ODF_arg_t *ODF_arg) {
                 else if(command == STOP_DAEMON)
                     stop_daemon(daemon_list[list_index].service_name);
                 else if(command == RESTART_DAEMON)
-                    stop_daemon(daemon_list[list_index].service_name);
+                    restart_daemon(daemon_list[list_index].service_name);
                 else
-                    log_error_ODF("app_manager_ODF", ODF_arg, "unkown input to daemon change state");
+                    log_message(LOG_ERR, "unkown input to daemon change state");
             }
 
             break;
@@ -171,6 +189,114 @@ daemon_manager_ODF(CO_ODF_arg_t *ODF_arg) {
     }
 
     return ret;
+}
+
+
+/**
+ * @brief Will try to start the daemon inputed.
+ *
+ * Wrapper for calling StartUnit on systemd dbus interface.
+ * Equivalent to "systemctl start daemon_name"
+ *
+ * @param daemon_name The name of the daemon wanted to be started.
+ *
+ * @return 0 on sucess, negative on error
+ */
+static int
+start_daemon(char *daemon_name) {
+    sd_bus_error err = SD_BUS_ERROR_NULL;
+    sd_bus_message *mess = NULL;
+    int r;
+
+    r = sd_bus_call_method(
+            APP_DBUS.bus,
+            DESTINATION,
+            OBJECT_PATH,
+            INTERFACE_NAME,
+            "StartUnit",
+            &err,
+            &mess,
+            "ss",
+            daemon_name,
+            "fail");
+    if (r < 0)
+        log_message(LOG_ERR, "systemd method call StartUnit failed for %s", daemon_name);
+
+    sd_bus_message_unref(mess);
+    sd_bus_error_free(&err);
+    return r;
+}
+
+
+/**
+ * @brief Will try to stop the daemon inputed.
+ *
+ * Wrapper for calling StopUnit on systemd dbus interface.
+ * Equivalent to "systemctl stop daemon_name"
+ *
+ * @param daemon_name The name of the daemon wanted to be stopped.
+ *
+ * @return 0 on sucess, negative on error
+ */
+static int
+stop_daemon(char *daemon_name) {
+    sd_bus_error err = SD_BUS_ERROR_NULL;
+    sd_bus_message *mess = NULL;
+    int r;
+
+    r = sd_bus_call_method(
+            APP_DBUS.bus,
+            DESTINATION,
+            OBJECT_PATH,
+            INTERFACE_NAME,
+            "StopUnit",
+            &err,
+            &mess,
+            "ss",
+            daemon_name,
+            "fail");
+    if (r < 0)
+        log_message(LOG_ERR, "systemd method call StopUnit failed for %s", daemon_name);
+
+    sd_bus_message_unref(mess);
+    sd_bus_error_free(&err);
+    return r;
+}
+
+
+/**
+ * @brief Will try to restart the daemon inputed.
+ *
+ * Wrapper for calling RestartUnit on systemd dbus interface.
+ * Equivalent to "systemctl restart daemon_name"
+ *
+ * @param daemon_name The name of the daemon wanted to be restarted.
+ *
+ * @return 0 on sucess, negative on error
+ */
+static int
+restart_daemon(char *daemon_name) {
+    sd_bus_error err = SD_BUS_ERROR_NULL;
+    sd_bus_message *mess = NULL;
+    int r;
+
+    r = sd_bus_call_method(
+            APP_DBUS.bus,
+            DESTINATION,
+            OBJECT_PATH,
+            INTERFACE_NAME,
+            "RestartUnit",
+            &err,
+            &mess,
+            "ss",
+            daemon_name,
+            "fail");
+    if (r < 0)
+        log_message(LOG_ERR, "systemd method call RestartUnit failed for %s", daemon_name);
+
+    sd_bus_message_unref(mess);
+    sd_bus_error_free(&err);
+    return r;
 }
 
 

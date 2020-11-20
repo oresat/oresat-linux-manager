@@ -89,7 +89,7 @@
 /*******************************************************************************
    OBJECT DICTIONARY
 *******************************************************************************/
-   #define CO_OD_NoOfElements             57
+   #define CO_OD_NoOfElements             56
 
 
 /*******************************************************************************
@@ -157,7 +157,31 @@
                }              OD_time_t;
 /*3000      */ typedef struct {
                UNSIGNED8      maxSubIndex;
-               }              OD_CANdaemon_t;
+               DOMAIN         OSName;
+               DOMAIN         OSDistro;
+               DOMAIN         OSKernelVersion;
+               DOMAIN         hostname;
+               UNSIGNED32     uptime;
+               UNSIGNED8      numberOfCPUs;
+               DOMAIN         CPU_Architecture;
+               UNSIGNED8      CPUGovernor;
+               UNSIGNED16     CPUFrequency;
+               UNSIGNED8      numberOfRemoteprocs;
+               UNSIGNED8      remoteprocXSelector;
+               DOMAIN         remoteprocXName;
+               DOMAIN         remoteprocXState;
+               UNSIGNED32     loadAverage1mn;
+               UNSIGNED32     loadAverage5min;
+               UNSIGNED32     loadAverage15min;
+               UNSIGNED32     freeRam;
+               UNSIGNED32     sharedRam;
+               UNSIGNED32     bufferedRam;
+               UNSIGNED32     totalSwap;
+               UNSIGNED32     freeSwap;
+               UNSIGNED32     procs;
+               UNSIGNED32     rootParitionTotal;
+               UNSIGNED32     rootParitionFree;
+               }              OD_boardInfo_t;
 /*3001      */ typedef struct {
                UNSIGNED8      maxSubIndex;
                DOMAIN         fileName;
@@ -181,16 +205,10 @@
                DOMAIN         appName;
                DOMAIN         daemonServiceName;
                INTEGER32      daemonCurrentState;
-               INTEGER32      daemonChangeState;
-               }              OD_daemonController_t;
+               }              OD_daemonManager_t;
 /*3006      */ typedef struct {
                UNSIGNED8      maxSubIndex;
                }              OD_syslogReader_t;
-/*30F0      */ typedef struct {
-               UNSIGNED8      maxSubIndex;
-               DOMAIN         reboot;
-               DOMAIN         poweroff;
-               }              OD_powerManagementApp_t;
 /*30F1      */ typedef struct {
                UNSIGNED8      maxSubIndex;
                INTEGER32      currentState;
@@ -546,9 +564,33 @@
         #define OD_2130_3_time_epochTimeOffsetMs                    3
 
 /*3000 */
-        #define OD_3000_CANdaemon                                   0x3000
+        #define OD_3000_boardInfo                                   0x3000
 
-        #define OD_3000_0_CANdaemon_maxSubIndex                     0
+        #define OD_3000_0_boardInfo_maxSubIndex                     0
+        #define OD_3000_1_boardInfo_OSName                          1
+        #define OD_3000_2_boardInfo_OSDistro                        2
+        #define OD_3000_3_boardInfo_OSKernelVersion                 3
+        #define OD_3000_4_boardInfo_hostname                        4
+        #define OD_3000_5_boardInfo_uptime                          5
+        #define OD_3000_6_boardInfo_numberOfCPUs                    6
+        #define OD_3000_7_boardInfo_CPU_Architecture                7
+        #define OD_3000_8_boardInfo_CPUGovernor                     8
+        #define OD_3000_9_boardInfo_CPUFrequency                    9
+        #define OD_3000_10_boardInfo_numberOfRemoteprocs            10
+        #define OD_3000_11_boardInfo_remoteprocXSelector            11
+        #define OD_3000_12_boardInfo_remoteprocXName                12
+        #define OD_3000_13_boardInfo_remoteprocXState               13
+        #define OD_3000_14_boardInfo_loadAverage1mn                 14
+        #define OD_3000_15_boardInfo_loadAverage5min                15
+        #define OD_3000_16_boardInfo_loadAverage15min               16
+        #define OD_3000_17_boardInfo_freeRam                        17
+        #define OD_3000_18_boardInfo_sharedRam                      18
+        #define OD_3000_19_boardInfo_bufferedRam                    19
+        #define OD_3000_20_boardInfo_totalSwap                      20
+        #define OD_3000_21_boardInfo_freeSwap                       21
+        #define OD_3000_22_boardInfo_procs                          22
+        #define OD_3000_23_boardInfo_rootParitionTotal              23
+        #define OD_3000_24_boardInfo_rootParitionFree               24
 
 /*3001 */
         #define OD_3001_writeFile                                   0x3001
@@ -836,26 +878,18 @@
         #define OD_3004_127_daemonList_                             127
 
 /*3005 */
-        #define OD_3005_daemonController                            0x3005
+        #define OD_3005_daemonManager                               0x3005
 
-        #define OD_3005_0_daemonController_maxSubIndex              0
-        #define OD_3005_1_daemonController_selectApp                1
-        #define OD_3005_2_daemonController_appName                  2
-        #define OD_3005_3_daemonController_daemonServiceName        3
-        #define OD_3005_4_daemonController_daemonCurrentState       4
-        #define OD_3005_5_daemonController_daemonChangeState        5
+        #define OD_3005_0_daemonManager_maxSubIndex                 0
+        #define OD_3005_1_daemonManager_selectApp                   1
+        #define OD_3005_2_daemonManager_appName                     2
+        #define OD_3005_3_daemonManager_daemonServiceName           3
+        #define OD_3005_4_daemonManager_daemonCurrentState          4
 
 /*3006 */
         #define OD_3006_syslogReader                                0x3006
 
         #define OD_3006_0_syslogReader_maxSubIndex                  0
-
-/*30F0 */
-        #define OD_30F0_powerManagementApp                          0x30F0
-
-        #define OD_30F0_0_powerManagementApp_maxSubIndex            0
-        #define OD_30F0_1_powerManagementApp_reboot                 1
-        #define OD_30F0_2_powerManagementApp_poweroff               2
 
 /*30F1 */
         #define OD_30F1_linuxUpdaterApp                             0x30F1
@@ -924,14 +958,13 @@ struct sCO_OD_RAM{
 /*2108      */ INTEGER16       temperature[1];
 /*2109      */ INTEGER16       voltage[1];
 /*2130      */ OD_time_t       time;
-/*3000      */ OD_CANdaemon_t  CANdaemon;
+/*3000      */ OD_boardInfo_t  boardInfo;
 /*3001      */ OD_writeFile_t  writeFile;
 /*3002      */ DOMAIN          readFileList[127];
 /*3003      */ OD_readFileControl_t readFileControl;
 /*3004      */ DOMAIN          daemonList[127];
-/*3005      */ OD_daemonController_t daemonController;
+/*3005      */ OD_daemonManager_t daemonManager;
 /*3006      */ OD_syslogReader_t syslogReader;
-/*30F0      */ OD_powerManagementApp_t powerManagementApp;
 /*30F1      */ OD_linuxUpdaterApp_t linuxUpdaterApp;
 
                UNSIGNED32     LastWord;
@@ -1092,8 +1125,8 @@ extern struct sCO_OD_EEPROM CO_OD_EEPROM;
 /*2130, Data Type: time_t */
         #define OD_time                                             CO_OD_RAM.time
 
-/*3000, Data Type: CANdaemon_t */
-        #define OD_CANdaemon                                        CO_OD_RAM.CANdaemon
+/*3000, Data Type: boardInfo_t */
+        #define OD_boardInfo                                        CO_OD_RAM.boardInfo
 
 /*3001, Data Type: writeFile_t */
         #define OD_writeFile                                        CO_OD_RAM.writeFile
@@ -1111,14 +1144,11 @@ extern struct sCO_OD_EEPROM CO_OD_EEPROM;
         #define ODL_daemonList_arrayLength                          127
         #define ODA_daemonList_                                     0
 
-/*3005, Data Type: daemonController_t */
-        #define OD_daemonController                                 CO_OD_RAM.daemonController
+/*3005, Data Type: daemonManager_t */
+        #define OD_daemonManager                                    CO_OD_RAM.daemonManager
 
 /*3006, Data Type: syslogReader_t */
         #define OD_syslogReader                                     CO_OD_RAM.syslogReader
-
-/*30F0, Data Type: powerManagementApp_t */
-        #define OD_powerManagementApp                               CO_OD_RAM.powerManagementApp
 
 /*30F1, Data Type: linuxUpdaterApp_t */
         #define OD_linuxUpdaterApp                                  CO_OD_RAM.linuxUpdaterApp

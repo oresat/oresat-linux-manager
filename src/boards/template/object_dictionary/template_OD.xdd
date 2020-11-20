@@ -1728,7 +1728,7 @@
             <defaultValue value="0" />
           </parameter>
           <parameter uniqueID="UID_PARAM_3000" access="readWrite">
-            <label lang="en">CANdaemon</label>
+            <label lang="en">Board Info</label>
             <description lang="en" />
             <denotation>
               <label lang="en" />
@@ -1737,6 +1737,198 @@
           </parameter>
           <parameter uniqueID="UID_PARAM_300000" access="read">
             <label lang="en">max sub-index</label>
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="24" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_300001" access="read">
+            <label lang="en">OS name</label>
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="0" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_300002" access="read">
+            <label lang="en">OS distro</label>
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="0" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_300003" access="read">
+            <label lang="en">OS kernel version</label>
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="0" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_300004" access="read">
+            <label lang="en">hostname</label>
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="0" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_300005" access="read">
+            <label lang="en">Uptime</label>
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="0" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_300006" access="read">
+            <label lang="en">Number of CPUs</label>
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="0" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_300007" access="read">
+            <label lang="en">CPU Architecture</label>
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="0" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_300008" access="read">
+            <label lang="en">CPU governor</label>
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="0" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_300009" access="read">
+            <label lang="en">CPU frequency</label>
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="0" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_30000a" access="read">
+            <label lang="en">Number of remoteprocs</label>
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="0" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_30000b" access="readWrite">
+            <label lang="en">RemoteprocX selector</label>
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="0" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_30000c" access="read">
+            <label lang="en">RemoteprocX name</label>
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="0" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_30000d" access="read">
+            <label lang="en">RemoteprocX state</label>
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="0" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_30000e" access="read">
+            <label lang="en">Load average 1mn</label>
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="0" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_30000f" access="read">
+            <label lang="en">Load average 5min</label>
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="0" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_300010" access="read">
+            <label lang="en">Load average 15min</label>
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="0" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_300011" access="read">
+            <label lang="en">Free ram</label>
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="0" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_300012" access="read">
+            <label lang="en">Shared ram</label>
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="0" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_300013" access="read">
+            <label lang="en">Buffered ram</label>
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="0" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_300014" access="read">
+            <label lang="en">Total swap</label>
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="0" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_300015" access="read">
+            <label lang="en">Free Swap</label>
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="0" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_300016" access="read">
+            <label lang="en">Procs</label>
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="0" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_300017" access="read">
+            <label lang="en">Root parition total</label>
+            <description lang="en" />
+            <denotation>
+              <label lang="en" />
+            </denotation>
+            <defaultValue value="0" />
+          </parameter>
+          <parameter uniqueID="UID_PARAM_300018" access="read">
+            <label lang="en">Root parition free</label>
             <description lang="en" />
             <denotation>
               <label lang="en" />
@@ -3928,7 +4120,7 @@
             <defaultValue value="" />
           </parameter>
           <parameter uniqueID="UID_PARAM_3005" access="readWrite">
-            <label lang="en">Daemon Controller</label>
+            <label lang="en">Daemon Manager</label>
             <description lang="en" />
             <denotation>
               <label lang="en" />
@@ -3941,7 +4133,7 @@
             <denotation>
               <label lang="en" />
             </denotation>
-            <defaultValue value="5" />
+            <defaultValue value="4" />
           </parameter>
           <parameter uniqueID="UID_PARAM_300501" access="readWrite">
             <label lang="en">Select App</label>
@@ -3967,16 +4159,8 @@
             </denotation>
             <defaultValue value="0" />
           </parameter>
-          <parameter uniqueID="UID_PARAM_300504" access="read">
+          <parameter uniqueID="UID_PARAM_300504" access="readWrite">
             <label lang="en">Daemon Current State</label>
-            <description lang="en" />
-            <denotation>
-              <label lang="en" />
-            </denotation>
-            <defaultValue value="0" />
-          </parameter>
-          <parameter uniqueID="UID_PARAM_300505" access="write">
-            <label lang="en">Daemon Change State</label>
             <description lang="en" />
             <denotation>
               <label lang="en" />
@@ -3993,38 +4177,6 @@
           </parameter>
           <parameter uniqueID="UID_PARAM_300600" access="read">
             <label lang="en">max sub-index</label>
-            <description lang="en" />
-            <denotation>
-              <label lang="en" />
-            </denotation>
-            <defaultValue value="0" />
-          </parameter>
-          <parameter uniqueID="UID_PARAM_30f0" access="readWrite">
-            <label lang="en">Power Management App</label>
-            <description lang="en" />
-            <denotation>
-              <label lang="en" />
-            </denotation>
-            <defaultValue value="" />
-          </parameter>
-          <parameter uniqueID="UID_PARAM_30f000" access="read">
-            <label lang="en">max sub-index</label>
-            <description lang="en" />
-            <denotation>
-              <label lang="en" />
-            </denotation>
-            <defaultValue value="2" />
-          </parameter>
-          <parameter uniqueID="UID_PARAM_30f001" access="write">
-            <label lang="en">Reboot</label>
-            <description lang="en" />
-            <denotation>
-              <label lang="en" />
-            </denotation>
-            <defaultValue value="0" />
-          </parameter>
-          <parameter uniqueID="UID_PARAM_30f002" access="write">
-            <label lang="en">Poweroff</label>
             <description lang="en" />
             <denotation>
               <label lang="en" />
@@ -4378,8 +4530,32 @@
             <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0002" name="Epoch time base ms" objectType="7" dataType="001B" lowLimit="" highLimit="" accessType="ro" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_213002" />
             <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0003" name="Epoch time offset ms" objectType="7" dataType="0007" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="RPDO" uniqueIDRef="UID_PARAM_213003" />
           </CANopenObject>
-          <CANopenObject index="3000" name="CANdaemon" objectType="9" lowLimit="" highLimit="" actualValue="" denotation="" edseditor_extenstion_storagelocation="RAM" edseditor_extension_notifyonchange="false" PDOmapping="no" uniqueIDRef="UID_PARAM_3000" subNumber="1">
+          <CANopenObject index="3000" name="Board Info" objectType="9" lowLimit="" highLimit="" actualValue="" denotation="" edseditor_extenstion_storagelocation="RAM" edseditor_extension_notifyonchange="false" PDOmapping="no" uniqueIDRef="UID_PARAM_3000" subNumber="25">
             <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0000" name="max sub-index" objectType="7" dataType="0005" lowLimit="" highLimit="" accessType="ro" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300000" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0001" name="OS name" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="ro" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300001" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0002" name="OS distro" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="ro" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300002" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0003" name="OS kernel version" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="ro" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300003" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0004" name="hostname" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="ro" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300004" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0005" name="Uptime" objectType="7" dataType="0007" lowLimit="" highLimit="" accessType="ro" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300005" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0006" name="Number of CPUs" objectType="7" dataType="0005" lowLimit="" highLimit="" accessType="ro" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300006" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0007" name="CPU Architecture" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="ro" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300007" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0008" name="CPU governor" objectType="7" dataType="0005" lowLimit="" highLimit="" accessType="ro" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300008" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0009" name="CPU frequency" objectType="7" dataType="0006" lowLimit="" highLimit="" accessType="ro" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300009" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="000A" name="Number of remoteprocs" objectType="7" dataType="0005" lowLimit="" highLimit="" accessType="ro" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_30000a" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="000B" name="RemoteprocX selector" objectType="7" dataType="0005" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_30000b" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="000C" name="RemoteprocX name" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="ro" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_30000c" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="000D" name="RemoteprocX state" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="ro" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_30000d" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="000E" name="Load average 1mn" objectType="7" dataType="0007" lowLimit="" highLimit="" accessType="ro" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_30000e" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="000F" name="Load average 5min" objectType="7" dataType="0007" lowLimit="" highLimit="" accessType="ro" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_30000f" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0010" name="Load average 15min" objectType="7" dataType="0007" lowLimit="" highLimit="" accessType="ro" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300010" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0011" name="Free ram" objectType="7" dataType="0007" lowLimit="" highLimit="" accessType="ro" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300011" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0012" name="Shared ram" objectType="7" dataType="0007" lowLimit="" highLimit="" accessType="ro" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300012" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0013" name="Buffered ram" objectType="7" dataType="0007" lowLimit="" highLimit="" accessType="ro" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300013" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0014" name="Total swap" objectType="7" dataType="0007" lowLimit="" highLimit="" accessType="ro" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300014" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0015" name="Free Swap" objectType="7" dataType="0007" lowLimit="" highLimit="" accessType="ro" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300015" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0016" name="Procs" objectType="7" dataType="0007" lowLimit="" highLimit="" accessType="ro" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300016" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0017" name="Root parition total" objectType="7" dataType="0007" lowLimit="" highLimit="" accessType="ro" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300017" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0018" name="Root parition free" objectType="7" dataType="0007" lowLimit="" highLimit="" accessType="ro" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300018" />
           </CANopenObject>
           <CANopenObject index="3001" name="Write File" objectType="9" lowLimit="" highLimit="" actualValue="" denotation="" edseditor_extenstion_storagelocation="RAM" edseditor_extension_notifyonchange="false" PDOmapping="no" uniqueIDRef="UID_PARAM_3001" subNumber="4">
             <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0000" name="max sub-index" objectType="7" dataType="0005" lowLimit="" highLimit="" accessType="ro" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300100" />
@@ -4658,21 +4834,15 @@
             <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="007E" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_30047e" />
             <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="007F" name="" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_30047f" />
           </CANopenObject>
-          <CANopenObject index="3005" name="Daemon Controller" objectType="9" lowLimit="" highLimit="" actualValue="" denotation="" edseditor_extenstion_storagelocation="RAM" edseditor_extension_notifyonchange="false" PDOmapping="no" uniqueIDRef="UID_PARAM_3005" subNumber="6">
+          <CANopenObject index="3005" name="Daemon Manager" objectType="9" lowLimit="" highLimit="" actualValue="" denotation="" edseditor_extenstion_storagelocation="RAM" edseditor_extension_notifyonchange="false" PDOmapping="no" uniqueIDRef="UID_PARAM_3005" subNumber="5">
             <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0000" name="max sub-index" objectType="7" dataType="0005" lowLimit="" highLimit="" accessType="ro" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300500" />
             <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0001" name="Select App" objectType="7" dataType="0005" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300501" />
             <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0002" name="App Name" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="ro" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300502" />
             <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0003" name="Daemon Service Name" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="ro" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300503" />
-            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0004" name="Daemon Current State" objectType="7" dataType="0004" lowLimit="" highLimit="" accessType="ro" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300504" />
-            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0005" name="Daemon Change State" objectType="7" dataType="0004" lowLimit="" highLimit="" accessType="wo" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300505" />
+            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0004" name="Daemon Current State" objectType="7" dataType="0004" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300504" />
           </CANopenObject>
           <CANopenObject index="3006" name="Syslog Reader" objectType="9" lowLimit="" highLimit="" actualValue="" denotation="" edseditor_extenstion_storagelocation="RAM" edseditor_extension_notifyonchange="false" PDOmapping="no" uniqueIDRef="UID_PARAM_3006" subNumber="1">
             <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0000" name="max sub-index" objectType="7" dataType="0005" lowLimit="" highLimit="" accessType="ro" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_300600" />
-          </CANopenObject>
-          <CANopenObject index="30F0" name="Power Management App" objectType="9" lowLimit="" highLimit="" actualValue="" denotation="" edseditor_extenstion_storagelocation="RAM" edseditor_extension_notifyonchange="false" PDOmapping="no" uniqueIDRef="UID_PARAM_30f0" subNumber="3">
-            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0000" name="max sub-index" objectType="7" dataType="0005" lowLimit="" highLimit="" accessType="ro" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_30f000" />
-            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0001" name="Reboot" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="wo" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_30f001" />
-            <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0002" name="Poweroff" objectType="7" dataType="000F" lowLimit="" highLimit="" accessType="wo" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_30f002" />
           </CANopenObject>
           <CANopenObject index="30F1" name="Linux Updater App" objectType="9" lowLimit="" highLimit="" actualValue="" denotation="" edseditor_extenstion_storagelocation="RAM" edseditor_extension_notifyonchange="false" PDOmapping="no" uniqueIDRef="UID_PARAM_30f1" subNumber="10">
             <CANopenSubObject edseditor_extension_notifyonchange="false" subIndex="0000" name="max sub-index" objectType="7" dataType="0005" lowLimit="" highLimit="" accessType="ro" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_30f100" />
