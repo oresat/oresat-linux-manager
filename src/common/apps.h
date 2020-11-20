@@ -1,21 +1,23 @@
 /**
  * App for the Linux updater dameon.
  *
- * This file is part of CANdaemon, a common can interface program for daemons
- * running on OreSat Linux board.
- * Project home page is <https://github.com/oresat/oresat-linux-candaemon>.
+ * @file        apps.h
+ *
+ * This file is part of OreSat Linux Manager, a common CAN to Dbus interface
+ * for daemons running on OreSat Linux boards.
+ * Project home page is <https://github.com/oresat/oresat-linux-manager>.
  */
 
 
-#ifndef CANDAEMON_APP_H
-#define CANDAEMON_APP_H
+#ifndef OLM_APP_H
+#define OLM_APP_H
 
 
 /**
- * @defgroup    apps CANdaemon Apps
+ * @defgroup    apps OLM Apps
  * @{
  *
- * Apps are as the dbus adaptors for the CANdaemon to commicate with daemons.
+ * Apps are as the dbus adaptors for OLM to commicate with daemons.
  *
  * Apps should call a mix of app_* functions, depending on what the app
  * needs. All functions are optional.

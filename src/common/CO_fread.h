@@ -4,9 +4,9 @@
  * @file        CO_fread.h
  * @ingroup     file_transfer
  *
- * This file is part of CANdaemon, a common can interface program for daemons
- * running on OreSat Linux board.
- * Project home page is <https://github.com/oresat/oresat-linux-candaemon>.
+ * This file is part of OreSat Linux Manager, a common CAN to Dbus interface
+ * for daemons running on OreSat Linux boards.
+ * Project home page is <https://github.com/oresat/oresat-linux-manager>.
  */
 
 
@@ -26,7 +26,7 @@
  * Object dictionary functions for handlinge file transfers over CAN.
  *
  * There are three object dictionary entries to help with file transfer.
- * One record only deals with writing files to the CANdaemon and two OD records
+ * One record only deals with writing files to the OLM and two OD records
  * for read from (one for list all readable file available and one for
  * selecting and reading a file).
  *
@@ -52,7 +52,7 @@
  * |     8     | Refresh the file name array        | boolean     | readwrite |
  *
  * **How file reading works:**
- *   - The CANdaemon automatically will fill the Readable File List OD Record on startup.
+ *   - The OLM automatically will fill the Readable File List OD Record on startup.
  *   - The CAN master node can read the file array OD entry and pick which sub-index in the array it wants to read. The master node can choose the file by writing the sub-index of readable file list into File Reader sub-index 1; That will load the file info into sub-indexes 2, 3, and 4 (file name, file data, and file size buffers respectively). Then the master node can read any of those file buffers as it wants to. If the file name or file data is read without loading in a file they will return the value '\0' aka 0x00 (one byte).
  *   - The loaded file can be deleted by reading or writing a value to sub-index 5.
  *   - Sub-index 6 and 7 are just extra useful information for the master node (number of files that could be read and number of file that are not loaded into the Readable File List OD Record).

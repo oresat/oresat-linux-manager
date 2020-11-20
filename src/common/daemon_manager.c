@@ -1,12 +1,12 @@
 /**
- * Daemon manager for CANdaemon.
+ * Daemon manager for OreSat Linux Manager.
  *
  * @file        daemon_manager.c
  * @ingroup     daemon_manager
  *
- * This file is part of CANdaemon, a common can interface program for daemons
- * running on OreSat Linux board.
- * Project home page is <https://github.com/oresat/oresat-linux-candaemon>.
+ * This file is part of OreSat Linux Manager, a common CAN to Dbus interface
+ * for daemons running on OreSat Linux boards.
+ * Project home page is <https://github.com/oresat/oresat-linux-manager>.
  */
 
 
@@ -49,8 +49,8 @@
 
 
 /**
- * Gobal for all apps to use to get acces to the CANdaemon dbus connetion.
- * Apps should treat this as readonly.
+ * Gobal for all apps to use to get acces to the OreSat Linux Manager's
+ * dbus connetion. Apps should treat this as readonly.
  */
 extern dbus_data_t APP_DBUS;
 

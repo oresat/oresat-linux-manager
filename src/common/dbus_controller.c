@@ -4,9 +4,9 @@
  * @file        dbus_controller.c
  * @ingroup     dbus_controller
  *
- * This file is part of CANdaemon, a common can interface program for daemons
- * running on OreSat Linux board.
- * Project home page is <https://github.com/oresat/oresat-linux-candaemon>.
+ * This file is part of OreSat Linux Manager, a common CAN to Dbus interface
+ * for daemons running on OreSat Linux boards.
+ * Project home page is <https://github.com/oresat/oresat-linux-manager>.
  */
 
 

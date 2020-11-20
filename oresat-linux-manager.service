@@ -1,12 +1,12 @@
 [Unit]
-Description=OreSat Linux CANdaemon
+Description=OreSat Linux Manager
 Wants=network-online.target
 After=network-online.target
 
 [Service]
 Type=forking
-PIDFile=/run/oresat-candaemon.pid
-ExecStart=/usr/bin/candaemon can1 -d
+PIDFile=/run/oresat-linux-managerd.pid
+ExecStart=/usr/bin/oresat-linux-manager can1 -d
 Restart=on-failure
 User=root
 Group=root

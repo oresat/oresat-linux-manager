@@ -1,3 +1,17 @@
+/**
+ * Standard log message functions for OLM's internals to use.
+ *
+ * @file        log_message.h
+ * @ingroup     log_message
+ *
+ * This file is part of OreSat Linux Manager, a common CAN to Dbus interface
+ * for daemons running on OreSat Linux boards.
+ * Project home page is <https://github.com/oresat/oresat-linux-manager>.
+ */
+
+#ifndef LOG_MESSAGE_H
+#define LOG_MESSAGE_H
+
 #include "CANopen.h"
 #include <syslog.h>
 
@@ -26,3 +40,5 @@ void app_log_message(const char *app_name, int priority, const char *message);
  * @param message: the message to log
  */
 void log_error_ODF(char *ODF_name, CO_ODF_arg_t *ODF_arg, char *message);
+
+#endif

@@ -70,7 +70,7 @@ def test_fread():
     network, node = connect_bus()
 
     # add file
-    with open("/var/cache/candaemon/test.txt", "w") as f:
+    with open("/var/cache/oresat-linux-manager/test.txt", "w") as f:
         f.write("read test "*1000 + "\n")
 
     # refresh after new file

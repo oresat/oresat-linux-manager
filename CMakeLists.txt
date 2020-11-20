@@ -3,7 +3,7 @@ if(${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR})
 endif()
 
 cmake_minimum_required(VERSION 3.13 FATAL_ERROR)
-project(CANdaemon C)
+project(OreSat-Linux-Manager C)
 
 
 ##############################################################################
@@ -134,7 +134,7 @@ set(COMMON_DIR src/common)
 set(SYSTEM_APPS_DIR src/system_apps)
 set(BOARD_APPS_DIR src/boards/${BOARD})
 
-set(CANDAEMON_INCLUDE_DIRS
+set(OLM_INCLUDE_DIRS
     ${CANOPEN_DIR}/301
     ${STACK_DRIVER_DIR}
     ${CANOPEN_DIR}
@@ -188,7 +188,7 @@ set(CANOPENNODE_HEADERS
 
 
 add_library(CANopenNode ${CANOPENNODE_SOURCES} ${CANOPENNODE_HEADERS})
-target_include_directories(CANopenNode PUBLIC ${CANDAEMON_INCLUDE_DIRS})
+target_include_directories(CANopenNode PUBLIC ${OLM_INCLUDE_DIRS})
 
 set(SOURCE_FILES
     ${OD_DIR}/CO_OD.c
@@ -210,25 +210,25 @@ set(SOURCE_FILES
 ##############################################################################
 # Create an executable
 
-add_executable(candaemon ${SOURCE_FILES})
+add_executable(oresat-linux-manager ${SOURCE_FILES})
 
-target_link_libraries(candaemon CANopenNode)
-target_link_libraries(candaemon ${LIBSYSTEMD_LIBRARIES} Threads::Threads)
+target_link_libraries(oresat-linux-manager CANopenNode)
+target_link_libraries(oresat-linux-manager ${LIBSYSTEMD_LIBRARIES} Threads::Threads)
 
-target_include_directories(candaemon PRIVATE ${CANDAEMON_INCLUDE_DIRS})
-target_include_directories(candaemon PRIVATE ${LIBSYSTEMD_INCLUDE_DIRS})
+target_include_directories(oresat-linux-manager PRIVATE ${OLM_INCLUDE_DIRS})
+target_include_directories(oresat-linux-manager PRIVATE ${LIBSYSTEMD_INCLUDE_DIRS})
 
-target_compile_options(candaemon PUBLIC ${LIBSYSTEMD_CFLAGS_OTHER})
+target_compile_options(oresat-linux-manager PUBLIC ${LIBSYSTEMD_CFLAGS_OTHER})
 
 
 ############################################################
 # Install
 
 # Binaries
-install(TARGETS candaemon DESTINATION /usr/bin)
+install(TARGETS oresat-linux-manager DESTINATION /usr/bin)
 
 # Daemon service file
-install(FILES oresat-candaemon.service DESTINATION /lib/systemd/system)
+install(FILES oresat-linux-manager.service DESTINATION /lib/systemd/system)
 
 
 ##############################################################################
@@ -238,7 +238,7 @@ if(${LINUX_DISTRIBUTION} MATCHES "Debian")
     set(CPACK_GENERATOR "DEB")
     set(CPACK_PACKAGE_VENDOR "Company")
     set(CPACK_COMPONENTS_ALL exe link config lastversion script log monitor)
-    set(CPACK_PACKAGE_NAME "oresat-candaemon-${BOARD}")
+    set(CPACK_PACKAGE_NAME "olm-${BOARD}")
     set(CPACK_PACKAGE_VERSION 0.0.1) # TODO link to github version??
     set(CPACK_PACKAGE_CONTACT "rmedick@pdx.edu")
     set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "CAN systemd controller")

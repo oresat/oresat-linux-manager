@@ -82,7 +82,7 @@
 #endif
 
 // pid file for daemon
-#define DEFAULT_PID_FILE        "/run/oresat-candaemon.pid"
+#define DEFAULT_PID_FILE        "/run/oresat-linux-manager.pid"
 
 
 /* Other variables and objects */
@@ -102,7 +102,7 @@ static CO_time_t            CO_time;            /* Object for current time */
 /* Realtime thread */
 static void* rt_thread(void* arg);
 
-/* candaemon apps thread */
+/* oresat linux manager apps thread */
 static void*                dbus_thread(void* arg);
 static pthread_t            dbus_thread_id;
 

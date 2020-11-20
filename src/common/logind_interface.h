@@ -4,9 +4,9 @@
  * @file        logind_interface.h
  * @ingroup     logind_interface
  *
- * This file is part of CANdaemon, a common can interface program for daemons
- * running on OreSat Linux board.
- * Project home page is <https://github.com/oresat/oresat-linux-candaemon>.
+ * This file is part of OreSat Linux Manager, a common CAN to Dbus interface
+ * for daemons running on OreSat Linux boards.
+ * Project home page is <https://github.com/oresat/oresat-linux-manager>.
  */
 
 
@@ -34,7 +34,7 @@ int logind_app_setup();
 
 
 /**
- * Give the candaemon / CAN network manager control over board's power settings
+ * Give the CAN network manager control over board's power settings
  * (issue poweroff and reboot).
  *
  * @param ODF_arg Pointer to the current SDO ODF arguments

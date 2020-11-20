@@ -1,12 +1,12 @@
 /**
- * Daemon manager for CANdaemon.
+ * Daemon manager for OLM.
  *
  * @file        daemon_manager.h
  * @ingroup     daemon_manager
  *
- * This file is part of CANdaemon, a common can interface program for daemons
- * running on OreSat Linux board.
- * Project home page is <https//github.com/oresat/oresat-linux-candaemon>.
+ * This file is part of OreSat Linux Manager, a common CAN to Dbus interface
+ * for daemons running on OreSat Linux boards.
+ * Project home page is <https://github.com/oresat/oresat-linux-manager>.
  */
 
 
@@ -128,7 +128,7 @@ CO_SDO_abortCode_t daemon_manager_ODF(CO_ODF_arg_t *ODF_arg);
  * @ingroup App_Helpers
  * @{
  *
- * Allow the CANdaemon to controll any daemon register by an app.
+ * Allow the OLM to controll any daemon register by an app.
  */
 
 

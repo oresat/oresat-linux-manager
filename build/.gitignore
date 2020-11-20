@@ -1,4 +1,8 @@
-candaemon
+oresat-linux-manager
+oresat-linux-manager*.service
+oresat-linux-manager-*
+olm-*
+olm-*.service
 *.o
 .ycm*
 .config
@@ -7,10 +11,8 @@ CMakeCache.txt
 CMakeFiles
 *.cmake
 install_manifest.txt
-candaemon-*
 _CPack_Packages
 install_manifest.txt
-oresat-candaemon.service
 README.md
 rules.ninja
 Makefile

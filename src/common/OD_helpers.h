@@ -4,9 +4,9 @@
  * @file        OD_helpers.h
  * @ingroup     OD_helpers
  *
- * This file is part of CANdaemon, a common can interface program for daemons
- * running on OreSat Linux board.
- * Project home page is <https://github.com/oresat/oresat-linux-candaemon>.
+ * This file is part of OreSat Linux Manager, a common CAN to Dbus interface
+ * for daemons running on OreSat Linux boards.
+ * Project home page is <https://github.com/oresat/oresat-linux-manager>.
  */
 
 
@@ -27,7 +27,7 @@
 /**
  * Find the location in the OD array from the OD index value.
  *
- * Mostly a copy from CO_SDO.* that is for CANdaemon and not for SDO.
+ * Mostly a copy from CO_SDO.* that is for OLM and not for SDO.
  *
  * @param index OD index for OD entry
  *
@@ -39,7 +39,7 @@ uint16_t OD_find(uint16_t index);
 /**
  * Used to read data from the object dictionary.
  *
- * Mostly a copy from CO_SDO.* that is for CANdaemon and not for SDO.
+ * Mostly a copy from CO_SDO.* that is for OLM and not for SDO.
  *
  * @param index OD index for OD entry
  * @param subIndex OD sub-index for OD entry
@@ -58,7 +58,7 @@ int OD_read(
 /**
  * Used to write data into the object dictionary.
  *
- * Mostly a copy from CO_SDO.* that is for CANdaemon and not for SDO.
+ * Mostly a copy from CO_SDO.* that is for OLM and not for SDO.
  *
  * @param index OD index for OD entry
  * @param subIndex OD sub-index for OD entry

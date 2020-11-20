@@ -1,9 +1,18 @@
-#include <stdint.h>
-
+/**
+ * Simple function that allow OLM to get and control the CPU frequency.
+ *
+ * @file        cpufreq.h
+ * @ingroup     cpufreq
+ *
+ * This file is part of OreSat Linux Manager, a common CAN to Dbus interface
+ * for daemons running on OreSat Linux boards.
+ * Project home page is <https://github.com/oresat/oresat-linux-manager>.
+ */
 
 #ifndef CPUFREQ_H
 #define CPUFREQ_H
 
+#include <stdint.h>
 
 enum cpu_gov {
     unknown = 0,

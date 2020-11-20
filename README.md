@@ -1,8 +1,8 @@
-# Oresat Linux CANdaemon
+# Oresat Linux Manager (OLM)
 
-The CANdaemon is the Linux board controller / CAN interface program for all Linux boards on OreSat.
+OreSat Linux Manager is the Linux board controller / CAN interface program for all Linux boards on OreSat.
 It is built ontop of [CANopenNode] and interfaces with [Systemd], allowing the master CAN node to control everything on the board over CAN. 
-The CANdaemon is ment to be a node on the CANbus, not the master node.
+The OLM is ment to be a node on the CANbus, not the master node.
 
 ![](docs/OreSatLinuxDiagram.jpg)
 
@@ -11,18 +11,18 @@ The CANdaemon is ment to be a node on the CANbus, not the master node.
 - Follows the [ECSS-CANBus-Extended-Protocal] on top of CiA specs.
 - Allows the CAN Network Manager to control any [daemons] on the Linux board thru [Systemd].
 - Has a app based system that uses sd-bus (systemd dbus) for DBus communication to OreSat [daemons].
-- Allows other daemons with candaemon apps to read/write to the CAN object dictionary over dbus.
+- Allows other daemons with oresat-linux-manager apps to read/write to the CAN object dictionary over dbus.
 - Allows the other processes/daemons to be written in any language that has a DBus library or a DBus binding. A lot of languages do have DBus support, See [freedesktop DBus Bindings](https://www.freedesktop.org/wiki/Software/DBusBindings/) for a DBus supported languague list.
 
 ## Directory Layout 
-- **src** - Holds an CANdaemon app for each OreSat Linux board
+- **src** - Holds an OLM app for each OreSat Linux board
     - **boards** - Holds boards apps and CANopen Object Dictionary for each OreSat Linux board.
     - **CANopenNode** - The git submodule for CANopenNode
     - **common** - Common source code, regardless of which board is enabled.
     - **socketCAN** - CANopenNode SocketCAN driver
     - **system_apps** - Apps that will be on every board.
     - **test_apps** - Apps that are used fot testing / debugging.
-- **docs** - Documentation for CANdaemon
+- **docs** - Documentation for OLM
 
 ## Dependices
 ### To compile
@@ -41,9 +41,9 @@ The CANdaemon is ment to be a node on the CANbus, not the master node.
     - `make` or `ninja`
 - Optional cmake flags, 1st option in `[ ]` is default when not specified:
     - `-DCMAKE_BUILD_TYPE=[Debug|Release]` to turn the -g -Wall cflags on/off
-- Running CANdaemon
-    - `./candaemon <device>` as a process
-    - `./candaemon <device> -d` as a daemon
+- Running OLM
+    - `./oresat-linux-manager <device>` as a process
+    - `./oresat-linux-manager <device> -d` as a daemon
 - Installing binary and daemon service file (usefull for testing)
     - `sudo make install` or `sudo ninja install`
 - Building deb binary package on a beaglebone (or debian based armhf system)

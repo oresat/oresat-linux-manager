@@ -4,9 +4,9 @@
  * @file        CO_fread.c
  * @ingroup     file_transfer
  *
- * This file is part of CANdaemon, a common can interface program for daemons
- * running on OreSat Linux board.
- * Project home page is <https://github.com/oresat/oresat-linux-candaemon>.
+ * This file is part of OreSat Linux Manager, a common CAN to Dbus interface
+ * for daemons running on OreSat Linux boards.
+ * Project home page is <https://github.com/oresat/oresat-linux-manager>.
  */
 
 
@@ -44,7 +44,7 @@
 /** The length of the file list */
 #define FILELIST_LEN        (UINT8_MAX-1)
 /** The path to the cache we file are waiting */
-#define FREAD_DIR           "/var/cache/candaemon/"
+#define FREAD_DIR           "/var/cache/oresat-linux-manager/"
 
 
 /** List of files ready for reading over CAN. */
