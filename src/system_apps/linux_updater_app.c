@@ -24,10 +24,8 @@
 #define INTERFACE_NAME      DESTINATION
 /** Dbus object path for OreSat Linux Updater dameon */
 #define OBJECT_PATH         "/org/OreSat/LinuxUpdater"
-/** Max size for file name string */
-#define FILE_NAME_SIZE      100
 /** OD index for updater app ODF */
-#define UPDATER_ODF_INDEX   0x3004
+#define UPDATER_ODF_INDEX   0x30f0
 
 
 /* Holds the current state of the updater. */
@@ -35,7 +33,7 @@ static int32_t              current_state = 0;
 /* The number archive files available. */
 static uint32_t             updates_available = 0;
 /** If an updating, this holds the name of archive file. */
-static char                 current_file[FILE_NAME_SIZE] = "\0";
+static char                 current_file[PATH_MAX] = "\0";
 
 
 int

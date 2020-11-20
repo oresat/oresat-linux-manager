@@ -209,7 +209,7 @@
 /*3006      */ typedef struct {
                UNSIGNED8      maxSubIndex;
                }              OD_syslogReader_t;
-/*30F1      */ typedef struct {
+/*30F0      */ typedef struct {
                UNSIGNED8      maxSubIndex;
                INTEGER32      currentState;
                UNSIGNED32     updatesAvailable;
@@ -891,19 +891,19 @@
 
         #define OD_3006_0_syslogReader_maxSubIndex                  0
 
-/*30F1 */
-        #define OD_30F1_linuxUpdaterApp                             0x30F1
+/*30F0 */
+        #define OD_30F0_linuxUpdaterApp                             0x30F0
 
-        #define OD_30F1_0_linuxUpdaterApp_maxSubIndex               0
-        #define OD_30F1_1_linuxUpdaterApp_currentState              1
-        #define OD_30F1_2_linuxUpdaterApp_updatesAvailable          2
-        #define OD_30F1_3_linuxUpdaterApp_currentUpdateFile         3
-        #define OD_30F1_4_linuxUpdaterApp_errorMessage              4
-        #define OD_30F1_5_linuxUpdaterApp_addUpdateFile             5
-        #define OD_30F1_6_linuxUpdaterApp_startUpdate               6
-        #define OD_30F1_7_linuxUpdaterApp_emergencyStopUpdate       7
-        #define OD_30F1_8_linuxUpdaterApp_resetUpdater              8
-        #define OD_30F1_9_linuxUpdaterApp_getAptListOutput          9
+        #define OD_30F0_0_linuxUpdaterApp_maxSubIndex               0
+        #define OD_30F0_1_linuxUpdaterApp_currentState              1
+        #define OD_30F0_2_linuxUpdaterApp_updatesAvailable          2
+        #define OD_30F0_3_linuxUpdaterApp_currentUpdateFile         3
+        #define OD_30F0_4_linuxUpdaterApp_errorMessage              4
+        #define OD_30F0_5_linuxUpdaterApp_addUpdateFile             5
+        #define OD_30F0_6_linuxUpdaterApp_startUpdate               6
+        #define OD_30F0_7_linuxUpdaterApp_emergencyStopUpdate       7
+        #define OD_30F0_8_linuxUpdaterApp_resetUpdater              8
+        #define OD_30F0_9_linuxUpdaterApp_getAptListOutput          9
 
 /*******************************************************************************
    STRUCTURES FOR VARIABLES IN DIFFERENT MEMORY LOCATIONS
@@ -965,7 +965,7 @@ struct sCO_OD_RAM{
 /*3004      */ DOMAIN          daemonList[127];
 /*3005      */ OD_daemonManager_t daemonManager;
 /*3006      */ OD_syslogReader_t syslogReader;
-/*30F1      */ OD_linuxUpdaterApp_t linuxUpdaterApp;
+/*30F0      */ OD_linuxUpdaterApp_t linuxUpdaterApp;
 
                UNSIGNED32     LastWord;
 };
@@ -1150,7 +1150,7 @@ extern struct sCO_OD_EEPROM CO_OD_EEPROM;
 /*3006, Data Type: syslogReader_t */
         #define OD_syslogReader                                     CO_OD_RAM.syslogReader
 
-/*30F1, Data Type: linuxUpdaterApp_t */
+/*30F0, Data Type: linuxUpdaterApp_t */
         #define OD_linuxUpdaterApp                                  CO_OD_RAM.linuxUpdaterApp
 
 #endif

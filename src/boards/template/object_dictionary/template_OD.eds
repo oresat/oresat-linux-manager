@@ -1728,7 +1728,7 @@ SupportedObjects=18
 15=0x3004
 16=0x3005
 17=0x3006
-18=0x30F1
+18=0x30F0
 
 [2100]
 ParameterName=Error status bits
@@ -4676,13 +4676,13 @@ AccessType=ro
 DefaultValue=0
 PDOMapping=0
 
-[30F1]
+[30F0]
 ParameterName=Linux Updater App
 ObjectType=0x9
 ;StorageLocation=RAM
 SubNumber=0xA
 
-[30F1sub0]
+[30F0sub0]
 ParameterName=max sub-index
 ObjectType=0x7
 ;StorageLocation=RAM
@@ -4691,7 +4691,7 @@ AccessType=ro
 DefaultValue=9
 PDOMapping=0
 
-[30F1sub1]
+[30F0sub1]
 ParameterName=Current State
 ObjectType=0x7
 ;StorageLocation=RAM
@@ -4700,7 +4700,7 @@ AccessType=ro
 DefaultValue=0
 PDOMapping=0
 
-[30F1sub2]
+[30F0sub2]
 ParameterName=Updates Available
 ObjectType=0x7
 ;StorageLocation=RAM
@@ -4709,7 +4709,7 @@ AccessType=ro
 DefaultValue=0
 PDOMapping=0
 
-[30F1sub3]
+[30F0sub3]
 ParameterName=Current Update File
 ObjectType=0x7
 ;StorageLocation=RAM
@@ -4718,7 +4718,7 @@ AccessType=ro
 DefaultValue=0
 PDOMapping=0
 
-[30F1sub4]
+[30F0sub4]
 ParameterName=Error Message
 ObjectType=0x7
 ;StorageLocation=RAM
@@ -4727,7 +4727,7 @@ AccessType=ro
 DefaultValue=0
 PDOMapping=0
 
-[30F1sub5]
+[30F0sub5]
 ParameterName=Add Update File
 ObjectType=0x7
 ;StorageLocation=RAM
@@ -4736,7 +4736,7 @@ AccessType=wo
 DefaultValue=0
 PDOMapping=0
 
-[30F1sub6]
+[30F0sub6]
 ParameterName=Start Update
 ObjectType=0x7
 ;StorageLocation=RAM
@@ -4745,7 +4745,7 @@ AccessType=wo
 DefaultValue=0
 PDOMapping=0
 
-[30F1sub7]
+[30F0sub7]
 ParameterName=Emergency Stop Update
 ObjectType=0x7
 ;StorageLocation=RAM
@@ -4754,7 +4754,7 @@ AccessType=wo
 DefaultValue=0
 PDOMapping=0
 
-[30F1sub8]
+[30F0sub8]
 ParameterName=Reset Updater
 ObjectType=0x7
 ;StorageLocation=RAM
@@ -4763,7 +4763,7 @@ AccessType=wo
 DefaultValue=0
 PDOMapping=0
 
-[30F1sub9]
+[30F0sub9]
 ParameterName=Get Apt List Output
 ObjectType=0x7
 ;StorageLocation=RAM
