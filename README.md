@@ -4,7 +4,7 @@ OreSat Linux Manager is the Linux board controller / CAN interface program for a
 It is built ontop of [CANopenNode] and interfaces with [Systemd], allowing the master CAN node to control everything on the board over CAN. 
 The OLM is ment to be a node on the CANbus, not the master node.
 
-![](docs/OreSatLinuxDiagram.jpg)
+![](docs/oresat-linux-manager.jpg)
 
 ## Features
 - Built on top of the [CANopenNode], therefor it follows the [CANopen-Specifcations] by CiA ([CAN-in-Automation]).
