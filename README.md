@@ -1,4 +1,5 @@
 # Oresat Linux Manager (OLM)
+[![Issues](https://img.shields.io/github/issues/oresat/oresat-linux-manager)](https://github.com/oresat/oresat-linux-manager/issues)
 
 OreSat Linux Manager is the Linux board controller / CAN interface program for all Linux boards on OreSat.
 It is built ontop of [CANopenNode] and interfaces with [Systemd], allowing the master CAN node to control everything on the board over CAN. 
