@@ -1,4 +1,5 @@
 # Oresat Linux Manager (OLM)
+[![License](https://img.shields.io/github/license/oresat/oresat-linux-manager)](./LICENSE)
 [![Issues](https://img.shields.io/github/issues/oresat/oresat-linux-manager)](https://github.com/oresat/oresat-linux-manager/issues)
 
 OreSat Linux Manager is the Linux board controller / CAN interface program for all Linux boards on OreSat.
