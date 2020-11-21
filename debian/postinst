@@ -1,0 +1,9 @@
+#!/bin/sh
+
+SERVICE_FILE=oresat-linux-managerd.service
+
+systemctl daemon-reload
+systemctl enable $SERVICE_FILE
+systemctl start $SERVICE_FILE
+
+exit 0

@@ -1,0 +1,8 @@
+#!/bin/sh
+
+SERVICE_FILE=oresat-linux-managerd.service
+
+systemctl stop $SERVICE_FILE
+systemctl disable $SERVICE_FILE
+
+exit 0

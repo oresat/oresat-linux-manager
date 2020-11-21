@@ -1,0 +1,14 @@
+#!/bin/sh
+
+CO_FREAD_CACHE=/var/cache/oresat-linux-manager/
+CO_FWRITE_DIR=/tmp/oresat-linux-manager/
+
+#remove OLM's CO_fread and CO_fread dirs
+if [ $1 = "remove"  || $1 = "purge" ]; then
+    rm -rf CO_FREAD_CACHE
+    rm -rf CO_FWRITE_DIR
+fi
+
+systemctl daemon-reload
+
+exit 0
