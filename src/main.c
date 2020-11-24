@@ -82,7 +82,7 @@
 #endif
 
 // pid file for daemon
-#define DEFAULT_PID_FILE        "/run/oresat-linux-manager.pid"
+#define DEFAULT_PID_FILE        "/run/oresat-linux-managerd.pid"
 
 
 /* Other variables and objects */
