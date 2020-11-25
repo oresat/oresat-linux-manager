@@ -185,12 +185,12 @@ fread_ODF(CO_ODF_arg_t *ODF_arg) {
 
             pthread_mutex_lock(&fread_mtx);
 
-            if(filelist[filelist_index] != NULL) { // no file
-                ODF_arg->dataLength = strlen(filelist[filelist_index]+1);
+            if(filelist[filelist_index] != NULL) { // file exist
+                ODF_arg->dataLength = strlen(filelist[filelist_index])+1;
                 memcpy(ODF_arg->data, filelist[filelist_index],
                         ODF_arg->dataLength);
             }
-            else { // file exist
+            else { // no file
                 char temp = '\0';
                 ODF_arg->dataLength = 1;
                 memcpy(ODF_arg->data, &temp, ODF_arg->dataLength);
