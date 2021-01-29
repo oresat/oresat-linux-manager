@@ -1,0 +1,47 @@
+name: build template
+
+on:
+  push:
+    branches: [ master ]
+    paths:
+      - 'src/boards/template/**.c'
+      - 'src/boards/template/**.h'
+      - 'src/CANopenNode/**'
+      - 'src/common/**'
+      - 'src/socketCAN/**'
+      - 'src/system_apps/**'
+      - 'src/main.c'
+  pull_request:
+    branches: [ master ]
+    paths:
+      - 'src/boards/template/**.c'
+      - 'src/boards/template/**.h'
+      - 'src/CANopenNode/**'
+      - 'src/common/**'
+      - 'src/socketCAN/**'
+      - 'src/system_apps/**'
+      - 'src/main.c'
+
+env:
+  BUILD_TYPE: Release
+  BOARD: template
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Get dependencies
+      run: sudo apt install libsystemd-dev cmake make gcc doxygen
+
+    - name: Configure CMake
+      shell: bash
+      working-directory: ${{github.workspace}}/build
+      run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DBOARD=$BOARD
+
+    - name: Build
+      working-directory: ${{github.workspace}}/build
+      shell: bash
+      run: cmake --build . --config $BUILD_TYPE

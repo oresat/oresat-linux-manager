@@ -2,6 +2,12 @@
 [![License](https://img.shields.io/github/license/oresat/oresat-linux-manager)](./LICENSE)
 [![Issues](https://img.shields.io/github/issues/oresat/oresat-linux-manager)](https://github.com/oresat/oresat-linux-manager/issues)
 
+![build live](https://github.com/oresat/oresat-linux-manager/workflows/build%20live/badge.svg)
+![build gps](https://github.com/oresat/oresat-linux-manager/workflows/build%20gps/badge.svg)
+![build star tracker](https://github.com/oresat/oresat-linux-manager/workflows/build%20star%20tracker/badge.svg)
+![build cfc](https://github.com/oresat/oresat-linux-manager/workflows/build%20cfc/badge.svg)
+![build template](https://github.com/oresat/oresat-linux-manager/workflows/build%20template/badge.svg)
+
 OreSat Linux Manager is the Linux board controller / CAN interface program for all Linux boards on OreSat.
 It is built ontop of [CANopenNode] and interfaces with [Systemd], allowing the master CAN node to control everything on the board over CAN. 
 The OLM is ment to be a node on the CANbus, not the master node.
