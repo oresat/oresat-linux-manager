@@ -10,7 +10,7 @@
  */
 
 #include "CANopen.h"
-#include "CO_driver.h"
+#include "301/CO_driver.h"
 #include "cpufreq.h"
 #include "log_message.h"
 #include "board_info.h"

@@ -101,12 +101,15 @@ endif()
 # Release vs debug modes (set CFLAGS, LDFLAGS, etc)
 # to use: cmake -DCMAKE_BUILD_TYPE=Debug .
 
+set(CMAKE_C_STANDARD 99)
+set(CMAKE_C_STANDARD_REQUIRED TRUE)
+
 # default to release
 if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Debug)
 endif()
 
-set(CMAKE_C_FLAGS "-Wall")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=gnu99 -Wall -DCO_VERSION_MAJOR=2 -DCO_DRIVER_CUSTOM=1")
 set(CMAKE_C_FLAGS_DEBUG "-g")
 set(CMAKE_C_FLAGS_RELEASE "-O3")
 
@@ -142,21 +145,22 @@ endif(DOXYGEN_FOUND)
 # Get source files
 
 # all paths to source directories
-set(STACK_DRIVER_DIR src/socketCAN)
 set(CANOPEN_DIR src/CANopenNode)
+set(STACK_DRIVER_DIR ${CANOPEN_DIR}/socketCAN)
 set(OD_DIR src/boards/${BOARD}/object_dictionary)
 set(COMMON_DIR src/common)
 set(SYSTEM_APPS_DIR src/system_apps)
 set(BOARD_APPS_DIR src/boards/${BOARD})
 
 set(OLM_INCLUDE_DIRS
-    ${CANOPEN_DIR}/301
+    ${CANOPEN_DIR}
     ${STACK_DRIVER_DIR}
     ${CANOPEN_DIR}
     ${OD_DIR}
     ${COMMON_DIR}
     ${SYSTEM_APPS_DIR}
     ${BOARD_APPS_DIR}
+    src
 )
 
 # deal with each board having different apps
@@ -164,40 +168,41 @@ set(OLM_INCLUDE_DIRS
 aux_source_directory(${BOARD_APPS_DIR} BOARD_APPS_SOURCES)
 aux_source_directory(${SYSTEM_APPS_DIR} SYSTEM_APPS_SOURCES)
 
+
 set(CANOPENNODE_SOURCES
     ${STACK_DRIVER_DIR}/CO_driver.c
     ${STACK_DRIVER_DIR}/CO_error.c
-    ${STACK_DRIVER_DIR}/CO_Linux_threads.c
-    ${CANOPEN_DIR}/301/CO_Emergency.c
-    ${CANOPEN_DIR}/301/CO_fifo.c
-    ${CANOPEN_DIR}/301/CO_HBconsumer.c
+    ${STACK_DRIVER_DIR}/CO_epoll_interface.c
     ${CANOPEN_DIR}/301/CO_NMT_Heartbeat.c
-    ${CANOPEN_DIR}/301/CO_PDO.c
+    ${CANOPEN_DIR}/301/CO_HBconsumer.c
+    ${CANOPEN_DIR}/301/CO_Emergency.c
     ${CANOPEN_DIR}/301/CO_SDOclient.c
     ${CANOPEN_DIR}/301/CO_SDOserver.c
     ${CANOPEN_DIR}/301/CO_SYNC.c
-    ${CANOPEN_DIR}/301/CO_TIME.c
+    ${CANOPEN_DIR}/301/CO_PDO.c
     ${CANOPEN_DIR}/301/crc16-ccitt.c
-    ${CANOPEN_DIR}/309/CO_gateway_ascii.c
+    ${CANOPEN_DIR}/301/CO_fifo.c
     ${CANOPEN_DIR}/CANopen.c
 )
 
+
 set(CANOPENNODE_HEADERS
-    ${STACK_DRIVER_DIR}/CO_error.h
-    ${STACK_DRIVER_DIR}/CO_Linux_threads.h
+    src/CO_driver_custom.h
     ${CANOPEN_DIR}/301/CO_config.h
+    ${STACK_DRIVER_DIR}/CO_driver_target.h
+    ${STACK_DRIVER_DIR}/CO_error.h
+    ${STACK_DRIVER_DIR}/CO_epoll_interface.h
+    ${STACK_DRIVER_DIR}/CO_error_msgs.h
     ${CANOPEN_DIR}/301/CO_driver.h
-    ${CANOPEN_DIR}/301/CO_Emergency.h
-    ${CANOPEN_DIR}/301/CO_fifo.h
     ${CANOPEN_DIR}/301/CO_HBconsumer.h
     ${CANOPEN_DIR}/301/CO_NMT_Heartbeat.h
-    ${CANOPEN_DIR}/301/CO_PDO.h
+    ${CANOPEN_DIR}/301/CO_Emergency.h
     ${CANOPEN_DIR}/301/CO_SDOclient.h
     ${CANOPEN_DIR}/301/CO_SDOserver.h
     ${CANOPEN_DIR}/301/CO_SYNC.h
-    ${CANOPEN_DIR}/301/CO_TIME.h
+    ${CANOPEN_DIR}/301/CO_PDO.h
     ${CANOPEN_DIR}/301/crc16-ccitt.h
-    ${CANOPEN_DIR}/309/CO_gateway_ascii.h
+    ${CANOPEN_DIR}/301/CO_fifo.h
     ${CANOPEN_DIR}/CANopen.h
 )
 

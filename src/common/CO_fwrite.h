@@ -15,7 +15,7 @@
 
 
 #include "CANopen.h"
-#include "CO_driver.h"
+#include "301/CO_driver.h"
 #include <stdint.h>
 
 

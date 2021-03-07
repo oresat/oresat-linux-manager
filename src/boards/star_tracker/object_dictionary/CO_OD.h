@@ -1,14 +1,15 @@
 // clang-format off
 /*******************************************************************************
+    CANopen Object Dictionary definition for CANopenNode v1 to v2
 
-   File - CO_OD.c/CO_OD.h
-   CANopen Object Dictionary.
+    This file was automatically generated with
+    libedssharp Object Dictionary Editor v0.8-121-g3349c4d
 
-   This file was automatically generated with libedssharp Object
-   Dictionary Editor v0.8-33-g683a144   DON'T EDIT THIS FILE MANUALLY !!!!
+    https://github.com/CANopenNode/CANopenNode
+    https://github.com/robincornelius/libedssharp
+
+    DON'T EDIT THIS FILE MANUALLY !!!!
 *******************************************************************************/
-
-
 #ifndef CO_OD_H_
 #define CO_OD_H_
 
@@ -35,25 +36,10 @@
 
    typedef domain_t     DOMAIN;
 
-#ifndef timeOfDay_t
-    typedef union {
-        unsigned long long ullValue;
-        struct {
-            unsigned long ms:28;
-            unsigned reserved:4;
-            unsigned days:16;
-            unsigned reserved2:16;
-        };
-    }timeOfDay_t;
-#endif
-
-    typedef timeOfDay_t TIME_OF_DAY;
-    typedef timeOfDay_t TIME_DIFFERENCE;
-
 
 /*******************************************************************************
    FILE INFO:
-      FileName:     star_tracker_OD.eds
+      FileName:     star_tracker_OD.xdd
       FileVersion:  0
       CreationTime: 11:32AM
       CreationDate: 11-07-2019
@@ -78,6 +64,8 @@
   #define CO_NO_TIME                     0   //Associated objects: 1012, 1013
   #define CO_NO_SDO_SERVER               1   //Associated objects: 1200-127F
   #define CO_NO_SDO_CLIENT               1   //Associated objects: 1280-12FF
+  #define CO_NO_GFC                      0   //Associated objects: 1300
+  #define CO_NO_SRDO                     0   //Associated objects: 1301-1341, 1381-13C0
   #define CO_NO_LSS_SERVER               0   //LSS Slave
   #define CO_NO_LSS_CLIENT               0   //LSS Master
   #define CO_NO_RPDO                     4   //Associated objects: 14xx, 16xx
@@ -932,14 +920,6 @@
 *******************************************************************************/
 #define  CO_OD_FIRST_LAST_WORD     0x55 //Any value from 0x01 to 0xFE. If changed, EEPROM will be reinitialized.
 
-/***** Structure for ROM variables ********************************************/
-struct sCO_OD_ROM{
-               UNSIGNED32     FirstWord;
-
-
-               UNSIGNED32     LastWord;
-};
-
 /***** Structure for RAM variables ********************************************/
 struct sCO_OD_RAM{
                UNSIGNED32     FirstWord;
@@ -995,6 +975,14 @@ struct sCO_OD_RAM{
                UNSIGNED32     LastWord;
 };
 
+/***** Structure for ROM variables ********************************************/
+struct sCO_OD_ROM{
+               UNSIGNED32     FirstWord;
+
+
+               UNSIGNED32     LastWord;
+};
+
 /***** Structure for EEPROM variables ********************************************/
 struct sCO_OD_EEPROM{
                UNSIGNED32     FirstWord;
@@ -1004,9 +992,9 @@ struct sCO_OD_EEPROM{
 };
 
 /***** Declaration of Object Dictionary variables *****************************/
-extern struct sCO_OD_ROM CO_OD_ROM;
-
 extern struct sCO_OD_RAM CO_OD_RAM;
+
+extern struct sCO_OD_ROM CO_OD_ROM;
 
 extern struct sCO_OD_EEPROM CO_OD_EEPROM;
 

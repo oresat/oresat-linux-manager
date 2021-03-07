@@ -1,30 +1,31 @@
 // clang-format off
 /*******************************************************************************
+    CANopen Object Dictionary definition for CANopenNode v1 to v2
 
-   File - CO_OD.c/CO_OD.h
-   CANopen Object Dictionary.
+    This file was automatically generated with
+    libedssharp Object Dictionary Editor v0.8-121-g3349c4d
 
-   This file was automatically generated with libedssharp Object
-   Dictionary Editor v0.8-33-g683a144   DON'T EDIT THIS FILE MANUALLY !!!!
+    https://github.com/CANopenNode/CANopenNode
+    https://github.com/robincornelius/libedssharp
+
+    DON'T EDIT THIS FILE MANUALLY !!!!
 *******************************************************************************/
-
-
-#include "301/CO_driver.h"
-#include "CO_OD.h"
-#include "301/CO_SDOserver.h"
+// For CANopenNode V2 users, C macro `CO_VERSION_MAJOR=2` has to be added to project options
+#ifndef CO_VERSION_MAJOR
+ #include "CO_driver.h"
+ #include "CO_OD.h"
+ #include "CO_SDO.h"
+#elif CO_VERSION_MAJOR < 4
+ #include "301/CO_driver.h"
+ #include "CO_OD.h"
+ #include "301/CO_SDOserver.h"
+#else
+ #error This Object dictionary is not compatible with CANopenNode v4.0 and up!
+#endif
 
 /*******************************************************************************
    DEFINITION AND INITIALIZATION OF OBJECT DICTIONARY VARIABLES
 *******************************************************************************/
-
-
-/***** Definition for ROM variables *******************************************/
-struct sCO_OD_ROM CO_OD_ROM = {
-           CO_OD_FIRST_LAST_WORD,
-
-
-           CO_OD_FIRST_LAST_WORD,
-};
 
 
 /***** Definition for RAM variables *******************************************/
@@ -90,6 +91,15 @@ struct sCO_OD_RAM CO_OD_RAM = {
 /*3100*/ 0x0,
 /*3101*/ {0x4L, 0, 0, 0, 0},
 /*3102*/ {'n', 'o', 'n', 'e'},
+
+           CO_OD_FIRST_LAST_WORD,
+};
+
+
+/***** Definition for ROM variables *******************************************/
+struct sCO_OD_ROM CO_OD_ROM = {
+           CO_OD_FIRST_LAST_WORD,
+
 
            CO_OD_FIRST_LAST_WORD,
 };
@@ -384,8 +394,8 @@ struct sCO_OD_EEPROM CO_OD_EEPROM = {
 *******************************************************************************/
 const CO_OD_entry_t CO_OD[CO_OD_NoOfElements] = {
 {0x1000, 0x00, 0x86,  4, (void*)&CO_OD_RAM.deviceType},
-{0x1001, 0x00, 0x26,  1, (void*)&CO_OD_RAM.errorRegister},
-{0x1002, 0x00, 0xA6,  4, (void*)&CO_OD_RAM.manufacturerStatusRegister},
+{0x1001, 0x00, 0x36,  1, (void*)&CO_OD_RAM.errorRegister},
+{0x1002, 0x00, 0xB6,  4, (void*)&CO_OD_RAM.manufacturerStatusRegister},
 {0x1003, 0x08, 0x8E,  4, (void*)&CO_OD_RAM.preDefinedErrorField[0]},
 {0x1005, 0x00, 0x8E,  4, (void*)&CO_OD_RAM.COB_ID_SYNCMessage},
 {0x1006, 0x00, 0x8E,  4, (void*)&CO_OD_RAM.communicationCyclePeriod},
@@ -393,15 +403,15 @@ const CO_OD_entry_t CO_OD[CO_OD_NoOfElements] = {
 {0x1008, 0x00, 0x06, 11, (void*)&CO_OD_RAM.manufacturerDeviceName},
 {0x1009, 0x00, 0x06,  4, (void*)&CO_OD_RAM.manufacturerHardwareVersion},
 {0x100A, 0x00, 0x06,  4, (void*)&CO_OD_RAM.manufacturerSoftwareVersion},
-{0x1010, 0x01, 0x8E,  4, (void*)&CO_OD_RAM.storeParameters[0]},
-{0x1011, 0x01, 0x8E,  4, (void*)&CO_OD_RAM.restoreDefaultParameters[0]},
+{0x1010, 0x01, 0x86,  4, (void*)&CO_OD_RAM.storeParameters[0]},
+{0x1011, 0x01, 0x86,  4, (void*)&CO_OD_RAM.restoreDefaultParameters[0]},
 {0x1014, 0x00, 0x86,  4, (void*)&CO_OD_RAM.COB_ID_EMCY},
 {0x1015, 0x00, 0x8E,  2, (void*)&CO_OD_RAM.inhibitTimeEMCY},
-{0x1016, 0x04, 0x8E,  4, (void*)&CO_OD_RAM.consumerHeartbeatTime[0]},
+{0x1016, 0x04, 0x86,  4, (void*)&CO_OD_RAM.consumerHeartbeatTime[0]},
 {0x1017, 0x00, 0x8E,  2, (void*)&CO_OD_RAM.producerHeartbeatTime},
 {0x1018, 0x04, 0x00,  0, (void*)&OD_record1018},
 {0x1019, 0x00, 0x0E,  1, (void*)&CO_OD_RAM.synchronousCounterOverflowValue},
-{0x1029, 0x06, 0x0E,  1, (void*)&CO_OD_RAM.errorBehavior[0]},
+{0x1029, 0x06, 0x86,  4, (void*)&CO_OD_RAM.errorBehavior[0]},
 {0x1200, 0x02, 0x00,  0, (void*)&OD_record1200},
 {0x1280, 0x03, 0x00,  0, (void*)&OD_record1280},
 {0x1400, 0x02, 0x00,  0, (void*)&OD_record1400},
@@ -421,21 +431,21 @@ const CO_OD_entry_t CO_OD[CO_OD_NoOfElements] = {
 {0x1A02, 0x08, 0x00,  0, (void*)&OD_record1A02},
 {0x1A03, 0x08, 0x00,  0, (void*)&OD_record1A03},
 {0x1F80, 0x00, 0x8E,  4, (void*)&CO_OD_RAM.NMTStartup},
-{0x2100, 0x00, 0x26, 10, (void*)&CO_OD_RAM.errorStatusBits},
+{0x2100, 0x00, 0x36, 10, (void*)&CO_OD_RAM.errorStatusBits},
 {0x2101, 0x00, 0x0E,  1, (void*)&CO_OD_RAM.CANNodeID},
 {0x2102, 0x00, 0x8E,  2, (void*)&CO_OD_RAM.CANBitRate},
 {0x2103, 0x00, 0x8E,  2, (void*)&CO_OD_RAM.SYNCCounter},
 {0x2104, 0x00, 0x86,  2, (void*)&CO_OD_RAM.SYNCTime},
 {0x2106, 0x00, 0x86,  4, (void*)&CO_OD_RAM.powerOnCounter},
-{0x2107, 0x05, 0x8E,  2, (void*)&CO_OD_RAM.performance[0]},
-{0x2108, 0x01, 0x8E,  2, (void*)&CO_OD_RAM.temperature[0]},
-{0x2109, 0x01, 0x8E,  2, (void*)&CO_OD_RAM.voltage[0]},
+{0x2107, 0x05, 0x86,  4, (void*)&CO_OD_RAM.performance[0]},
+{0x2108, 0x01, 0x86,  4, (void*)&CO_OD_RAM.temperature[0]},
+{0x2109, 0x01, 0x86,  4, (void*)&CO_OD_RAM.voltage[0]},
 {0x2130, 0x03, 0x00,  0, (void*)&OD_record2130},
 {0x3000, 0x18, 0x00,  0, (void*)&OD_record3000},
 {0x3001, 0x03, 0x00,  0, (void*)&OD_record3001},
-{0x3002, 0x7F, 0x0E,  0, (void*)0},
+{0x3002, 0x7F, 0x86,  4, (void*)&CO_OD_RAM.readFileList[0]},
 {0x3003, 0x08, 0x00,  0, (void*)&OD_record3003},
-{0x3004, 0x7F, 0x0E,  0, (void*)0},
+{0x3004, 0x7F, 0x86,  4, (void*)&CO_OD_RAM.daemonList[0]},
 {0x3005, 0x04, 0x00,  0, (void*)&OD_record3005},
 {0x3006, 0x00, 0x00,  0, (void*)&OD_record3006},
 {0x30F0, 0x09, 0x00,  0, (void*)&OD_record30F0},
