@@ -1,11 +1,11 @@
-name: build template
+name: build generic
 
 on:
   push:
     branches: [ master ]
     paths:
-      - 'src/boards/template/**.c'
-      - 'src/boards/template/**.h'
+      - 'src/boards/generic/**.c'
+      - 'src/boards/generic/**.h'
       - 'src/CANopenNode/**'
       - 'src/common/**'
       - 'src/socketCAN/**'
@@ -14,8 +14,8 @@ on:
   pull_request:
     branches: [ master ]
     paths:
-      - 'src/boards/template/**.c'
-      - 'src/boards/template/**.h'
+      - 'src/boards/generic/**.c'
+      - 'src/boards/generic/**.h'
       - 'src/CANopenNode/**'
       - 'src/common/**'
       - 'src/socketCAN/**'
@@ -24,7 +24,7 @@ on:
 
 env:
   BUILD_TYPE: Release
-  BOARD: template
+  BOARD: generic
 
 jobs:
   build:
