@@ -4,6 +4,7 @@ on:
   push:
     branches: [ master ]
     paths:
+      - '.github/workflows/build_cfc.yml'
       - 'src/boards/cfc/**.c'
       - 'src/boards/cfc/**.h'
       - 'src/CANopenNode/**'
@@ -14,6 +15,7 @@ on:
   pull_request:
     branches: [ master ]
     paths:
+      - '.github/workflows/build_cfc.yml'
       - 'src/boards/cfc/**.c'
       - 'src/boards/cfc/**.h'
       - 'src/CANopenNode/**'

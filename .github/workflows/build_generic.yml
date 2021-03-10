@@ -4,6 +4,7 @@ on:
   push:
     branches: [ master ]
     paths:
+      - '.github/workflows/build_generic.yml'
       - 'src/boards/generic/**.c'
       - 'src/boards/generic/**.h'
       - 'src/CANopenNode/**'
@@ -14,6 +15,7 @@ on:
   pull_request:
     branches: [ master ]
     paths:
+      - '.github/workflows/build_generic.yml'
       - 'src/boards/generic/**.c'
       - 'src/boards/generic/**.h'
       - 'src/CANopenNode/**'
