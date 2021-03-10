@@ -27,6 +27,10 @@ extern "C" {
 #undef CO_CONFIG_STORAGE_ENABLE
 #define CO_CONFIG_STORAGE_ENABLE 0
 
+/* SDO configs */
+#undef CO_CONFIG_SDO_CLI
+#define CO_CONFIG_SDO_CLI 0
+
 /* LEDS configs */
 #undef CO_CONFIG_LEDS_ENABLE
 #define CO_CONFIG_LEDS_ENABLE 0
