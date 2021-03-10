@@ -62,7 +62,7 @@ struct sCO_OD_ROM CO_OD_ROM = {
            CO_OD_FIRST_LAST_WORD,
 
 /*1000*/ 0x0000L,
-/*1008*/ {'O', 'r', 'e', 'S', 'a', 't', ' ', 'T', 'e', 'm', 'p', 'l', 'a', 't', 'e'},
+/*1008*/ {'O', 'r', 'e', 'S', 'a', 't', ' ', 'L', 'i', 'n', 'u', 'x', ' ', 'G', 'e', 'n', 'e', 'r', 'i', 'c'},
 /*1009*/ {'0', '.', '0'},
 /*100A*/ {'0', '.', '0', '.', '0'},
 /*1018*/ {0x4L, 0x0000L, 0x0000L, 0x0000L, 0x0000L},
@@ -418,7 +418,7 @@ const CO_OD_entry_t CO_OD[CO_OD_NoOfElements] = {
 {0x1005, 0x00, 0x8F,  4, (void*)&CO_OD_PERSIST_COMM.COB_ID_SYNCMessage},
 {0x1006, 0x00, 0x8F,  4, (void*)&CO_OD_PERSIST_COMM.communicationCyclePeriod},
 {0x1007, 0x00, 0x8F,  4, (void*)&CO_OD_PERSIST_COMM.synchronousWindowLength},
-{0x1008, 0x00, 0x05, 15, (void*)&CO_OD_ROM.manufacturerDeviceName},
+{0x1008, 0x00, 0x05, 20, (void*)&CO_OD_ROM.manufacturerDeviceName},
 {0x1009, 0x00, 0x05,  3, (void*)&CO_OD_ROM.manufacturerHardwareVersion},
 {0x100A, 0x00, 0x05,  5, (void*)&CO_OD_ROM.manufacturerSoftwareVersion},
 {0x1010, 0x04, 0x8E,  4, (void*)&CO_OD_RAM.storeParameters[0]},

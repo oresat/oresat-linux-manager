@@ -3,7 +3,7 @@
 [![License](https://img.shields.io/github/license/oresat/oresat-linux-manager)](./LICENSE)
 [![Issues](https://img.shields.io/github/issues/oresat/oresat-linux-manager)](https://github.com/oresat/oresat-linux-manager/issues)
 
-![build template](https://github.com/oresat/oresat-linux-manager/workflows/build%20template/badge.svg)
+![build generic](https://github.com/oresat/oresat-linux-manager/workflows/build%20generic/badge.svg)
 ![build gps](https://github.com/oresat/oresat-linux-manager/workflows/build%20gps/badge.svg)
 ![build star tracker](https://github.com/oresat/oresat-linux-manager/workflows/build%20star%20tracker/badge.svg)
 ![build cfc](https://github.com/oresat/oresat-linux-manager/workflows/build%20cfc/badge.svg)
@@ -75,7 +75,7 @@ Linux board.
 
 ## Making a new board
 
-- `cp -r boards/template boards/<new_board_name>`
+- `cp -r boards/generic boards/<new_board_name>`
 - modify /boards/NEW_BOARD_NAME/board_apps.* as needed
 - modify /boards/NEW_BOARD_NAME/objDict with [libedssharp] as needed
 

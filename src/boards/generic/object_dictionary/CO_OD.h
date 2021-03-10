@@ -39,7 +39,7 @@
 
 /*******************************************************************************
    FILE INFO:
-      FileName:     template_OD.xdd
+      FileName:     generic_OD.xdd
       FileVersion:  1
       CreationTime: 10:41PM
       CreationDate: 03-09-2021
@@ -51,7 +51,7 @@
    DEVICE INFO:
       VendorName:     Portland State Aerospace Society
       VendorNumber:   0
-      ProductName:    OreSat Template
+      ProductName:    OreSat Generic
       ProductNumber:  0
 *******************************************************************************/
 
@@ -730,7 +730,7 @@ struct sCO_OD_ROM{
                UNSIGNED32     FirstWord;
 
 /*1000      */ UNSIGNED32     deviceType;
-/*1008      */ VISIBLE_STRING manufacturerDeviceName[15];
+/*1008      */ VISIBLE_STRING manufacturerDeviceName[20];
 /*1009      */ VISIBLE_STRING manufacturerHardwareVersion[3];
 /*100A      */ VISIBLE_STRING manufacturerSoftwareVersion[5];
 /*1018      */ OD_identity_t   identity;
@@ -818,7 +818,7 @@ extern struct sCO_OD_PERSIST_MFR CO_OD_PERSIST_MFR;
 
 /*1008, Data Type: VISIBLE_STRING */
         #define OD_manufacturerDeviceName                           CO_OD_ROM.manufacturerDeviceName
-        #define ODL_manufacturerDeviceName_stringLength             15
+        #define ODL_manufacturerDeviceName_stringLength             20
 
 /*1009, Data Type: VISIBLE_STRING */
         #define OD_manufacturerHardwareVersion                      CO_OD_ROM.manufacturerHardwareVersion

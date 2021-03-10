@@ -1,21 +1,21 @@
 [FileInfo]
-FileName=template_OD.eds
+FileName=generic_OD.eds
 FileVersion=1
 FileRevision=1
 LastEDS=
 EDSVersion=4.0
-Description=OreSat Template
+Description=OreSat Generic
 CreationTime=10:41PM
 CreationDate=03-09-2021
 CreatedBy=Ryan Medick
-ModificationTime=10:43PM
+ModificationTime=11:05PM
 ModificationDate=03-09-2021
 ModifiedBy=Ryan Medick
 
 [DeviceInfo]
 VendorName=Portland State Aerospace Society
 VendorNumber=0
-ProductName=OreSat Template
+ProductName=OreSat Generic
 ProductNumber=0
 RevisionNumber=0
 BaudRate_10=1
@@ -293,7 +293,7 @@ ObjectType=0x7
 ;StorageLocation=ROM
 DataType=0x0009
 AccessType=ro
-DefaultValue=OreSat Template
+DefaultValue=OreSat Linux Generic
 PDOMapping=0
 
 [1009]
@@ -1269,7 +1269,7 @@ PDOMapping=0
 ParameterName=TPDO communication parameter
 ObjectType=0x9
 ;StorageLocation=PERSIST_COMM
-SubNumber=0x6
+SubNumber=0x7
 
 [1800sub0]
 ParameterName=Highest sub-index supported
@@ -1307,6 +1307,15 @@ AccessType=rw
 DefaultValue=0
 PDOMapping=0
 
+[1800sub4]
+ParameterName=compatibility entry
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x0005
+AccessType=ro
+DefaultValue=0
+PDOMapping=0
+
 [1800sub5]
 ParameterName=Event timer
 ObjectType=0x7
@@ -1329,7 +1338,7 @@ PDOMapping=0
 ParameterName=TPDO communication parameter
 ObjectType=0x9
 ;StorageLocation=PERSIST_COMM
-SubNumber=0x6
+SubNumber=0x7
 
 [1801sub0]
 ParameterName=Highest sub-index supported
@@ -1367,6 +1376,15 @@ AccessType=rw
 DefaultValue=0
 PDOMapping=0
 
+[1801sub4]
+ParameterName=compatibility entry
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x0005
+AccessType=ro
+DefaultValue=0
+PDOMapping=0
+
 [1801sub5]
 ParameterName=Event timer
 ObjectType=0x7
@@ -1389,7 +1407,7 @@ PDOMapping=0
 ParameterName=TPDO communication parameter
 ObjectType=0x9
 ;StorageLocation=PERSIST_COMM
-SubNumber=0x6
+SubNumber=0x7
 
 [1802sub0]
 ParameterName=Highest sub-index supported
@@ -1427,6 +1445,15 @@ AccessType=rw
 DefaultValue=0
 PDOMapping=0
 
+[1802sub4]
+ParameterName=compatibility entry
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x0005
+AccessType=ro
+DefaultValue=0
+PDOMapping=0
+
 [1802sub5]
 ParameterName=Event timer
 ObjectType=0x7
@@ -1449,7 +1476,7 @@ PDOMapping=0
 ParameterName=TPDO communication parameter
 ObjectType=0x9
 ;StorageLocation=PERSIST_COMM
-SubNumber=0x6
+SubNumber=0x7
 
 [1803sub0]
 ParameterName=Highest sub-index supported
@@ -1484,6 +1511,15 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0006
 AccessType=rw
+DefaultValue=0
+PDOMapping=0
+
+[1803sub4]
+ParameterName=compatibility entry
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x0005
+AccessType=ro
 DefaultValue=0
 PDOMapping=0
 

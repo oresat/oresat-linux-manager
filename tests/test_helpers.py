@@ -3,7 +3,7 @@
 import canopen
 
 # all nodes require an eds file, even if it is not used
-EDS_FILE = "../src/boards/template/object_dictionary/template_OD.eds"
+EDS_FILE = "../src/boards/generic/object_dictionary/generic_OD.eds"
 
 
 def connect_bus():
