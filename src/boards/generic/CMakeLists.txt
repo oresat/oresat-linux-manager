@@ -1,23 +1,25 @@
-# generic OreSat board
+# Generic OreSat board
 
-set(BOARD_APPS_SOURCES
-    board_apps.c
+set(BOARD_SOURCES
+    board_main.c
     )
 
-#[[ uncomment this if there are headers, update add_library() too
-
-set(BOARD_APPS_HEADERS
-    temp.c
+set(BOARD_HEADERS
+    # temp.h
     )
 
-]]
+add_library(board ${BOARD_SOURCES} ${BOARD_HEADERS})
 
-add_library(board_apps ${BOARD_APPS_SOURCES})
+target_link_libraries(board
+    CANopenNode
+    core
+    core_apps
+    core_ODFs
+    common
+    apps
+    )
 
-target_link_libraries(board_apps CANopenNode)
-target_link_libraries(board_apps olm_common)
-
-target_include_directories(board_apps PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+target_include_directories(board PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 
 add_subdirectory(object_dictionary)
 

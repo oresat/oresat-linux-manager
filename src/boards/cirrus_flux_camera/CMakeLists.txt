@@ -1,19 +1,25 @@
 # CFC board
 
-set(BOARD_APPS_SOURCES
-    board_apps.c
+set(BOARD_SOURCES
+    board_main.c
     )
 
-set(BOARD_APPS_HEADERS
+set(BOARD_HEADERS
     # temp.h
     )
 
-add_library(board_apps ${BOARD_APPS_SOURCES} ${BOARD_APPS_HEADERS})
+add_library(board ${BOARD_SOURCES} ${BOARD_HEADERS})
 
-target_link_libraries(board_apps CANopenNode)
-target_link_libraries(board_apps olm_common)
+target_link_libraries(board
+    CANopenNode
+    core
+    core_apps
+    core_ODFs
+    common
+    apps
+    )
 
-target_include_directories(board_apps PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+target_include_directories(board PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 
 add_subdirectory(object_dictionary)
 

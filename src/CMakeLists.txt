@@ -1,3 +1,4 @@
+# src
 
 set(CANOPEN_DIR CANopenNode)
 set(STACK_DRIVER_DIR ${CANOPEN_DIR}/socketCAN)
@@ -49,5 +50,6 @@ target_include_directories(CANopenNode PUBLIC
     )
 
 add_subdirectory(common)
+add_subdirectory(core)
+add_subdirectory(apps)
 add_subdirectory(boards)
-add_subdirectory(system_apps)
