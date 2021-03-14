@@ -2,11 +2,10 @@
 
 set(BOARD_APPS_SOURCES
     board_apps.c
-    pru_camera_test_app.c
     )
 
 set(BOARD_APPS_HEADERS
-    pru_camera_test_app.h
+    # temp.h
     )
 
 add_library(board_apps ${BOARD_APPS_SOURCES} ${BOARD_APPS_HEADERS})
