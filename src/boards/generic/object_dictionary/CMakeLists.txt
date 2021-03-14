@@ -1,3 +1,4 @@
+# object dictionary
 
 set(OD_SOURCES CO_OD.c)
 set(OD_HEADERS CO_OD.h)

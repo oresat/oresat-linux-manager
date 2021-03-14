@@ -12,7 +12,6 @@
 #ifndef LOG_MESSAGE_H
 #define LOG_MESSAGE_H
 
-#include "CANopen.h"
 #include <syslog.h>
 
 /*
@@ -21,24 +20,22 @@
  */
 void log_message(int priority, const char *fmt, ...);
 
+#define LOG_DBUS_PROPERTY_READ_ERROR(log_lvl, app_name, prop_name) \
+    log_message(log_lvl, "app %s: dbus property %s read failed", app_name, prop_name)
 
-/**
- * A nice function for a app to log message in syslogs with a standard format.
- *
- * @param app_name: for application name
- * @param priority: for log proprity
- * @param message: the message to log
- */
-void app_log_message(const char *app_name, int priority, const char *message);
+#define LOG_DBUS_SIGNAL_READ_ERROR(log_lvl, app_name, signal_name) \
+    log_message(log_lvl, "app %s: dbus signal %s read failed", app_name, signal_name)
 
+#define LOG_DBUS_SIGNAL_USERDATA_ERROR(log_lvl, app_name, signal_name) \
+    log_message(log_lvl, "app %s: dbus signal %s is missing userdata", app_name, signal_name)
 
-/**
- * A nice function for a ODF to log message in syslogs with a standard format.
- *
- * @param ODF_name: for object dictionary function name
- * @param ODF_arg: for ODF data (index, subindex, RW access. etc)
- * @param message: the message to log
- */
-void log_error_ODF(char *ODF_name, CO_ODF_arg_t *ODF_arg, char *message);
+#define LOG_DBUS_SIGNAL_MATCH_ERROR(log_lvl, app_name, signal_name) \
+    log_message(log_lvl, "app %s: dbus signal %s match failed", app_name, signal_name)
 
-#endif
+#define LOG_DBUS_METHOD_READ_ERROR(log_lvl, app_name, signal_name) \
+    log_message(log_lvl, "app %s: dbus method %s read failed", app_name, signal_name)
+
+#define LOG_DBUS_CALL_METHOD_ERROR(log_lvl, app_name, signal_name) \
+    log_message(log_lvl, "app %s: dbus method %s call failed", app_name, signal_name)
+
+#endif /* LOG_MESSAGE_H */

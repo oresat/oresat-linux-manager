@@ -22,7 +22,9 @@
 #include "CO_error.h"
 #include "CO_epoll_interface.h"
 
+#include "olm_app.h"
 #include "board_info.h"
+#include "board_main.h"
 #include "daemon_manager.h"
 #include "dbus_controller.h"
 #include "CO_fread.h"
@@ -166,6 +168,7 @@ int main (int argc, char *argv[]) {
     int opt;
     bool firstRun = true;
     bool daemon_flag = false;
+    olm_app_t **apps;
 
     char* CANdevice = NULL;         /* CAN device, configurable by arguments. */
     bool nodeIdFromArgs = false;    /* True, if program arguments are used for CANopen Node Id */
@@ -336,11 +339,10 @@ int main (int argc, char *argv[]) {
             daemon_manager_setup();
             board_info_setup();
 
+            apps = board_main();
+
             // setup dbus controller
             dbus_controller_init();
-
-            // setup apps
-            dbus_controller_setup_apps();
 
             /* Create rt_thread and set priority */
             if (pthread_create(&rt_thread_id, NULL, rt_thread, NULL) != 0) {

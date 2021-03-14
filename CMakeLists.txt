@@ -143,9 +143,12 @@ add_subdirectory(src)
 target_link_libraries(oresat-linux-manager
     CANopenNode
     object_dictionary
-    olm_common
-    system_apps
-    board_apps
+    common
+    core
+    core_apps
+    core_ODFs
+    apps
+    board
     ${LIBSYSTEMD_LIBRARIES}
     Threads::Threads
     )
