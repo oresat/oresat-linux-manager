@@ -24,6 +24,7 @@
 #include "CO_epoll_interface.h"
 
 #include "core/ODFs/CO_fstream_odf.h"
+#include "core/ODFs/file_caches_odf.h"
 #include "olm_app.h"
 #include "board_info.h"
 #include "board_main.h"
@@ -31,7 +32,7 @@
 #include "dbus_controller.h"
 #include "olm_file_cache.h"
 #include "CO_fstream_odf.h"
-//#include "files_caches_odf.h"
+#include "file_caches_odf.h"
 
 /* Interval of mainline and real-time thread in microseconds */
 #ifndef MAIN_THREAD_INTERVAL_US
@@ -196,6 +197,7 @@ int main (int argc, char *argv[]) {
     olm_file_cache_new(FWRITE_CACHE_DIR, &fwrite_cache);
     CO_fstream_t CO_fread_data = CO_FSTREAM_INITALIZER(FREAD_TMP_DIR, fread_cache);
     CO_fstream_t CO_fwrite_data = CO_FSTREAM_INITALIZER(FWRITE_TMP_DIR, fwrite_cache);
+    file_caches_t caches_odf_data = FILE_CACHES_INTIALIZER(fread_cache, fwrite_cache);
 
     char* CANdevice = NULL;         /* CAN device, configurable by arguments. */
     bool nodeIdFromArgs = false;    /* True, if program arguments are used for CANopen Node Id */
@@ -370,9 +372,9 @@ int main (int argc, char *argv[]) {
 #endif
 
             // configure core ODFs
-            //CO_OD_configure(CO->SDO[0], OD_3001_fileCaches, file_caches_ODF, NULL, 0, 0U);
-            CO_OD_configure(CO->SDO[0], OD_3002_fread, CO_fread_ODF, NULL, 0, 0U);
-            CO_OD_configure(CO->SDO[0], OD_3003_fwrite, CO_fwrite_ODF, NULL, 0, 0U);
+            CO_OD_configure(CO->SDO[0], OD_3001_fileCaches, file_caches_ODF, &caches_odf_data, 0, 0U);
+            CO_OD_configure(CO->SDO[0], OD_3002_fread, CO_fread_ODF, &CO_fread_data, 0, 0U);
+            CO_OD_configure(CO->SDO[0], OD_3003_fwrite, CO_fwrite_ODF, &CO_fwrite_data, 0, 0U);
 
             log_printf(LOG_INFO, DBG_CAN_OPEN_INFO, CO_activeNodeId, "communication reset");
         }
@@ -447,6 +449,10 @@ int main (int argc, char *argv[]) {
     // make sure the files are closed when ending program
     CO_fstream_reset(&CO_fread_data);
     CO_fstream_reset(&CO_fwrite_data);
+
+    file_caches_free(&caches_odf_data);
+    olm_file_cache_free(fread_cache);
+    olm_file_cache_free(fwrite_cache);
 
     /* join threads */
     CO_endProgram = 1;

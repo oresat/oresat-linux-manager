@@ -8,7 +8,7 @@ Description=OreSat Generic
 CreationTime=11:41PM
 CreationDate=03-09-2021
 CreatedBy=Ryan Medick
-ModificationTime=7:18PM
+ModificationTime=10:03PM
 ModificationDate=03-15-2021
 ModifiedBy=Ryan Medick
 
@@ -1899,19 +1899,20 @@ DefaultValue=0x00000008
 PDOMapping=0
 
 [ManufacturerObjects]
-SupportedObjects=12
+SupportedObjects=13
 1=0x2000
 2=0x2010
 3=0x2011
 4=0x2100
 5=0x2101
 6=0x3000
-7=0x3002
-8=0x3003
-9=0x3004
-10=0x3005
-11=0x3006
-12=0x30F0
+7=0x3001
+8=0x3002
+9=0x3003
+10=0x3004
+11=0x3005
+12=0x3006
+13=0x30F0
 
 [2000]
 ParameterName=BUS management
@@ -2266,6 +2267,102 @@ DataType=0x0005
 AccessType=ro
 DefaultValue=0
 PDOMapping=1
+
+[3001]
+ParameterName=File caches
+ObjectType=0x9
+;StorageLocation=RAM
+SubNumber=0xA
+
+[3001sub0]
+ParameterName=Highest sub-index supported
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x0005
+AccessType=ro
+DefaultValue=0x09
+PDOMapping=0
+
+[3001sub1]
+ParameterName=Fread cache len
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x0005
+AccessType=ro
+DefaultValue=0
+PDOMapping=1
+
+[3001sub2]
+ParameterName=Fwrite cache len
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x0005
+AccessType=ro
+DefaultValue=0
+PDOMapping=1
+
+[3001sub3]
+ParameterName=Cache selector
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x0005
+AccessType=rw
+DefaultValue=0
+PDOMapping=0
+
+[3001sub4]
+ParameterName=Filter
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x000F
+AccessType=rw
+DefaultValue=
+PDOMapping=0
+
+[3001sub5]
+ParameterName=Cache len
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x0007
+AccessType=ro
+DefaultValue=0
+PDOMapping=0
+
+[3001sub6]
+ParameterName=Iterator
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x0007
+AccessType=rw
+DefaultValue=0
+PDOMapping=0
+
+[3001sub7]
+ParameterName=File name
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x000F
+AccessType=ro
+DefaultValue=
+PDOMapping=0
+
+[3001sub8]
+ParameterName=File size
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x0007
+AccessType=ro
+DefaultValue=0
+PDOMapping=0
+
+[3001sub9]
+ParameterName=Delete file
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x000F
+AccessType=wo
+DefaultValue=
+PDOMapping=0
 
 [3002]
 ParameterName=Fread

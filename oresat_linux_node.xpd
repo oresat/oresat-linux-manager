@@ -15,7 +15,7 @@
         <ProfileTechnology>CANopen</ProfileTechnology>
       </ISO15745Reference>
     </ProfileHeader>
-    <ProfileBody xmlns:q1="http://www.canopen.org/xml/1.1" xsi:type="q1:ProfileBody_Device_CANopen" formatName="CANopen" formatVersion="1.0" fileName="oresat_linux_node.xpd" fileCreator="Ryan Medick" fileCreationDate="2021-03-09" fileCreationTime="13:57:28.0000000-07:00" fileModifiedBy="Ryan Medick" fileModificationDate="2021-03-15" fileModificationTime="19:50:16.2823740-07:00" fileVersion="1" supportedLanguages="en" xmlns="">
+    <ProfileBody xmlns:q1="http://www.canopen.org/xml/1.1" xsi:type="q1:ProfileBody_Device_CANopen" formatName="CANopen" formatVersion="1.0" fileName="oresat_linux_node.xpd" fileCreator="Ryan Medick" fileCreationDate="2021-03-09" fileCreationTime="13:57:28.0000000-07:00" fileModifiedBy="Ryan Medick" fileModificationDate="2021-03-15" fileModificationTime="22:00:18.1826670-07:00" fileVersion="1" supportedLanguages="en" xmlns="">
       <q1:DeviceIdentity>
         <q1:vendorName>Portland State Aerospace Society</q1:vendorName>
         <q1:vendorID>0</q1:vendorID>
@@ -646,6 +646,38 @@
             </q1:varDeclaration>
             <q1:varDeclaration name="Root parition percent" uniqueID="UID_RECSUB_30001C">
               <USINT />
+            </q1:varDeclaration>
+          </q1:struct>
+          <q1:struct name="File caches" uniqueID="UID_REC_3001">
+            <q1:varDeclaration name="Highest sub-index supported" uniqueID="UID_RECSUB_300100">
+              <USINT />
+            </q1:varDeclaration>
+            <q1:varDeclaration name="Fread cache len" uniqueID="UID_RECSUB_300101">
+              <USINT />
+            </q1:varDeclaration>
+            <q1:varDeclaration name="Fwrite cache len" uniqueID="UID_RECSUB_300102">
+              <USINT />
+            </q1:varDeclaration>
+            <q1:varDeclaration name="Cache selector" uniqueID="UID_RECSUB_300103">
+              <USINT />
+            </q1:varDeclaration>
+            <q1:varDeclaration name="Filter" uniqueID="UID_RECSUB_300104">
+              <BITSTRING />
+            </q1:varDeclaration>
+            <q1:varDeclaration name="Cache len" uniqueID="UID_RECSUB_300105">
+              <UDINT />
+            </q1:varDeclaration>
+            <q1:varDeclaration name="Iterator" uniqueID="UID_RECSUB_300106">
+              <UDINT />
+            </q1:varDeclaration>
+            <q1:varDeclaration name="File name" uniqueID="UID_RECSUB_300107">
+              <BITSTRING />
+            </q1:varDeclaration>
+            <q1:varDeclaration name="File size" uniqueID="UID_RECSUB_300108">
+              <UDINT />
+            </q1:varDeclaration>
+            <q1:varDeclaration name="Delete file" uniqueID="UID_RECSUB_300109">
+              <BITSTRING />
             </q1:varDeclaration>
           </q1:struct>
           <q1:struct name="Fread" uniqueID="UID_REC_3002">
@@ -2388,6 +2420,57 @@ Manufacturer may define its own constants up to index 0xFF. Of course, he must t
             <USINT />
             <q1:defaultValue value="0" />
           </q1:parameter>
+          <q1:parameter uniqueID="UID_OBJ_3001">
+            <label lang="en">File caches</label>
+            <q1:dataTypeIDRef uniqueIDRef="UID_REC_3001" />
+          </q1:parameter>
+          <q1:parameter uniqueID="UID_SUB_300100">
+            <label lang="en">Highest sub-index supported</label>
+            <USINT />
+            <q1:defaultValue value="0x09" />
+          </q1:parameter>
+          <q1:parameter uniqueID="UID_SUB_300101">
+            <label lang="en">Fread cache len</label>
+            <USINT />
+            <q1:defaultValue value="0" />
+          </q1:parameter>
+          <q1:parameter uniqueID="UID_SUB_300102">
+            <label lang="en">Fwrite cache len</label>
+            <USINT />
+            <q1:defaultValue value="0" />
+          </q1:parameter>
+          <q1:parameter uniqueID="UID_SUB_300103" access="readWrite">
+            <label lang="en">Cache selector</label>
+            <USINT />
+            <q1:defaultValue value="0" />
+          </q1:parameter>
+          <q1:parameter uniqueID="UID_SUB_300104" access="readWrite">
+            <label lang="en">Filter</label>
+            <BITSTRING />
+          </q1:parameter>
+          <q1:parameter uniqueID="UID_SUB_300105">
+            <label lang="en">Cache len</label>
+            <UDINT />
+            <q1:defaultValue value="0" />
+          </q1:parameter>
+          <q1:parameter uniqueID="UID_SUB_300106" access="readWrite">
+            <label lang="en">Iterator</label>
+            <UDINT />
+            <q1:defaultValue value="0" />
+          </q1:parameter>
+          <q1:parameter uniqueID="UID_SUB_300107">
+            <label lang="en">File name</label>
+            <BITSTRING />
+          </q1:parameter>
+          <q1:parameter uniqueID="UID_SUB_300108">
+            <label lang="en">File size</label>
+            <UDINT />
+            <q1:defaultValue value="0" />
+          </q1:parameter>
+          <q1:parameter uniqueID="UID_SUB_300109" access="write">
+            <label lang="en">Delete file</label>
+            <BITSTRING />
+          </q1:parameter>
           <q1:parameter uniqueID="UID_OBJ_3002">
             <label lang="en">Fread</label>
             <q1:dataTypeIDRef uniqueIDRef="UID_REC_3002" />
@@ -2603,7 +2686,7 @@ Manufacturer may define its own constants up to index 0xFF. Of course, he must t
         <ProfileTechnology>CANopen</ProfileTechnology>
       </ISO15745Reference>
     </ProfileHeader>
-    <ProfileBody xmlns:q2="http://www.canopen.org/xml/1.1" xsi:type="q2:ProfileBody_CommunicationNetwork_CANopen" formatName="CANopen" formatVersion="1.0" fileName="oresat_linux_node.xpd" fileCreator="Ryan Medick" fileCreationDate="2021-03-09" fileCreationTime="13:57:28.0000000-07:00" fileModificationDate="2021-03-15" fileModificationTime="19:50:16.2823740-07:00" fileVersion="1" supportedLanguages="en" xmlns="">
+    <ProfileBody xmlns:q2="http://www.canopen.org/xml/1.1" xsi:type="q2:ProfileBody_CommunicationNetwork_CANopen" formatName="CANopen" formatVersion="1.0" fileName="oresat_linux_node.xpd" fileCreator="Ryan Medick" fileCreationDate="2021-03-09" fileCreationTime="13:57:28.0000000-07:00" fileModificationDate="2021-03-15" fileModificationTime="22:00:18.1826670-07:00" fileVersion="1" supportedLanguages="en" xmlns="">
       <ApplicationLayers>
         <q2:CANopenObjectList>
           <CANopenObject index="1000" name="Device type" objectType="7" PDOmapping="no" uniqueIDRef="UID_OBJ_1000" />
@@ -2912,6 +2995,18 @@ Manufacturer may define its own constants up to index 0xFF. Of course, he must t
             <CANopenSubObject subIndex="1A" name="Root parition total" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_30001A" />
             <CANopenSubObject subIndex="1B" name="Root parition free" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_30001B" />
             <CANopenSubObject subIndex="1C" name="Root parition percent" objectType="7" PDOmapping="TPDO" uniqueIDRef="UID_SUB_30001C" />
+          </CANopenObject>
+          <CANopenObject index="3001" name="File caches" objectType="9" uniqueIDRef="UID_OBJ_3001" subNumber="10">
+            <CANopenSubObject subIndex="00" name="Highest sub-index supported" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_300100" />
+            <CANopenSubObject subIndex="01" name="Fread cache len" objectType="7" PDOmapping="TPDO" uniqueIDRef="UID_SUB_300101" />
+            <CANopenSubObject subIndex="02" name="Fwrite cache len" objectType="7" PDOmapping="TPDO" uniqueIDRef="UID_SUB_300102" />
+            <CANopenSubObject subIndex="03" name="Cache selector" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_300103" />
+            <CANopenSubObject subIndex="04" name="Filter" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_300104" />
+            <CANopenSubObject subIndex="05" name="Cache len" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_300105" />
+            <CANopenSubObject subIndex="06" name="Iterator" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_300106" />
+            <CANopenSubObject subIndex="07" name="File name" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_300107" />
+            <CANopenSubObject subIndex="08" name="File size" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_300108" />
+            <CANopenSubObject subIndex="09" name="Delete file" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_300109" />
           </CANopenObject>
           <CANopenObject index="3002" name="Fread" objectType="9" uniqueIDRef="UID_OBJ_3002" subNumber="5">
             <CANopenSubObject subIndex="00" name="Highest sub-index supported" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_300200" />

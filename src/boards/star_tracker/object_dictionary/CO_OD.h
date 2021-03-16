@@ -77,7 +77,7 @@
 /*******************************************************************************
    OBJECT DICTIONARY
 *******************************************************************************/
-   #define CO_OD_NoOfElements             56
+   #define CO_OD_NoOfElements             57
 
 
 /*******************************************************************************
@@ -188,6 +188,18 @@
                UNSIGNED32     rootParitionFree;
                UNSIGNED8      rootParitionPercent;
                }              OD_boardInfo_t;
+/*3001      */ typedef struct {
+               UNSIGNED8      highestSubIndexSupported;
+               UNSIGNED8      freadCacheLen;
+               UNSIGNED8      fwriteCacheLen;
+               UNSIGNED8      cacheSelector;
+               DOMAIN         filter;
+               UNSIGNED32     cacheLen;
+               UNSIGNED32     iterator;
+               DOMAIN         fileName;
+               UNSIGNED32     fileSize;
+               DOMAIN         deleteFile;
+               }              OD_fileCaches_t;
 /*3002      */ typedef struct {
                UNSIGNED8      highestSubIndexSupported;
                DOMAIN         fileName;
@@ -601,6 +613,20 @@
         #define OD_3000_27_boardInfo_rootParitionFree               27
         #define OD_3000_28_boardInfo_rootParitionPercent            28
 
+/*3001 */
+        #define OD_3001_fileCaches                                  0x3001
+
+        #define OD_3001_0_fileCaches_maxSubIndex                    0
+        #define OD_3001_1_fileCaches_freadCacheLen                  1
+        #define OD_3001_2_fileCaches_fwriteCacheLen                 2
+        #define OD_3001_3_fileCaches_cacheSelector                  3
+        #define OD_3001_4_fileCaches_filter                         4
+        #define OD_3001_5_fileCaches_cacheLen                       5
+        #define OD_3001_6_fileCaches_iterator                       6
+        #define OD_3001_7_fileCaches_fileName                       7
+        #define OD_3001_8_fileCaches_fileSize                       8
+        #define OD_3001_9_fileCaches_deleteFile                     9
+
 /*3002 */
         #define OD_3002_fread                                       0x3002
 
@@ -702,6 +728,7 @@ struct sCO_OD_RAM{
 /*2100      */ OCTET_STRING   errorStatusBits[10];
 /*2101      */ UNSIGNED8      CANNodeID;
 /*3000      */ OD_boardInfo_t  boardInfo;
+/*3001      */ OD_fileCaches_t fileCaches;
 /*3002      */ OD_fread_t      fread;
 /*3003      */ OD_fwrite_t     fwrite;
 /*3004      */ DOMAIN          daemonList[16];
@@ -912,6 +939,9 @@ extern struct sCO_OD_PERSIST_MFR CO_OD_PERSIST_MFR;
 
 /*3000, Data Type: boardInfo_t */
         #define OD_boardInfo                                        CO_OD_RAM.boardInfo
+
+/*3001, Data Type: fileCaches_t */
+        #define OD_fileCaches                                       CO_OD_RAM.fileCaches
 
 /*3002, Data Type: fread_t */
         #define OD_fread                                            CO_OD_RAM.fread
