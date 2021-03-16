@@ -43,29 +43,34 @@ file_caches_ODF(CO_ODF_arg_t *ODF_arg) {
     file_caches_t *caches  = (file_caches_t *)ODF_arg->object;
     CO_SDO_abortCode_t ret = CO_SDO_AB_NONE;
 
+    if (caches == NULL || caches->fread_cache == NULL || caches->fwrite_cache == NULL)
+        return CO_SDO_AB_NO_DATA;
+
     switch(ODF_arg->subIndex) {
 
         case OD_3001_1_fileCaches_freadCacheLen: // read cache len, uint8, readonly
 
-            if (ODF_arg->reading)
+            if (ODF_arg->reading) {
                 if (caches->fread_cache->len < UINT8_MAX)
                     CO_setUint32(ODF_arg->data, (uint8_t)caches->fread_cache->len);
                 else
                     CO_setUint32(ODF_arg->data, UINT8_MAX);
-            else
+            } else {
                 ret = CO_SDO_AB_READONLY;
+            }
 
             break;
 
         case OD_3001_2_fileCaches_fwriteCacheLen: // write cache len, uint8, readonly
 
-            if (ODF_arg->reading)
-                if (caches->fread_cache->len < UINT8_MAX)
+            if (ODF_arg->reading) {
+                if (caches->fwrite_cache->len < UINT8_MAX)
                     CO_setUint32(ODF_arg->data, (uint8_t)caches->fwrite_cache->len);
                 else
                     CO_setUint32(ODF_arg->data, UINT8_MAX);
-            else
+            } else {
                 ret = CO_SDO_AB_READONLY;
+            }
 
             break;
 

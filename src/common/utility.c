@@ -62,10 +62,13 @@ mkdir_path(const char *path, mode_t mode) {
         return -EINVAL;
 
     // start on 1 to skip 1st '/' in absolut path
-    for (int i=1; i<strlen(path) && i<PATH_MAX-1; ++i) {
-        if (path[i] == '/') {
+    for (int i=1; i<=strlen(path) && i<PATH_MAX-1; ++i) {
+        if (path[i] == '/' || i == strlen(path)) {
             strncpy(temp_path, path, i);
             temp_path[i] = '\0';
+
+            if (is_dir(temp_path))
+                continue; // dir already exist
 
             if ((r = mkdir(temp_path, mode)) != 0)
                 break;
@@ -119,7 +122,7 @@ clear_dir(const char *path) {
             else // need a '/' at end of path
                 sprintf(filepath, "%s/%s", path, dir->d_name);
 
-            if ((r = remove(path)) != 0)
+            if ((r = remove(filepath)) != 0)
                 break; // remove failed
         }
         closedir(d);

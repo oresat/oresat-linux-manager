@@ -259,13 +259,13 @@ int main (int argc, char *argv[]) {
     }
 
     // make all the dirs
-    if (mkdir_path(FREAD_CACHE_DIR, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH) != 0)
+    if (mkdir_path(FREAD_CACHE_DIR, S_IRUSR | S_IWUSR | S_IXUSR | S_IRGRP | S_IXGRP | S_IROTH |  S_IXOTH) != 0)
         log_printf(LOG_CRIT, "failed to make fread cache dir "FREAD_CACHE_DIR);
-    if (mkdir_path(FWRITE_CACHE_DIR, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH) != 0)
+    if (mkdir_path(FWRITE_CACHE_DIR, S_IRUSR | S_IWUSR | S_IXUSR | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH) != 0)
         log_printf(LOG_CRIT, "failed to make fwrite cache dir "FWRITE_CACHE_DIR);
-    if (mkdir_path(FREAD_TMP_DIR, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH) != 0)
+    if (mkdir_path(FREAD_TMP_DIR, S_IRUSR | S_IWUSR | S_IXUSR | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH) != 0)
         log_printf(LOG_CRIT, "failed to make fread tmp dir "FREAD_TMP_DIR);
-    if (mkdir_path(FWRITE_TMP_DIR, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH) != 0)
+    if (mkdir_path(FWRITE_TMP_DIR, S_IRUSR | S_IWUSR | S_IXUSR | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH) != 0)
         log_printf(LOG_CRIT, "failed to make fwrite tmp dir "FWRITE_TMP_DIR);
 
     // clean up any file in the tmp dirs

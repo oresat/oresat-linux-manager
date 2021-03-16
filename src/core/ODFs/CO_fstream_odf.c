@@ -35,14 +35,14 @@
 
 void
 CO_fstream_reset(CO_fstream_t *data) {
-    if (data == NULL) {
-        clear_dir(data->dir);
-
+    if (data != NULL) {
         if (data->fptr != NULL) {
             log_message(LOG_INFO, "%s has been closed", data->file);
             fclose(data->fptr);
             data->fptr = NULL;
         }
+
+        clear_dir(data->dir);
 
         FREE_AND_NULL(data->file);
 
@@ -58,22 +58,32 @@ CO_fstream_filename(CO_ODF_arg_t *ODF_arg, CO_fstream_t *fdata) {
         if (fdata->file == NULL) {
             ret = CO_SDO_AB_NO_DATA;
         } else {
-            ODF_arg->dataLength = strlen(fdata->file)+1;
+            ODF_arg->dataLengthTotal = strlen(fdata->file)+1;
+            ODF_arg->dataLength = ODF_arg->dataLengthTotal;
             memcpy(ODF_arg->data, fdata->file, ODF_arg->dataLength);
+            log_message(LOG_DEBUG, "read fstream filename %s", fdata->file);
+            ODF_arg->lastSegment = true;
         }
     } else {
         char filename[SDO_BLOCK_LEN];
+
+        log_message(LOG_DEBUG, "fstream filename total len %d\n", ODF_arg->dataLengthTotal);
+        log_message(LOG_DEBUG, "fstream filename len %d\n", ODF_arg->dataLength);
 
         if (ODF_arg->dataLengthTotal > SDO_BLOCK_LEN)
             return CO_SDO_AB_DATA_LONG;
 
         CO_fstream_reset(fdata);
 
-        memcpy(ODF_arg->data, filename, ODF_arg->dataLength);
+        memcpy(filename, ODF_arg->data, ODF_arg->dataLength);
+
+        log_message(LOG_DEBUG, "new fstream filename %s", filename);
 
         // make sure string ends with '\0'
-        if (filename[ODF_arg->dataLength-1] != '\0')
-            filename[ODF_arg->dataLength] = '\0';
+        if (filename[ODF_arg->dataLengthTotal] != '\0')
+            filename[ODF_arg->dataLengthTotal+1] = '\0';
+
+        log_message(LOG_DEBUG, "new fstream filename %s", filename);
 
         // update filename
         size_t len = strlen(filename)+1;

@@ -4,6 +4,10 @@ import canopen
 
 # all nodes require an eds file, even if it is not used
 EDS_FILE = "../src/boards/generic/object_dictionary/generic_OD.eds"
+FREAD_CACHE_DIR = "/var/lib/oresat_linux_manager/fread/"
+FWRTIE_CACHE_DIR = "/var/lib/oresat_linux_manager/fwrite/"
+FREAD_TMP_DIR = "/tmp/olm_fread/"
+FWRITE_TMP_DIR = "/tmp/olm_fwrite/"
 
 
 def connect_bus():
@@ -15,7 +19,6 @@ def connect_bus():
     network.connect(bustype='socketcan', channel='vcan0')
 
     return network, node
-
 
 # network.nmt.state = 'OPERATIONAL'
 
