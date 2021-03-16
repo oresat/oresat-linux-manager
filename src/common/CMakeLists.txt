@@ -1,6 +1,7 @@
 
 set(COMMON_SOURCES
     log_message.c
+    utility.c
     )
 
 set(COMMON_HEADERS

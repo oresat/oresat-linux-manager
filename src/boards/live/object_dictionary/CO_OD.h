@@ -41,7 +41,7 @@
    FILE INFO:
       FileName:     live_OD.xdd
       FileVersion:  1
-      CreationTime: 10:27PM
+      CreationTime: 11:27PM
       CreationDate: 03-09-2021
       CreatedBy:    Ryan Medick
 *******************************************************************************/
@@ -77,7 +77,7 @@
 /*******************************************************************************
    OBJECT DICTIONARY
 *******************************************************************************/
-   #define CO_OD_NoOfElements             54
+   #define CO_OD_NoOfElements             53
 
 
 /*******************************************************************************
@@ -189,23 +189,19 @@
                UNSIGNED32     rootParitionFree;
                UNSIGNED8      rootParitionPercent;
                }              OD_boardInfo_t;
-/*3001      */ typedef struct {
+/*3002      */ typedef struct {
                UNSIGNED8      highestSubIndexSupported;
                DOMAIN         fileName;
                DOMAIN         fileData;
-               DOMAIN         cancel;
-               }              OD_writeFile_t;
+               DOMAIN         reset;
+               DOMAIN         deleteFile;
+               }              OD_fread_t;
 /*3003      */ typedef struct {
                UNSIGNED8      highestSubIndexSupported;
-               UNSIGNED8      fileListIndex;
-               DOMAIN         filename;
+               DOMAIN         fileName;
                DOMAIN         fileData;
-               UNSIGNED32     fileSize;
-               DOMAIN         deleteFile;
-               UNSIGNED32     totalFilesAvailable;
-               UNSIGNED32     overflow;
-               DOMAIN         refreshFileList;
-               }              OD_readFileControl_t;
+               DOMAIN         reset;
+               }              OD_fwrite_t;
 /*3005      */ typedef struct {
                UNSIGNED8      highestSubIndexSupported;
                UNSIGNED8      selectApp;
@@ -603,47 +599,22 @@
         #define OD_3000_27_boardInfo_rootParitionFree               27
         #define OD_3000_28_boardInfo_rootParitionPercent            28
 
-/*3001 */
-        #define OD_3001_writeFile                                   0x3001
-
-        #define OD_3001_0_writeFile_maxSubIndex                     0
-        #define OD_3001_1_writeFile_fileName                        1
-        #define OD_3001_2_writeFile_fileData                        2
-        #define OD_3001_3_writeFile_cancel                          3
-
 /*3002 */
-        #define OD_3002_readFileList                                0x3002
+        #define OD_3002_fread                                       0x3002
 
-        #define OD_3002_0_readFileList_maxSubIndex                  0
-        #define OD_3002_1_readFileList_                             1
-        #define OD_3002_2_readFileList_                             2
-        #define OD_3002_3_readFileList_                             3
-        #define OD_3002_4_readFileList_                             4
-        #define OD_3002_5_readFileList_                             5
-        #define OD_3002_6_readFileList_                             6
-        #define OD_3002_7_readFileList_                             7
-        #define OD_3002_8_readFileList_                             8
-        #define OD_3002_9_readFileList_                             9
-        #define OD_3002_10_readFileList_                            10
-        #define OD_3002_11_readFileList_                            11
-        #define OD_3002_12_readFileList_                            12
-        #define OD_3002_13_readFileList_                            13
-        #define OD_3002_14_readFileList_                            14
-        #define OD_3002_15_readFileList_                            15
-        #define OD_3002_16_readFileList_                            16
+        #define OD_3002_0_fread_maxSubIndex                         0
+        #define OD_3002_1_fread_fileName                            1
+        #define OD_3002_2_fread_fileData                            2
+        #define OD_3002_3_fread_reset                               3
+        #define OD_3002_4_fread_deleteFile                          4
 
 /*3003 */
-        #define OD_3003_readFileControl                             0x3003
+        #define OD_3003_fwrite                                      0x3003
 
-        #define OD_3003_0_readFileControl_maxSubIndex               0
-        #define OD_3003_1_readFileControl_fileListIndex             1
-        #define OD_3003_2_readFileControl_filename                  2
-        #define OD_3003_3_readFileControl_fileData                  3
-        #define OD_3003_4_readFileControl_fileSize                  4
-        #define OD_3003_5_readFileControl_deleteFile                5
-        #define OD_3003_6_readFileControl_totalFilesAvailable       6
-        #define OD_3003_7_readFileControl_overflow                  7
-        #define OD_3003_8_readFileControl_refreshFileList           8
+        #define OD_3003_0_fwrite_maxSubIndex                        0
+        #define OD_3003_1_fwrite_fileName                           1
+        #define OD_3003_2_fwrite_fileData                           2
+        #define OD_3003_3_fwrite_reset                              3
 
 /*3004 */
         #define OD_3004_daemonList                                  0x3004
@@ -714,9 +685,8 @@ struct sCO_OD_RAM{
 /*2100      */ OCTET_STRING   errorStatusBits[10];
 /*2101      */ UNSIGNED8      CANNodeID;
 /*3000      */ OD_boardInfo_t  boardInfo;
-/*3001      */ OD_writeFile_t  writeFile;
-/*3002      */ DOMAIN          readFileList[16];
-/*3003      */ OD_readFileControl_t readFileControl;
+/*3002      */ OD_fread_t      fread;
+/*3003      */ OD_fwrite_t     fwrite;
 /*3004      */ DOMAIN          daemonList[16];
 /*3005      */ OD_daemonManager_t daemonManager;
 /*3006      */ UNSIGNED8      getLog;
@@ -923,16 +893,11 @@ extern struct sCO_OD_PERSIST_MFR CO_OD_PERSIST_MFR;
 /*3000, Data Type: boardInfo_t */
         #define OD_boardInfo                                        CO_OD_RAM.boardInfo
 
-/*3001, Data Type: writeFile_t */
-        #define OD_writeFile                                        CO_OD_RAM.writeFile
+/*3002, Data Type: fread_t */
+        #define OD_fread                                            CO_OD_RAM.fread
 
-/*3002, Data Type: DOMAIN, Array[16] */
-        #define OD_readFileList                                     CO_OD_RAM.readFileList
-        #define ODL_readFileList_arrayLength                        16
-        #define ODA_readFileList_                                   0
-
-/*3003, Data Type: readFileControl_t */
-        #define OD_readFileControl                                  CO_OD_RAM.readFileControl
+/*3003, Data Type: fwrite_t */
+        #define OD_fwrite                                           CO_OD_RAM.fwrite
 
 /*3004, Data Type: DOMAIN, Array[16] */
         #define OD_daemonList                                       CO_OD_RAM.daemonList
