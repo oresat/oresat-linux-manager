@@ -5,11 +5,11 @@ FileRevision=1
 LastEDS=
 EDSVersion=4.0
 Description=OreSat Live
-CreationTime=10:27PM
+CreationTime=11:27PM
 CreationDate=03-09-2021
 CreatedBy=Ryan Medick
-ModificationTime=10:37PM
-ModificationDate=03-09-2021
+ModificationTime=10:06PM
+ModificationDate=03-15-2021
 ModifiedBy=Ryan Medick
 
 [DeviceInfo]
@@ -2269,10 +2269,10 @@ DefaultValue=0
 PDOMapping=1
 
 [3001]
-ParameterName=Write file
+ParameterName=File caches
 ObjectType=0x9
 ;StorageLocation=RAM
-SubNumber=0x4
+SubNumber=0xA
 
 [3001sub0]
 ParameterName=Highest sub-index supported
@@ -2280,212 +2280,29 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0005
 AccessType=ro
-DefaultValue=0x03
+DefaultValue=0x09
 PDOMapping=0
 
 [3001sub1]
-ParameterName=File name
+ParameterName=Fread cache len
 ObjectType=0x7
 ;StorageLocation=RAM
-DataType=0x000F
-AccessType=wo
-DefaultValue=
-PDOMapping=0
+DataType=0x0005
+AccessType=ro
+DefaultValue=0
+PDOMapping=1
 
 [3001sub2]
-ParameterName=File data
+ParameterName=Fwrite cache len
 ObjectType=0x7
 ;StorageLocation=RAM
-DataType=0x000F
-AccessType=wo
-DefaultValue=
-PDOMapping=0
+DataType=0x0005
+AccessType=ro
+DefaultValue=0
+PDOMapping=1
 
 [3001sub3]
-ParameterName=Cancel
-ObjectType=0x7
-;StorageLocation=RAM
-DataType=0x000F
-AccessType=wo
-DefaultValue=
-PDOMapping=0
-
-[3002]
-ParameterName=Read file list
-ObjectType=0x8
-;StorageLocation=RAM
-SubNumber=0x11
-
-[3002sub0]
-ParameterName=Highest sub-index supported
-ObjectType=0x7
-;StorageLocation=RAM
-DataType=0x0005
-AccessType=ro
-DefaultValue=0x10
-PDOMapping=0
-
-[3002sub1]
-ParameterName=
-ObjectType=0x7
-;StorageLocation=RAM
-DataType=0x000F
-AccessType=rw
-DefaultValue=
-PDOMapping=0
-
-[3002sub2]
-ParameterName=
-ObjectType=0x7
-;StorageLocation=RAM
-DataType=0x000F
-AccessType=rw
-DefaultValue=
-PDOMapping=0
-
-[3002sub3]
-ParameterName=
-ObjectType=0x7
-;StorageLocation=RAM
-DataType=0x000F
-AccessType=rw
-DefaultValue=
-PDOMapping=0
-
-[3002sub4]
-ParameterName=
-ObjectType=0x7
-;StorageLocation=RAM
-DataType=0x000F
-AccessType=rw
-DefaultValue=
-PDOMapping=0
-
-[3002sub5]
-ParameterName=
-ObjectType=0x7
-;StorageLocation=RAM
-DataType=0x000F
-AccessType=rw
-DefaultValue=
-PDOMapping=0
-
-[3002sub6]
-ParameterName=
-ObjectType=0x7
-;StorageLocation=RAM
-DataType=0x000F
-AccessType=rw
-DefaultValue=
-PDOMapping=0
-
-[3002sub7]
-ParameterName=
-ObjectType=0x7
-;StorageLocation=RAM
-DataType=0x000F
-AccessType=rw
-DefaultValue=
-PDOMapping=0
-
-[3002sub8]
-ParameterName=
-ObjectType=0x7
-;StorageLocation=RAM
-DataType=0x000F
-AccessType=rw
-DefaultValue=
-PDOMapping=0
-
-[3002sub9]
-ParameterName=
-ObjectType=0x7
-;StorageLocation=RAM
-DataType=0x000F
-AccessType=rw
-DefaultValue=
-PDOMapping=0
-
-[3002subA]
-ParameterName=
-ObjectType=0x7
-;StorageLocation=RAM
-DataType=0x000F
-AccessType=rw
-DefaultValue=
-PDOMapping=0
-
-[3002subB]
-ParameterName=
-ObjectType=0x7
-;StorageLocation=RAM
-DataType=0x000F
-AccessType=rw
-DefaultValue=
-PDOMapping=0
-
-[3002subC]
-ParameterName=
-ObjectType=0x7
-;StorageLocation=RAM
-DataType=0x000F
-AccessType=rw
-DefaultValue=
-PDOMapping=0
-
-[3002subD]
-ParameterName=
-ObjectType=0x7
-;StorageLocation=RAM
-DataType=0x000F
-AccessType=rw
-DefaultValue=
-PDOMapping=0
-
-[3002subE]
-ParameterName=
-ObjectType=0x7
-;StorageLocation=RAM
-DataType=0x000F
-AccessType=rw
-DefaultValue=
-PDOMapping=0
-
-[3002subF]
-ParameterName=
-ObjectType=0x7
-;StorageLocation=RAM
-DataType=0x000F
-AccessType=rw
-DefaultValue=
-PDOMapping=0
-
-[3002sub10]
-ParameterName=
-ObjectType=0x7
-;StorageLocation=RAM
-DataType=0x000F
-AccessType=rw
-DefaultValue=
-PDOMapping=0
-
-[3003]
-ParameterName=Read file control
-ObjectType=0x9
-;StorageLocation=RAM
-SubNumber=0x9
-
-[3003sub0]
-ParameterName=Highest sub-index supported
-ObjectType=0x7
-;StorageLocation=RAM
-DataType=0x0005
-AccessType=ro
-DefaultValue=0x08
-PDOMapping=0
-
-[3003sub1]
-ParameterName=File list index
+ParameterName=Cache selector
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0005
@@ -2493,8 +2310,35 @@ AccessType=rw
 DefaultValue=0
 PDOMapping=0
 
-[3003sub2]
-ParameterName=Filename
+[3001sub4]
+ParameterName=Filter
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x000F
+AccessType=rw
+DefaultValue=
+PDOMapping=0
+
+[3001sub5]
+ParameterName=Cache len
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x0007
+AccessType=ro
+DefaultValue=0
+PDOMapping=0
+
+[3001sub6]
+ParameterName=Iterator
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x0007
+AccessType=rw
+DefaultValue=0
+PDOMapping=0
+
+[3001sub7]
+ParameterName=File name
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
@@ -2502,16 +2346,7 @@ AccessType=ro
 DefaultValue=
 PDOMapping=0
 
-[3003sub3]
-ParameterName=File data
-ObjectType=0x7
-;StorageLocation=RAM
-DataType=0x000F
-AccessType=ro
-DefaultValue=
-PDOMapping=0
-
-[3003sub4]
+[3001sub8]
 ParameterName=File size
 ObjectType=0x7
 ;StorageLocation=RAM
@@ -2520,7 +2355,7 @@ AccessType=ro
 DefaultValue=0
 PDOMapping=0
 
-[3003sub5]
+[3001sub9]
 ParameterName=Delete file
 ObjectType=0x7
 ;StorageLocation=RAM
@@ -2529,26 +2364,92 @@ AccessType=wo
 DefaultValue=
 PDOMapping=0
 
-[3003sub6]
-ParameterName=Total files available
+[3002]
+ParameterName=Fread
+ObjectType=0x9
+;StorageLocation=RAM
+SubNumber=0x5
+
+[3002sub0]
+ParameterName=Highest sub-index supported
 ObjectType=0x7
 ;StorageLocation=RAM
-DataType=0x0007
+DataType=0x0005
 AccessType=ro
-DefaultValue=0
+DefaultValue=0x04
 PDOMapping=0
 
-[3003sub7]
-ParameterName=Overflow
+[3002sub1]
+ParameterName=File name
 ObjectType=0x7
 ;StorageLocation=RAM
-DataType=0x0007
-AccessType=ro
-DefaultValue=0
+DataType=0x000F
+AccessType=rw
+DefaultValue=
 PDOMapping=0
 
-[3003sub8]
-ParameterName=Refresh file list
+[3002sub2]
+ParameterName=File data
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x000F
+AccessType=ro
+DefaultValue=
+PDOMapping=0
+
+[3002sub3]
+ParameterName=Reset
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x000F
+AccessType=wo
+DefaultValue=
+PDOMapping=0
+
+[3002sub4]
+ParameterName=Delete file
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x000F
+AccessType=wo
+DefaultValue=
+PDOMapping=0
+
+[3003]
+ParameterName=Fwrite
+ObjectType=0x9
+;StorageLocation=RAM
+SubNumber=0x4
+
+[3003sub0]
+ParameterName=Highest sub-index supported
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x0005
+AccessType=ro
+DefaultValue=0x03
+PDOMapping=0
+
+[3003sub1]
+ParameterName=File name
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x000F
+AccessType=rw
+DefaultValue=
+PDOMapping=0
+
+[3003sub2]
+ParameterName=File data
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x000F
+AccessType=wo
+DefaultValue=
+PDOMapping=0
+
+[3003sub3]
+ParameterName=Reset
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F

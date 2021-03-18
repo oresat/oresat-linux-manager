@@ -1,60 +1,71 @@
 #!/usr/bin/env python3
+"""Test daemon for OLM unit tests"""
 
-
+import time
+import threading
 from pydbus import SystemBus
 from gi.repository import GLib
-import threading
-import time
+
+INTERFACE_NAME = "org.oresat.test"
 
 
-INTERFACE_NAME = "org.OreSat.Example"
+class TestServer():
+    """ Test D-Bus server for OLM unit tests"""
 
-
-class Test_Server(object):
     dbus = """
     <node>
-        <interface name="org.OreSat.Example">
-            <property name="Mode" type="d" access="read"/>
+        <interface name="org.oresat.test">
+            <property name="Test1" type="d" access="read"/>
             <property name="Test2" type="u" access="readwrite"/>
         </interface>
     </node>
-    """
+    """  # can't be in __init__()
 
     def __init__(self):
-        self._Test1 = 12.3
-        self._Test2 = 1
+        self._test1 = 12.3
+        self._test2 = 1
         self._running = True
         self._working_thread = threading.Thread(target=self._working_loop)
         self._working_thread.start()  # start working thread
 
+    def __del__(self):
+        self.quit()
+
     @property
-    def Mode(self):
-        return self._Test1
+    def Test1(self):
+        """Setter for Test2 property"""
+        return self._test1
+
+    @property
+    def Test2(self):
+        """Getter for Test2 property"""
+        return self._test2
 
     @Test2.setter
     def Test2(self, value):
-        self._Test2 = value
+        """Setter for Test2 property"""
+        self._test2 = value
 
     def _working_loop(self):
-        while (self._running is True):
-            self._Test1 += 1.0
+        """D-Bus server working loop."""
+
+        while self._running is True:
+            self._test1 += 1.0
             time.sleep(1)
 
     def quit(self):
+        """Stop thread."""
         self._running = False
 
-if __name__ == "__main__":
-    bus = SystemBus()  # connect to bus
-    loop = GLib.MainLoop()  # only used by server
 
-    # Setup server to emit signals over the DBus
-    test_server = Test_Server()
+if __name__ == "__main__":
+    bus = SystemBus()
+    loop = GLib.MainLoop()
+    test_server = TestServer()
     bus.publish(INTERFACE_NAME, test_server)
 
-    # Run loop with graceful ctrl C exiting.
     try:
         loop.run()
-    except KeyboardInterrupt as e:
+    except KeyboardInterrupt:
         loop.quit()
         test_server.quit()
-

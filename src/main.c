@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <sys/syslog.h>
 #include <unistd.h>
 #include <bits/getopt_core.h>
 #include <string.h>
@@ -22,13 +23,16 @@
 #include "CO_error.h"
 #include "CO_epoll_interface.h"
 
+#include "core/ODFs/CO_fstream_odf.h"
+#include "core/ODFs/file_caches_odf.h"
 #include "olm_app.h"
 #include "board_info.h"
 #include "board_main.h"
 #include "daemon_manager.h"
 #include "dbus_controller.h"
-#include "CO_fread.h"
-#include "CO_fwrite.h"
+#include "olm_file_cache.h"
+#include "CO_fstream_odf.h"
+#include "file_caches_odf.h"
 
 /* Interval of mainline and real-time thread in microseconds */
 #ifndef MAIN_THREAD_INTERVAL_US
@@ -40,6 +44,26 @@
 
 // pid file for daemon
 #define DEFAULT_PID_FILE        "/run/oresat-linux-managerd.pid"
+
+#ifndef FILE_TRANSFER_DIR
+#define FILE_TRANSFER_DIR       "/var/cache/oresat_linux_manager/"
+#endif /* FILE_TRANSFER_DIR */
+
+#ifndef FREAD_TMP_DIR
+#define FREAD_TMP_DIR           FILE_TRANSFER_DIR"CANopen/fread/"
+#endif /* FREAD_TMP_DIR */
+
+#ifndef FWRITE_TMP_DIR
+#define FWRITE_TMP_DIR          FILE_TRANSFER_DIR"CANopen/fwrite/"
+#endif /* FWRITE_TMP_DIR */
+
+#ifndef FREAD_CACHE_DIR
+#define FREAD_CACHE_DIR         FILE_TRANSFER_DIR"fread/"
+#endif /* FREAD_CACHE_DIR */
+
+#ifndef FWRITE_CACHE_DIR
+#define FWRITE_CACHE_DIR        FILE_TRANSFER_DIR"fwrite/"
+#endif /* FWRITE_CACHE_DIR */
 
 /* Configurable CAN bit-rate and CANopen node-id, store-able to non-volatile
  * memory. Can be set by argument and changed by LSS slave. */
@@ -72,8 +96,6 @@ volatile sig_atomic_t CO_endProgram = 0;
 static void sigHandler(int sig) {
     (void)sig;
     CO_endProgram = 1;
-
-    pthread_cancel(dbus_thread_id);
 }
 
 /* Message logging function */
@@ -170,6 +192,15 @@ int main (int argc, char *argv[]) {
     bool daemon_flag = false;
     olm_app_t **apps;
 
+    // file transfer data
+    olm_file_cache_t *fread_cache = NULL;
+    olm_file_cache_t *fwrite_cache = NULL;
+    olm_file_cache_new(FREAD_CACHE_DIR, &fread_cache);
+    olm_file_cache_new(FWRITE_CACHE_DIR, &fwrite_cache);
+    CO_fstream_t CO_fread_data = CO_FSTREAM_INITALIZER(FREAD_TMP_DIR, fread_cache);
+    CO_fstream_t CO_fwrite_data = CO_FSTREAM_INITALIZER(FWRITE_TMP_DIR, fwrite_cache);
+    file_caches_t caches_odf_data = FILE_CACHES_INTIALIZER(fread_cache, fwrite_cache);
+
     char* CANdevice = NULL;         /* CAN device, configurable by arguments. */
     bool nodeIdFromArgs = false;    /* True, if program arguments are used for CANopen Node Id */
     bool rebootEnable = false;      /* Configurable by arguments */
@@ -228,6 +259,24 @@ int main (int argc, char *argv[]) {
         log_printf(LOG_CRIT, DBG_NO_CAN_DEVICE, CANdevice);
         exit(EXIT_FAILURE);
     }
+
+    // make all the dirs
+    if (mkdir_path(FREAD_CACHE_DIR, S_IRUSR | S_IWUSR | S_IXUSR | S_IRGRP | S_IXGRP | S_IROTH |  S_IXOTH) != 0)
+        log_printf(LOG_CRIT, "failed to make fread cache dir "FREAD_CACHE_DIR);
+    if (mkdir_path(FWRITE_CACHE_DIR, S_IRUSR | S_IWUSR | S_IXUSR | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH) != 0)
+        log_printf(LOG_CRIT, "failed to make fwrite cache dir "FWRITE_CACHE_DIR);
+    if (mkdir_path(FREAD_TMP_DIR, S_IRUSR | S_IWUSR | S_IXUSR | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH) != 0)
+        log_printf(LOG_CRIT, "failed to make fread tmp dir "FREAD_TMP_DIR);
+    if (mkdir_path(FWRITE_TMP_DIR, S_IRUSR | S_IWUSR | S_IXUSR | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH) != 0)
+        log_printf(LOG_CRIT, "failed to make fwrite tmp dir "FWRITE_TMP_DIR);
+
+    // clean up any file in the tmp dirs
+    clear_dir(FREAD_TMP_DIR);
+    clear_dir(FWRITE_TMP_DIR);
+
+    // make cache objs
+    //olm_file_cache_new(FREAD_CACHE_DIR, &fread_cache);
+    //olm_file_cache_new(FWRITE_CACHE_DIR, &fwrite_cache);
 
     /* Run as daemon if needed */
     if (daemon_flag) {
@@ -323,6 +372,12 @@ int main (int argc, char *argv[]) {
             /* Initialize time */
             CO_time_init(&CO_time, CO->SDO[0], &OD_time.epochTimeBaseMs, &OD_time.epochTimeOffsetMs, 0x2130);
 #endif
+
+            // configure core ODFs
+            CO_OD_configure(CO->SDO[0], OD_3001_fileCaches, file_caches_ODF, &caches_odf_data, 0, 0U);
+            CO_OD_configure(CO->SDO[0], OD_3002_fread, CO_fread_ODF, &CO_fread_data, 0, 0U);
+            CO_OD_configure(CO->SDO[0], OD_3003_fwrite, CO_fwrite_ODF, &CO_fwrite_data, 0, 0U);
+
             log_printf(LOG_INFO, DBG_CAN_OPEN_INFO, CO_activeNodeId, "communication reset");
         }
         else {
@@ -334,8 +389,6 @@ int main (int argc, char *argv[]) {
             firstRun = false;
 
             // set up general ODFs
-            CO_fread_setup();
-            CO_fwrite_setup();
             daemon_manager_setup();
             board_info_setup();
 
@@ -388,21 +441,33 @@ int main (int argc, char *argv[]) {
             CO_epoll_processLast(&epMain);
 
         }
+
+        log_printf(LOG_DEBUG, "CO reset or end program signal");
     } /* while (reset != CO_RESET_APP */
+
+    log_printf(LOG_DEBUG, "ending program");
 
 /* program exit ***************************************************************/
     // stop app dbus interface
     dbus_controller_end();
-    CO_fread_end();
-    CO_fwrite_end();
     board_info_end();
 
-    /* join threads */
+    // make sure the files are closed when ending program
+    log_printf(LOG_DEBUG, "closing any opened files");
+    CO_fstream_reset(&CO_fread_data);
+    CO_fstream_reset(&CO_fwrite_data);
+
+    log_printf(LOG_DEBUG, "cleaning cache data");
+    file_caches_free(&caches_odf_data);
+    olm_file_cache_free(fread_cache);
+    olm_file_cache_free(fwrite_cache);
+
+    log_printf(LOG_DEBUG, "joining threads");
     CO_endProgram = 1;
-    if (pthread_join(rt_thread_id, NULL) != 0) {
+    if (pthread_join(rt_thread_id, NULL) != 0)
         log_printf(LOG_CRIT, DBG_ERRNO, "pthread_join()");
-        exit(EXIT_FAILURE);
-    }
+    if (pthread_join(dbus_thread_id, NULL) != 0)
+        log_printf(LOG_CRIT, DBG_ERRNO, "pthread_join()");
 
     /* delete objects from memory */
     CO_epoll_close(&epRT);
@@ -429,6 +494,8 @@ int main (int argc, char *argv[]) {
  ******************************************************************************/
 static void* rt_thread(void* arg) {
     (void)arg;
+    log_printf(LOG_DEBUG, "rt thread started");
+
     /* Endless loop */
     while (CO_endProgram == 0) {
 
@@ -448,12 +515,15 @@ static void* rt_thread(void* arg) {
         // TODO
     }
 
+    log_printf(LOG_DEBUG, "rt thread ended");
     return NULL;
 }
 
 static void*
 dbus_thread(__attribute__ ((unused)) void* arg) {
-    dbus_controller_loop();
+    log_printf(LOG_DEBUG, "dbus thread started");
+    dbus_controller_loop(); /* Endless loop */
+    log_printf(LOG_DEBUG, "dbus thread ended");
     return NULL;
 }
 

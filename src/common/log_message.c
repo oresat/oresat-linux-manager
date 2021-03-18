@@ -30,7 +30,7 @@ log_message(int priority, const char *fmt, ...) {
     va_start(args, fmt);
     vfprintf((priority > LOG_WARNING ? stdout : stderr), fmt, args);
     if(fmt[strlen(fmt)] != '\n')
-        printf("\n");
+        vfprintf("\n");
     va_end(args);
     */
 }
