@@ -11,7 +11,7 @@
 
 #include "log_message.h"
 #include "utility.h"
-#include "dbus_controller.h"
+#include "app_manager.h"
 #include "systemd_app.h"
 #include <errno.h>
 #include <stdlib.h>

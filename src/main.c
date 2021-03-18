@@ -29,7 +29,7 @@
 #include "board_info.h"
 #include "board_main.h"
 #include "daemon_manager.h"
-#include "dbus_controller.h"
+#include "app_manager.h"
 #include "olm_file_cache.h"
 #include "CO_fstream_odf.h"
 #include "file_caches_odf.h"
@@ -393,9 +393,7 @@ int main (int argc, char *argv[]) {
             board_info_setup();
 
             apps = board_main();
-
-            // setup dbus controller
-            dbus_controller_init();
+            app_manager_init();
 
             /* Create rt_thread and set priority */
             if (pthread_create(&rt_thread_id, NULL, rt_thread, NULL) != 0) {
@@ -448,8 +446,7 @@ int main (int argc, char *argv[]) {
     log_printf(LOG_DEBUG, "ending program");
 
 /* program exit ***************************************************************/
-    // stop app dbus interface
-    dbus_controller_end();
+    app_manager_end();
     board_info_end();
 
     // make sure the files are closed when ending program
@@ -522,7 +519,7 @@ static void* rt_thread(void* arg) {
 static void*
 dbus_thread(__attribute__ ((unused)) void* arg) {
     log_printf(LOG_DEBUG, "dbus thread started");
-    dbus_controller_loop(); /* Endless loop */
+    app_manager_loop(); /* Endless loop */
     log_printf(LOG_DEBUG, "dbus thread ended");
     return NULL;
 }

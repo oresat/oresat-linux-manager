@@ -2,14 +2,14 @@
 
 set(CORE_SOURCES
     cpufreq.c
-    dbus_controller.c
+    app_manager.c
     olm_file.c
     olm_file_cache.c
     )
 
 set(CORE_HEADERS
     cpufreq.h
-    dbus_controller.h
+    app_manager.h
     olm_app.h
     olm_file.h
     olm_file_cache.c

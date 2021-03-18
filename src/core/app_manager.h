@@ -1,8 +1,8 @@
 /**
- * The dbus controller for all apps.
+ * The OLM app manager.
  *
- * @file        dbus_controller.h
- * @ingroup     dbus_controller
+ * @file        app_manager.h
+ * @ingroup     app_manager
  *
  * This file is part of OreSat Linux Manager, a common CAN to Dbus interface
  * for daemons running on OreSat Linux boards.
@@ -10,8 +10,8 @@
  */
 
 
-#ifndef DBUS_CONTROLLER_H
-#define DBUS_CONTROLLER_H
+#ifndef APP_MANAGER_H
+#define APP_MANAGER_H
 
 #include "olm_app.h"
 #include <systemd/sd-bus.h>
@@ -19,13 +19,13 @@
 
 
 /**
- * @defgroup dbus_controller DBus Controller
+ * @defgroup app_manager DBus Controller
  * @{
  *
  * Centralize dbus connection for all apps.
  *
  * All apps that need access to a dbus connection will share the same dbus
- * client connection thru the app_dbus_controller.
+ * client connection thru the app_app_manager.
  */
 
 
@@ -33,7 +33,7 @@
  * Status on dbus connection
  *
  * Only dbus controller functions should write
- * All apps can read from the gobal defined in app_dbus_controller.c
+ * All apps can read from the gobal defined in app_app_manager.c
  * */
 typedef struct {
     /** pointer to app dbus connection */
@@ -48,7 +48,7 @@ typedef struct {
  *
  * @return >= 0 on success, < 0 on failure
  */
-int dbus_controller_init(void);
+int app_manager_init(void);
 
 
 /**
@@ -58,7 +58,7 @@ int dbus_controller_init(void);
  *
  * @return 0 on sucess
  */
-int dbus_controller_loop(void);
+int app_manager_loop(void);
 
 
 /**
@@ -66,8 +66,8 @@ int dbus_controller_loop(void);
  *
  * @return 0 on sucess
  */
-int dbus_controller_end(void);
+int app_manager_end(void);
 
 
 /** @} */
-#endif
+#endif /* APP_MANAGER_H */

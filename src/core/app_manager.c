@@ -1,8 +1,8 @@
 /**
- * The dbus controller for all apps.
+ * The OLM app manager.
  *
- * @file        dbus_controller.c
- * @ingroup     dbus_controller
+ * @file        app_manager.c
+ * @ingroup     app_manager
  *
  * This file is part of OreSat Linux Manager, a common CAN to Dbus interface
  * for daemons running on OreSat Linux boards.
@@ -12,45 +12,47 @@
 
 #include "log_message.h"
 #include "olm_app.h"
-#include "dbus_controller.h"
+#include "app_manager.h"
 #include <errno.h>
 #include <sys/syslog.h>
 #include <systemd/sd-bus.h>
 
+/** For @ref sd_bus_wait to return after x microseconds. */
+#define TIMEOUT_US 1000000
 
 /** GLOBAL to hold all the app dbus info */
 dbus_data_t      APP_DBUS;
 
 
 int
-dbus_controller_init(void) {
+app_manager_init(void) {
     int r;
 
     log_message(LOG_DEBUG, "openning dbus connection");
 
     // open bus
     if((r = sd_bus_open_system(&APP_DBUS.bus)) < 0)
-        log_message(LOG_CRIT, "Open system bus for apps failed\n");
+        log_message(LOG_CRIT, "open system bus for apps failed");
 
     return r;
 }
 
 
 int
-dbus_controller_loop(void) {
+app_manager_dbus_loop(void) {
     APP_DBUS.loop_running = true;
     int r;
 
     while(APP_DBUS.loop_running) {
         // Process requests
         if((r = sd_bus_process(APP_DBUS.bus, NULL)) < 0)
-            log_message(LOG_ERR, "Process bus failed for apps\n");
+            log_message(LOG_ERR, "process bus failed for apps");
         else if (r > 0) // processed a request, try to process another one right-away
             continue;
 
         // Wait for the next request to process
-        if(sd_bus_wait(APP_DBUS.bus, 1000) < 0)
-            log_message(LOG_ERR, "Bus wait failed");
+        if(sd_bus_wait(APP_DBUS.bus, TIMEOUT_US) < 0)
+            log_message(LOG_ERR, "bus wait failed");
     }
 
     APP_DBUS.loop_running = false;
@@ -59,7 +61,7 @@ dbus_controller_loop(void) {
 
 
 int
-dbus_controller_end(void) {
+app_manager_end(void) {
     APP_DBUS.loop_running = false;
 
     log_message(LOG_DEBUG, "closed dbus connection");

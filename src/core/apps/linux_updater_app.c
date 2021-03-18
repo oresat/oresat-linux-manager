@@ -12,7 +12,7 @@
 #include "log_message.h"
 #include "utility.h"
 #include "olm_app.h"
-#include "dbus_controller.h"
+#include "app_manager.h"
 #include "linux_updater_app.h"
 #include <errno.h>
 #include <stddef.h>

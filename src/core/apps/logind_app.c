@@ -11,7 +11,7 @@
 
 #include "log_message.h"
 #include "olm_app.h"
-#include "dbus_controller.h"
+#include "app_manager.h"
 #include "logind_app.h"
 #include <systemd/sd-bus.h>
 
