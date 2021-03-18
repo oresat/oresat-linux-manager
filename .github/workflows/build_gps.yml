@@ -48,5 +48,4 @@ jobs:
     - name: Build
       working-directory: ${{github.workspace}}/build
       shell: bash
-      run: cmake --build . --config $BUILD_TYPE
-      run: make package
+      run: cmake --build . --config $BUILD_TYPE; make package
