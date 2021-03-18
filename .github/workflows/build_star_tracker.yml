@@ -9,9 +9,10 @@ on:
       - 'src/boards/star_tracker/**.h'
       - 'src/CANopenNode/**'
       - 'src/common/**'
-      - 'src/socketCAN/**'
-      - 'src/system_apps/**'
-      - 'src/main.c'
+      - 'src/core/**'
+      - 'src/*.c'
+      - 'src/CMakeLists.txt'
+      - 'CMakeLists.txt'
   pull_request:
     branches: [ master ]
     paths:
@@ -20,9 +21,10 @@ on:
       - 'src/boards/star_tracker/**.h'
       - 'src/CANopenNode/**'
       - 'src/common/**'
-      - 'src/socketCAN/**'
-      - 'src/system_apps/**'
-      - 'src/main.c'
+      - 'src/core/**'
+      - 'src/*.c'
+      - 'src/CMakeLists.txt'
+      - 'CMakeLists.txt'
 
 env:
   BUILD_TYPE: Release
@@ -47,3 +49,4 @@ jobs:
       working-directory: ${{github.workspace}}/build
       shell: bash
       run: cmake --build . --config $BUILD_TYPE
+      run: make package
