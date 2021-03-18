@@ -1,14 +1,21 @@
+"""Generae files for OLM unit tests"""
+
 from datetime import datetime
 import hashlib
 import random
 import string
 
+
 def random_string_generator(str_size: int):
+    "Generates a random str"
+
     allowed_chars = string.ascii_letters + string.punctuation
     return ''.join(random.choice(allowed_chars) for x in range(str_size))
 
 
 def generate_file(str_size):
+    "Generates a files with a random str in it"
+
     gen_str = random_string_generator(str_size)
 
     date_str = datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
