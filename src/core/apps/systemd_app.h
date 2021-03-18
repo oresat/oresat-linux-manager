@@ -1,8 +1,8 @@
 /**
- * Systemd app.
+ * The app for interfacing with systemd over D-Bus.
  *
  * @file        systemd_app.h
- * @ingroup     systemd_app
+ * @ingroup     core_apps
  *
  * This file is part of OreSat Linux Manager, a common CAN to Dbus interface
  * for daemons running on OreSat Linux boards.
@@ -12,40 +12,59 @@
 #ifndef SYSTEMD_APP_H
 #define SYSTEMD_APP_H
 
-/**
- * @brief Will try to start the daemon inputed.
- *
- * Wrapper for calling StartUnit on systemd dbus interface.
- * Equivalent to "systemctl start daemon_name"
- *
- * @param daemon_name The name of the daemon wanted to be started.
- *
- * @return 0 on sucess, negative on error
- */
-int stop_daemon(char *daemon_name);
+enum active_states {
+    active = 0,
+    reloading = 1,
+    inactive = 2,
+    failed = 3, 
+    activating = 4,
+    deactivating = 5,
+};
 
 /**
- * @brief Will try to stop the daemon inputed.
+ * @brief Get the systemd unit object path for a unit.
  *
- * Wrapper for calling StopUnit on systemd dbus interface.
- * Equivalent to "systemctl stop daemon_name"
+ * @param name The name of the unit.
  *
- * @param daemon_name The name of the daemon wanted to be stopped.
- *
- * @return 0 on sucess, negative on error
+ * @return The unit object path that must be freed with free() or NULL on
+ * error.
  */
-int start_daemon(char *daemon_name);
+char *get_unit(const char *name);
 
 /**
- * @brief Will try to restart the daemon inputed.
+ * @brief Start a systemd unit.
  *
- * Wrapper for calling RestartUnit on systemd dbus interface.
- * Equivalent to "systemctl restart daemon_name"
+ * @param unit The object path for unit to be started.
  *
- * @param daemon_name The name of the daemon wanted to be restarted.
- *
- * @return 0 on sucess, negative on error
+ * @return A postive interger on success or negative errno value on error.
  */
-int restart_daemon(char *daemon_name);
+int start_unit(const char *unit);
+
+/**
+ * @brief Stop a systemd unit.
+ *
+ * @param unit The object path of the unit to be stopped.
+ *
+ * @return A postive interger on success or negative errno value on error.
+ */
+int stop_unit(const char *unit);
+
+/**
+ * @brief Restart a systemd unit.
+ *
+ * @param unit The object path for the unit to be restarted.
+ *
+ * @return A postive interger on success or negative errno value on error.
+ */
+int restart_unit(const char *unit);
+
+/**
+ * @brief Gets the active state of a systemd unit.
+ *
+ * @param unit The unit object path to get the active state of.
+ *
+ * @return A @ref active_states value on success or negative on error.
+ */
+int get_active_state_unit(const char *unit);
 
 #endif /* SYSTEMD_APP_H */

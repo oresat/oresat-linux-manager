@@ -1,8 +1,8 @@
 /**
- * Systemd app.
+ * The app for interfacing with systemd over D-Bus.
  *
  * @file        systemd_app.c
- * @ingroup     systemd_app
+ * @ingroup     core_apps
  *
  * This file is part of OreSat Linux Manager, a common CAN to Dbus interface
  * for daemons running on OreSat Linux boards.
@@ -10,20 +10,24 @@
  */
 
 #include "log_message.h"
-#include "olm_app.h"
 #include "utility.h"
 #include "dbus_controller.h"
 #include "systemd_app.h"
+#include <errno.h>
+#include <stdlib.h>
+#include <string.h>
 #include <systemd/sd-bus.h>
 
 /** App's name */
-#define APP_NAME        "Systemd"
-/** Dbus destionation for systemd */
-#define DESTINATION     "org.freedesktop.systemd1"
-/** Dbus interface name for systemd */
-#define INTERFACE_NAME  DESTINATION
-/** Dbus object path for systemd */
-#define OBJECT_PATH     "/org.freedesktop/systemd1"
+#define APP_NAME            "Systemd"
+/** Systemd D-Bus destionation */
+#define DESTINATION         "org.freedesktop.systemd1"
+/** Systemd Manager D-Bus interface for systemd */
+#define MANAGER_INTERFACE   DESTINATION".Manager"
+/** Systemd Unit D-Bus interface. */
+#define UNIT_INTERFACE      DESTINATION".Unit"
+/** Systmed D-Bus object path. */
+#define OBJECT_PATH         "/org/freedesktop/systemd1"
 
 /**
  * Gobal for all apps to use to get access to the OLM's
@@ -31,25 +35,32 @@
  */
 extern dbus_data_t APP_DBUS;
 
-int
-start_daemon(char *daemon_name) {
+const char *active_state_str[] = {
+    "active",
+    "reloading",
+    "inactive",
+    "failed",
+    "activating",
+    "deactivating",
+};
+
+char *
+get_unit(const char *name) {
     sd_bus_error err = SD_BUS_ERROR_NULL;
     sd_bus_message *mess = NULL;
-    int r;
+    char *r = NULL, *unit = NULL;
 
-    r = sd_bus_call_method(
-            APP_DBUS.bus,
-            DESTINATION,
-            OBJECT_PATH,
-            INTERFACE_NAME,
-            "StartUnit",
-            &err,
-            &mess,
-            "ss",
-            daemon_name,
-            "fail");
-    if (r < 0)
-        log_message(LOG_ERR, "systemd method call StartUnit failed for %s", daemon_name);
+    if (unit == NULL)
+        return r;
+    
+    if (sd_bus_call_method(APP_DBUS.bus, DESTINATION, OBJECT_PATH, \
+                MANAGER_INTERFACE, "GetUnit", &err, &mess, "s", name) < 0)
+        LOG_DBUS_CALL_METHOD_ERROR(LOG_ERR, APP_NAME, "GetUnit", err);
+    else if (sd_bus_message_read(mess, "o", &unit) < 0)
+        LOG_DBUS_METHOD_READ_ERROR(LOG_ERR, APP_NAME, "GetUnit", err);
+    else
+        if ((r = malloc(strlen(unit)+1)) != NULL)  // must copy strings
+            strncpy(r, unit, strlen(unit)+1);
 
     sd_bus_message_unref(mess);
     sd_bus_error_free(&err);
@@ -57,24 +68,36 @@ start_daemon(char *daemon_name) {
 }
 
 int
-stop_daemon(char *daemon_name) {
+start_unit(const char *unit) {
     sd_bus_error err = SD_BUS_ERROR_NULL;
     sd_bus_message *mess = NULL;
     int r;
 
-    r = sd_bus_call_method(
-            APP_DBUS.bus,
-            DESTINATION,
-            OBJECT_PATH,
-            INTERFACE_NAME,
-            "StopUnit",
-            &err,
-            &mess,
-            "ss",
-            daemon_name,
-            "fail");
-    if (r < 0)
-        log_message(LOG_ERR, "systemd method call StopUnit failed for %s", daemon_name);
+    if (unit == NULL)
+        return -EINVAL;
+    
+    if ((r = sd_bus_call_method(APP_DBUS.bus, DESTINATION, unit, \
+                UNIT_INTERFACE, "StartUnit", &err, &mess, "s", "fail")) < 0)
+        LOG_DBUS_CALL_METHOD_ERROR(LOG_ERR, APP_NAME, "StartUnit", err);
+
+    sd_bus_message_unref(mess);
+    sd_bus_error_free(&err);
+    return r;
+}
+
+
+int
+stop_unit(const char *unit) {
+    sd_bus_error err = SD_BUS_ERROR_NULL;
+    sd_bus_message *mess = NULL;
+    int r;
+
+    if (unit == NULL)
+        return -EINVAL;
+    
+    if ((r = sd_bus_call_method(APP_DBUS.bus, DESTINATION, unit, \
+                UNIT_INTERFACE, "StopUnit", &err, &mess, "s", "fail")) < 0)
+        LOG_DBUS_CALL_METHOD_ERROR(LOG_ERR, APP_NAME, "StoptUnit", err);
 
     sd_bus_message_unref(mess);
     sd_bus_error_free(&err);
@@ -82,24 +105,44 @@ stop_daemon(char *daemon_name) {
 }
 
 int
-restart_daemon(char *daemon_name) {
+restart_unit(const char *unit) {
     sd_bus_error err = SD_BUS_ERROR_NULL;
     sd_bus_message *mess = NULL;
     int r;
 
-    r = sd_bus_call_method(
-            APP_DBUS.bus,
-            DESTINATION,
-            OBJECT_PATH,
-            INTERFACE_NAME,
-            "RestartUnit",
-            &err,
-            &mess,
-            "ss",
-            daemon_name,
-            "fail");
-    if (r < 0)
-        log_message(LOG_ERR, "systemd method call RestartUnit failed for %s", daemon_name);
+    if (unit == NULL)
+        return -EINVAL;
+    
+    if ((r = sd_bus_call_method(APP_DBUS.bus, DESTINATION, unit, \
+                UNIT_INTERFACE, "RestartUnit", &err, &mess, "s", "fail")) < 0)
+        LOG_DBUS_CALL_METHOD_ERROR(LOG_ERR, APP_NAME, "RestartUnit", err);
+
+    sd_bus_message_unref(mess);
+    sd_bus_error_free(&err);
+    return r;
+}
+
+int
+get_active_state_unit(const char *unit) {
+    sd_bus_error err = SD_BUS_ERROR_NULL;
+    sd_bus_message *mess = NULL;
+    char *state;
+    int r = -1;
+
+    if (unit == NULL)
+        return -EINVAL;
+
+    if (sd_bus_get_property(APP_DBUS.bus, DESTINATION, unit, UNIT_INTERFACE, \
+                "ActiveState", &err, &mess, "d") < 0)
+        LOG_DBUS_GET_PROPERTY_ERROR(LOG_ERR, APP_NAME, "ActiveState", err);
+    else if (sd_bus_message_read(mess, "s", &state) < 0)
+        LOG_DBUS_METHOD_READ_ERROR(LOG_ERR, APP_NAME, "ActiveState", err);
+    else 
+        for (int i=0; i<sizeof(active_state_str); ++i)
+            if (strncmp(state, active_state_str[i], strlen(state)+1) == 0) {
+                r = i;
+                break;
+            }
 
     sd_bus_message_unref(mess);
     sd_bus_error_free(&err);
