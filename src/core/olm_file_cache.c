@@ -124,6 +124,7 @@ olm_file_cache_new(char *dir_path, olm_file_cache_t **out) {
     struct dirent *dir;
     char temp_path[PATH_MAX];
     olm_file_t *new_olm_file;
+    struct stat st;
     DIR *d;
     int r = 0;
 
@@ -141,6 +142,7 @@ olm_file_cache_new(char *dir_path, olm_file_cache_t **out) {
     new_cache->dir = NULL;
     new_cache->files = NULL;
     new_cache->len = 0;
+    pthread_mutex_init(&new_cache->mutex, NULL);
 
     // set dir name
     if ((new_cache->dir = malloc(strlen(dir_abs_path)+1)) == NULL) {
@@ -156,6 +158,13 @@ olm_file_cache_new(char *dir_path, olm_file_cache_t **out) {
                 continue; // skip . and ..
 
             sprintf(temp_path, "%s%s", new_cache->dir, dir->d_name);
+
+            // check for empty files
+            stat(temp_path, &st);
+            if (st.st_size == 0) {
+                remove(temp_path);
+                continue;
+            }
 
             r = olm_file_new(temp_path, &new_olm_file);
             if (r == -ENOMEM) { // out of memory
@@ -188,7 +197,7 @@ olm_file_cache_free(olm_file_cache_t *in) {
     if (in == NULL)
         return;
 
-    pthread_mutex_lock(&in->mutex);
+    // don't care about locks with the data struct is being freed
 
     if (in->dir != NULL) {
         free(in->dir);
@@ -200,8 +209,6 @@ olm_file_cache_free(olm_file_cache_t *in) {
         in->files = NULL;
     }
 
-    pthread_mutex_unlock(&in->mutex);
-
     free(in);
 }
 
@@ -210,20 +217,17 @@ olm_file_cache_add(olm_file_cache_t *in, char *filepath) {
     char new_filepath[PATH_MAX];
     olm_file_t *new_file = NULL;
     int r = 0;
-    
+
     if ((r = olm_file_new(filepath, &new_file)) != 0)
         return r;
 
     // move file
     sprintf(new_filepath, "%s%s", in->dir, basename(filepath));
-    if ((r = rename(filepath, new_filepath)) != 0)
-        goto failed_to_add;
-
-    pthread_mutex_lock(&in->mutex);
-    r = olm_file_cache_insert(in, new_file);
-    pthread_mutex_unlock(&in->mutex);
-
-    failed_to_add:
+    if ((r = rename(filepath, new_filepath)) == 0) {
+        pthread_mutex_lock(&in->mutex);
+        r = olm_file_cache_insert(in, new_file);
+        pthread_mutex_unlock(&in->mutex);
+    } 
 
     if (r != 0 && new_file != NULL)
         olm_file_free(new_file);
@@ -238,10 +242,8 @@ olm_file_cache_remove(olm_file_cache_t *in, char *filename) {
 
 
     sprintf(temp_path, "%s%s", in->dir, filename);
-    if ((r = remove(temp_path)) != 0) {
-        printf("remove() failed\n");
+    if ((r = remove(temp_path)) != 0)
         return -EINVAL; // file not in cache
-    }
 
     pthread_mutex_lock(&in->mutex);
     if ((r = olm_file_cache_remove_rec(&in->files, filename)) == 0) // remove from list
@@ -254,7 +256,8 @@ olm_file_cache_remove(olm_file_cache_t *in, char *filename) {
 int
 olm_file_cache_index(olm_file_cache_t *in, int index, char *keyword,
         olm_file_t **out) {
-    u_int32_t len;
+    char filepath[PATH_MAX];
+    uint32_t len;
     struct olm_file_index_t *current;
     int r = 0;
 
@@ -271,7 +274,8 @@ olm_file_cache_index(olm_file_cache_t *in, int index, char *keyword,
             continue;
 
         if (i == index) {
-            *out = current->data;
+            sprintf(filepath, "%s%s", in->dir, current->data->name);
+            r = olm_file_new(filepath, out);
             break; // index was found, no need to continue
         }
 

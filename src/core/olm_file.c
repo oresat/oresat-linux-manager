@@ -1,8 +1,10 @@
 #include "olm_file.h"
 #include "olm_file_cache.h"
+#include <asm-generic/errno-base.h>
 #include <errno.h>
 #include <libgen.h>
 #include <linux/limits.h>
+#include <stdbool.h>
 #include <stdint.h>
 #include <stdlib.h>
 #include <stdint.h>
@@ -48,6 +50,9 @@ olm_file_new(char *filepath, olm_file_t **out) {
 
     strncpy(filename, basename(filepath), strlen(basename(filepath))+1);
 
+    if (filename[0] == '_')
+        return -EINVAL; // no board field
+
     // find all '_' locations and the start of the extension (the 1st '.')
     for (int i=0; i<strlen(filename); ++i) {
         if (filename[i] == '_') { // find keyword and data locs
@@ -89,7 +94,7 @@ olm_file_new(char *filepath, olm_file_t **out) {
         goto olm_file_mem_error;
     strncpy(new_file->board, filename, len);
     new_file->board[len-1] = '\0';
-    
+
     // copy get keyword 
     len = date_loc - keyword_loc;
     if ((new_file->keyword = malloc(len)) == NULL)
@@ -121,5 +126,37 @@ olm_file_new(char *filepath, olm_file_t **out) {
     olm_file_mem_error:
     r = -ENOMEM;
     olm_file_free(new_file);
+    return r;
+}
+
+bool
+is_olm_file(char *filepath) {
+    int keyword_loc = 0, date_loc = 0;
+    char *filename;
+    bool r = true;
+
+    if (filepath == NULL)
+        return false;
+
+    filename = basename(filepath);
+
+    // find all '_' locations and the start of the extension (the 1st '.')
+    for (int i=0; i<strlen(filename); ++i) {
+        if (filename[i] == '_') { // find keyword and data locs
+            if (keyword_loc == 0) {
+                keyword_loc = i+1; // add 1 to not include '_'
+            } else if (date_loc == 0) {
+                date_loc = i+1; // add 1 to not include '_'
+            } else {
+                // both keyword and date have been found, there are extra '_'
+                r = false;
+                break; 
+            }
+        } 
+    }
+
+    if (keyword_loc == 0 || date_loc == 0)
+        r = false;
+
     return r;
 }

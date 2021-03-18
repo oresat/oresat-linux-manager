@@ -12,23 +12,25 @@
 #define COPY_BUFF_LEN 1024
 
 int
-copyfile(const char *dest, const char *src) {
+copyfile(const char *src, const char *dest) {
     char buf[COPY_BUFF_LEN];
     FILE *r_fptr = NULL;
     FILE *w_fptr = NULL;
     size_t bytes;
     int r = 0;
 
-    if (src == NULL || dest == NULL)
+    if (dest == NULL || src == NULL)
         return -EINVAL;
-
+    
+    errno = 0;
     if ((r_fptr = fopen(src, "r")) == NULL) {
-        r = -ENOENT;
+        r = -errno;
         goto copy_error;
     }
 
+    errno = 0;
     if ((w_fptr = fopen(dest, "w")) == NULL) {
-        r = -ENOENT;
+        r = -errno;
         goto copy_error;
     }
 
@@ -44,12 +46,8 @@ copyfile(const char *dest, const char *src) {
 
 copy_error:
 
-    if (r_fptr != NULL)
-        fclose(r_fptr);
-
-    if (w_fptr != NULL)
-        fclose(w_fptr);
-
+    FCLOSE(r_fptr);
+    FCLOSE(w_fptr);
     return r;
 }
 

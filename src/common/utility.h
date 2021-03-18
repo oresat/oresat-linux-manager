@@ -42,12 +42,12 @@ else \
 /**
  * @brief Copies a file.
  *
- * @param dest Destination file path.
  * @param src Source file path.
+ * @param dest Destination file path.
  *
  * @return 0 on success or negative errno on error.
  */
-int copyfile(const char *dest, const char *src);
+int copyfile(const char *src, const char *dest);
 
 /**
  * @breif Makes directory path. A wrapper on top of mkdir().

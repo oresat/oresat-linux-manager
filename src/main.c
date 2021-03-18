@@ -45,20 +45,24 @@
 // pid file for daemon
 #define DEFAULT_PID_FILE        "/run/oresat-linux-managerd.pid"
 
+#ifndef FILE_TRANSFER_DIR
+#define FILE_TRANSFER_DIR       "/var/cache/oresat_linux_manager/"
+#endif /* FILE_TRANSFER_DIR */
+
 #ifndef FREAD_TMP_DIR
-#define FREAD_TMP_DIR           "/tmp/olm_fread/"
+#define FREAD_TMP_DIR           FILE_TRANSFER_DIR"CANopen/fread/"
 #endif /* FREAD_TMP_DIR */
 
 #ifndef FWRITE_TMP_DIR
-#define FWRITE_TMP_DIR          "/tmp/olm_fwrite/"
+#define FWRITE_TMP_DIR          FILE_TRANSFER_DIR"CANopen/fwrite/"
 #endif /* FWRITE_TMP_DIR */
 
 #ifndef FREAD_CACHE_DIR
-#define FREAD_CACHE_DIR         "/var/lib/oresat_linux_manager/fread/"
+#define FREAD_CACHE_DIR         FILE_TRANSFER_DIR"fread/"
 #endif /* FREAD_CACHE_DIR */
 
 #ifndef FWRITE_CACHE_DIR
-#define FWRITE_CACHE_DIR        "/var/lib/oresat_linux_manager/fwrite/"
+#define FWRITE_CACHE_DIR        FILE_TRANSFER_DIR"fwrite/"
 #endif /* FWRITE_CACHE_DIR */
 
 /* Configurable CAN bit-rate and CANopen node-id, store-able to non-volatile
@@ -92,8 +96,6 @@ volatile sig_atomic_t CO_endProgram = 0;
 static void sigHandler(int sig) {
     (void)sig;
     CO_endProgram = 1;
-
-    pthread_cancel(dbus_thread_id);
 }
 
 /* Message logging function */
@@ -439,7 +441,11 @@ int main (int argc, char *argv[]) {
             CO_epoll_processLast(&epMain);
 
         }
+
+        log_printf(LOG_DEBUG, "CO reset or end program signal");
     } /* while (reset != CO_RESET_APP */
+
+    log_printf(LOG_DEBUG, "ending program");
 
 /* program exit ***************************************************************/
     // stop app dbus interface
@@ -447,19 +453,21 @@ int main (int argc, char *argv[]) {
     board_info_end();
 
     // make sure the files are closed when ending program
+    log_printf(LOG_DEBUG, "closing any opened files");
     CO_fstream_reset(&CO_fread_data);
     CO_fstream_reset(&CO_fwrite_data);
 
+    log_printf(LOG_DEBUG, "cleaning cache data");
     file_caches_free(&caches_odf_data);
     olm_file_cache_free(fread_cache);
     olm_file_cache_free(fwrite_cache);
 
-    /* join threads */
+    log_printf(LOG_DEBUG, "joining threads");
     CO_endProgram = 1;
-    if (pthread_join(rt_thread_id, NULL) != 0) {
+    if (pthread_join(rt_thread_id, NULL) != 0)
         log_printf(LOG_CRIT, DBG_ERRNO, "pthread_join()");
-        exit(EXIT_FAILURE);
-    }
+    if (pthread_join(dbus_thread_id, NULL) != 0)
+        log_printf(LOG_CRIT, DBG_ERRNO, "pthread_join()");
 
     /* delete objects from memory */
     CO_epoll_close(&epRT);
@@ -486,6 +494,8 @@ int main (int argc, char *argv[]) {
  ******************************************************************************/
 static void* rt_thread(void* arg) {
     (void)arg;
+    log_printf(LOG_DEBUG, "rt thread started");
+
     /* Endless loop */
     while (CO_endProgram == 0) {
 
@@ -505,12 +515,15 @@ static void* rt_thread(void* arg) {
         // TODO
     }
 
+    log_printf(LOG_DEBUG, "rt thread ended");
     return NULL;
 }
 
 static void*
 dbus_thread(__attribute__ ((unused)) void* arg) {
-    dbus_controller_loop();
+    log_printf(LOG_DEBUG, "dbus thread started");
+    dbus_controller_loop(); /* Endless loop */
+    log_printf(LOG_DEBUG, "dbus thread ended");
     return NULL;
 }
 

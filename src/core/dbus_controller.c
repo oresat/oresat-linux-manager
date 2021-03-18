@@ -26,6 +26,8 @@ int
 dbus_controller_init(void) {
     int r;
 
+    log_message(LOG_DEBUG, "openning dbus connection");
+
     // open bus
     if((r = sd_bus_open_system(&APP_DBUS.bus)) < 0)
         log_message(LOG_CRIT, "Open system bus for apps failed\n");
@@ -36,8 +38,8 @@ dbus_controller_init(void) {
 
 int
 dbus_controller_loop(void) {
-    int r;
     APP_DBUS.loop_running = true;
+    int r;
 
     while(APP_DBUS.loop_running) {
         // Process requests
@@ -47,8 +49,8 @@ dbus_controller_loop(void) {
             continue;
 
         // Wait for the next request to process
-        if(sd_bus_wait(APP_DBUS.bus, UINT64_MAX) < 0)
-            log_message(LOG_ERR, "Bus wait failed for apps\n");
+        if(sd_bus_wait(APP_DBUS.bus, 1000) < 0)
+            log_message(LOG_ERR, "Bus wait failed");
     }
 
     APP_DBUS.loop_running = false;
@@ -59,6 +61,8 @@ dbus_controller_loop(void) {
 int
 dbus_controller_end(void) {
     APP_DBUS.loop_running = false;
+
+    log_message(LOG_DEBUG, "closed dbus connection");
 
     // close bus
     if(APP_DBUS.bus == NULL) {

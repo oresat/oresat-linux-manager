@@ -67,13 +67,15 @@ int olm_file_cache_add(olm_file_cache_t *in, char *filename);
 int olm_file_cache_remove(olm_file_cache_t *in, char *filename);
 
 /**
- * @brief Get the file at a index. Can be used for sepecific keywords too.
+ * @brief Get a copy of the olm_file_t at a index. Can be used for sepecific
+ * keywords too.
  *
  * @param in The file cache.
  * @param index The index in the list wanted.
  * @param keyword The olm keyword to filter with. Set to NULL, if no filter
  * is wanted.
- * @param out the olm file meta data at the index. Can be NULL.
+ * @param out Th copy of olm file data at the index. Must be freed with @ref
+ * olm_file_free.
  *
  * @return 0 on success or negative errno on failure.
  */
@@ -82,7 +84,8 @@ olm_file_cache_index(olm_file_cache_t *in, int index, char *keyword,
         olm_file_t **out);
 
 /**
- * @brief Get the length of the file cahe. Can be used for sepecific keywords too.
+ * @brief Get the length of the file cahe. Can be used for sepecific keywords
+ * too.
  *
  * @param in The file cache.
  * @param keyword The olm keyword to filter with. Set to NULL, if no filter

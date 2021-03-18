@@ -1,6 +1,7 @@
 #ifndef OLM_FILE_H
 #define OLM_FILE_H
 
+#include <stdbool.h>
 #include <stdint.h>
 
 // format: board_keyword_unix-time.extension
@@ -37,5 +38,11 @@ int olm_file_new(char *filename, olm_file_t **out);
  * @param file The olm_file struct to free.
  */
 void olm_file_free(olm_file_t *file);
+
+/**
+ * @brief Check if the filename follows olm_file format.
+ * @param The filename to check.
+ */
+bool is_olm_file(char *filepath);
 
 #endif /* OLM_FILE_H */

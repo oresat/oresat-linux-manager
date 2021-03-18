@@ -95,7 +95,7 @@ file_caches_ODF(CO_ODF_arg_t *ODF_arg) {
                 if (caches->keyword == NULL) {
                     ret = CO_SDO_AB_NO_DATA;
                 } else {
-                    ODF_arg->dataLength = strlen(caches->keyword);
+                    ODF_arg->dataLength = strlen(caches->keyword)+1;
                     memcpy(ODF_arg->data, caches->keyword, ODF_arg->dataLength);
                 }
             } else {
@@ -105,6 +105,9 @@ file_caches_ODF(CO_ODF_arg_t *ODF_arg) {
                 }
 
                 unsigned int len = ODF_arg->dataLength;
+
+                if (len == 1 && ODF_arg->data[0] == 0)
+                    break; // only clearing keyword
 
                 // check if str end with '\0'
                 if (ODF_arg->data[len-1] != '\0')
@@ -127,7 +130,7 @@ file_caches_ODF(CO_ODF_arg_t *ODF_arg) {
                 uint32_t len;
 
                 if (caches->selector == FREAD_CACHE)
-                    len = olm_file_cache_len(caches->fwrite_cache, caches->keyword);
+                    len = olm_file_cache_len(caches->fread_cache, caches->keyword);
                 else
                     len = olm_file_cache_len(caches->fwrite_cache, caches->keyword);
 
