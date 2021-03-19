@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--File is generated with libedssharp Object Dictionary Editor v0.8-121-g3349c4d, URL: https://github.com/robincornelius/libedssharp-->
+<!--File is generated with libedssharp Object Dictionary Editor v0.8-123-g6c02323, URL: https://github.com/robincornelius/libedssharp-->
 <!--File includes additional custom properties for CANopenNode, CANopen protocol stack, URL: https://github.com/CANopenNode/CANopenNode-->
 <ISO15745ProfileContainer xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.canopen.org/xml/1.1">
   <ISO15745Profile>
@@ -15,7 +15,7 @@
         <ProfileTechnology>CANopen</ProfileTechnology>
       </ISO15745Reference>
     </ProfileHeader>
-    <ProfileBody xmlns:q1="http://www.canopen.org/xml/1.1" xsi:type="q1:ProfileBody_Device_CANopen" formatName="CANopen" formatVersion="1.0" fileName="generic_OD.xdd" fileCreator="Ryan Medick" fileCreationDate="2021-03-09" fileCreationTime="23:41:40.0000000-07:00" fileModifiedBy="Ryan Medick" fileModificationDate="2021-03-15" fileModificationTime="22:03:32.3876690-07:00" fileVersion="1" supportedLanguages="en" xmlns="">
+    <ProfileBody xmlns:q1="http://www.canopen.org/xml/1.1" xsi:type="q1:ProfileBody_Device_CANopen" formatName="CANopen" formatVersion="1.0" fileName="generic_OD.xdd" fileCreator="Ryan Medick" fileCreationDate="2021-03-09" fileCreationTime="23:41:40.0000000-07:00" fileModifiedBy="Ryan Medick" fileModificationDate="2021-03-19" fileModificationTime="15:01:52.3146200-07:00" fileVersion="1" supportedLanguages="en" xmlns="">
       <q1:DeviceIdentity>
         <q1:vendorName>Portland State Aerospace Society</q1:vendorName>
         <q1:vendorID>0</q1:vendorID>
@@ -82,10 +82,6 @@
           <q1:array name="Error behavior" uniqueID="UID_ARR_1029">
             <q1:subrange lowerLimit="0" upperLimit="2" />
             <USINT />
-          </q1:array>
-          <q1:array name="Daemon list" uniqueID="UID_ARR_3004">
-            <q1:subrange lowerLimit="0" upperLimit="16" />
-            <BITSTRING />
           </q1:array>
           <q1:struct name="Identity" uniqueID="UID_REC_1018">
             <q1:varDeclaration name="Highest sub-index supported" uniqueID="UID_RECSUB_101800">
@@ -723,21 +719,21 @@
               <BITSTRING />
             </q1:varDeclaration>
           </q1:struct>
-          <q1:struct name="Daemon manager" uniqueID="UID_REC_3005">
+          <q1:struct name="App manager" uniqueID="UID_REC_3005">
             <q1:varDeclaration name="Highest sub-index supported" uniqueID="UID_RECSUB_300500">
               <USINT />
             </q1:varDeclaration>
-            <q1:varDeclaration name="Select app" uniqueID="UID_RECSUB_300501">
+            <q1:varDeclaration name="Total apps" uniqueID="UID_RECSUB_300501">
               <USINT />
             </q1:varDeclaration>
-            <q1:varDeclaration name="App name" uniqueID="UID_RECSUB_300502">
+            <q1:varDeclaration name="Select app" uniqueID="UID_RECSUB_300502">
+              <USINT />
+            </q1:varDeclaration>
+            <q1:varDeclaration name="App name" uniqueID="UID_RECSUB_300503">
               <BITSTRING />
             </q1:varDeclaration>
-            <q1:varDeclaration name="Daemon service name" uniqueID="UID_RECSUB_300503">
-              <BITSTRING />
-            </q1:varDeclaration>
-            <q1:varDeclaration name="Daemon current state" uniqueID="UID_RECSUB_300504">
-              <DINT />
+            <q1:varDeclaration name="Daemon state" uniqueID="UID_RECSUB_300504">
+              <SINT />
             </q1:varDeclaration>
           </q1:struct>
           <q1:struct name="Linux updater app" uniqueID="UID_REC_30F0">
@@ -2549,81 +2545,8 @@ Manufacturer may define its own constants up to index 0xFF. Of course, he must t
             <label lang="en">Reset</label>
             <BITSTRING />
           </q1:parameter>
-          <q1:parameter uniqueID="UID_OBJ_3004">
-            <label lang="en">Daemon list</label>
-            <q1:dataTypeIDRef uniqueIDRef="UID_ARR_3004" />
-          </q1:parameter>
-          <q1:parameter uniqueID="UID_SUB_300400">
-            <label lang="en">Highest sub-index supported</label>
-            <USINT />
-            <q1:defaultValue value="0x10" />
-          </q1:parameter>
-          <q1:parameter uniqueID="UID_SUB_300401" access="readWrite">
-            <label lang="en"></label>
-            <BITSTRING />
-          </q1:parameter>
-          <q1:parameter uniqueID="UID_SUB_300402" access="readWrite">
-            <label lang="en"></label>
-            <BITSTRING />
-          </q1:parameter>
-          <q1:parameter uniqueID="UID_SUB_300403" access="readWrite">
-            <label lang="en"></label>
-            <BITSTRING />
-          </q1:parameter>
-          <q1:parameter uniqueID="UID_SUB_300404" access="readWrite">
-            <label lang="en"></label>
-            <BITSTRING />
-          </q1:parameter>
-          <q1:parameter uniqueID="UID_SUB_300405" access="readWrite">
-            <label lang="en"></label>
-            <BITSTRING />
-          </q1:parameter>
-          <q1:parameter uniqueID="UID_SUB_300406" access="readWrite">
-            <label lang="en"></label>
-            <BITSTRING />
-          </q1:parameter>
-          <q1:parameter uniqueID="UID_SUB_300407" access="readWrite">
-            <label lang="en"></label>
-            <BITSTRING />
-          </q1:parameter>
-          <q1:parameter uniqueID="UID_SUB_300408" access="readWrite">
-            <label lang="en"></label>
-            <BITSTRING />
-          </q1:parameter>
-          <q1:parameter uniqueID="UID_SUB_300409" access="readWrite">
-            <label lang="en"></label>
-            <BITSTRING />
-          </q1:parameter>
-          <q1:parameter uniqueID="UID_SUB_30040A" access="readWrite">
-            <label lang="en"></label>
-            <BITSTRING />
-          </q1:parameter>
-          <q1:parameter uniqueID="UID_SUB_30040B" access="readWrite">
-            <label lang="en"></label>
-            <BITSTRING />
-          </q1:parameter>
-          <q1:parameter uniqueID="UID_SUB_30040C" access="readWrite">
-            <label lang="en"></label>
-            <BITSTRING />
-          </q1:parameter>
-          <q1:parameter uniqueID="UID_SUB_30040D" access="readWrite">
-            <label lang="en"></label>
-            <BITSTRING />
-          </q1:parameter>
-          <q1:parameter uniqueID="UID_SUB_30040E" access="readWrite">
-            <label lang="en"></label>
-            <BITSTRING />
-          </q1:parameter>
-          <q1:parameter uniqueID="UID_SUB_30040F" access="readWrite">
-            <label lang="en"></label>
-            <BITSTRING />
-          </q1:parameter>
-          <q1:parameter uniqueID="UID_SUB_300410" access="readWrite">
-            <label lang="en"></label>
-            <BITSTRING />
-          </q1:parameter>
           <q1:parameter uniqueID="UID_OBJ_3005">
-            <label lang="en">Daemon manager</label>
+            <label lang="en">App manager</label>
             <q1:dataTypeIDRef uniqueIDRef="UID_REC_3005" />
           </q1:parameter>
           <q1:parameter uniqueID="UID_SUB_300500">
@@ -2631,22 +2554,23 @@ Manufacturer may define its own constants up to index 0xFF. Of course, he must t
             <USINT />
             <q1:defaultValue value="0x04" />
           </q1:parameter>
-          <q1:parameter uniqueID="UID_SUB_300501" access="readWrite">
+          <q1:parameter uniqueID="UID_SUB_300501">
+            <label lang="en">Total apps</label>
+            <USINT />
+            <q1:defaultValue value="0" />
+          </q1:parameter>
+          <q1:parameter uniqueID="UID_SUB_300502" access="readWrite">
             <label lang="en">Select app</label>
             <USINT />
             <q1:defaultValue value="0" />
           </q1:parameter>
-          <q1:parameter uniqueID="UID_SUB_300502">
+          <q1:parameter uniqueID="UID_SUB_300503">
             <label lang="en">App name</label>
             <BITSTRING />
           </q1:parameter>
-          <q1:parameter uniqueID="UID_SUB_300503">
-            <label lang="en">Daemon service name</label>
-            <BITSTRING />
-          </q1:parameter>
           <q1:parameter uniqueID="UID_SUB_300504" access="readWrite">
-            <label lang="en">Daemon current state</label>
-            <DINT />
+            <label lang="en">Daemon state</label>
+            <SINT />
             <q1:defaultValue value="0" />
           </q1:parameter>
           <q1:parameter uniqueID="UID_OBJ_3006">
@@ -2718,7 +2642,7 @@ Manufacturer may define its own constants up to index 0xFF. Of course, he must t
         <ProfileTechnology>CANopen</ProfileTechnology>
       </ISO15745Reference>
     </ProfileHeader>
-    <ProfileBody xmlns:q2="http://www.canopen.org/xml/1.1" xsi:type="q2:ProfileBody_CommunicationNetwork_CANopen" formatName="CANopen" formatVersion="1.0" fileName="generic_OD.xdd" fileCreator="Ryan Medick" fileCreationDate="2021-03-09" fileCreationTime="23:41:40.0000000-07:00" fileModificationDate="2021-03-15" fileModificationTime="22:03:32.3876690-07:00" fileVersion="1" supportedLanguages="en" xmlns="">
+    <ProfileBody xmlns:q2="http://www.canopen.org/xml/1.1" xsi:type="q2:ProfileBody_CommunicationNetwork_CANopen" formatName="CANopen" formatVersion="1.0" fileName="generic_OD.xdd" fileCreator="Ryan Medick" fileCreationDate="2021-03-09" fileCreationTime="23:41:40.0000000-07:00" fileModificationDate="2021-03-19" fileModificationTime="15:01:52.3146200-07:00" fileVersion="1" supportedLanguages="en" xmlns="">
       <ApplicationLayers>
         <q2:CANopenObjectList>
           <CANopenObject index="1000" name="Device type" objectType="7" PDOmapping="no" uniqueIDRef="UID_OBJ_1000" />
@@ -3057,31 +2981,12 @@ Manufacturer may define its own constants up to index 0xFF. Of course, he must t
             <CANopenSubObject subIndex="02" name="File data" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_300302" />
             <CANopenSubObject subIndex="03" name="Reset" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_300303" />
           </CANopenObject>
-          <CANopenObject index="3004" name="Daemon list" objectType="8" uniqueIDRef="UID_OBJ_3004" subNumber="17">
-            <CANopenSubObject subIndex="00" name="Highest sub-index supported" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_300400" />
-            <CANopenSubObject subIndex="01" name="" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_300401" />
-            <CANopenSubObject subIndex="02" name="" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_300402" />
-            <CANopenSubObject subIndex="03" name="" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_300403" />
-            <CANopenSubObject subIndex="04" name="" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_300404" />
-            <CANopenSubObject subIndex="05" name="" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_300405" />
-            <CANopenSubObject subIndex="06" name="" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_300406" />
-            <CANopenSubObject subIndex="07" name="" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_300407" />
-            <CANopenSubObject subIndex="08" name="" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_300408" />
-            <CANopenSubObject subIndex="09" name="" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_300409" />
-            <CANopenSubObject subIndex="0A" name="" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_30040A" />
-            <CANopenSubObject subIndex="0B" name="" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_30040B" />
-            <CANopenSubObject subIndex="0C" name="" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_30040C" />
-            <CANopenSubObject subIndex="0D" name="" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_30040D" />
-            <CANopenSubObject subIndex="0E" name="" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_30040E" />
-            <CANopenSubObject subIndex="0F" name="" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_30040F" />
-            <CANopenSubObject subIndex="10" name="" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_300410" />
-          </CANopenObject>
-          <CANopenObject index="3005" name="Daemon manager" objectType="9" uniqueIDRef="UID_OBJ_3005" subNumber="5">
+          <CANopenObject index="3005" name="App manager" objectType="9" uniqueIDRef="UID_OBJ_3005" subNumber="5">
             <CANopenSubObject subIndex="00" name="Highest sub-index supported" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_300500" />
-            <CANopenSubObject subIndex="01" name="Select app" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_300501" />
-            <CANopenSubObject subIndex="02" name="App name" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_300502" />
-            <CANopenSubObject subIndex="03" name="Daemon service name" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_300503" />
-            <CANopenSubObject subIndex="04" name="Daemon current state" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_300504" />
+            <CANopenSubObject subIndex="01" name="Total apps" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_300501" />
+            <CANopenSubObject subIndex="02" name="Select app" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_300502" />
+            <CANopenSubObject subIndex="03" name="App name" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_300503" />
+            <CANopenSubObject subIndex="04" name="Daemon state" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_300504" />
           </CANopenObject>
           <CANopenObject index="3006" name="Get log" objectType="7" PDOmapping="no" uniqueIDRef="UID_OBJ_3006" />
           <CANopenObject index="30F0" name="Linux updater app" objectType="9" uniqueIDRef="UID_OBJ_30F0" subNumber="10">

@@ -15,12 +15,22 @@ typedef struct {
     /** The app's name. */
     char *name;
     /**
-     * The systemd's service file name for the app. The ".service" is
-     * required.
+     * The unit name for the daemon the app is interfacing to. The ".service"
+     * is required.
      */
     char *service_file;
     /**
-     * If a new file recieve by OLM match this keyword, the callback function
+     * The unit object path for the org.freedesktop.systemd1.Unit interface.
+     * OLM's App Manager will fill this out if service_file is set.
+     */
+    char *unit_object_path;
+    /**
+     * The active state of the unit. @ref active_states. Will be set by OLM's
+     * App Manager.
+     */
+    int unit_active_state;
+    /**
+     * If a new file recieve by OLM matches this keyword, the callback function
      * will be called. Set to NULL if app doesn't want to recieve file from
      * the CANbus.
      */
@@ -49,6 +59,8 @@ typedef struct {
         app->name = NULL; \
         app->service_file = NULL; \
         app->fwrite_keyword = NULL; \
+        app->unit_object_path = NULL; \
+        app->unit_active_state = 0; \
         app->fwrite_cb = NULL; \
         app->data = NULL; \
         app->data_free_cb = NULL; \
@@ -58,6 +70,7 @@ typedef struct {
     if (app != NULL) { \
         FREE(app->name); \
         FREE(app->service_file); \
+        FREE(app->unit_object_path); \
         FREE(app->fwrite_keyword);\
         if (app->data != NULL) \
             app->data_free_cb(app->data); \

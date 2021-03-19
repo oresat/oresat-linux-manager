@@ -3,7 +3,7 @@
     CANopen Object Dictionary definition for CANopenNode v1 to v2
 
     This file was automatically generated with
-    libedssharp Object Dictionary Editor v0.8-121-g3349c4d
+    libedssharp Object Dictionary Editor v0.8-123-g6c02323
 
     https://github.com/CANopenNode/CANopenNode
     https://github.com/robincornelius/libedssharp
@@ -77,7 +77,7 @@
 /*******************************************************************************
    OBJECT DICTIONARY
 *******************************************************************************/
-   #define CO_OD_NoOfElements             54
+   #define CO_OD_NoOfElements             53
 
 
 /*******************************************************************************
@@ -216,11 +216,11 @@
                }              OD_fwrite_t;
 /*3005      */ typedef struct {
                UNSIGNED8      highestSubIndexSupported;
+               UNSIGNED8      totalApps;
                UNSIGNED8      selectApp;
                DOMAIN         appName;
-               DOMAIN         daemonServiceName;
-               INTEGER32      daemonCurrentState;
-               }              OD_daemonManager_t;
+               INTEGER8       daemonState;
+               }              OD_appManager_t;
 /*30F0      */ typedef struct {
                UNSIGNED8      highestSubIndexSupported;
                INTEGER32      currentState;
@@ -642,35 +642,14 @@
         #define OD_3003_2_fwrite_fileData                           2
         #define OD_3003_3_fwrite_reset                              3
 
-/*3004 */
-        #define OD_3004_daemonList                                  0x3004
-
-        #define OD_3004_0_daemonList_maxSubIndex                    0
-        #define OD_3004_1_daemonList_                               1
-        #define OD_3004_2_daemonList_                               2
-        #define OD_3004_3_daemonList_                               3
-        #define OD_3004_4_daemonList_                               4
-        #define OD_3004_5_daemonList_                               5
-        #define OD_3004_6_daemonList_                               6
-        #define OD_3004_7_daemonList_                               7
-        #define OD_3004_8_daemonList_                               8
-        #define OD_3004_9_daemonList_                               9
-        #define OD_3004_10_daemonList_                              10
-        #define OD_3004_11_daemonList_                              11
-        #define OD_3004_12_daemonList_                              12
-        #define OD_3004_13_daemonList_                              13
-        #define OD_3004_14_daemonList_                              14
-        #define OD_3004_15_daemonList_                              15
-        #define OD_3004_16_daemonList_                              16
-
 /*3005 */
-        #define OD_3005_daemonManager                               0x3005
+        #define OD_3005_appManager                                  0x3005
 
-        #define OD_3005_0_daemonManager_maxSubIndex                 0
-        #define OD_3005_1_daemonManager_selectApp                   1
-        #define OD_3005_2_daemonManager_appName                     2
-        #define OD_3005_3_daemonManager_daemonServiceName           3
-        #define OD_3005_4_daemonManager_daemonCurrentState          4
+        #define OD_3005_0_appManager_maxSubIndex                    0
+        #define OD_3005_1_appManager_totalApps                      1
+        #define OD_3005_2_appManager_selectApp                      2
+        #define OD_3005_3_appManager_appName                        3
+        #define OD_3005_4_appManager_daemonState                    4
 
 /*3006 */
         #define OD_3006_getLog                                      0x3006
@@ -714,8 +693,7 @@ struct sCO_OD_RAM{
 /*3001      */ OD_fileCaches_t fileCaches;
 /*3002      */ OD_fread_t      fread;
 /*3003      */ OD_fwrite_t     fwrite;
-/*3004      */ DOMAIN          daemonList[16];
-/*3005      */ OD_daemonManager_t daemonManager;
+/*3005      */ OD_appManager_t appManager;
 /*3006      */ UNSIGNED8      getLog;
 /*30F0      */ OD_linuxUpdaterApp_t linuxUpdaterApp;
 
@@ -929,13 +907,8 @@ extern struct sCO_OD_PERSIST_MFR CO_OD_PERSIST_MFR;
 /*3003, Data Type: fwrite_t */
         #define OD_fwrite                                           CO_OD_RAM.fwrite
 
-/*3004, Data Type: DOMAIN, Array[16] */
-        #define OD_daemonList                                       CO_OD_RAM.daemonList
-        #define ODL_daemonList_arrayLength                          16
-        #define ODA_daemonList_                                     0
-
-/*3005, Data Type: daemonManager_t */
-        #define OD_daemonManager                                    CO_OD_RAM.daemonManager
+/*3005, Data Type: appManager_t */
+        #define OD_appManager                                       CO_OD_RAM.appManager
 
 /*3006, Data Type: UNSIGNED8 */
         #define OD_getLog                                           CO_OD_RAM.getLog

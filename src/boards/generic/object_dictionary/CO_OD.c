@@ -3,7 +3,7 @@
     CANopen Object Dictionary definition for CANopenNode v1 to v2
 
     This file was automatically generated with
-    libedssharp Object Dictionary Editor v0.8-121-g3349c4d
+    libedssharp Object Dictionary Editor v0.8-123-g6c02323
 
     https://github.com/CANopenNode/CANopenNode
     https://github.com/robincornelius/libedssharp
@@ -48,8 +48,7 @@ struct sCO_OD_RAM CO_OD_RAM = {
 /*3001*/ {0x9L, 0x0L, 0x0L, 0x0L, 0, 0x0000L, 0x0000L, 0, 0x0000L, 0},
 /*3002*/ {0x4L, 0, 0, 0, 0},
 /*3003*/ {0x3L, 0, 0, 0},
-/*3004*/ {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-/*3005*/ {0x4L, 0x0L, 0, 0, 0x0000L},
+/*3005*/ {0x4L, 0x0L, 0x0L, 0, 0x0},
 /*3006*/ 0x0L,
 /*30F0*/ {0x9L, 0x0000L, 0x0000L, 0, 0, 0, 0, 0, 0, 0},
 
@@ -396,11 +395,11 @@ struct sCO_OD_PERSIST_MFR CO_OD_PERSIST_MFR = {
 };
 
 /*0x3005*/ const CO_OD_entryRecord_t OD_record3005[5] = {
-           {(void*)&CO_OD_RAM.daemonManager.highestSubIndexSupported, 0x06, 0x1 },
-           {(void*)&CO_OD_RAM.daemonManager.selectApp, 0x0E, 0x1 },
+           {(void*)&CO_OD_RAM.appManager.highestSubIndexSupported, 0x06, 0x1 },
+           {(void*)&CO_OD_RAM.appManager.totalApps, 0x06, 0x1 },
+           {(void*)&CO_OD_RAM.appManager.selectApp, 0x0E, 0x1 },
            {(void*)0, 0x06, 0x0 },
-           {(void*)0, 0x06, 0x0 },
-           {(void*)&CO_OD_RAM.daemonManager.daemonCurrentState, 0x8E, 0x4 },
+           {(void*)&CO_OD_RAM.appManager.daemonState, 0x0E, 0x1 },
 };
 
 /*0x30F0*/ const CO_OD_entryRecord_t OD_record30F0[10] = {
@@ -470,7 +469,6 @@ const CO_OD_entry_t CO_OD[CO_OD_NoOfElements] = {
 {0x3001, 0x09, 0x00,  0, (void*)&OD_record3001},
 {0x3002, 0x04, 0x00,  0, (void*)&OD_record3002},
 {0x3003, 0x03, 0x00,  0, (void*)&OD_record3003},
-{0x3004, 0x10, 0x0E,  0, (void*)0},
 {0x3005, 0x04, 0x00,  0, (void*)&OD_record3005},
 {0x3006, 0x00, 0x06,  1, (void*)&CO_OD_RAM.getLog},
 {0x30F0, 0x09, 0x00,  0, (void*)&OD_record30F0},

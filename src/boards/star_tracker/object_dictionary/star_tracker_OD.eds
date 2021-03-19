@@ -8,8 +8,8 @@ Description=OreSat Star Tracker
 CreationTime=1:57PM
 CreationDate=03-09-2021
 CreatedBy=Ryan Medick
-ModificationTime=10:01PM
-ModificationDate=03-15-2021
+ModificationTime=3:05PM
+ModificationDate=03-19-2021
 ModifiedBy=Ryan Medick
 
 [DeviceInfo]
@@ -1863,7 +1863,7 @@ DefaultValue=0x00000008
 PDOMapping=0
 
 [ManufacturerObjects]
-SupportedObjects=16
+SupportedObjects=15
 1=0x2000
 2=0x2010
 3=0x2011
@@ -1873,13 +1873,12 @@ SupportedObjects=16
 7=0x3001
 8=0x3002
 9=0x3003
-10=0x3004
-11=0x3005
-12=0x3006
-13=0x30F0
-14=0x3100
-15=0x3101
-16=0x3102
+10=0x3005
+11=0x3006
+12=0x30F0
+13=0x3100
+14=0x3101
+15=0x3102
 
 [2000]
 ParameterName=BUS management
@@ -2424,167 +2423,8 @@ AccessType=wo
 DefaultValue=
 PDOMapping=0
 
-[3004]
-ParameterName=Daemon list
-ObjectType=0x8
-;StorageLocation=RAM
-SubNumber=0x11
-
-[3004sub0]
-ParameterName=Highest sub-index supported
-ObjectType=0x7
-;StorageLocation=RAM
-DataType=0x0005
-AccessType=ro
-DefaultValue=0x10
-PDOMapping=0
-
-[3004sub1]
-ParameterName=
-ObjectType=0x7
-;StorageLocation=RAM
-DataType=0x000F
-AccessType=rw
-DefaultValue=
-PDOMapping=0
-
-[3004sub2]
-ParameterName=
-ObjectType=0x7
-;StorageLocation=RAM
-DataType=0x000F
-AccessType=rw
-DefaultValue=
-PDOMapping=0
-
-[3004sub3]
-ParameterName=
-ObjectType=0x7
-;StorageLocation=RAM
-DataType=0x000F
-AccessType=rw
-DefaultValue=
-PDOMapping=0
-
-[3004sub4]
-ParameterName=
-ObjectType=0x7
-;StorageLocation=RAM
-DataType=0x000F
-AccessType=rw
-DefaultValue=
-PDOMapping=0
-
-[3004sub5]
-ParameterName=
-ObjectType=0x7
-;StorageLocation=RAM
-DataType=0x000F
-AccessType=rw
-DefaultValue=
-PDOMapping=0
-
-[3004sub6]
-ParameterName=
-ObjectType=0x7
-;StorageLocation=RAM
-DataType=0x000F
-AccessType=rw
-DefaultValue=
-PDOMapping=0
-
-[3004sub7]
-ParameterName=
-ObjectType=0x7
-;StorageLocation=RAM
-DataType=0x000F
-AccessType=rw
-DefaultValue=
-PDOMapping=0
-
-[3004sub8]
-ParameterName=
-ObjectType=0x7
-;StorageLocation=RAM
-DataType=0x000F
-AccessType=rw
-DefaultValue=
-PDOMapping=0
-
-[3004sub9]
-ParameterName=
-ObjectType=0x7
-;StorageLocation=RAM
-DataType=0x000F
-AccessType=rw
-DefaultValue=
-PDOMapping=0
-
-[3004subA]
-ParameterName=
-ObjectType=0x7
-;StorageLocation=RAM
-DataType=0x000F
-AccessType=rw
-DefaultValue=
-PDOMapping=0
-
-[3004subB]
-ParameterName=
-ObjectType=0x7
-;StorageLocation=RAM
-DataType=0x000F
-AccessType=rw
-DefaultValue=
-PDOMapping=0
-
-[3004subC]
-ParameterName=
-ObjectType=0x7
-;StorageLocation=RAM
-DataType=0x000F
-AccessType=rw
-DefaultValue=
-PDOMapping=0
-
-[3004subD]
-ParameterName=
-ObjectType=0x7
-;StorageLocation=RAM
-DataType=0x000F
-AccessType=rw
-DefaultValue=
-PDOMapping=0
-
-[3004subE]
-ParameterName=
-ObjectType=0x7
-;StorageLocation=RAM
-DataType=0x000F
-AccessType=rw
-DefaultValue=
-PDOMapping=0
-
-[3004subF]
-ParameterName=
-ObjectType=0x7
-;StorageLocation=RAM
-DataType=0x000F
-AccessType=rw
-DefaultValue=
-PDOMapping=0
-
-[3004sub10]
-ParameterName=
-ObjectType=0x7
-;StorageLocation=RAM
-DataType=0x000F
-AccessType=rw
-DefaultValue=
-PDOMapping=0
-
 [3005]
-ParameterName=Daemon manager
+ParameterName=App manager
 ObjectType=0x9
 ;StorageLocation=RAM
 SubNumber=0x5
@@ -2599,6 +2439,15 @@ DefaultValue=0x04
 PDOMapping=0
 
 [3005sub1]
+ParameterName=Total apps
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x0005
+AccessType=ro
+DefaultValue=0
+PDOMapping=0
+
+[3005sub2]
 ParameterName=Select app
 ObjectType=0x7
 ;StorageLocation=RAM
@@ -2607,7 +2456,7 @@ AccessType=rw
 DefaultValue=0
 PDOMapping=0
 
-[3005sub2]
+[3005sub3]
 ParameterName=App name
 ObjectType=0x7
 ;StorageLocation=RAM
@@ -2616,20 +2465,11 @@ AccessType=ro
 DefaultValue=
 PDOMapping=0
 
-[3005sub3]
-ParameterName=Daemon service name
-ObjectType=0x7
-;StorageLocation=RAM
-DataType=0x000F
-AccessType=ro
-DefaultValue=
-PDOMapping=0
-
 [3005sub4]
-ParameterName=Daemon current state
+ParameterName=Daemon state
 ObjectType=0x7
 ;StorageLocation=RAM
-DataType=0x0004
+DataType=0x0002
 AccessType=rw
 DefaultValue=0
 PDOMapping=0
