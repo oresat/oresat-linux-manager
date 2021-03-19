@@ -28,8 +28,8 @@
 #include "olm_app.h"
 #include "board_info.h"
 #include "board_main.h"
-#include "app_manager_odf.h"
 #include "app_manager.h"
+#include "app_manager_odf.h"
 #include "olm_file_cache.h"
 #include "CO_fstream_odf.h"
 #include "file_caches_odf.h"
@@ -519,7 +519,7 @@ static void* rt_thread(void* arg) {
 static void*
 dbus_thread(__attribute__ ((unused)) void* arg) {
     log_printf(LOG_DEBUG, "dbus thread started");
-    app_manager_loop(); /* Endless loop */
+    app_manager_dbus_loop(); /* Endless loop */
     log_printf(LOG_DEBUG, "dbus thread ended");
     return NULL;
 }

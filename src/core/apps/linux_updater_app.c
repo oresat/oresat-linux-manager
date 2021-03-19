@@ -48,10 +48,8 @@ linux_updater_app_create(void) {
     
     OLM_APP_MALLOC_AND_NULL(app);
 
-    if (app == NULL) {
-        log_message(LOG_ERR, "olm_app_malloc() failed");
+    if (app == NULL)
         return app;
-    }
 
     MALLOC_STRNCPY_OR_GOTO(app->name, APP_NAME, linux_updater_app_error)
     MALLOC_STRNCPY_OR_GOTO(app->service_file, SERVICE_FILE, linux_updater_app_error)
@@ -105,12 +103,10 @@ linux_updater_app_add_update_file(const char *file) {
     if (file == NULL)
         return value;
 
-    if (sd_bus_call_method(DBUS_INFO, "AddUpdateFile", &err, &mess, "s", file) < 0)  {
-        if (sd_bus_message_read(mess, "b", &value) < 0)
-            LOG_DBUS_METHOD_READ_ERROR(LOG_ERR, APP_NAME, "AddUpdateFile");
-    } else {
-        LOG_DBUS_CALL_METHOD_ERROR(LOG_ERR, APP_NAME, "AddUpdateFile");
-    }
+    if (sd_bus_call_method(DBUS_INFO, "AddUpdateFile", &err, &mess, "s", file) < 0)
+        LOG_DBUS_CALL_METHOD_ERROR(LOG_ERR, APP_NAME, "AddUpdateFile", err.name);
+    else if (sd_bus_message_read(mess, "b", &value) < 0)
+        LOG_DBUS_METHOD_READ_ERROR(LOG_ERR, APP_NAME, "AddUpdateFile", err.name);
 
     sd_bus_message_unref(mess);
     sd_bus_error_free(&err);
@@ -123,12 +119,10 @@ linux_updater_start_update(void) {
     sd_bus_message *mess = NULL;
     bool value = false;
 
-    if (sd_bus_call_method(DBUS_INFO, "StartUpdate", &err, &mess, NULL) == 0) {
-        if (sd_bus_message_read(mess, "b", &value) < 0)
-            LOG_DBUS_METHOD_READ_ERROR(LOG_ERR, APP_NAME, "StartUpdate");
-    } else {
-        LOG_DBUS_CALL_METHOD_ERROR(LOG_ERR, APP_NAME, "StartUpdate");
-    }
+    if (sd_bus_call_method(DBUS_INFO, "StartUpdate", &err, &mess, NULL) < 0)
+        LOG_DBUS_METHOD_READ_ERROR(LOG_ERR, APP_NAME, "StartUpdate", err.name);
+    else if (sd_bus_message_read(mess, "b", &value) < 0)
+        LOG_DBUS_CALL_METHOD_ERROR(LOG_ERR, APP_NAME, "StartUpdate", err.name);
 
     sd_bus_message_unref(mess);
     sd_bus_error_free(&err);
@@ -141,12 +135,10 @@ linux_updater_stop_update(void) {
     sd_bus_message *mess = NULL;
     bool value = false;
 
-    if (sd_bus_call_method(DBUS_INFO, "StopUpdate", &err, &mess, NULL) == 0) {
-        if (sd_bus_message_read(mess, "b", &value) < 0)
-            LOG_DBUS_METHOD_READ_ERROR(LOG_ERR, APP_NAME, "StopUpdate");
-    } else {
-        LOG_DBUS_CALL_METHOD_ERROR(LOG_ERR, APP_NAME, "StopUpdate");
-    }
+    if (sd_bus_call_method(DBUS_INFO, "StopUpdate", &err, &mess, NULL) < 0)
+        LOG_DBUS_CALL_METHOD_ERROR(LOG_ERR, APP_NAME, "StopUpdate", err.name);
+    else if (sd_bus_message_read(mess, "b", &value) < 0)
+        LOG_DBUS_METHOD_READ_ERROR(LOG_ERR, APP_NAME, "StopUpdate", err.name);
 
     sd_bus_message_unref(mess);
     sd_bus_error_free(&err);
@@ -159,12 +151,10 @@ linux_updater_reset(void) {
     sd_bus_message *mess = NULL;
     bool value = false;
 
-    if (sd_bus_call_method(DBUS_INFO, "Reset", &err, &mess, NULL) == 0) {
-        if (sd_bus_message_read(mess, "b", &value) < 0)
-            LOG_DBUS_METHOD_READ_ERROR(LOG_ERR, APP_NAME, "Reset");
-    } else {
-        LOG_DBUS_CALL_METHOD_ERROR(LOG_ERR, APP_NAME, "Reset");
-    }
+    if (sd_bus_call_method(DBUS_INFO, "Reset", &err, &mess, NULL) < 0)
+        LOG_DBUS_CALL_METHOD_ERROR(LOG_ERR, APP_NAME, "Reset", err.name);
+    else if (sd_bus_message_read(mess, "b", &value) < 0)
+        LOG_DBUS_METHOD_READ_ERROR(LOG_ERR, APP_NAME, "Reset", err.name);
 
     sd_bus_message_unref(mess);
     sd_bus_error_free(&err);
@@ -177,12 +167,10 @@ get_apt_list_output(void) {
     sd_bus_message *mess = NULL;
     bool value = false;
 
-    if (sd_bus_call_method(DBUS_INFO, "GetAptListOutput", &err, &mess, NULL) == 0) {
-        if (sd_bus_message_read(mess, "b", &value))
-            LOG_DBUS_METHOD_READ_ERROR(LOG_ERR, APP_NAME, "GetAptListOutput");
-    } else {
-        LOG_DBUS_CALL_METHOD_ERROR(LOG_ERR, APP_NAME, "GetAptListOutput");
-    }
+    if (sd_bus_call_method(DBUS_INFO, "GetAptListOutput", &err, &mess, NULL) == 0)
+        LOG_DBUS_CALL_METHOD_ERROR(LOG_ERR, APP_NAME, "GetAptListOutput", err.name);
+    else if (sd_bus_message_read(mess, "b", &value))
+        LOG_DBUS_METHOD_READ_ERROR(LOG_ERR, APP_NAME, "GetAptListOutput", err.name);
 
     sd_bus_message_unref(mess);
     sd_bus_error_free(&err);

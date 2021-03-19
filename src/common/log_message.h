@@ -13,29 +13,36 @@
 #define LOG_MESSAGE_H
 
 #include <syslog.h>
+#include <systemd/sd-bus.h>
 
-/*
+/**
  * Logs the message in syslog and will output to stderr/stdout, if available.
  * see man vsyslog for prioprity levels
  */
 void log_message(int priority, const char *fmt, ...);
 
-#define LOG_DBUS_PROPERTY_READ_ERROR(log_lvl, app_name, prop_name) \
-    log_message(log_lvl, "app %s: dbus property %s read failed", app_name, prop_name)
-
-#define LOG_DBUS_SIGNAL_READ_ERROR(log_lvl, app_name, signal_name) \
-    log_message(log_lvl, "app %s: dbus signal %s read failed", app_name, signal_name)
-
 #define LOG_DBUS_SIGNAL_USERDATA_ERROR(log_lvl, app_name, signal_name) \
     log_message(log_lvl, "app %s: dbus signal %s is missing userdata", app_name, signal_name)
 
-#define LOG_DBUS_SIGNAL_MATCH_ERROR(log_lvl, app_name, signal_name) \
-    log_message(log_lvl, "app %s: dbus signal %s match failed", app_name, signal_name)
+#define LOG_DBUS_SIGNAL_MATCH_ERROR(log_lvl, app_name, signal_name, err_name) \
+    log_message(log_lvl, "app %s: dbus signal %s match failed: %s", app_name, signal_name, err_name)
 
-#define LOG_DBUS_METHOD_READ_ERROR(log_lvl, app_name, signal_name) \
-    log_message(log_lvl, "app %s: dbus method %s read failed", app_name, signal_name)
+#define LOG_DBUS_SIGNAL_READ_ERROR(log_lvl, app_name, signal_name, err_name) \
+    log_message(log_lvl, "app %s: dbus signal %s read failed: %s", app_name, signal_name, err_name)
 
-#define LOG_DBUS_CALL_METHOD_ERROR(log_lvl, app_name, signal_name) \
-    log_message(log_lvl, "app %s: dbus method %s call failed", app_name, signal_name)
+#define LOG_DBUS_GET_PROPERTY_ERROR(log_lvl, app_name, prop_name, err_name) \
+    log_message(log_lvl, "app %s: dbus get property %s failed: %s", app_name, prop_name, err_name)
+
+#define LOG_DBUS_SET_PROPERTY_ERROR(log_lvl, app_name, prop_name, err_name) \
+    log_message(log_lvl, "app %s: dbus set property %s failed: %s", app_name, prop_name, err_name)
+
+#define LOG_DBUS_PROPERTY_READ_ERROR(log_lvl, app_name, prop_name, err_name) \
+    log_message(log_lvl, "app %s: dbus property %s read failed: %s", app_name, prop_name, err_name)
+
+#define LOG_DBUS_CALL_METHOD_ERROR(log_lvl, app_name, signal_name, err_name) \
+    log_message(log_lvl, "app %s: dbus method %s call failed: %s", app_name, signal_name, err_name)
+
+#define LOG_DBUS_METHOD_READ_ERROR(log_lvl, app_name, signal_name, err_name) \
+    log_message(log_lvl, "app %s: dbus method %s read failed: %s", app_name, signal_name, err_name)
 
 #endif /* LOG_MESSAGE_H */

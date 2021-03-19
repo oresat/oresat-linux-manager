@@ -34,24 +34,24 @@ extern dbus_data_t APP_DBUS;
 
 int
 logind_reboot(void) {
-    sd_bus_error error = SD_BUS_ERROR_NULL;
+    sd_bus_error err = SD_BUS_ERROR_NULL;
     int r;
 
-    if ((r = sd_bus_call_method(DBUS_INFO, "Reboot", &error, NULL, NULL)) < 0)
-        log_message(LOG_ERR, "logind dbus method Reboot failed");
+    if ((r = sd_bus_call_method(DBUS_INFO, "Reboot", &err, NULL, NULL)) < 0)
+        LOG_DBUS_CALL_METHOD_ERROR(LOG_ERR, APP_NAME, "GetUnit", err.name);
 
-    sd_bus_error_free(&error);
+    sd_bus_error_free(&err);
     return r;
 }
 
 int
 logind_poweroff(void) {
-    sd_bus_error error = SD_BUS_ERROR_NULL;
+    sd_bus_error err = SD_BUS_ERROR_NULL;
     int r;
 
-    if ((r = sd_bus_call_method(DBUS_INFO, "PowerOff", &error, NULL, NULL)) < 0)
-        log_message(LOG_ERR, "logind dbus method PowerOff failed");
+    if ((r = sd_bus_call_method(DBUS_INFO, "PowerOff", &err, NULL, NULL)) < 0)
+        LOG_DBUS_CALL_METHOD_ERROR(LOG_ERR, APP_NAME, "GetUnit", err.name);
 
-    sd_bus_error_free(&error);
+    sd_bus_error_free(&err);
     return r;
 }

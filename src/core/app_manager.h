@@ -58,7 +58,7 @@ int app_manager_init(void);
  *
  * @return 0 on sucess
  */
-int app_manager_loop(void);
+int app_manager_dbus_loop(void);
 
 
 /**

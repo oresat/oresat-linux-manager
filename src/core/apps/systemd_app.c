@@ -55,9 +55,9 @@ get_unit(const char *name) {
     
     if (sd_bus_call_method(APP_DBUS.bus, DESTINATION, OBJECT_PATH, \
                 MANAGER_INTERFACE, "GetUnit", &err, &mess, "s", name) < 0)
-        LOG_DBUS_CALL_METHOD_ERROR(LOG_ERR, APP_NAME, "GetUnit", err);
+        LOG_DBUS_CALL_METHOD_ERROR(LOG_ERR, APP_NAME, "GetUnit", err.name);
     else if (sd_bus_message_read(mess, "o", &unit) < 0)
-        LOG_DBUS_METHOD_READ_ERROR(LOG_ERR, APP_NAME, "GetUnit", err);
+        LOG_DBUS_METHOD_READ_ERROR(LOG_ERR, APP_NAME, "GetUnit", err.name);
     else
         if ((r = malloc(strlen(unit)+1)) != NULL)  // must copy strings
             strncpy(r, unit, strlen(unit)+1);
@@ -78,7 +78,7 @@ start_unit(const char *unit) {
     
     if ((r = sd_bus_call_method(APP_DBUS.bus, DESTINATION, unit, \
                 UNIT_INTERFACE, "StartUnit", &err, &mess, "s", "fail")) < 0)
-        LOG_DBUS_CALL_METHOD_ERROR(LOG_ERR, APP_NAME, "StartUnit", err);
+        LOG_DBUS_CALL_METHOD_ERROR(LOG_ERR, APP_NAME, "StartUnit", err.name);
 
     sd_bus_message_unref(mess);
     sd_bus_error_free(&err);
@@ -97,7 +97,7 @@ stop_unit(const char *unit) {
     
     if ((r = sd_bus_call_method(APP_DBUS.bus, DESTINATION, unit, \
                 UNIT_INTERFACE, "StopUnit", &err, &mess, "s", "fail")) < 0)
-        LOG_DBUS_CALL_METHOD_ERROR(LOG_ERR, APP_NAME, "StoptUnit", err);
+        LOG_DBUS_CALL_METHOD_ERROR(LOG_ERR, APP_NAME, "StoptUnit", err.name);
 
     sd_bus_message_unref(mess);
     sd_bus_error_free(&err);
@@ -115,7 +115,7 @@ restart_unit(const char *unit) {
     
     if ((r = sd_bus_call_method(APP_DBUS.bus, DESTINATION, unit, \
                 UNIT_INTERFACE, "RestartUnit", &err, &mess, "s", "fail")) < 0)
-        LOG_DBUS_CALL_METHOD_ERROR(LOG_ERR, APP_NAME, "RestartUnit", err);
+        LOG_DBUS_CALL_METHOD_ERROR(LOG_ERR, APP_NAME, "RestartUnit", err.name);
 
     sd_bus_message_unref(mess);
     sd_bus_error_free(&err);
@@ -134,9 +134,9 @@ get_active_state_unit(const char *unit) {
 
     if (sd_bus_get_property(APP_DBUS.bus, DESTINATION, unit, UNIT_INTERFACE, \
                 "ActiveState", &err, &mess, "d") < 0)
-        LOG_DBUS_GET_PROPERTY_ERROR(LOG_ERR, APP_NAME, "ActiveState", err);
+        LOG_DBUS_GET_PROPERTY_ERROR(LOG_ERR, APP_NAME, "ActiveState", err.name);
     else if (sd_bus_message_read(mess, "s", &state) < 0)
-        LOG_DBUS_METHOD_READ_ERROR(LOG_ERR, APP_NAME, "ActiveState", err);
+        LOG_DBUS_METHOD_READ_ERROR(LOG_ERR, APP_NAME, "ActiveState", err.name);
     else 
         for (int i=0; i<sizeof(active_state_str); ++i)
             if (strncmp(state, active_state_str[i], strlen(state)+1) == 0) {
