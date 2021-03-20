@@ -7,5 +7,8 @@ set(CPACK_DEBIAN_PACKAGE_SECTION "embedded")
 set(CPACK_DEBIAN_PACKAGE_HOMEPAGE "https://github.com/oresat/oresat-linux-manager")
 set(CPACK_DEBIAN_PACKAGE_CONTROL_EXTRA "${CMAKE_SOURCE_DIR}/debian/postinst" "${CMAKE_SOURCE_DIR}/debian/postrm" "${CMAKE_SOURCE_DIR}/debian/prerm")
 execute_process(COMMAND dpkg --print-architecture OUTPUT_VARIABLE CPACK_DEBIAN_PACKAGE_ARCHITECTURE OUTPUT_STRIP_TRAILING_WHITESPACE)
+if ("${CPACK_DEBIAN_PACKAGE_ARCHITECTURE}" STREQUAL "")
+    set(CPACK_DEBIAN_PACKAGE_ARCHITECTURE "i386")
+endif()
 
 add_subdirectory(${BOARD_DIR})
