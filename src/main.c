@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <sys/syslog.h>
 #include <unistd.h>
-#include <bits/getopt_core.h>
 #include <string.h>
 #include <sched.h>
 #include <signal.h>
