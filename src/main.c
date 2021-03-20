@@ -177,7 +177,9 @@ printf(
 printf(
 "  -r                  Enable reboot on CANopen NMT reset_node command. \n");
 printf(
-"  -d                  Run the process as a daemon");
+"  -d                  Run the process as a daemon.\n");
+printf(
+"  -v                  Enable verbose logging.\n");
 }
 
 
@@ -195,6 +197,7 @@ int main (int argc, char *argv[]) {
     int opt;
     bool firstRun = true;
     bool daemon_flag = false;
+    bool verbose = false;
     olm_app_t *apps = NULL;
 
     // file transfer data
@@ -210,16 +213,12 @@ int main (int argc, char *argv[]) {
     bool nodeIdFromArgs = false;    /* True, if program arguments are used for CANopen Node Id */
     bool rebootEnable = false;      /* Configurable by arguments */
 
-    /* configure system log */
-    setlogmask(LOG_UPTO (LOG_DEBUG)); /* LOG_DEBUG - log all messages */
-    openlog(argv[0], LOG_PID | LOG_PERROR, LOG_USER); /* print also to standard error */
-
     /* Get program options */
     if (argc < 2 || strcmp(argv[1], "--help") == 0){
         printUsage(argv[0]);
         exit(EXIT_SUCCESS);
     }
-    while ((opt = getopt(argc, argv, "i:p:rd")) != -1) {
+    while ((opt = getopt(argc, argv, "i:p:rdv")) != -1) {
         switch (opt) {
             case 'i':
                 nodeIdFromArgs = true;
@@ -231,11 +230,21 @@ int main (int argc, char *argv[]) {
                 break;
             case 'd': daemon_flag = true;
                 break;
+            case 'v': verbose = true;
+                break;
             default:
                 printUsage(argv[0]);
                 exit(EXIT_FAILURE);
         }
     }
+
+    if (verbose)
+        setlogmask(LOG_UPTO (LOG_DEBUG)); /* log all messages */
+    else
+        setlogmask(LOG_UPTO (LOG_INFO)); 
+
+    if (!daemon_flag) /* print also to standard error */
+        openlog(argv[0], LOG_PID | LOG_PERROR, LOG_USER); 
 
     if (optind < argc) {
         CANdevice = argv[optind];
@@ -484,6 +493,9 @@ int main (int argc, char *argv[]) {
     CO_delete((void *)&CANptr);
 
     log_printf(LOG_INFO, DBG_CAN_OPEN_INFO, CO_activeNodeId, "finished");
+
+    if (daemon_flag)
+        remove(DEFAULT_PID_FILE);
 
     /* Flush all buffers (and reboot) */
     if (rebootEnable && reset == CO_RESET_APP) {
