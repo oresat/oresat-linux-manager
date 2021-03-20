@@ -14,6 +14,7 @@
 - Build and start OLM
   - `$ cd ../build`
   - `$ cmake -DBOARD=generic ..`
+  - `$ make`
   - `$ cd -`
   - `$ sudo ../build/oresat-linux-manager vcan0`
 - Run pytest
