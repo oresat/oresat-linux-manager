@@ -105,7 +105,7 @@ CO_fread_ODF(CO_ODF_arg_t *ODF_arg) {
 
     switch(ODF_arg->subIndex) {
 
-        case OD_3002_1_fread_fileName: // file name, domain, readwrite
+        case OD_3003_1_fread_fileName: // file name, domain, readwrite
 
             ret = CO_fstream_filename(ODF_arg, fdata);
 
@@ -126,7 +126,7 @@ CO_fread_ODF(CO_ODF_arg_t *ODF_arg) {
 
             break;
 
-        case OD_3002_2_fread_fileData: // file data, domain, readonly
+        case OD_3003_2_fread_fileData: // file data, domain, readonly
 
             if (ODF_arg->reading == false)
                 return CO_SDO_AB_READONLY;
@@ -184,7 +184,7 @@ CO_fread_ODF(CO_ODF_arg_t *ODF_arg) {
         
             if (ODF_arg->lastSegment) {
                 /* Do not call CO_fstream_reset() here as the CANopen Network
-                 * Manager may want to use the OD_3002_4_fread_deleteFile sub
+                 * Manager may want to use the OD_3003_4_fread_deleteFile sub
                  * index.
                  */
                 log_message(LOG_INFO, "%s has been closed", fdata->file);
@@ -196,7 +196,7 @@ CO_fread_ODF(CO_ODF_arg_t *ODF_arg) {
 
             break;
 
-        case OD_3002_3_fread_reset: // reset fread, domain, writeonly
+        case OD_3003_3_fread_reset: // reset fread, domain, writeonly
             
             if (ODF_arg->reading)
                 ret = CO_SDO_AB_WRITEONLY;
@@ -205,7 +205,7 @@ CO_fread_ODF(CO_ODF_arg_t *ODF_arg) {
 
             break;
 
-        case OD_3002_4_fread_deleteFile: // delete file from cache, domain, readonly
+        case OD_3003_4_fread_deleteFile: // delete file from cache, domain, readonly
 
             if (ODF_arg->reading) {
                 ret = CO_SDO_AB_WRITEONLY;
@@ -235,13 +235,13 @@ CO_fwrite_ODF(CO_ODF_arg_t *ODF_arg) {
 
     switch(ODF_arg->subIndex) {
 
-        case OD_3003_1_fwrite_fileName: // file name, domain, readwrite
+        case OD_3004_1_fwrite_fileName: // file name, domain, readwrite
 
             ret = CO_fstream_filename(ODF_arg, fdata);
 
             break;
 
-        case OD_3003_2_fwrite_fileData: // file data, domain, writeonly
+        case OD_3004_2_fwrite_fileData: // file data, domain, writeonly
 
             if (ODF_arg->reading)
                 return CO_SDO_AB_WRITEONLY;
@@ -308,7 +308,7 @@ CO_fwrite_ODF(CO_ODF_arg_t *ODF_arg) {
 
             break;
 
-        case OD_3003_3_fwrite_reset: // reset fwrite, domain, writeonly
+        case OD_3004_3_fwrite_reset: // reset fwrite, domain, writeonly
             
             if (ODF_arg->reading)
                 ret = CO_SDO_AB_WRITEONLY;

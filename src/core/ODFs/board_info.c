@@ -69,7 +69,7 @@ board_info_setup(void) {
     char buf[buf_len];
     int len;
 
-    CO_OD_configure(CO->SDO[0], OD_3000_boardInfo, board_info_ODF, NULL, 0, 0U);
+    CO_OD_configure(CO->SDO[0], OD_3001_boardInfo, board_info_ODF, NULL, 0, 0U);
 
     if(uname(&name) == 0) {
         // os name
@@ -159,32 +159,32 @@ board_info_ODF(CO_ODF_arg_t *ODF_arg) {
     uint16_t temp_uint16_t = 0;
     uint32_t temp_uint32_t = 0;
 
-    if(ODF_arg->reading == false && ODF_arg->subIndex != OD_3000_11_boardInfo_remoteprocXSelector)
+    if(ODF_arg->reading == false && ODF_arg->subIndex != OD_3001_11_boardInfo_remoteprocXSelector)
         // every subindex is readonly except the remoteprocX selector subindex is readwrite
         return CO_SDO_AB_READONLY; 
 
     switch(ODF_arg->subIndex) {
-        case OD_3000_1_boardInfo_OSName: // OS, domain, readonly
+        case OD_3001_1_boardInfo_OSName: // OS, domain, readonly
             ODF_arg->dataLength = strlen(os_name)+1;
             memcpy(ODF_arg->data, os_name, ODF_arg->dataLength);
             break;
 
-        case OD_3000_2_boardInfo_OSDistro: // OS distro, domain, readonly
+        case OD_3001_2_boardInfo_OSDistro: // OS distro, domain, readonly
             ODF_arg->dataLength = strlen(os_distro)+1;
             memcpy(ODF_arg->data, os_distro, ODF_arg->dataLength);
             break;
 
-        case OD_3000_3_boardInfo_OSKernelVersion: // kernel version, domain, readonly
+        case OD_3001_3_boardInfo_OSKernelVersion: // kernel version, domain, readonly
             ODF_arg->dataLength = strlen(kernel_version)+1;
             memcpy(ODF_arg->data, kernel_version, ODF_arg->dataLength);
             break;
 
-        case OD_3000_4_boardInfo_hostname: // hostname, domain, readonly
+        case OD_3001_4_boardInfo_hostname: // hostname, domain, readonly
             ODF_arg->dataLength = strlen(hostname)+1;
             memcpy(ODF_arg->data, hostname, ODF_arg->dataLength);
             break;
 
-        case OD_3000_5_boardInfo_uptime: // uptime (in min), uint32_t, readonly 
+        case OD_3001_5_boardInfo_uptime: // uptime (in min), uint32_t, readonly 
             if(sysinfo(&info) != -1)
                 temp_uint32_t = (uint32_t)(info.uptime/60);
 
@@ -192,34 +192,34 @@ board_info_ODF(CO_ODF_arg_t *ODF_arg) {
             memcpy(ODF_arg->data, &temp_uint32_t, ODF_arg->dataLength);
             break;
 
-        case OD_3000_6_boardInfo_numberOfCPUs: // CPU(s), uint8_t, readonly
+        case OD_3001_6_boardInfo_numberOfCPUs: // CPU(s), uint8_t, readonly
             ODF_arg->dataLength = sizeof(cpu_num);
             memcpy(ODF_arg->data, &cpu_num, ODF_arg->dataLength);
             break;
 
-        case OD_3000_7_boardInfo_CPUArchitecture: // CPU Architecture, domain, readonly
+        case OD_3001_7_boardInfo_CPUArchitecture: // CPU Architecture, domain, readonly
             ODF_arg->dataLength = strlen(architecture)+1;
             memcpy(ODF_arg->data, architecture, ODF_arg->dataLength);
             break;
 
-        case OD_3000_8_boardInfo_CPUGovernor: // CPU Governor, uint8_t, readonly
+        case OD_3001_8_boardInfo_CPUGovernor: // CPU Governor, uint8_t, readonly
             temp_uint8_t = get_cpufreq_gov();
             ODF_arg->dataLength = sizeof(temp_uint8_t);
             memcpy(ODF_arg->data, &temp_uint8_t, ODF_arg->dataLength);
             break;
 
-        case OD_3000_9_boardInfo_CPUFrequency: // CPU freq, uint16_t, readonly
+        case OD_3001_9_boardInfo_CPUFrequency: // CPU freq, uint16_t, readonly
             temp_uint16_t = get_cpufreq();
             ODF_arg->dataLength = sizeof(temp_uint16_t);
             memcpy(ODF_arg->data, &temp_uint16_t, ODF_arg->dataLength);
             break;
 
-        case OD_3000_10_boardInfo_numberOfRemoteprocs: // Remoteproc(s), uint8_t, readonly
+        case OD_3001_10_boardInfo_numberOfRemoteprocs: // Remoteproc(s), uint8_t, readonly
             ODF_arg->dataLength = sizeof(rproc_num);
             memcpy(ODF_arg->data, &rproc_num, ODF_arg->dataLength);
             break;
 
-        case OD_3000_11_boardInfo_remoteprocXSelector: // RemoteprocX, uint8_t, readwrite
+        case OD_3001_11_boardInfo_remoteprocXSelector: // RemoteprocX, uint8_t, readwrite
             if(ODF_arg->reading) {
                 ODF_arg->dataLength = sizeof(rproc_cur);
                 memcpy(ODF_arg->data, &rproc_cur, ODF_arg->dataLength);
@@ -231,7 +231,7 @@ board_info_ODF(CO_ODF_arg_t *ODF_arg) {
             }
             break;
 
-        case OD_3000_12_boardInfo_remoteprocXName: // RemoteprocX name, domain, readonly
+        case OD_3001_12_boardInfo_remoteprocXName: // RemoteprocX name, domain, readonly
         sprintf(filepath, "%sremoteproc%d/name", REMOTEPROC_DIR, rproc_cur);
             if((fptr = fopen(filepath, "r")) != NULL) {
                 fgets(buf, buf_len, fptr);
@@ -245,7 +245,7 @@ board_info_ODF(CO_ODF_arg_t *ODF_arg) {
             memcpy(ODF_arg->data, buf, ODF_arg->dataLength);
             break;
 
-        case OD_3000_13_boardInfo_remoteprocXState: // RemoteprocX state, uint8_t, readonly
+        case OD_3001_13_boardInfo_remoteprocXState: // RemoteprocX state, uint8_t, readonly
             sprintf(filepath, "%sremoteproc%d/state", REMOTEPROC_DIR, rproc_cur);
             if((fptr = fopen(filepath, "r")) != NULL) {
                 fgets(buf, buf_len, fptr);
@@ -259,7 +259,7 @@ board_info_ODF(CO_ODF_arg_t *ODF_arg) {
             memcpy(ODF_arg->data, buf, ODF_arg->dataLength);
             break;
 
-        case OD_3000_14_boardInfo_loadAverage1min: // 1min load avg, uint32_t, readonly
+        case OD_3001_14_boardInfo_loadAverage1min: // 1min load avg, uint32_t, readonly
             if(sysinfo(&info) != -1)
                 temp_uint32_t = (uint32_t)info.loads[0];
 
@@ -267,7 +267,7 @@ board_info_ODF(CO_ODF_arg_t *ODF_arg) {
             memcpy(ODF_arg->data, &temp_uint32_t, ODF_arg->dataLength);
             break;
 
-        case OD_3000_15_boardInfo_loadAverage5min: // 5min load avg, uint32_t, readonly
+        case OD_3001_15_boardInfo_loadAverage5min: // 5min load avg, uint32_t, readonly
             if(sysinfo(&info) != -1)
                 temp_uint32_t = (uint32_t)info.loads[1];
 
@@ -275,7 +275,7 @@ board_info_ODF(CO_ODF_arg_t *ODF_arg) {
             memcpy(ODF_arg->data, &temp_uint32_t, ODF_arg->dataLength);
             break;
 
-        case OD_3000_16_boardInfo_loadAverage15min: // 15min load avg, uint32_t, readonly
+        case OD_3001_16_boardInfo_loadAverage15min: // 15min load avg, uint32_t, readonly
             if(sysinfo(&info) != -1)
                 temp_uint32_t = (uint32_t)info.loads[2];
 
@@ -283,12 +283,12 @@ board_info_ODF(CO_ODF_arg_t *ODF_arg) {
             memcpy(ODF_arg->data, &temp_uint32_t, ODF_arg->dataLength);
             break;
 
-        case OD_3000_17_boardInfo_ramTotal: // Free ram (in MiB), uint32_t, readonly
+        case OD_3001_17_boardInfo_ramTotal: // Free ram (in MiB), uint32_t, readonly
             ODF_arg->dataLength = sizeof(temp_uint32_t);
             memcpy(ODF_arg->data, &ram_total, ODF_arg->dataLength);
             break;
 
-        case OD_3000_18_boardInfo_ramFree: // Free ram (in MiB), uint32_t, readonly
+        case OD_3001_18_boardInfo_ramFree: // Free ram (in MiB), uint32_t, readonly
             if(sysinfo(&info) != -1)
                 temp_uint32_t = (uint32_t)(info.freeram/1024/1024);
 
@@ -296,7 +296,7 @@ board_info_ODF(CO_ODF_arg_t *ODF_arg) {
             memcpy(ODF_arg->data, &temp_uint32_t, ODF_arg->dataLength);
             break;
 
-        case OD_3000_19_boardInfo_ramShared: // Shared ram (in MiB), uint32_t, readonly
+        case OD_3001_19_boardInfo_ramShared: // Shared ram (in MiB), uint32_t, readonly
             if(sysinfo(&info) != -1)
                 temp_uint32_t = (uint32_t)(info.sharedram/1024/1024);
 
@@ -304,7 +304,7 @@ board_info_ODF(CO_ODF_arg_t *ODF_arg) {
             memcpy(ODF_arg->data, &temp_uint32_t, ODF_arg->dataLength);
             break;
 
-        case OD_3000_20_boardInfo_ramBuffered: // Buffer ram (in MiB), uint32_t, readonly
+        case OD_3001_20_boardInfo_ramBuffered: // Buffer ram (in MiB), uint32_t, readonly
             if(sysinfo(&info) != -1)
                 temp_uint32_t = (uint32_t)(info.bufferram/1024/1024);
 
@@ -312,7 +312,7 @@ board_info_ODF(CO_ODF_arg_t *ODF_arg) {
             memcpy(ODF_arg->data, &temp_uint32_t, ODF_arg->dataLength);
             break;
 
-        case OD_3000_21_boardInfo_ramPercent: // Ram usage percent (0-100%), uint8_t, readonly
+        case OD_3001_21_boardInfo_ramPercent: // Ram usage percent (0-100%), uint8_t, readonly
             if(sysinfo(&info) != -1) 
                 temp_uint8_t = (uint8_t)((info.totalram - info.freehigh) / info.totalram);
 
@@ -320,7 +320,7 @@ board_info_ODF(CO_ODF_arg_t *ODF_arg) {
             memcpy(ODF_arg->data, &temp_uint8_t, ODF_arg->dataLength);
             break;
 
-        case OD_3000_22_boardInfo_swapTotal: // Total swap (in MiB), uint32_t, readonly
+        case OD_3001_22_boardInfo_swapTotal: // Total swap (in MiB), uint32_t, readonly
             if(sysinfo(&info) != -1)
                 temp_uint32_t = (uint32_t)(info.totalswap/1024/1024);
 
@@ -328,12 +328,12 @@ board_info_ODF(CO_ODF_arg_t *ODF_arg) {
             memcpy(ODF_arg->data, &temp_uint32_t, ODF_arg->dataLength);
             break;
 
-        case OD_3000_23_boardInfo_swapFree: // Free swap (in MiB), uint32_t, readonly
+        case OD_3001_23_boardInfo_swapFree: // Free swap (in MiB), uint32_t, readonly
             ODF_arg->dataLength = sizeof(temp_uint32_t);
             memcpy(ODF_arg->data, &swap_total, ODF_arg->dataLength);
             break;
 
-        case OD_3000_24_boardInfo_swapPercent: // Swap usage percent (0-100%), uint8_t, readonly
+        case OD_3001_24_boardInfo_swapPercent: // Swap usage percent (0-100%), uint8_t, readonly
             if(sysinfo(&info) != -1) 
                 temp_uint8_t = (uint8_t)((info.totalswap - info.freeswap) / info.totalswap);
 
@@ -341,7 +341,7 @@ board_info_ODF(CO_ODF_arg_t *ODF_arg) {
             memcpy(ODF_arg->data, &temp_uint8_t, ODF_arg->dataLength);
             break;
 
-        case OD_3000_25_boardInfo_procs: // Number of procs, uint32_t, readonly
+        case OD_3001_25_boardInfo_procs: // Number of procs, uint32_t, readonly
             if(sysinfo(&info) != -1)
                 temp_uint32_t = (uint32_t)info.procs;
 
@@ -349,12 +349,12 @@ board_info_ODF(CO_ODF_arg_t *ODF_arg) {
             memcpy(ODF_arg->data, &temp_uint32_t, ODF_arg->dataLength);
             break;
 
-        case OD_3000_26_boardInfo_rootParitionTotal: // Root partion total (in MiB), uint32_t, readonly
+        case OD_3001_26_boardInfo_rootParitionTotal: // Root partion total (in MiB), uint32_t, readonly
             ODF_arg->dataLength = sizeof(temp_uint32_t);
             memcpy(ODF_arg->data, &root_total, ODF_arg->dataLength);
             break;
 
-        case OD_3000_27_boardInfo_rootParitionFree: // Root partion free (in MiB), uint32_t, readonly
+        case OD_3001_27_boardInfo_rootParitionFree: // Root partion free (in MiB), uint32_t, readonly
             if((statvfs("/", &fs_info)) == 0 )
                 // the order help with int overflow on 32bit systems
                 temp_uint32_t = (uint32_t)(fs_info.f_bavail/1024*fs_info.f_bsize/1024);
@@ -363,7 +363,7 @@ board_info_ODF(CO_ODF_arg_t *ODF_arg) {
             memcpy(ODF_arg->data, &temp_uint32_t, ODF_arg->dataLength);
             break;
 
-        case OD_3000_28_boardInfo_rootParitionPercent: // Root partion usage percent (0-100%), uint8_t, readonly
+        case OD_3001_28_boardInfo_rootParitionPercent: // Root partion usage percent (0-100%), uint8_t, readonly
             if((statvfs("/", &fs_info)) == 0 )
                 temp_uint8_t = (uint8_t)((fs_info.f_blocks - fs_info.f_bavail) / fs_info.f_blocks);
 

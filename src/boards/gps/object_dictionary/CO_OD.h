@@ -158,7 +158,7 @@
                UNSIGNED8      ntoggle;
                UNSIGNED8      ctoggle;
                }              OD_BUSManagement_t;
-/*3000      */ typedef struct {
+/*3001      */ typedef struct {
                UNSIGNED8      highestSubIndexSupported;
                DOMAIN         OSName;
                DOMAIN         OSDistro;
@@ -189,7 +189,7 @@
                UNSIGNED32     rootParitionFree;
                UNSIGNED8      rootParitionPercent;
                }              OD_boardInfo_t;
-/*3001      */ typedef struct {
+/*3002      */ typedef struct {
                UNSIGNED8      highestSubIndexSupported;
                UNSIGNED8      freadCacheLen;
                UNSIGNED8      fwriteCacheLen;
@@ -201,14 +201,14 @@
                UNSIGNED32     fileSize;
                DOMAIN         deleteFile;
                }              OD_fileCaches_t;
-/*3002      */ typedef struct {
+/*3003      */ typedef struct {
                UNSIGNED8      highestSubIndexSupported;
                DOMAIN         fileName;
                DOMAIN         fileData;
                DOMAIN         reset;
                DOMAIN         deleteFile;
                }              OD_fread_t;
-/*3003      */ typedef struct {
+/*3004      */ typedef struct {
                UNSIGNED8      highestSubIndexSupported;
                DOMAIN         fileName;
                DOMAIN         fileData;
@@ -221,7 +221,7 @@
                DOMAIN         appName;
                INTEGER8       daemonState;
                }              OD_appManager_t;
-/*30F0      */ typedef struct {
+/*3100      */ typedef struct {
                UNSIGNED8      highestSubIndexSupported;
                INTEGER32      currentState;
                UNSIGNED32     updatesAvailable;
@@ -232,7 +232,7 @@
                DOMAIN         emergencyStopUpdate;
                DOMAIN         resetUpdater;
                DOMAIN         getAptListOutput;
-               }              OD_linuxUpdaterApp_t;
+               }              OD_updater_t;
 
 /*******************************************************************************
    TYPE DEFINITIONS FOR OBJECT DICTIONARY INDEXES
@@ -578,69 +578,69 @@
 /*2101 */
         #define OD_2101_CANNodeID                                   0x2101
 
-/*3000 */
-        #define OD_3000_boardInfo                                   0x3000
-
-        #define OD_3000_0_boardInfo_maxSubIndex                     0
-        #define OD_3000_1_boardInfo_OSName                          1
-        #define OD_3000_2_boardInfo_OSDistro                        2
-        #define OD_3000_3_boardInfo_OSKernelVersion                 3
-        #define OD_3000_4_boardInfo_hostname                        4
-        #define OD_3000_5_boardInfo_uptime                          5
-        #define OD_3000_6_boardInfo_numberOfCPUs                    6
-        #define OD_3000_7_boardInfo_CPUArchitecture                 7
-        #define OD_3000_8_boardInfo_CPUGovernor                     8
-        #define OD_3000_9_boardInfo_CPUFrequency                    9
-        #define OD_3000_10_boardInfo_numberOfRemoteprocs            10
-        #define OD_3000_11_boardInfo_remoteprocXSelector            11
-        #define OD_3000_12_boardInfo_remoteprocXName                12
-        #define OD_3000_13_boardInfo_remoteprocXState               13
-        #define OD_3000_14_boardInfo_loadAverage1min                14
-        #define OD_3000_15_boardInfo_loadAverage5min                15
-        #define OD_3000_16_boardInfo_loadAverage15min               16
-        #define OD_3000_17_boardInfo_ramTotal                       17
-        #define OD_3000_18_boardInfo_ramFree                        18
-        #define OD_3000_19_boardInfo_ramShared                      19
-        #define OD_3000_20_boardInfo_ramBuffered                    20
-        #define OD_3000_21_boardInfo_ramPercent                     21
-        #define OD_3000_22_boardInfo_swapTotal                      22
-        #define OD_3000_23_boardInfo_swapFree                       23
-        #define OD_3000_24_boardInfo_swapPercent                    24
-        #define OD_3000_25_boardInfo_procs                          25
-        #define OD_3000_26_boardInfo_rootParitionTotal              26
-        #define OD_3000_27_boardInfo_rootParitionFree               27
-        #define OD_3000_28_boardInfo_rootParitionPercent            28
-
 /*3001 */
-        #define OD_3001_fileCaches                                  0x3001
+        #define OD_3001_boardInfo                                   0x3001
 
-        #define OD_3001_0_fileCaches_maxSubIndex                    0
-        #define OD_3001_1_fileCaches_freadCacheLen                  1
-        #define OD_3001_2_fileCaches_fwriteCacheLen                 2
-        #define OD_3001_3_fileCaches_cacheSelector                  3
-        #define OD_3001_4_fileCaches_filter                         4
-        #define OD_3001_5_fileCaches_cacheLen                       5
-        #define OD_3001_6_fileCaches_iterator                       6
-        #define OD_3001_7_fileCaches_fileName                       7
-        #define OD_3001_8_fileCaches_fileSize                       8
-        #define OD_3001_9_fileCaches_deleteFile                     9
+        #define OD_3001_0_boardInfo_maxSubIndex                     0
+        #define OD_3001_1_boardInfo_OSName                          1
+        #define OD_3001_2_boardInfo_OSDistro                        2
+        #define OD_3001_3_boardInfo_OSKernelVersion                 3
+        #define OD_3001_4_boardInfo_hostname                        4
+        #define OD_3001_5_boardInfo_uptime                          5
+        #define OD_3001_6_boardInfo_numberOfCPUs                    6
+        #define OD_3001_7_boardInfo_CPUArchitecture                 7
+        #define OD_3001_8_boardInfo_CPUGovernor                     8
+        #define OD_3001_9_boardInfo_CPUFrequency                    9
+        #define OD_3001_10_boardInfo_numberOfRemoteprocs            10
+        #define OD_3001_11_boardInfo_remoteprocXSelector            11
+        #define OD_3001_12_boardInfo_remoteprocXName                12
+        #define OD_3001_13_boardInfo_remoteprocXState               13
+        #define OD_3001_14_boardInfo_loadAverage1min                14
+        #define OD_3001_15_boardInfo_loadAverage5min                15
+        #define OD_3001_16_boardInfo_loadAverage15min               16
+        #define OD_3001_17_boardInfo_ramTotal                       17
+        #define OD_3001_18_boardInfo_ramFree                        18
+        #define OD_3001_19_boardInfo_ramShared                      19
+        #define OD_3001_20_boardInfo_ramBuffered                    20
+        #define OD_3001_21_boardInfo_ramPercent                     21
+        #define OD_3001_22_boardInfo_swapTotal                      22
+        #define OD_3001_23_boardInfo_swapFree                       23
+        #define OD_3001_24_boardInfo_swapPercent                    24
+        #define OD_3001_25_boardInfo_procs                          25
+        #define OD_3001_26_boardInfo_rootParitionTotal              26
+        #define OD_3001_27_boardInfo_rootParitionFree               27
+        #define OD_3001_28_boardInfo_rootParitionPercent            28
 
 /*3002 */
-        #define OD_3002_fread                                       0x3002
+        #define OD_3002_fileCaches                                  0x3002
 
-        #define OD_3002_0_fread_maxSubIndex                         0
-        #define OD_3002_1_fread_fileName                            1
-        #define OD_3002_2_fread_fileData                            2
-        #define OD_3002_3_fread_reset                               3
-        #define OD_3002_4_fread_deleteFile                          4
+        #define OD_3002_0_fileCaches_maxSubIndex                    0
+        #define OD_3002_1_fileCaches_freadCacheLen                  1
+        #define OD_3002_2_fileCaches_fwriteCacheLen                 2
+        #define OD_3002_3_fileCaches_cacheSelector                  3
+        #define OD_3002_4_fileCaches_filter                         4
+        #define OD_3002_5_fileCaches_cacheLen                       5
+        #define OD_3002_6_fileCaches_iterator                       6
+        #define OD_3002_7_fileCaches_fileName                       7
+        #define OD_3002_8_fileCaches_fileSize                       8
+        #define OD_3002_9_fileCaches_deleteFile                     9
 
 /*3003 */
-        #define OD_3003_fwrite                                      0x3003
+        #define OD_3003_fread                                       0x3003
 
-        #define OD_3003_0_fwrite_maxSubIndex                        0
-        #define OD_3003_1_fwrite_fileName                           1
-        #define OD_3003_2_fwrite_fileData                           2
-        #define OD_3003_3_fwrite_reset                              3
+        #define OD_3003_0_fread_maxSubIndex                         0
+        #define OD_3003_1_fread_fileName                            1
+        #define OD_3003_2_fread_fileData                            2
+        #define OD_3003_3_fread_reset                               3
+        #define OD_3003_4_fread_deleteFile                          4
+
+/*3004 */
+        #define OD_3004_fwrite                                      0x3004
+
+        #define OD_3004_0_fwrite_maxSubIndex                        0
+        #define OD_3004_1_fwrite_fileName                           1
+        #define OD_3004_2_fwrite_fileData                           2
+        #define OD_3004_3_fwrite_reset                              3
 
 /*3005 */
         #define OD_3005_appManager                                  0x3005
@@ -654,19 +654,19 @@
 /*3006 */
         #define OD_3006_getLog                                      0x3006
 
-/*30F0 */
-        #define OD_30F0_linuxUpdaterApp                             0x30F0
+/*3100 */
+        #define OD_3100_updater                                     0x3100
 
-        #define OD_30F0_0_linuxUpdaterApp_maxSubIndex               0
-        #define OD_30F0_1_linuxUpdaterApp_currentState              1
-        #define OD_30F0_2_linuxUpdaterApp_updatesAvailable          2
-        #define OD_30F0_3_linuxUpdaterApp_currentUpdateFile         3
-        #define OD_30F0_4_linuxUpdaterApp_errorMessage              4
-        #define OD_30F0_5_linuxUpdaterApp_addUpdateFile             5
-        #define OD_30F0_6_linuxUpdaterApp_startUpdate               6
-        #define OD_30F0_7_linuxUpdaterApp_emergencyStopUpdate       7
-        #define OD_30F0_8_linuxUpdaterApp_resetUpdater              8
-        #define OD_30F0_9_linuxUpdaterApp_getAptListOutput          9
+        #define OD_3100_0_updater_maxSubIndex                       0
+        #define OD_3100_1_updater_currentState                      1
+        #define OD_3100_2_updater_updatesAvailable                  2
+        #define OD_3100_3_updater_currentUpdateFile                 3
+        #define OD_3100_4_updater_errorMessage                      4
+        #define OD_3100_5_updater_addUpdateFile                     5
+        #define OD_3100_6_updater_startUpdate                       6
+        #define OD_3100_7_updater_emergencyStopUpdate               7
+        #define OD_3100_8_updater_resetUpdater                      8
+        #define OD_3100_9_updater_getAptListOutput                  9
 
 /*******************************************************************************
    STRUCTURES FOR VARIABLES IN DIFFERENT MEMORY LOCATIONS
@@ -689,13 +689,13 @@ struct sCO_OD_RAM{
 /*2011      */ UNSIGNED64     UTC;
 /*2100      */ OCTET_STRING   errorStatusBits[10];
 /*2101      */ UNSIGNED8      CANNodeID;
-/*3000      */ OD_boardInfo_t  boardInfo;
-/*3001      */ OD_fileCaches_t fileCaches;
-/*3002      */ OD_fread_t      fread;
-/*3003      */ OD_fwrite_t     fwrite;
+/*3001      */ OD_boardInfo_t  boardInfo;
+/*3002      */ OD_fileCaches_t fileCaches;
+/*3003      */ OD_fread_t      fread;
+/*3004      */ OD_fwrite_t     fwrite;
 /*3005      */ OD_appManager_t appManager;
 /*3006      */ UNSIGNED8      getLog;
-/*30F0      */ OD_linuxUpdaterApp_t linuxUpdaterApp;
+/*3100      */ OD_updater_t    updater;
 
                UNSIGNED32     LastWord;
 };
@@ -895,16 +895,16 @@ extern struct sCO_OD_PERSIST_MFR CO_OD_PERSIST_MFR;
 /*2101, Data Type: UNSIGNED8 */
         #define OD_CANNodeID                                        CO_OD_RAM.CANNodeID
 
-/*3000, Data Type: boardInfo_t */
+/*3001, Data Type: boardInfo_t */
         #define OD_boardInfo                                        CO_OD_RAM.boardInfo
 
-/*3001, Data Type: fileCaches_t */
+/*3002, Data Type: fileCaches_t */
         #define OD_fileCaches                                       CO_OD_RAM.fileCaches
 
-/*3002, Data Type: fread_t */
+/*3003, Data Type: fread_t */
         #define OD_fread                                            CO_OD_RAM.fread
 
-/*3003, Data Type: fwrite_t */
+/*3004, Data Type: fwrite_t */
         #define OD_fwrite                                           CO_OD_RAM.fwrite
 
 /*3005, Data Type: appManager_t */
@@ -913,8 +913,8 @@ extern struct sCO_OD_PERSIST_MFR CO_OD_PERSIST_MFR;
 /*3006, Data Type: UNSIGNED8 */
         #define OD_getLog                                           CO_OD_RAM.getLog
 
-/*30F0, Data Type: linuxUpdaterApp_t */
-        #define OD_linuxUpdaterApp                                  CO_OD_RAM.linuxUpdaterApp
+/*3100, Data Type: updater_t */
+        #define OD_updater                                          CO_OD_RAM.updater
 
 #endif
 // clang-format on

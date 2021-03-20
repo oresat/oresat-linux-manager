@@ -44,13 +44,13 @@ struct sCO_OD_RAM CO_OD_RAM = {
 /*2011*/ 0x00000000L,
 /*2100*/ {0x0L, 0x0L, 0x0L, 0x0L, 0x0L, 0x0L, 0x0L, 0x0L, 0x0L, 0x0L},
 /*2101*/ 0x22L,
-/*3000*/ {0x1CL, 0, 0, 0, 0, 0x0000L, 0x0L, 0, 0x0L, 0x00, 0x0L, 0x0L, 0, 0, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0L, 0x0000L, 0x0000L, 0x0L, 0x0000L, 0x0000L, 0x0000L, 0x0L},
-/*3001*/ {0x9L, 0x0L, 0x0L, 0x0L, 0, 0x0000L, 0x0000L, 0, 0x0000L, 0},
-/*3002*/ {0x4L, 0, 0, 0, 0},
-/*3003*/ {0x3L, 0, 0, 0},
+/*3001*/ {0x1CL, 0, 0, 0, 0, 0x0000L, 0x0L, 0, 0x0L, 0x00, 0x0L, 0x0L, 0, 0, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0L, 0x0000L, 0x0000L, 0x0L, 0x0000L, 0x0000L, 0x0000L, 0x0L},
+/*3002*/ {0x9L, 0x0L, 0x0L, 0x0L, 0, 0x0000L, 0x0000L, 0, 0x0000L, 0},
+/*3003*/ {0x4L, 0, 0, 0, 0},
+/*3004*/ {0x3L, 0, 0, 0},
 /*3005*/ {0x4L, 0x0L, 0x0L, 0, 0x0},
 /*3006*/ 0x0L,
-/*30F0*/ {0x9L, 0x0000L, 0x0000L, 0, 0, 0, 0, 0, 0, 0},
+/*3100*/ {0x9L, 0x0000L, 0x0000L, 0, 0, 0, 0, 0, 0, 0},
 
            CO_OD_FIRST_LAST_WORD,
 };
@@ -334,7 +334,7 @@ struct sCO_OD_PERSIST_MFR CO_OD_PERSIST_MFR = {
            {(void*)&CO_OD_PERSIST_MFR.BUSManagement.ctoggle, 0x0F, 0x1 },
 };
 
-/*0x3000*/ const CO_OD_entryRecord_t OD_record3000[29] = {
+/*0x3001*/ const CO_OD_entryRecord_t OD_record3001[29] = {
            {(void*)&CO_OD_RAM.boardInfo.highestSubIndexSupported, 0x06, 0x1 },
            {(void*)0, 0x06, 0x0 },
            {(void*)0, 0x06, 0x0 },
@@ -366,7 +366,7 @@ struct sCO_OD_PERSIST_MFR CO_OD_PERSIST_MFR = {
            {(void*)&CO_OD_RAM.boardInfo.rootParitionPercent, 0x26, 0x1 },
 };
 
-/*0x3001*/ const CO_OD_entryRecord_t OD_record3001[10] = {
+/*0x3002*/ const CO_OD_entryRecord_t OD_record3002[10] = {
            {(void*)&CO_OD_RAM.fileCaches.highestSubIndexSupported, 0x06, 0x1 },
            {(void*)&CO_OD_RAM.fileCaches.freadCacheLen, 0x26, 0x1 },
            {(void*)&CO_OD_RAM.fileCaches.fwriteCacheLen, 0x26, 0x1 },
@@ -379,7 +379,7 @@ struct sCO_OD_PERSIST_MFR CO_OD_PERSIST_MFR = {
            {(void*)0, 0x0A, 0x0 },
 };
 
-/*0x3002*/ const CO_OD_entryRecord_t OD_record3002[5] = {
+/*0x3003*/ const CO_OD_entryRecord_t OD_record3003[5] = {
            {(void*)&CO_OD_RAM.fread.highestSubIndexSupported, 0x06, 0x1 },
            {(void*)0, 0x0E, 0x0 },
            {(void*)0, 0x06, 0x0 },
@@ -387,7 +387,7 @@ struct sCO_OD_PERSIST_MFR CO_OD_PERSIST_MFR = {
            {(void*)0, 0x0A, 0x0 },
 };
 
-/*0x3003*/ const CO_OD_entryRecord_t OD_record3003[4] = {
+/*0x3004*/ const CO_OD_entryRecord_t OD_record3004[4] = {
            {(void*)&CO_OD_RAM.fwrite.highestSubIndexSupported, 0x06, 0x1 },
            {(void*)0, 0x0E, 0x0 },
            {(void*)0, 0x0A, 0x0 },
@@ -402,10 +402,10 @@ struct sCO_OD_PERSIST_MFR CO_OD_PERSIST_MFR = {
            {(void*)&CO_OD_RAM.appManager.daemonState, 0x0E, 0x1 },
 };
 
-/*0x30F0*/ const CO_OD_entryRecord_t OD_record30F0[10] = {
-           {(void*)&CO_OD_RAM.linuxUpdaterApp.highestSubIndexSupported, 0x06, 0x1 },
-           {(void*)&CO_OD_RAM.linuxUpdaterApp.currentState, 0x86, 0x4 },
-           {(void*)&CO_OD_RAM.linuxUpdaterApp.updatesAvailable, 0x86, 0x4 },
+/*0x3100*/ const CO_OD_entryRecord_t OD_record3100[10] = {
+           {(void*)&CO_OD_RAM.updater.highestSubIndexSupported, 0x06, 0x1 },
+           {(void*)&CO_OD_RAM.updater.currentState, 0x86, 0x4 },
+           {(void*)&CO_OD_RAM.updater.updatesAvailable, 0x86, 0x4 },
            {(void*)0, 0x06, 0x0 },
            {(void*)0, 0x06, 0x0 },
            {(void*)0, 0x0A, 0x0 },
@@ -465,12 +465,12 @@ const CO_OD_entry_t CO_OD[CO_OD_NoOfElements] = {
 {0x2011, 0x00, 0xBE,  8, (void*)&CO_OD_RAM.UTC},
 {0x2100, 0x00, 0x06, 10, (void*)&CO_OD_RAM.errorStatusBits},
 {0x2101, 0x00, 0x0E,  1, (void*)&CO_OD_RAM.CANNodeID},
-{0x3000, 0x1C, 0x00,  0, (void*)&OD_record3000},
-{0x3001, 0x09, 0x00,  0, (void*)&OD_record3001},
-{0x3002, 0x04, 0x00,  0, (void*)&OD_record3002},
-{0x3003, 0x03, 0x00,  0, (void*)&OD_record3003},
+{0x3001, 0x1C, 0x00,  0, (void*)&OD_record3001},
+{0x3002, 0x09, 0x00,  0, (void*)&OD_record3002},
+{0x3003, 0x04, 0x00,  0, (void*)&OD_record3003},
+{0x3004, 0x03, 0x00,  0, (void*)&OD_record3004},
 {0x3005, 0x04, 0x00,  0, (void*)&OD_record3005},
 {0x3006, 0x00, 0x06,  1, (void*)&CO_OD_RAM.getLog},
-{0x30F0, 0x09, 0x00,  0, (void*)&OD_record30F0},
+{0x3100, 0x09, 0x00,  0, (void*)&OD_record3100},
 };
 // clang-format on

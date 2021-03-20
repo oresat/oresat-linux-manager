@@ -12,7 +12,6 @@
 #include "CANopen.h"
 #include "olm_app.h"
 #include "linux_updater_app.h"
-#include "linux_updater_odf.h"
 #include "board_main.h"
 #include <stddef.h>
 #include <stdlib.h>
@@ -30,8 +29,6 @@ board_main(void) {
 
     apps[LINUX_UPDATER_APP] = linux_updater_app_create();
     apps[TOTAL_APPS-1] = NULL; // last app is always NULL
-
-    CO_OD_configure(CO->SDO[0], OD_30F0_linuxUpdaterApp, updater_ODF, NULL, 0, 0U);
 
     return apps;
 }

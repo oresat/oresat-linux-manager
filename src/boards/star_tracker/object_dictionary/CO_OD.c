@@ -44,16 +44,16 @@ struct sCO_OD_RAM CO_OD_RAM = {
 /*2011*/ 0x00000000L,
 /*2100*/ {0x0L, 0x0L, 0x0L, 0x0L, 0x0L, 0x0L, 0x0L, 0x0L, 0x0L, 0x0L},
 /*2101*/ 0x12L,
-/*3000*/ {0x1CL, 0, 0, 0, 0, 0x0000L, 0x0L, 0, 0x0L, 0x00, 0x0L, 0x0L, 0, 0, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0L, 0x0000L, 0x0000L, 0x0L, 0x0000L, 0x0000L, 0x0000L, 0x0L},
-/*3001*/ {0x9L, 0x0L, 0x0L, 0x0L, 0, 0x0000L, 0x0000L, 0, 0x0000L, 0},
-/*3002*/ {0x4L, 0, 0, 0, 0},
-/*3003*/ {0x3L, 0, 0, 0},
+/*3001*/ {0x1CL, 0, 0, 0, 0, 0x0000L, 0x0L, 0, 0x0L, 0x00, 0x0L, 0x0L, 0, 0, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0L, 0x0000L, 0x0000L, 0x0L, 0x0000L, 0x0000L, 0x0000L, 0x0L},
+/*3002*/ {0x9L, 0x0L, 0x0L, 0x0L, 0, 0x0000L, 0x0000L, 0, 0x0000L, 0},
+/*3003*/ {0x4L, 0, 0, 0, 0},
+/*3004*/ {0x3L, 0, 0, 0},
 /*3005*/ {0x4L, 0x0L, 0x0L, 0, 0x0},
 /*3006*/ 0x0L,
-/*30F0*/ {0x9L, 0x0000L, 0x0000L, 0, 0, 0, 0, 0, 0, 0},
-/*3100*/ 0x0,
-/*3101*/ {0x4L, 0, 0, 0, 0x0000L},
-/*3102*/ {'0'},
+/*3100*/ {0x9L, 0x0000L, 0x0000L, 0, 0, 0, 0, 0, 0, 0},
+/*6000*/ 0x0,
+/*6001*/ {0x4L, 0, 0, 0, 0x0000L},
+/*6002*/ {'0'},
 
            CO_OD_FIRST_LAST_WORD,
 };
@@ -101,18 +101,18 @@ struct sCO_OD_PERSIST_COMM CO_OD_PERSIST_COMM = {
 /*1401*/ {0x6L, 0x80000300L, 0xFEL},
 /*1402*/ {0x6L, 0x80000400L, 0xFEL},
 /*1403*/ {0x6L, 0x80000500L, 0xFEL}},
-/*1600*/ {{0x8L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L},
-/*1601*/ {0x8L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L},
-/*1602*/ {0x8L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L},
-/*1603*/ {0x8L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L}},
+/*1600*/ {{0x0L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L},
+/*1601*/ {0x0L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L},
+/*1602*/ {0x0L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L},
+/*1603*/ {0x0L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L}},
 /*1800*/ {{0x6L, 0xC0000180L, 0xFEL, 0x00, 0x0L, 0x00, 0x0L},
 /*1801*/ {0x6L, 0xC0000280L, 0xFEL, 0x00, 0x0L, 0x00, 0x0L},
 /*1802*/ {0x6L, 0xC0000380L, 0xFEL, 0x00, 0x0L, 0x00, 0x0L},
 /*1803*/ {0x6L, 0xC0000480L, 0xFEL, 0x00, 0x0L, 0x00, 0x0L}},
-/*1A00*/ {{0x8L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L},
-/*1A01*/ {0x8L, 0x31010120L, 0x31010220L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L},
-/*1A02*/ {0x8L, 0x31010320L, 0x31010420L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L},
-/*1A03*/ {0x8L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L}},
+/*1A00*/ {{0x0L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L},
+/*1A01*/ {0x0L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L},
+/*1A02*/ {0x0L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L},
+/*1A03*/ {0x0L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L}},
 /*1F80*/ 0x0008L,
 
            CO_OD_FIRST_LAST_WORD,
@@ -190,51 +190,51 @@ struct sCO_OD_PERSIST_MFR CO_OD_PERSIST_MFR = {
 };
 
 /*0x1600*/ const CO_OD_entryRecord_t OD_record1600[9] = {
-           {(void*)&CO_OD_PERSIST_COMM.RPDOMappingParameter[0].numberOfMappedObjects, 0x03, 0x1 },
-           {(void*)&CO_OD_PERSIST_COMM.RPDOMappingParameter[0].mappedObject1, 0x8F, 0x4 },
-           {(void*)&CO_OD_PERSIST_COMM.RPDOMappingParameter[0].mappedObject2, 0x8F, 0x4 },
-           {(void*)&CO_OD_PERSIST_COMM.RPDOMappingParameter[0].mappedObject3, 0x8F, 0x4 },
-           {(void*)&CO_OD_PERSIST_COMM.RPDOMappingParameter[0].mappedObject4, 0x8F, 0x4 },
-           {(void*)&CO_OD_PERSIST_COMM.RPDOMappingParameter[0].mappedObject5, 0x8F, 0x4 },
-           {(void*)&CO_OD_PERSIST_COMM.RPDOMappingParameter[0].mappedObject6, 0x8F, 0x4 },
-           {(void*)&CO_OD_PERSIST_COMM.RPDOMappingParameter[0].mappedObject7, 0x8F, 0x4 },
-           {(void*)&CO_OD_PERSIST_COMM.RPDOMappingParameter[0].mappedObject8, 0x8F, 0x4 },
+           {(void*)&CO_OD_PERSIST_COMM.RPDOMappingParameter[0].numberOfMappedApplicationObjectsInPDO, 0x0F, 0x1 },
+           {(void*)&CO_OD_PERSIST_COMM.RPDOMappingParameter[0].mappingObject1, 0x8F, 0x4 },
+           {(void*)&CO_OD_PERSIST_COMM.RPDOMappingParameter[0].mappingObject2, 0x8F, 0x4 },
+           {(void*)&CO_OD_PERSIST_COMM.RPDOMappingParameter[0].mappingObject3, 0x8F, 0x4 },
+           {(void*)&CO_OD_PERSIST_COMM.RPDOMappingParameter[0].mappingObject4, 0x8F, 0x4 },
+           {(void*)&CO_OD_PERSIST_COMM.RPDOMappingParameter[0].mappingObject5, 0x8F, 0x4 },
+           {(void*)&CO_OD_PERSIST_COMM.RPDOMappingParameter[0].mappingObject6, 0x8F, 0x4 },
+           {(void*)&CO_OD_PERSIST_COMM.RPDOMappingParameter[0].mappingObject7, 0x8F, 0x4 },
+           {(void*)&CO_OD_PERSIST_COMM.RPDOMappingParameter[0].mappingObject8, 0x8F, 0x4 },
 };
 
 /*0x1601*/ const CO_OD_entryRecord_t OD_record1601[9] = {
-           {(void*)&CO_OD_PERSIST_COMM.RPDOMappingParameter[1].numberOfMappedObjects, 0x03, 0x1 },
-           {(void*)&CO_OD_PERSIST_COMM.RPDOMappingParameter[1].mappedObject1, 0x8F, 0x4 },
-           {(void*)&CO_OD_PERSIST_COMM.RPDOMappingParameter[1].mappedObject2, 0x8F, 0x4 },
-           {(void*)&CO_OD_PERSIST_COMM.RPDOMappingParameter[1].mappedObject3, 0x8F, 0x4 },
-           {(void*)&CO_OD_PERSIST_COMM.RPDOMappingParameter[1].mappedObject4, 0x8F, 0x4 },
-           {(void*)&CO_OD_PERSIST_COMM.RPDOMappingParameter[1].mappedObject5, 0x8F, 0x4 },
-           {(void*)&CO_OD_PERSIST_COMM.RPDOMappingParameter[1].mappedObject6, 0x8F, 0x4 },
-           {(void*)&CO_OD_PERSIST_COMM.RPDOMappingParameter[1].mappedObject7, 0x8F, 0x4 },
-           {(void*)&CO_OD_PERSIST_COMM.RPDOMappingParameter[1].mappedObject8, 0x8F, 0x4 },
+           {(void*)&CO_OD_PERSIST_COMM.RPDOMappingParameter[1].numberOfMappedApplicationObjectsInPDO, 0x0F, 0x1 },
+           {(void*)&CO_OD_PERSIST_COMM.RPDOMappingParameter[1].mappingObject1, 0x8F, 0x4 },
+           {(void*)&CO_OD_PERSIST_COMM.RPDOMappingParameter[1].mappingObject2, 0x8F, 0x4 },
+           {(void*)&CO_OD_PERSIST_COMM.RPDOMappingParameter[1].mappingObject3, 0x8F, 0x4 },
+           {(void*)&CO_OD_PERSIST_COMM.RPDOMappingParameter[1].mappingObject4, 0x8F, 0x4 },
+           {(void*)&CO_OD_PERSIST_COMM.RPDOMappingParameter[1].mappingObject5, 0x8F, 0x4 },
+           {(void*)&CO_OD_PERSIST_COMM.RPDOMappingParameter[1].mappingObject6, 0x8F, 0x4 },
+           {(void*)&CO_OD_PERSIST_COMM.RPDOMappingParameter[1].mappingObject7, 0x8F, 0x4 },
+           {(void*)&CO_OD_PERSIST_COMM.RPDOMappingParameter[1].mappingObject8, 0x8F, 0x4 },
 };
 
 /*0x1602*/ const CO_OD_entryRecord_t OD_record1602[9] = {
-           {(void*)&CO_OD_PERSIST_COMM.RPDOMappingParameter[2].numberOfMappedObjects, 0x03, 0x1 },
-           {(void*)&CO_OD_PERSIST_COMM.RPDOMappingParameter[2].mappedObject1, 0x8F, 0x4 },
-           {(void*)&CO_OD_PERSIST_COMM.RPDOMappingParameter[2].mappedObject2, 0x8F, 0x4 },
-           {(void*)&CO_OD_PERSIST_COMM.RPDOMappingParameter[2].mappedObject3, 0x8F, 0x4 },
-           {(void*)&CO_OD_PERSIST_COMM.RPDOMappingParameter[2].mappedObject4, 0x8F, 0x4 },
-           {(void*)&CO_OD_PERSIST_COMM.RPDOMappingParameter[2].mappedObject5, 0x8F, 0x4 },
-           {(void*)&CO_OD_PERSIST_COMM.RPDOMappingParameter[2].mappedObject6, 0x8F, 0x4 },
-           {(void*)&CO_OD_PERSIST_COMM.RPDOMappingParameter[2].mappedObject7, 0x8F, 0x4 },
-           {(void*)&CO_OD_PERSIST_COMM.RPDOMappingParameter[2].mappedObject8, 0x8F, 0x4 },
+           {(void*)&CO_OD_PERSIST_COMM.RPDOMappingParameter[2].numberOfMappedApplicationObjectsInPDO, 0x0F, 0x1 },
+           {(void*)&CO_OD_PERSIST_COMM.RPDOMappingParameter[2].mappingObject1, 0x8F, 0x4 },
+           {(void*)&CO_OD_PERSIST_COMM.RPDOMappingParameter[2].mappingObject2, 0x8F, 0x4 },
+           {(void*)&CO_OD_PERSIST_COMM.RPDOMappingParameter[2].mappingObject3, 0x8F, 0x4 },
+           {(void*)&CO_OD_PERSIST_COMM.RPDOMappingParameter[2].mappingObject4, 0x8F, 0x4 },
+           {(void*)&CO_OD_PERSIST_COMM.RPDOMappingParameter[2].mappingObject5, 0x8F, 0x4 },
+           {(void*)&CO_OD_PERSIST_COMM.RPDOMappingParameter[2].mappingObject6, 0x8F, 0x4 },
+           {(void*)&CO_OD_PERSIST_COMM.RPDOMappingParameter[2].mappingObject7, 0x8F, 0x4 },
+           {(void*)&CO_OD_PERSIST_COMM.RPDOMappingParameter[2].mappingObject8, 0x8F, 0x4 },
 };
 
 /*0x1603*/ const CO_OD_entryRecord_t OD_record1603[9] = {
-           {(void*)&CO_OD_PERSIST_COMM.RPDOMappingParameter[3].numberOfMappedObjects, 0x03, 0x1 },
-           {(void*)&CO_OD_PERSIST_COMM.RPDOMappingParameter[3].mappedObject1, 0x8F, 0x4 },
-           {(void*)&CO_OD_PERSIST_COMM.RPDOMappingParameter[3].mappedObject2, 0x8F, 0x4 },
-           {(void*)&CO_OD_PERSIST_COMM.RPDOMappingParameter[3].mappedObject3, 0x8F, 0x4 },
-           {(void*)&CO_OD_PERSIST_COMM.RPDOMappingParameter[3].mappedObject4, 0x8F, 0x4 },
-           {(void*)&CO_OD_PERSIST_COMM.RPDOMappingParameter[3].mappedObject5, 0x8F, 0x4 },
-           {(void*)&CO_OD_PERSIST_COMM.RPDOMappingParameter[3].mappedObject6, 0x8F, 0x4 },
-           {(void*)&CO_OD_PERSIST_COMM.RPDOMappingParameter[3].mappedObject7, 0x8F, 0x4 },
-           {(void*)&CO_OD_PERSIST_COMM.RPDOMappingParameter[3].mappedObject8, 0x8F, 0x4 },
+           {(void*)&CO_OD_PERSIST_COMM.RPDOMappingParameter[3].numberOfMappedApplicationObjectsInPDO, 0x0F, 0x1 },
+           {(void*)&CO_OD_PERSIST_COMM.RPDOMappingParameter[3].mappingObject1, 0x8F, 0x4 },
+           {(void*)&CO_OD_PERSIST_COMM.RPDOMappingParameter[3].mappingObject2, 0x8F, 0x4 },
+           {(void*)&CO_OD_PERSIST_COMM.RPDOMappingParameter[3].mappingObject3, 0x8F, 0x4 },
+           {(void*)&CO_OD_PERSIST_COMM.RPDOMappingParameter[3].mappingObject4, 0x8F, 0x4 },
+           {(void*)&CO_OD_PERSIST_COMM.RPDOMappingParameter[3].mappingObject5, 0x8F, 0x4 },
+           {(void*)&CO_OD_PERSIST_COMM.RPDOMappingParameter[3].mappingObject6, 0x8F, 0x4 },
+           {(void*)&CO_OD_PERSIST_COMM.RPDOMappingParameter[3].mappingObject7, 0x8F, 0x4 },
+           {(void*)&CO_OD_PERSIST_COMM.RPDOMappingParameter[3].mappingObject8, 0x8F, 0x4 },
 };
 
 /*0x1800*/ const CO_OD_entryRecord_t OD_record1800[7] = {
@@ -278,51 +278,51 @@ struct sCO_OD_PERSIST_MFR CO_OD_PERSIST_MFR = {
 };
 
 /*0x1A00*/ const CO_OD_entryRecord_t OD_record1A00[9] = {
-           {(void*)&CO_OD_PERSIST_COMM.TPDOMappingParameter[0].numberOfMappedObjects, 0x03, 0x1 },
-           {(void*)&CO_OD_PERSIST_COMM.TPDOMappingParameter[0].mappedObject1, 0x8F, 0x4 },
-           {(void*)&CO_OD_PERSIST_COMM.TPDOMappingParameter[0].mappedObject2, 0x8F, 0x4 },
-           {(void*)&CO_OD_PERSIST_COMM.TPDOMappingParameter[0].mappedObject3, 0x8F, 0x4 },
-           {(void*)&CO_OD_PERSIST_COMM.TPDOMappingParameter[0].mappedObject4, 0x8F, 0x4 },
-           {(void*)&CO_OD_PERSIST_COMM.TPDOMappingParameter[0].mappedObject5, 0x8F, 0x4 },
-           {(void*)&CO_OD_PERSIST_COMM.TPDOMappingParameter[0].mappedObject6, 0x8F, 0x4 },
-           {(void*)&CO_OD_PERSIST_COMM.TPDOMappingParameter[0].mappedObject7, 0x8F, 0x4 },
-           {(void*)&CO_OD_PERSIST_COMM.TPDOMappingParameter[0].mappedObject8, 0x8F, 0x4 },
+           {(void*)&CO_OD_PERSIST_COMM.TPDOMappingParameter[0].numberOfMappedApplicationObjectsInPDO, 0x0F, 0x1 },
+           {(void*)&CO_OD_PERSIST_COMM.TPDOMappingParameter[0].mappingObject1, 0x8F, 0x4 },
+           {(void*)&CO_OD_PERSIST_COMM.TPDOMappingParameter[0].mappingObject2, 0x8F, 0x4 },
+           {(void*)&CO_OD_PERSIST_COMM.TPDOMappingParameter[0].mappingObject3, 0x8F, 0x4 },
+           {(void*)&CO_OD_PERSIST_COMM.TPDOMappingParameter[0].mappingObject4, 0x8F, 0x4 },
+           {(void*)&CO_OD_PERSIST_COMM.TPDOMappingParameter[0].mappingObject5, 0x8F, 0x4 },
+           {(void*)&CO_OD_PERSIST_COMM.TPDOMappingParameter[0].mappingObject6, 0x8F, 0x4 },
+           {(void*)&CO_OD_PERSIST_COMM.TPDOMappingParameter[0].mappingObject7, 0x8F, 0x4 },
+           {(void*)&CO_OD_PERSIST_COMM.TPDOMappingParameter[0].mappingObject8, 0x8F, 0x4 },
 };
 
 /*0x1A01*/ const CO_OD_entryRecord_t OD_record1A01[9] = {
-           {(void*)&CO_OD_PERSIST_COMM.TPDOMappingParameter[1].numberOfMappedObjects, 0x03, 0x1 },
-           {(void*)&CO_OD_PERSIST_COMM.TPDOMappingParameter[1].mappedObject1, 0x8F, 0x4 },
-           {(void*)&CO_OD_PERSIST_COMM.TPDOMappingParameter[1].mappedObject2, 0x8F, 0x4 },
-           {(void*)&CO_OD_PERSIST_COMM.TPDOMappingParameter[1].mappedObject3, 0x8F, 0x4 },
-           {(void*)&CO_OD_PERSIST_COMM.TPDOMappingParameter[1].mappedObject4, 0x8F, 0x4 },
-           {(void*)&CO_OD_PERSIST_COMM.TPDOMappingParameter[1].mappedObject5, 0x8F, 0x4 },
-           {(void*)&CO_OD_PERSIST_COMM.TPDOMappingParameter[1].mappedObject6, 0x8F, 0x4 },
-           {(void*)&CO_OD_PERSIST_COMM.TPDOMappingParameter[1].mappedObject7, 0x8F, 0x4 },
-           {(void*)&CO_OD_PERSIST_COMM.TPDOMappingParameter[1].mappedObject8, 0x8F, 0x4 },
+           {(void*)&CO_OD_PERSIST_COMM.TPDOMappingParameter[1].numberOfMappedApplicationObjectsInPDO, 0x0F, 0x1 },
+           {(void*)&CO_OD_PERSIST_COMM.TPDOMappingParameter[1].mappingObject1, 0x8F, 0x4 },
+           {(void*)&CO_OD_PERSIST_COMM.TPDOMappingParameter[1].mappingObject2, 0x8F, 0x4 },
+           {(void*)&CO_OD_PERSIST_COMM.TPDOMappingParameter[1].mappingObject3, 0x8F, 0x4 },
+           {(void*)&CO_OD_PERSIST_COMM.TPDOMappingParameter[1].mappingObject4, 0x8F, 0x4 },
+           {(void*)&CO_OD_PERSIST_COMM.TPDOMappingParameter[1].mappingObject5, 0x8F, 0x4 },
+           {(void*)&CO_OD_PERSIST_COMM.TPDOMappingParameter[1].mappingObject6, 0x8F, 0x4 },
+           {(void*)&CO_OD_PERSIST_COMM.TPDOMappingParameter[1].mappingObject7, 0x8F, 0x4 },
+           {(void*)&CO_OD_PERSIST_COMM.TPDOMappingParameter[1].mappingObject8, 0x8F, 0x4 },
 };
 
 /*0x1A02*/ const CO_OD_entryRecord_t OD_record1A02[9] = {
-           {(void*)&CO_OD_PERSIST_COMM.TPDOMappingParameter[2].numberOfMappedObjects, 0x03, 0x1 },
-           {(void*)&CO_OD_PERSIST_COMM.TPDOMappingParameter[2].mappedObject1, 0x8F, 0x4 },
-           {(void*)&CO_OD_PERSIST_COMM.TPDOMappingParameter[2].mappedObject2, 0x8F, 0x4 },
-           {(void*)&CO_OD_PERSIST_COMM.TPDOMappingParameter[2].mappedObject3, 0x8F, 0x4 },
-           {(void*)&CO_OD_PERSIST_COMM.TPDOMappingParameter[2].mappedObject4, 0x8F, 0x4 },
-           {(void*)&CO_OD_PERSIST_COMM.TPDOMappingParameter[2].mappedObject5, 0x8F, 0x4 },
-           {(void*)&CO_OD_PERSIST_COMM.TPDOMappingParameter[2].mappedObject6, 0x8F, 0x4 },
-           {(void*)&CO_OD_PERSIST_COMM.TPDOMappingParameter[2].mappedObject7, 0x8F, 0x4 },
-           {(void*)&CO_OD_PERSIST_COMM.TPDOMappingParameter[2].mappedObject8, 0x8F, 0x4 },
+           {(void*)&CO_OD_PERSIST_COMM.TPDOMappingParameter[2].numberOfMappedApplicationObjectsInPDO, 0x0F, 0x1 },
+           {(void*)&CO_OD_PERSIST_COMM.TPDOMappingParameter[2].mappingObject1, 0x8F, 0x4 },
+           {(void*)&CO_OD_PERSIST_COMM.TPDOMappingParameter[2].mappingObject2, 0x8F, 0x4 },
+           {(void*)&CO_OD_PERSIST_COMM.TPDOMappingParameter[2].mappingObject3, 0x8F, 0x4 },
+           {(void*)&CO_OD_PERSIST_COMM.TPDOMappingParameter[2].mappingObject4, 0x8F, 0x4 },
+           {(void*)&CO_OD_PERSIST_COMM.TPDOMappingParameter[2].mappingObject5, 0x8F, 0x4 },
+           {(void*)&CO_OD_PERSIST_COMM.TPDOMappingParameter[2].mappingObject6, 0x8F, 0x4 },
+           {(void*)&CO_OD_PERSIST_COMM.TPDOMappingParameter[2].mappingObject7, 0x8F, 0x4 },
+           {(void*)&CO_OD_PERSIST_COMM.TPDOMappingParameter[2].mappingObject8, 0x8F, 0x4 },
 };
 
 /*0x1A03*/ const CO_OD_entryRecord_t OD_record1A03[9] = {
-           {(void*)&CO_OD_PERSIST_COMM.TPDOMappingParameter[3].numberOfMappedObjects, 0x03, 0x1 },
-           {(void*)&CO_OD_PERSIST_COMM.TPDOMappingParameter[3].mappedObject1, 0x8F, 0x4 },
-           {(void*)&CO_OD_PERSIST_COMM.TPDOMappingParameter[3].mappedObject2, 0x8F, 0x4 },
-           {(void*)&CO_OD_PERSIST_COMM.TPDOMappingParameter[3].mappedObject3, 0x8F, 0x4 },
-           {(void*)&CO_OD_PERSIST_COMM.TPDOMappingParameter[3].mappedObject4, 0x8F, 0x4 },
-           {(void*)&CO_OD_PERSIST_COMM.TPDOMappingParameter[3].mappedObject5, 0x8F, 0x4 },
-           {(void*)&CO_OD_PERSIST_COMM.TPDOMappingParameter[3].mappedObject6, 0x8F, 0x4 },
-           {(void*)&CO_OD_PERSIST_COMM.TPDOMappingParameter[3].mappedObject7, 0x8F, 0x4 },
-           {(void*)&CO_OD_PERSIST_COMM.TPDOMappingParameter[3].mappedObject8, 0x8F, 0x4 },
+           {(void*)&CO_OD_PERSIST_COMM.TPDOMappingParameter[3].numberOfMappedApplicationObjectsInPDO, 0x0F, 0x1 },
+           {(void*)&CO_OD_PERSIST_COMM.TPDOMappingParameter[3].mappingObject1, 0x8F, 0x4 },
+           {(void*)&CO_OD_PERSIST_COMM.TPDOMappingParameter[3].mappingObject2, 0x8F, 0x4 },
+           {(void*)&CO_OD_PERSIST_COMM.TPDOMappingParameter[3].mappingObject3, 0x8F, 0x4 },
+           {(void*)&CO_OD_PERSIST_COMM.TPDOMappingParameter[3].mappingObject4, 0x8F, 0x4 },
+           {(void*)&CO_OD_PERSIST_COMM.TPDOMappingParameter[3].mappingObject5, 0x8F, 0x4 },
+           {(void*)&CO_OD_PERSIST_COMM.TPDOMappingParameter[3].mappingObject6, 0x8F, 0x4 },
+           {(void*)&CO_OD_PERSIST_COMM.TPDOMappingParameter[3].mappingObject7, 0x8F, 0x4 },
+           {(void*)&CO_OD_PERSIST_COMM.TPDOMappingParameter[3].mappingObject8, 0x8F, 0x4 },
 };
 
 /*0x2000*/ const CO_OD_entryRecord_t OD_record2000[5] = {
@@ -333,7 +333,7 @@ struct sCO_OD_PERSIST_MFR CO_OD_PERSIST_MFR = {
            {(void*)&CO_OD_PERSIST_MFR.BUSManagement.ctoggle, 0x0F, 0x1 },
 };
 
-/*0x3000*/ const CO_OD_entryRecord_t OD_record3000[29] = {
+/*0x3001*/ const CO_OD_entryRecord_t OD_record3001[29] = {
            {(void*)&CO_OD_RAM.boardInfo.highestSubIndexSupported, 0x06, 0x1 },
            {(void*)0, 0x06, 0x0 },
            {(void*)0, 0x06, 0x0 },
@@ -365,7 +365,7 @@ struct sCO_OD_PERSIST_MFR CO_OD_PERSIST_MFR = {
            {(void*)&CO_OD_RAM.boardInfo.rootParitionPercent, 0x26, 0x1 },
 };
 
-/*0x3001*/ const CO_OD_entryRecord_t OD_record3001[10] = {
+/*0x3002*/ const CO_OD_entryRecord_t OD_record3002[10] = {
            {(void*)&CO_OD_RAM.fileCaches.highestSubIndexSupported, 0x06, 0x1 },
            {(void*)&CO_OD_RAM.fileCaches.freadCacheLen, 0x26, 0x1 },
            {(void*)&CO_OD_RAM.fileCaches.fwriteCacheLen, 0x26, 0x1 },
@@ -378,7 +378,7 @@ struct sCO_OD_PERSIST_MFR CO_OD_PERSIST_MFR = {
            {(void*)0, 0x0A, 0x0 },
 };
 
-/*0x3002*/ const CO_OD_entryRecord_t OD_record3002[5] = {
+/*0x3003*/ const CO_OD_entryRecord_t OD_record3003[5] = {
            {(void*)&CO_OD_RAM.fread.highestSubIndexSupported, 0x06, 0x1 },
            {(void*)0, 0x0E, 0x0 },
            {(void*)0, 0x06, 0x0 },
@@ -386,7 +386,7 @@ struct sCO_OD_PERSIST_MFR CO_OD_PERSIST_MFR = {
            {(void*)0, 0x0A, 0x0 },
 };
 
-/*0x3003*/ const CO_OD_entryRecord_t OD_record3003[4] = {
+/*0x3004*/ const CO_OD_entryRecord_t OD_record3004[4] = {
            {(void*)&CO_OD_RAM.fwrite.highestSubIndexSupported, 0x06, 0x1 },
            {(void*)0, 0x0E, 0x0 },
            {(void*)0, 0x0A, 0x0 },
@@ -401,10 +401,10 @@ struct sCO_OD_PERSIST_MFR CO_OD_PERSIST_MFR = {
            {(void*)&CO_OD_RAM.appManager.daemonState, 0x0E, 0x1 },
 };
 
-/*0x30F0*/ const CO_OD_entryRecord_t OD_record30F0[10] = {
-           {(void*)&CO_OD_RAM.linuxUpdaterApp.highestSubIndexSupported, 0x06, 0x1 },
-           {(void*)&CO_OD_RAM.linuxUpdaterApp.currentState, 0x86, 0x4 },
-           {(void*)&CO_OD_RAM.linuxUpdaterApp.updatesAvailable, 0x86, 0x4 },
+/*0x3100*/ const CO_OD_entryRecord_t OD_record3100[10] = {
+           {(void*)&CO_OD_RAM.updater.highestSubIndexSupported, 0x06, 0x1 },
+           {(void*)&CO_OD_RAM.updater.currentState, 0x86, 0x4 },
+           {(void*)&CO_OD_RAM.updater.updatesAvailable, 0x86, 0x4 },
            {(void*)0, 0x06, 0x0 },
            {(void*)0, 0x06, 0x0 },
            {(void*)0, 0x0A, 0x0 },
@@ -414,7 +414,7 @@ struct sCO_OD_PERSIST_MFR CO_OD_PERSIST_MFR = {
            {(void*)0, 0x0A, 0x0 },
 };
 
-/*0x3101*/ const CO_OD_entryRecord_t OD_record3101[5] = {
+/*0x6001*/ const CO_OD_entryRecord_t OD_record6001[5] = {
            {(void*)&CO_OD_RAM.orienation.highestSubIndexSupported, 0x06, 0x1 },
            {(void*)&CO_OD_RAM.orienation.rightAscension, 0xA2, 0x4 },
            {(void*)&CO_OD_RAM.orienation.declination, 0xA2, 0x4 },
@@ -472,15 +472,15 @@ const CO_OD_entry_t CO_OD[CO_OD_NoOfElements] = {
 {0x2011, 0x00, 0xBE,  8, (void*)&CO_OD_RAM.UTC},
 {0x2100, 0x00, 0x06, 10, (void*)&CO_OD_RAM.errorStatusBits},
 {0x2101, 0x00, 0x0E,  1, (void*)&CO_OD_RAM.CANNodeID},
-{0x3000, 0x1C, 0x00,  0, (void*)&OD_record3000},
-{0x3001, 0x09, 0x00,  0, (void*)&OD_record3001},
-{0x3002, 0x04, 0x00,  0, (void*)&OD_record3002},
-{0x3003, 0x03, 0x00,  0, (void*)&OD_record3003},
+{0x3001, 0x1C, 0x00,  0, (void*)&OD_record3001},
+{0x3002, 0x09, 0x00,  0, (void*)&OD_record3002},
+{0x3003, 0x04, 0x00,  0, (void*)&OD_record3003},
+{0x3004, 0x03, 0x00,  0, (void*)&OD_record3004},
 {0x3005, 0x04, 0x00,  0, (void*)&OD_record3005},
 {0x3006, 0x00, 0x06,  1, (void*)&CO_OD_RAM.getLog},
-{0x30F0, 0x09, 0x00,  0, (void*)&OD_record30F0},
-{0x3100, 0x00, 0x0E,  1, (void*)&CO_OD_RAM.testCamera},
-{0x3101, 0x04, 0x00,  0, (void*)&OD_record3101},
-{0x3102, 0x00, 0x0E,  1, (void*)&CO_OD_RAM.lastSolvedFilepath},
+{0x3100, 0x09, 0x00,  0, (void*)&OD_record3100},
+{0x6000, 0x00, 0x0E,  1, (void*)&CO_OD_RAM.testCamera},
+{0x6001, 0x04, 0x00,  0, (void*)&OD_record6001},
+{0x6002, 0x00, 0x0E,  1, (void*)&CO_OD_RAM.lastSolvedFilepath},
 };
 // clang-format on

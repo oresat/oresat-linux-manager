@@ -15,7 +15,7 @@
         <ProfileTechnology>CANopen</ProfileTechnology>
       </ISO15745Reference>
     </ProfileHeader>
-    <ProfileBody xmlns:q1="http://www.canopen.org/xml/1.1" xsi:type="q1:ProfileBody_Device_CANopen" formatName="CANopen" formatVersion="1.0" fileName="GPS_OD.xdd" fileCreator="Ryan Medick" fileCreationDate="2021-03-09" fileCreationTime="23:31:29.0000000-07:00" fileModifiedBy="Ryan Medick" fileModificationDate="2021-03-19" fileModificationTime="15:03:14.7318380-07:00" fileVersion="1" supportedLanguages="en" xmlns="">
+    <ProfileBody xmlns:q1="http://www.canopen.org/xml/1.1" xsi:type="q1:ProfileBody_Device_CANopen" formatName="CANopen" formatVersion="1.0" fileName="GPS_OD.xdd" fileCreator="Ryan Medick" fileCreationDate="2021-03-09" fileCreationTime="23:31:29.0000000-07:00" fileModifiedBy="Ryan Medick" fileModificationDate="2021-03-19" fileModificationTime="16:33:18.5435420-07:00" fileVersion="1" supportedLanguages="en" xmlns="">
       <q1:DeviceIdentity>
         <q1:vendorName>Portland State Aerospace Society</q1:vendorName>
         <q1:vendorID>0</q1:vendorID>
@@ -567,145 +567,128 @@
               <USINT />
             </q1:varDeclaration>
           </q1:struct>
-          <q1:struct name="Board info" uniqueID="UID_REC_3000">
-            <q1:varDeclaration name="Highest sub-index supported" uniqueID="UID_RECSUB_300000">
-              <USINT />
-            </q1:varDeclaration>
-            <q1:varDeclaration name="OS name" uniqueID="UID_RECSUB_300001">
-              <BITSTRING />
-            </q1:varDeclaration>
-            <q1:varDeclaration name="OS distro" uniqueID="UID_RECSUB_300002">
-              <BITSTRING />
-            </q1:varDeclaration>
-            <q1:varDeclaration name="OS kernel version" uniqueID="UID_RECSUB_300003">
-              <BITSTRING />
-            </q1:varDeclaration>
-            <q1:varDeclaration name="hostname" uniqueID="UID_RECSUB_300004">
-              <BITSTRING />
-            </q1:varDeclaration>
-            <q1:varDeclaration name="Uptime" uniqueID="UID_RECSUB_300005">
-              <UDINT />
-            </q1:varDeclaration>
-            <q1:varDeclaration name="Number of CPUs" uniqueID="UID_RECSUB_300006">
-              <USINT />
-            </q1:varDeclaration>
-            <q1:varDeclaration name="CPU architecture" uniqueID="UID_RECSUB_300007">
-              <BITSTRING />
-            </q1:varDeclaration>
-            <q1:varDeclaration name="CPU governor" uniqueID="UID_RECSUB_300008">
-              <USINT />
-            </q1:varDeclaration>
-            <q1:varDeclaration name="CPU frequency" uniqueID="UID_RECSUB_300009">
-              <UINT />
-            </q1:varDeclaration>
-            <q1:varDeclaration name="Number of remoteprocs" uniqueID="UID_RECSUB_30000A">
-              <USINT />
-            </q1:varDeclaration>
-            <q1:varDeclaration name="RemoteprocX selector" uniqueID="UID_RECSUB_30000B">
-              <USINT />
-            </q1:varDeclaration>
-            <q1:varDeclaration name="RemoteprocX name" uniqueID="UID_RECSUB_30000C">
-              <BITSTRING />
-            </q1:varDeclaration>
-            <q1:varDeclaration name="RemoteprocX state" uniqueID="UID_RECSUB_30000D">
-              <BITSTRING />
-            </q1:varDeclaration>
-            <q1:varDeclaration name="Load average 1min" uniqueID="UID_RECSUB_30000E">
-              <UDINT />
-            </q1:varDeclaration>
-            <q1:varDeclaration name="Load average 5min" uniqueID="UID_RECSUB_30000F">
-              <UDINT />
-            </q1:varDeclaration>
-            <q1:varDeclaration name="Load average 15min" uniqueID="UID_RECSUB_300010">
-              <UDINT />
-            </q1:varDeclaration>
-            <q1:varDeclaration name="Ram total" uniqueID="UID_RECSUB_300011">
-              <UDINT />
-            </q1:varDeclaration>
-            <q1:varDeclaration name="Ram free" uniqueID="UID_RECSUB_300012">
-              <UDINT />
-            </q1:varDeclaration>
-            <q1:varDeclaration name="Ram shared" uniqueID="UID_RECSUB_300013">
-              <UDINT />
-            </q1:varDeclaration>
-            <q1:varDeclaration name="Ram buffered" uniqueID="UID_RECSUB_300014">
-              <UDINT />
-            </q1:varDeclaration>
-            <q1:varDeclaration name="Ram percent" uniqueID="UID_RECSUB_300015">
-              <USINT />
-            </q1:varDeclaration>
-            <q1:varDeclaration name="Swap total" uniqueID="UID_RECSUB_300016">
-              <UDINT />
-            </q1:varDeclaration>
-            <q1:varDeclaration name="Swap free" uniqueID="UID_RECSUB_300017">
-              <UDINT />
-            </q1:varDeclaration>
-            <q1:varDeclaration name="Swap percent" uniqueID="UID_RECSUB_300018">
-              <USINT />
-            </q1:varDeclaration>
-            <q1:varDeclaration name="Procs" uniqueID="UID_RECSUB_300019">
-              <UDINT />
-            </q1:varDeclaration>
-            <q1:varDeclaration name="Root parition total" uniqueID="UID_RECSUB_30001A">
-              <UDINT />
-            </q1:varDeclaration>
-            <q1:varDeclaration name="Root parition free" uniqueID="UID_RECSUB_30001B">
-              <UDINT />
-            </q1:varDeclaration>
-            <q1:varDeclaration name="Root parition percent" uniqueID="UID_RECSUB_30001C">
-              <USINT />
-            </q1:varDeclaration>
-          </q1:struct>
-          <q1:struct name="File caches" uniqueID="UID_REC_3001">
+          <q1:struct name="Board info" uniqueID="UID_REC_3001">
             <q1:varDeclaration name="Highest sub-index supported" uniqueID="UID_RECSUB_300100">
               <USINT />
             </q1:varDeclaration>
-            <q1:varDeclaration name="Fread cache len" uniqueID="UID_RECSUB_300101">
-              <USINT />
-            </q1:varDeclaration>
-            <q1:varDeclaration name="Fwrite cache len" uniqueID="UID_RECSUB_300102">
-              <USINT />
-            </q1:varDeclaration>
-            <q1:varDeclaration name="Cache selector" uniqueID="UID_RECSUB_300103">
-              <USINT />
-            </q1:varDeclaration>
-            <q1:varDeclaration name="Filter" uniqueID="UID_RECSUB_300104">
+            <q1:varDeclaration name="OS name" uniqueID="UID_RECSUB_300101">
               <BITSTRING />
             </q1:varDeclaration>
-            <q1:varDeclaration name="Cache len" uniqueID="UID_RECSUB_300105">
-              <UDINT />
-            </q1:varDeclaration>
-            <q1:varDeclaration name="Iterator" uniqueID="UID_RECSUB_300106">
-              <UDINT />
-            </q1:varDeclaration>
-            <q1:varDeclaration name="File name" uniqueID="UID_RECSUB_300107">
+            <q1:varDeclaration name="OS distro" uniqueID="UID_RECSUB_300102">
               <BITSTRING />
             </q1:varDeclaration>
-            <q1:varDeclaration name="File size" uniqueID="UID_RECSUB_300108">
+            <q1:varDeclaration name="OS kernel version" uniqueID="UID_RECSUB_300103">
+              <BITSTRING />
+            </q1:varDeclaration>
+            <q1:varDeclaration name="hostname" uniqueID="UID_RECSUB_300104">
+              <BITSTRING />
+            </q1:varDeclaration>
+            <q1:varDeclaration name="Uptime" uniqueID="UID_RECSUB_300105">
               <UDINT />
             </q1:varDeclaration>
-            <q1:varDeclaration name="Delete file" uniqueID="UID_RECSUB_300109">
+            <q1:varDeclaration name="Number of CPUs" uniqueID="UID_RECSUB_300106">
+              <USINT />
+            </q1:varDeclaration>
+            <q1:varDeclaration name="CPU architecture" uniqueID="UID_RECSUB_300107">
               <BITSTRING />
+            </q1:varDeclaration>
+            <q1:varDeclaration name="CPU governor" uniqueID="UID_RECSUB_300108">
+              <USINT />
+            </q1:varDeclaration>
+            <q1:varDeclaration name="CPU frequency" uniqueID="UID_RECSUB_300109">
+              <UINT />
+            </q1:varDeclaration>
+            <q1:varDeclaration name="Number of remoteprocs" uniqueID="UID_RECSUB_30010A">
+              <USINT />
+            </q1:varDeclaration>
+            <q1:varDeclaration name="RemoteprocX selector" uniqueID="UID_RECSUB_30010B">
+              <USINT />
+            </q1:varDeclaration>
+            <q1:varDeclaration name="RemoteprocX name" uniqueID="UID_RECSUB_30010C">
+              <BITSTRING />
+            </q1:varDeclaration>
+            <q1:varDeclaration name="RemoteprocX state" uniqueID="UID_RECSUB_30010D">
+              <BITSTRING />
+            </q1:varDeclaration>
+            <q1:varDeclaration name="Load average 1min" uniqueID="UID_RECSUB_30010E">
+              <UDINT />
+            </q1:varDeclaration>
+            <q1:varDeclaration name="Load average 5min" uniqueID="UID_RECSUB_30010F">
+              <UDINT />
+            </q1:varDeclaration>
+            <q1:varDeclaration name="Load average 15min" uniqueID="UID_RECSUB_300110">
+              <UDINT />
+            </q1:varDeclaration>
+            <q1:varDeclaration name="Ram total" uniqueID="UID_RECSUB_300111">
+              <UDINT />
+            </q1:varDeclaration>
+            <q1:varDeclaration name="Ram free" uniqueID="UID_RECSUB_300112">
+              <UDINT />
+            </q1:varDeclaration>
+            <q1:varDeclaration name="Ram shared" uniqueID="UID_RECSUB_300113">
+              <UDINT />
+            </q1:varDeclaration>
+            <q1:varDeclaration name="Ram buffered" uniqueID="UID_RECSUB_300114">
+              <UDINT />
+            </q1:varDeclaration>
+            <q1:varDeclaration name="Ram percent" uniqueID="UID_RECSUB_300115">
+              <USINT />
+            </q1:varDeclaration>
+            <q1:varDeclaration name="Swap total" uniqueID="UID_RECSUB_300116">
+              <UDINT />
+            </q1:varDeclaration>
+            <q1:varDeclaration name="Swap free" uniqueID="UID_RECSUB_300117">
+              <UDINT />
+            </q1:varDeclaration>
+            <q1:varDeclaration name="Swap percent" uniqueID="UID_RECSUB_300118">
+              <USINT />
+            </q1:varDeclaration>
+            <q1:varDeclaration name="Procs" uniqueID="UID_RECSUB_300119">
+              <UDINT />
+            </q1:varDeclaration>
+            <q1:varDeclaration name="Root parition total" uniqueID="UID_RECSUB_30011A">
+              <UDINT />
+            </q1:varDeclaration>
+            <q1:varDeclaration name="Root parition free" uniqueID="UID_RECSUB_30011B">
+              <UDINT />
+            </q1:varDeclaration>
+            <q1:varDeclaration name="Root parition percent" uniqueID="UID_RECSUB_30011C">
+              <USINT />
             </q1:varDeclaration>
           </q1:struct>
-          <q1:struct name="Fread" uniqueID="UID_REC_3002">
+          <q1:struct name="File caches" uniqueID="UID_REC_3002">
             <q1:varDeclaration name="Highest sub-index supported" uniqueID="UID_RECSUB_300200">
               <USINT />
             </q1:varDeclaration>
-            <q1:varDeclaration name="File name" uniqueID="UID_RECSUB_300201">
+            <q1:varDeclaration name="Fread cache len" uniqueID="UID_RECSUB_300201">
+              <USINT />
+            </q1:varDeclaration>
+            <q1:varDeclaration name="Fwrite cache len" uniqueID="UID_RECSUB_300202">
+              <USINT />
+            </q1:varDeclaration>
+            <q1:varDeclaration name="Cache selector" uniqueID="UID_RECSUB_300203">
+              <USINT />
+            </q1:varDeclaration>
+            <q1:varDeclaration name="Filter" uniqueID="UID_RECSUB_300204">
               <BITSTRING />
             </q1:varDeclaration>
-            <q1:varDeclaration name="File data" uniqueID="UID_RECSUB_300202">
+            <q1:varDeclaration name="Cache len" uniqueID="UID_RECSUB_300205">
+              <UDINT />
+            </q1:varDeclaration>
+            <q1:varDeclaration name="Iterator" uniqueID="UID_RECSUB_300206">
+              <UDINT />
+            </q1:varDeclaration>
+            <q1:varDeclaration name="File name" uniqueID="UID_RECSUB_300207">
               <BITSTRING />
             </q1:varDeclaration>
-            <q1:varDeclaration name="Reset" uniqueID="UID_RECSUB_300203">
-              <BITSTRING />
+            <q1:varDeclaration name="File size" uniqueID="UID_RECSUB_300208">
+              <UDINT />
             </q1:varDeclaration>
-            <q1:varDeclaration name="Delete file" uniqueID="UID_RECSUB_300204">
+            <q1:varDeclaration name="Delete file" uniqueID="UID_RECSUB_300209">
               <BITSTRING />
             </q1:varDeclaration>
           </q1:struct>
-          <q1:struct name="Fwrite" uniqueID="UID_REC_3003">
+          <q1:struct name="Fread" uniqueID="UID_REC_3003">
             <q1:varDeclaration name="Highest sub-index supported" uniqueID="UID_RECSUB_300300">
               <USINT />
             </q1:varDeclaration>
@@ -716,6 +699,23 @@
               <BITSTRING />
             </q1:varDeclaration>
             <q1:varDeclaration name="Reset" uniqueID="UID_RECSUB_300303">
+              <BITSTRING />
+            </q1:varDeclaration>
+            <q1:varDeclaration name="Delete file" uniqueID="UID_RECSUB_300304">
+              <BITSTRING />
+            </q1:varDeclaration>
+          </q1:struct>
+          <q1:struct name="Fwrite" uniqueID="UID_REC_3004">
+            <q1:varDeclaration name="Highest sub-index supported" uniqueID="UID_RECSUB_300400">
+              <USINT />
+            </q1:varDeclaration>
+            <q1:varDeclaration name="File name" uniqueID="UID_RECSUB_300401">
+              <BITSTRING />
+            </q1:varDeclaration>
+            <q1:varDeclaration name="File data" uniqueID="UID_RECSUB_300402">
+              <BITSTRING />
+            </q1:varDeclaration>
+            <q1:varDeclaration name="Reset" uniqueID="UID_RECSUB_300403">
               <BITSTRING />
             </q1:varDeclaration>
           </q1:struct>
@@ -736,35 +736,35 @@
               <SINT />
             </q1:varDeclaration>
           </q1:struct>
-          <q1:struct name="Linux updater app" uniqueID="UID_REC_30F0">
-            <q1:varDeclaration name="Highest sub-index supported" uniqueID="UID_RECSUB_30F000">
+          <q1:struct name="Updater" uniqueID="UID_REC_3100">
+            <q1:varDeclaration name="Highest sub-index supported" uniqueID="UID_RECSUB_310000">
               <USINT />
             </q1:varDeclaration>
-            <q1:varDeclaration name="Current state" uniqueID="UID_RECSUB_30F001">
+            <q1:varDeclaration name="Current state" uniqueID="UID_RECSUB_310001">
               <DINT />
             </q1:varDeclaration>
-            <q1:varDeclaration name="Updates available" uniqueID="UID_RECSUB_30F002">
+            <q1:varDeclaration name="Updates available" uniqueID="UID_RECSUB_310002">
               <UDINT />
             </q1:varDeclaration>
-            <q1:varDeclaration name="Current update file" uniqueID="UID_RECSUB_30F003">
+            <q1:varDeclaration name="Current update file" uniqueID="UID_RECSUB_310003">
               <BITSTRING />
             </q1:varDeclaration>
-            <q1:varDeclaration name="Error message" uniqueID="UID_RECSUB_30F004">
+            <q1:varDeclaration name="Error message" uniqueID="UID_RECSUB_310004">
               <BITSTRING />
             </q1:varDeclaration>
-            <q1:varDeclaration name="Add update file" uniqueID="UID_RECSUB_30F005">
+            <q1:varDeclaration name="Add update file" uniqueID="UID_RECSUB_310005">
               <BITSTRING />
             </q1:varDeclaration>
-            <q1:varDeclaration name="Start update" uniqueID="UID_RECSUB_30F006">
+            <q1:varDeclaration name="Start update" uniqueID="UID_RECSUB_310006">
               <BITSTRING />
             </q1:varDeclaration>
-            <q1:varDeclaration name="Emergency stop update" uniqueID="UID_RECSUB_30F007">
+            <q1:varDeclaration name="Emergency stop update" uniqueID="UID_RECSUB_310007">
               <BITSTRING />
             </q1:varDeclaration>
-            <q1:varDeclaration name="Reset updater" uniqueID="UID_RECSUB_30F008">
+            <q1:varDeclaration name="Reset updater" uniqueID="UID_RECSUB_310008">
               <BITSTRING />
             </q1:varDeclaration>
-            <q1:varDeclaration name="Get apt list output" uniqueID="UID_RECSUB_30F009">
+            <q1:varDeclaration name="Get apt list output" uniqueID="UID_RECSUB_310009">
               <BITSTRING />
             </q1:varDeclaration>
           </q1:struct>
@@ -2306,242 +2306,242 @@ Manufacturer may define its own constants up to index 0xFF. Of course, he must t
             <USINT />
             <q1:defaultValue value="0x11" />
           </q1:parameter>
-          <q1:parameter uniqueID="UID_OBJ_3000">
-            <label lang="en">Board info</label>
-            <q1:dataTypeIDRef uniqueIDRef="UID_REC_3000" />
-          </q1:parameter>
-          <q1:parameter uniqueID="UID_SUB_300000">
-            <label lang="en">Highest sub-index supported</label>
-            <USINT />
-            <q1:defaultValue value="0x1C" />
-          </q1:parameter>
-          <q1:parameter uniqueID="UID_SUB_300001">
-            <label lang="en">OS name</label>
-            <BITSTRING />
-          </q1:parameter>
-          <q1:parameter uniqueID="UID_SUB_300002">
-            <label lang="en">OS distro</label>
-            <BITSTRING />
-          </q1:parameter>
-          <q1:parameter uniqueID="UID_SUB_300003">
-            <label lang="en">OS kernel version</label>
-            <BITSTRING />
-          </q1:parameter>
-          <q1:parameter uniqueID="UID_SUB_300004">
-            <label lang="en">hostname</label>
-            <BITSTRING />
-          </q1:parameter>
-          <q1:parameter uniqueID="UID_SUB_300005">
-            <label lang="en">Uptime</label>
-            <UDINT />
-            <q1:defaultValue value="0" />
-          </q1:parameter>
-          <q1:parameter uniqueID="UID_SUB_300006">
-            <label lang="en">Number of CPUs</label>
-            <USINT />
-            <q1:defaultValue value="0" />
-          </q1:parameter>
-          <q1:parameter uniqueID="UID_SUB_300007">
-            <label lang="en">CPU architecture</label>
-            <BITSTRING />
-          </q1:parameter>
-          <q1:parameter uniqueID="UID_SUB_300008">
-            <label lang="en">CPU governor</label>
-            <USINT />
-            <q1:defaultValue value="0" />
-          </q1:parameter>
-          <q1:parameter uniqueID="UID_SUB_300009">
-            <label lang="en">CPU frequency</label>
-            <UINT />
-            <q1:defaultValue value="0" />
-          </q1:parameter>
-          <q1:parameter uniqueID="UID_SUB_30000A">
-            <label lang="en">Number of remoteprocs</label>
-            <USINT />
-            <q1:defaultValue value="0" />
-          </q1:parameter>
-          <q1:parameter uniqueID="UID_SUB_30000B" access="readWrite">
-            <label lang="en">RemoteprocX selector</label>
-            <USINT />
-            <q1:defaultValue value="0" />
-          </q1:parameter>
-          <q1:parameter uniqueID="UID_SUB_30000C">
-            <label lang="en">RemoteprocX name</label>
-            <BITSTRING />
-          </q1:parameter>
-          <q1:parameter uniqueID="UID_SUB_30000D">
-            <label lang="en">RemoteprocX state</label>
-            <BITSTRING />
-          </q1:parameter>
-          <q1:parameter uniqueID="UID_SUB_30000E">
-            <label lang="en">Load average 1min</label>
-            <UDINT />
-            <q1:defaultValue value="0" />
-          </q1:parameter>
-          <q1:parameter uniqueID="UID_SUB_30000F">
-            <label lang="en">Load average 5min</label>
-            <UDINT />
-            <q1:defaultValue value="0" />
-          </q1:parameter>
-          <q1:parameter uniqueID="UID_SUB_300010">
-            <label lang="en">Load average 15min</label>
-            <UDINT />
-            <q1:defaultValue value="0" />
-          </q1:parameter>
-          <q1:parameter uniqueID="UID_SUB_300011">
-            <label lang="en">Ram total</label>
-            <UDINT />
-            <q1:defaultValue value="0" />
-          </q1:parameter>
-          <q1:parameter uniqueID="UID_SUB_300012">
-            <label lang="en">Ram free</label>
-            <UDINT />
-            <q1:defaultValue value="0" />
-          </q1:parameter>
-          <q1:parameter uniqueID="UID_SUB_300013">
-            <label lang="en">Ram shared</label>
-            <UDINT />
-            <q1:defaultValue value="0" />
-          </q1:parameter>
-          <q1:parameter uniqueID="UID_SUB_300014">
-            <label lang="en">Ram buffered</label>
-            <UDINT />
-            <q1:defaultValue value="0" />
-          </q1:parameter>
-          <q1:parameter uniqueID="UID_SUB_300015">
-            <label lang="en">Ram percent</label>
-            <USINT />
-            <q1:defaultValue value="0" />
-          </q1:parameter>
-          <q1:parameter uniqueID="UID_SUB_300016">
-            <label lang="en">Swap total</label>
-            <UDINT />
-            <q1:defaultValue value="0" />
-          </q1:parameter>
-          <q1:parameter uniqueID="UID_SUB_300017">
-            <label lang="en">Swap free</label>
-            <UDINT />
-            <q1:defaultValue value="0" />
-          </q1:parameter>
-          <q1:parameter uniqueID="UID_SUB_300018">
-            <label lang="en">Swap percent</label>
-            <USINT />
-            <q1:defaultValue value="0" />
-          </q1:parameter>
-          <q1:parameter uniqueID="UID_SUB_300019">
-            <label lang="en">Procs</label>
-            <UDINT />
-            <q1:defaultValue value="0" />
-          </q1:parameter>
-          <q1:parameter uniqueID="UID_SUB_30001A">
-            <label lang="en">Root parition total</label>
-            <UDINT />
-            <q1:defaultValue value="0" />
-          </q1:parameter>
-          <q1:parameter uniqueID="UID_SUB_30001B">
-            <label lang="en">Root parition free</label>
-            <UDINT />
-            <q1:defaultValue value="0" />
-          </q1:parameter>
-          <q1:parameter uniqueID="UID_SUB_30001C">
-            <label lang="en">Root parition percent</label>
-            <USINT />
-            <q1:defaultValue value="0" />
-          </q1:parameter>
           <q1:parameter uniqueID="UID_OBJ_3001">
-            <label lang="en">File caches</label>
+            <label lang="en">Board info</label>
             <q1:dataTypeIDRef uniqueIDRef="UID_REC_3001" />
           </q1:parameter>
           <q1:parameter uniqueID="UID_SUB_300100">
             <label lang="en">Highest sub-index supported</label>
             <USINT />
-            <q1:defaultValue value="0x09" />
+            <q1:defaultValue value="0x1C" />
           </q1:parameter>
           <q1:parameter uniqueID="UID_SUB_300101">
-            <label lang="en">Fread cache len</label>
-            <USINT />
-            <q1:defaultValue value="0" />
+            <label lang="en">OS name</label>
+            <BITSTRING />
           </q1:parameter>
           <q1:parameter uniqueID="UID_SUB_300102">
-            <label lang="en">Fwrite cache len</label>
-            <USINT />
-            <q1:defaultValue value="0" />
+            <label lang="en">OS distro</label>
+            <BITSTRING />
           </q1:parameter>
-          <q1:parameter uniqueID="UID_SUB_300103" access="readWrite">
-            <label lang="en">Cache selector</label>
-            <USINT />
-            <q1:defaultValue value="0" />
+          <q1:parameter uniqueID="UID_SUB_300103">
+            <label lang="en">OS kernel version</label>
+            <BITSTRING />
           </q1:parameter>
-          <q1:parameter uniqueID="UID_SUB_300104" access="readWrite">
-            <label lang="en">Filter</label>
+          <q1:parameter uniqueID="UID_SUB_300104">
+            <label lang="en">hostname</label>
             <BITSTRING />
           </q1:parameter>
           <q1:parameter uniqueID="UID_SUB_300105">
-            <label lang="en">Cache len</label>
+            <label lang="en">Uptime</label>
             <UDINT />
             <q1:defaultValue value="0" />
           </q1:parameter>
-          <q1:parameter uniqueID="UID_SUB_300106" access="readWrite">
-            <label lang="en">Iterator</label>
-            <UDINT />
+          <q1:parameter uniqueID="UID_SUB_300106">
+            <label lang="en">Number of CPUs</label>
+            <USINT />
             <q1:defaultValue value="0" />
           </q1:parameter>
           <q1:parameter uniqueID="UID_SUB_300107">
-            <label lang="en">File name</label>
+            <label lang="en">CPU architecture</label>
             <BITSTRING />
           </q1:parameter>
           <q1:parameter uniqueID="UID_SUB_300108">
-            <label lang="en">File size</label>
+            <label lang="en">CPU governor</label>
+            <USINT />
+            <q1:defaultValue value="0" />
+          </q1:parameter>
+          <q1:parameter uniqueID="UID_SUB_300109">
+            <label lang="en">CPU frequency</label>
+            <UINT />
+            <q1:defaultValue value="0" />
+          </q1:parameter>
+          <q1:parameter uniqueID="UID_SUB_30010A">
+            <label lang="en">Number of remoteprocs</label>
+            <USINT />
+            <q1:defaultValue value="0" />
+          </q1:parameter>
+          <q1:parameter uniqueID="UID_SUB_30010B" access="readWrite">
+            <label lang="en">RemoteprocX selector</label>
+            <USINT />
+            <q1:defaultValue value="0" />
+          </q1:parameter>
+          <q1:parameter uniqueID="UID_SUB_30010C">
+            <label lang="en">RemoteprocX name</label>
+            <BITSTRING />
+          </q1:parameter>
+          <q1:parameter uniqueID="UID_SUB_30010D">
+            <label lang="en">RemoteprocX state</label>
+            <BITSTRING />
+          </q1:parameter>
+          <q1:parameter uniqueID="UID_SUB_30010E">
+            <label lang="en">Load average 1min</label>
             <UDINT />
             <q1:defaultValue value="0" />
           </q1:parameter>
-          <q1:parameter uniqueID="UID_SUB_300109" access="write">
-            <label lang="en">Delete file</label>
-            <BITSTRING />
+          <q1:parameter uniqueID="UID_SUB_30010F">
+            <label lang="en">Load average 5min</label>
+            <UDINT />
+            <q1:defaultValue value="0" />
+          </q1:parameter>
+          <q1:parameter uniqueID="UID_SUB_300110">
+            <label lang="en">Load average 15min</label>
+            <UDINT />
+            <q1:defaultValue value="0" />
+          </q1:parameter>
+          <q1:parameter uniqueID="UID_SUB_300111">
+            <label lang="en">Ram total</label>
+            <UDINT />
+            <q1:defaultValue value="0" />
+          </q1:parameter>
+          <q1:parameter uniqueID="UID_SUB_300112">
+            <label lang="en">Ram free</label>
+            <UDINT />
+            <q1:defaultValue value="0" />
+          </q1:parameter>
+          <q1:parameter uniqueID="UID_SUB_300113">
+            <label lang="en">Ram shared</label>
+            <UDINT />
+            <q1:defaultValue value="0" />
+          </q1:parameter>
+          <q1:parameter uniqueID="UID_SUB_300114">
+            <label lang="en">Ram buffered</label>
+            <UDINT />
+            <q1:defaultValue value="0" />
+          </q1:parameter>
+          <q1:parameter uniqueID="UID_SUB_300115">
+            <label lang="en">Ram percent</label>
+            <USINT />
+            <q1:defaultValue value="0" />
+          </q1:parameter>
+          <q1:parameter uniqueID="UID_SUB_300116">
+            <label lang="en">Swap total</label>
+            <UDINT />
+            <q1:defaultValue value="0" />
+          </q1:parameter>
+          <q1:parameter uniqueID="UID_SUB_300117">
+            <label lang="en">Swap free</label>
+            <UDINT />
+            <q1:defaultValue value="0" />
+          </q1:parameter>
+          <q1:parameter uniqueID="UID_SUB_300118">
+            <label lang="en">Swap percent</label>
+            <USINT />
+            <q1:defaultValue value="0" />
+          </q1:parameter>
+          <q1:parameter uniqueID="UID_SUB_300119">
+            <label lang="en">Procs</label>
+            <UDINT />
+            <q1:defaultValue value="0" />
+          </q1:parameter>
+          <q1:parameter uniqueID="UID_SUB_30011A">
+            <label lang="en">Root parition total</label>
+            <UDINT />
+            <q1:defaultValue value="0" />
+          </q1:parameter>
+          <q1:parameter uniqueID="UID_SUB_30011B">
+            <label lang="en">Root parition free</label>
+            <UDINT />
+            <q1:defaultValue value="0" />
+          </q1:parameter>
+          <q1:parameter uniqueID="UID_SUB_30011C">
+            <label lang="en">Root parition percent</label>
+            <USINT />
+            <q1:defaultValue value="0" />
           </q1:parameter>
           <q1:parameter uniqueID="UID_OBJ_3002">
-            <label lang="en">Fread</label>
+            <label lang="en">File caches</label>
             <q1:dataTypeIDRef uniqueIDRef="UID_REC_3002" />
           </q1:parameter>
           <q1:parameter uniqueID="UID_SUB_300200">
             <label lang="en">Highest sub-index supported</label>
             <USINT />
-            <q1:defaultValue value="0x04" />
+            <q1:defaultValue value="0x09" />
           </q1:parameter>
-          <q1:parameter uniqueID="UID_SUB_300201" access="readWrite">
+          <q1:parameter uniqueID="UID_SUB_300201">
+            <label lang="en">Fread cache len</label>
+            <USINT />
+            <q1:defaultValue value="0" />
+          </q1:parameter>
+          <q1:parameter uniqueID="UID_SUB_300202">
+            <label lang="en">Fwrite cache len</label>
+            <USINT />
+            <q1:defaultValue value="0" />
+          </q1:parameter>
+          <q1:parameter uniqueID="UID_SUB_300203" access="readWrite">
+            <label lang="en">Cache selector</label>
+            <USINT />
+            <q1:defaultValue value="0" />
+          </q1:parameter>
+          <q1:parameter uniqueID="UID_SUB_300204" access="readWrite">
+            <label lang="en">Filter</label>
+            <BITSTRING />
+          </q1:parameter>
+          <q1:parameter uniqueID="UID_SUB_300205">
+            <label lang="en">Cache len</label>
+            <UDINT />
+            <q1:defaultValue value="0" />
+          </q1:parameter>
+          <q1:parameter uniqueID="UID_SUB_300206" access="readWrite">
+            <label lang="en">Iterator</label>
+            <UDINT />
+            <q1:defaultValue value="0" />
+          </q1:parameter>
+          <q1:parameter uniqueID="UID_SUB_300207">
             <label lang="en">File name</label>
             <BITSTRING />
           </q1:parameter>
-          <q1:parameter uniqueID="UID_SUB_300202">
-            <label lang="en">File data</label>
-            <BITSTRING />
+          <q1:parameter uniqueID="UID_SUB_300208">
+            <label lang="en">File size</label>
+            <UDINT />
+            <q1:defaultValue value="0" />
           </q1:parameter>
-          <q1:parameter uniqueID="UID_SUB_300203" access="write">
-            <label lang="en">Reset</label>
-            <BITSTRING />
-          </q1:parameter>
-          <q1:parameter uniqueID="UID_SUB_300204" access="write">
+          <q1:parameter uniqueID="UID_SUB_300209" access="write">
             <label lang="en">Delete file</label>
             <BITSTRING />
           </q1:parameter>
           <q1:parameter uniqueID="UID_OBJ_3003">
-            <label lang="en">Fwrite</label>
+            <label lang="en">Fread</label>
             <q1:dataTypeIDRef uniqueIDRef="UID_REC_3003" />
           </q1:parameter>
           <q1:parameter uniqueID="UID_SUB_300300">
             <label lang="en">Highest sub-index supported</label>
             <USINT />
-            <q1:defaultValue value="0x03" />
+            <q1:defaultValue value="0x04" />
           </q1:parameter>
           <q1:parameter uniqueID="UID_SUB_300301" access="readWrite">
             <label lang="en">File name</label>
             <BITSTRING />
           </q1:parameter>
-          <q1:parameter uniqueID="UID_SUB_300302" access="write">
+          <q1:parameter uniqueID="UID_SUB_300302">
             <label lang="en">File data</label>
             <BITSTRING />
           </q1:parameter>
           <q1:parameter uniqueID="UID_SUB_300303" access="write">
+            <label lang="en">Reset</label>
+            <BITSTRING />
+          </q1:parameter>
+          <q1:parameter uniqueID="UID_SUB_300304" access="write">
+            <label lang="en">Delete file</label>
+            <BITSTRING />
+          </q1:parameter>
+          <q1:parameter uniqueID="UID_OBJ_3004">
+            <label lang="en">Fwrite</label>
+            <q1:dataTypeIDRef uniqueIDRef="UID_REC_3004" />
+          </q1:parameter>
+          <q1:parameter uniqueID="UID_SUB_300400">
+            <label lang="en">Highest sub-index supported</label>
+            <USINT />
+            <q1:defaultValue value="0x03" />
+          </q1:parameter>
+          <q1:parameter uniqueID="UID_SUB_300401" access="readWrite">
+            <label lang="en">File name</label>
+            <BITSTRING />
+          </q1:parameter>
+          <q1:parameter uniqueID="UID_SUB_300402" access="write">
+            <label lang="en">File data</label>
+            <BITSTRING />
+          </q1:parameter>
+          <q1:parameter uniqueID="UID_SUB_300403" access="write">
             <label lang="en">Reset</label>
             <BITSTRING />
           </q1:parameter>
@@ -2578,50 +2578,50 @@ Manufacturer may define its own constants up to index 0xFF. Of course, he must t
             <USINT />
             <q1:defaultValue value="0" />
           </q1:parameter>
-          <q1:parameter uniqueID="UID_OBJ_30F0">
-            <label lang="en">Linux updater app</label>
-            <q1:dataTypeIDRef uniqueIDRef="UID_REC_30F0" />
+          <q1:parameter uniqueID="UID_OBJ_3100">
+            <label lang="en">Updater</label>
+            <q1:dataTypeIDRef uniqueIDRef="UID_REC_3100" />
           </q1:parameter>
-          <q1:parameter uniqueID="UID_SUB_30F000">
+          <q1:parameter uniqueID="UID_SUB_310000">
             <label lang="en">Highest sub-index supported</label>
             <USINT />
             <q1:defaultValue value="0x09" />
           </q1:parameter>
-          <q1:parameter uniqueID="UID_SUB_30F001">
+          <q1:parameter uniqueID="UID_SUB_310001">
             <label lang="en">Current state</label>
             <DINT />
             <q1:defaultValue value="0" />
           </q1:parameter>
-          <q1:parameter uniqueID="UID_SUB_30F002">
+          <q1:parameter uniqueID="UID_SUB_310002">
             <label lang="en">Updates available</label>
             <UDINT />
             <q1:defaultValue value="0" />
           </q1:parameter>
-          <q1:parameter uniqueID="UID_SUB_30F003">
+          <q1:parameter uniqueID="UID_SUB_310003">
             <label lang="en">Current update file</label>
             <BITSTRING />
           </q1:parameter>
-          <q1:parameter uniqueID="UID_SUB_30F004">
+          <q1:parameter uniqueID="UID_SUB_310004">
             <label lang="en">Error message</label>
             <BITSTRING />
           </q1:parameter>
-          <q1:parameter uniqueID="UID_SUB_30F005" access="write">
+          <q1:parameter uniqueID="UID_SUB_310005" access="write">
             <label lang="en">Add update file</label>
             <BITSTRING />
           </q1:parameter>
-          <q1:parameter uniqueID="UID_SUB_30F006" access="write">
+          <q1:parameter uniqueID="UID_SUB_310006" access="write">
             <label lang="en">Start update</label>
             <BITSTRING />
           </q1:parameter>
-          <q1:parameter uniqueID="UID_SUB_30F007" access="write">
+          <q1:parameter uniqueID="UID_SUB_310007" access="write">
             <label lang="en">Emergency stop update</label>
             <BITSTRING />
           </q1:parameter>
-          <q1:parameter uniqueID="UID_SUB_30F008" access="write">
+          <q1:parameter uniqueID="UID_SUB_310008" access="write">
             <label lang="en">Reset updater</label>
             <BITSTRING />
           </q1:parameter>
-          <q1:parameter uniqueID="UID_SUB_30F009" access="write">
+          <q1:parameter uniqueID="UID_SUB_310009" access="write">
             <label lang="en">Get apt list output</label>
             <BITSTRING />
           </q1:parameter>
@@ -2642,7 +2642,7 @@ Manufacturer may define its own constants up to index 0xFF. Of course, he must t
         <ProfileTechnology>CANopen</ProfileTechnology>
       </ISO15745Reference>
     </ProfileHeader>
-    <ProfileBody xmlns:q2="http://www.canopen.org/xml/1.1" xsi:type="q2:ProfileBody_CommunicationNetwork_CANopen" formatName="CANopen" formatVersion="1.0" fileName="GPS_OD.xdd" fileCreator="Ryan Medick" fileCreationDate="2021-03-09" fileCreationTime="23:31:29.0000000-07:00" fileModificationDate="2021-03-19" fileModificationTime="15:03:14.7318380-07:00" fileVersion="1" supportedLanguages="en" xmlns="">
+    <ProfileBody xmlns:q2="http://www.canopen.org/xml/1.1" xsi:type="q2:ProfileBody_CommunicationNetwork_CANopen" formatName="CANopen" formatVersion="1.0" fileName="GPS_OD.xdd" fileCreator="Ryan Medick" fileCreationDate="2021-03-09" fileCreationTime="23:31:29.0000000-07:00" fileModificationDate="2021-03-19" fileModificationTime="16:33:18.5435420-07:00" fileVersion="1" supportedLanguages="en" xmlns="">
       <ApplicationLayers>
         <q2:CANopenObjectList>
           <CANopenObject index="1000" name="Device type" objectType="7" PDOmapping="no" uniqueIDRef="UID_OBJ_1000" />
@@ -2925,61 +2925,61 @@ Manufacturer may define its own constants up to index 0xFF. Of course, he must t
           <CANopenObject index="2011" name="UTC" objectType="7" PDOmapping="optional" uniqueIDRef="UID_OBJ_2011" />
           <CANopenObject index="2100" name="Error status bits" objectType="7" PDOmapping="no" uniqueIDRef="UID_OBJ_2100" />
           <CANopenObject index="2101" name="CAN node ID" objectType="7" PDOmapping="no" uniqueIDRef="UID_OBJ_2101" />
-          <CANopenObject index="3000" name="Board info" objectType="9" uniqueIDRef="UID_OBJ_3000" subNumber="29">
-            <CANopenSubObject subIndex="00" name="Highest sub-index supported" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_300000" />
-            <CANopenSubObject subIndex="01" name="OS name" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_300001" />
-            <CANopenSubObject subIndex="02" name="OS distro" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_300002" />
-            <CANopenSubObject subIndex="03" name="OS kernel version" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_300003" />
-            <CANopenSubObject subIndex="04" name="hostname" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_300004" />
-            <CANopenSubObject subIndex="05" name="Uptime" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_300005" />
-            <CANopenSubObject subIndex="06" name="Number of CPUs" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_300006" />
-            <CANopenSubObject subIndex="07" name="CPU architecture" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_300007" />
-            <CANopenSubObject subIndex="08" name="CPU governor" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_300008" />
-            <CANopenSubObject subIndex="09" name="CPU frequency" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_300009" />
-            <CANopenSubObject subIndex="0A" name="Number of remoteprocs" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_30000A" />
-            <CANopenSubObject subIndex="0B" name="RemoteprocX selector" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_30000B" />
-            <CANopenSubObject subIndex="0C" name="RemoteprocX name" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_30000C" />
-            <CANopenSubObject subIndex="0D" name="RemoteprocX state" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_30000D" />
-            <CANopenSubObject subIndex="0E" name="Load average 1min" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_30000E" />
-            <CANopenSubObject subIndex="0F" name="Load average 5min" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_30000F" />
-            <CANopenSubObject subIndex="10" name="Load average 15min" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_300010" />
-            <CANopenSubObject subIndex="11" name="Ram total" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_300011" />
-            <CANopenSubObject subIndex="12" name="Ram free" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_300012" />
-            <CANopenSubObject subIndex="13" name="Ram shared" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_300013" />
-            <CANopenSubObject subIndex="14" name="Ram buffered" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_300014" />
-            <CANopenSubObject subIndex="15" name="Ram percent" objectType="7" PDOmapping="TPDO" uniqueIDRef="UID_SUB_300015" />
-            <CANopenSubObject subIndex="16" name="Swap total" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_300016" />
-            <CANopenSubObject subIndex="17" name="Swap free" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_300017" />
-            <CANopenSubObject subIndex="18" name="Swap percent" objectType="7" PDOmapping="TPDO" uniqueIDRef="UID_SUB_300018" />
-            <CANopenSubObject subIndex="19" name="Procs" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_300019" />
-            <CANopenSubObject subIndex="1A" name="Root parition total" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_30001A" />
-            <CANopenSubObject subIndex="1B" name="Root parition free" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_30001B" />
-            <CANopenSubObject subIndex="1C" name="Root parition percent" objectType="7" PDOmapping="TPDO" uniqueIDRef="UID_SUB_30001C" />
-          </CANopenObject>
-          <CANopenObject index="3001" name="File caches" objectType="9" uniqueIDRef="UID_OBJ_3001" subNumber="10">
+          <CANopenObject index="3001" name="Board info" objectType="9" uniqueIDRef="UID_OBJ_3001" subNumber="29">
             <CANopenSubObject subIndex="00" name="Highest sub-index supported" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_300100" />
-            <CANopenSubObject subIndex="01" name="Fread cache len" objectType="7" PDOmapping="TPDO" uniqueIDRef="UID_SUB_300101" />
-            <CANopenSubObject subIndex="02" name="Fwrite cache len" objectType="7" PDOmapping="TPDO" uniqueIDRef="UID_SUB_300102" />
-            <CANopenSubObject subIndex="03" name="Cache selector" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_300103" />
-            <CANopenSubObject subIndex="04" name="Filter" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_300104" />
-            <CANopenSubObject subIndex="05" name="Cache len" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_300105" />
-            <CANopenSubObject subIndex="06" name="Iterator" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_300106" />
-            <CANopenSubObject subIndex="07" name="File name" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_300107" />
-            <CANopenSubObject subIndex="08" name="File size" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_300108" />
-            <CANopenSubObject subIndex="09" name="Delete file" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_300109" />
+            <CANopenSubObject subIndex="01" name="OS name" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_300101" />
+            <CANopenSubObject subIndex="02" name="OS distro" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_300102" />
+            <CANopenSubObject subIndex="03" name="OS kernel version" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_300103" />
+            <CANopenSubObject subIndex="04" name="hostname" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_300104" />
+            <CANopenSubObject subIndex="05" name="Uptime" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_300105" />
+            <CANopenSubObject subIndex="06" name="Number of CPUs" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_300106" />
+            <CANopenSubObject subIndex="07" name="CPU architecture" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_300107" />
+            <CANopenSubObject subIndex="08" name="CPU governor" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_300108" />
+            <CANopenSubObject subIndex="09" name="CPU frequency" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_300109" />
+            <CANopenSubObject subIndex="0A" name="Number of remoteprocs" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_30010A" />
+            <CANopenSubObject subIndex="0B" name="RemoteprocX selector" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_30010B" />
+            <CANopenSubObject subIndex="0C" name="RemoteprocX name" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_30010C" />
+            <CANopenSubObject subIndex="0D" name="RemoteprocX state" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_30010D" />
+            <CANopenSubObject subIndex="0E" name="Load average 1min" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_30010E" />
+            <CANopenSubObject subIndex="0F" name="Load average 5min" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_30010F" />
+            <CANopenSubObject subIndex="10" name="Load average 15min" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_300110" />
+            <CANopenSubObject subIndex="11" name="Ram total" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_300111" />
+            <CANopenSubObject subIndex="12" name="Ram free" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_300112" />
+            <CANopenSubObject subIndex="13" name="Ram shared" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_300113" />
+            <CANopenSubObject subIndex="14" name="Ram buffered" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_300114" />
+            <CANopenSubObject subIndex="15" name="Ram percent" objectType="7" PDOmapping="TPDO" uniqueIDRef="UID_SUB_300115" />
+            <CANopenSubObject subIndex="16" name="Swap total" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_300116" />
+            <CANopenSubObject subIndex="17" name="Swap free" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_300117" />
+            <CANopenSubObject subIndex="18" name="Swap percent" objectType="7" PDOmapping="TPDO" uniqueIDRef="UID_SUB_300118" />
+            <CANopenSubObject subIndex="19" name="Procs" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_300119" />
+            <CANopenSubObject subIndex="1A" name="Root parition total" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_30011A" />
+            <CANopenSubObject subIndex="1B" name="Root parition free" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_30011B" />
+            <CANopenSubObject subIndex="1C" name="Root parition percent" objectType="7" PDOmapping="TPDO" uniqueIDRef="UID_SUB_30011C" />
           </CANopenObject>
-          <CANopenObject index="3002" name="Fread" objectType="9" uniqueIDRef="UID_OBJ_3002" subNumber="5">
+          <CANopenObject index="3002" name="File caches" objectType="9" uniqueIDRef="UID_OBJ_3002" subNumber="10">
             <CANopenSubObject subIndex="00" name="Highest sub-index supported" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_300200" />
-            <CANopenSubObject subIndex="01" name="File name" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_300201" />
-            <CANopenSubObject subIndex="02" name="File data" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_300202" />
-            <CANopenSubObject subIndex="03" name="Reset" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_300203" />
-            <CANopenSubObject subIndex="04" name="Delete file" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_300204" />
+            <CANopenSubObject subIndex="01" name="Fread cache len" objectType="7" PDOmapping="TPDO" uniqueIDRef="UID_SUB_300201" />
+            <CANopenSubObject subIndex="02" name="Fwrite cache len" objectType="7" PDOmapping="TPDO" uniqueIDRef="UID_SUB_300202" />
+            <CANopenSubObject subIndex="03" name="Cache selector" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_300203" />
+            <CANopenSubObject subIndex="04" name="Filter" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_300204" />
+            <CANopenSubObject subIndex="05" name="Cache len" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_300205" />
+            <CANopenSubObject subIndex="06" name="Iterator" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_300206" />
+            <CANopenSubObject subIndex="07" name="File name" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_300207" />
+            <CANopenSubObject subIndex="08" name="File size" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_300208" />
+            <CANopenSubObject subIndex="09" name="Delete file" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_300209" />
           </CANopenObject>
-          <CANopenObject index="3003" name="Fwrite" objectType="9" uniqueIDRef="UID_OBJ_3003" subNumber="4">
+          <CANopenObject index="3003" name="Fread" objectType="9" uniqueIDRef="UID_OBJ_3003" subNumber="5">
             <CANopenSubObject subIndex="00" name="Highest sub-index supported" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_300300" />
             <CANopenSubObject subIndex="01" name="File name" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_300301" />
             <CANopenSubObject subIndex="02" name="File data" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_300302" />
             <CANopenSubObject subIndex="03" name="Reset" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_300303" />
+            <CANopenSubObject subIndex="04" name="Delete file" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_300304" />
+          </CANopenObject>
+          <CANopenObject index="3004" name="Fwrite" objectType="9" uniqueIDRef="UID_OBJ_3004" subNumber="4">
+            <CANopenSubObject subIndex="00" name="Highest sub-index supported" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_300400" />
+            <CANopenSubObject subIndex="01" name="File name" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_300401" />
+            <CANopenSubObject subIndex="02" name="File data" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_300402" />
+            <CANopenSubObject subIndex="03" name="Reset" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_300403" />
           </CANopenObject>
           <CANopenObject index="3005" name="App manager" objectType="9" uniqueIDRef="UID_OBJ_3005" subNumber="5">
             <CANopenSubObject subIndex="00" name="Highest sub-index supported" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_300500" />
@@ -2989,17 +2989,17 @@ Manufacturer may define its own constants up to index 0xFF. Of course, he must t
             <CANopenSubObject subIndex="04" name="Daemon state" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_300504" />
           </CANopenObject>
           <CANopenObject index="3006" name="Get log" objectType="7" PDOmapping="no" uniqueIDRef="UID_OBJ_3006" />
-          <CANopenObject index="30F0" name="Linux updater app" objectType="9" uniqueIDRef="UID_OBJ_30F0" subNumber="10">
-            <CANopenSubObject subIndex="00" name="Highest sub-index supported" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_30F000" />
-            <CANopenSubObject subIndex="01" name="Current state" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_30F001" />
-            <CANopenSubObject subIndex="02" name="Updates available" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_30F002" />
-            <CANopenSubObject subIndex="03" name="Current update file" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_30F003" />
-            <CANopenSubObject subIndex="04" name="Error message" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_30F004" />
-            <CANopenSubObject subIndex="05" name="Add update file" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_30F005" />
-            <CANopenSubObject subIndex="06" name="Start update" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_30F006" />
-            <CANopenSubObject subIndex="07" name="Emergency stop update" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_30F007" />
-            <CANopenSubObject subIndex="08" name="Reset updater" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_30F008" />
-            <CANopenSubObject subIndex="09" name="Get apt list output" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_30F009" />
+          <CANopenObject index="3100" name="Updater" objectType="9" uniqueIDRef="UID_OBJ_3100" subNumber="10">
+            <CANopenSubObject subIndex="00" name="Highest sub-index supported" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_310000" />
+            <CANopenSubObject subIndex="01" name="Current state" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_310001" />
+            <CANopenSubObject subIndex="02" name="Updates available" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_310002" />
+            <CANopenSubObject subIndex="03" name="Current update file" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_310003" />
+            <CANopenSubObject subIndex="04" name="Error message" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_310004" />
+            <CANopenSubObject subIndex="05" name="Add update file" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_310005" />
+            <CANopenSubObject subIndex="06" name="Start update" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_310006" />
+            <CANopenSubObject subIndex="07" name="Emergency stop update" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_310007" />
+            <CANopenSubObject subIndex="08" name="Reset updater" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_310008" />
+            <CANopenSubObject subIndex="09" name="Get apt list output" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_310009" />
           </CANopenObject>
         </q2:CANopenObjectList>
         <dummyUsage>

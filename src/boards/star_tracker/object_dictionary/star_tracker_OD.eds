@@ -8,7 +8,7 @@ Description=OreSat Star Tracker
 CreationTime=1:57PM
 CreationDate=03-09-2021
 CreatedBy=Ryan Medick
-ModificationTime=3:05PM
+ModificationTime=4:58PM
 ModificationDate=03-19-2021
 ModifiedBy=Ryan Medick
 
@@ -124,7 +124,7 @@ DefaultValue=0x00000000
 PDOMapping=0
 
 [OptionalObjects]
-SupportedObjects=38
+SupportedObjects=41
 1=0x1002
 2=0x1003
 3=0x1005
@@ -163,6 +163,9 @@ SupportedObjects=38
 36=0x1A02
 37=0x1A03
 38=0x1F80
+39=0x6000
+40=0x6001
+41=0x6002
 
 [1002]
 ParameterName=Manufacturer status register
@@ -888,16 +891,16 @@ ObjectType=0x9
 SubNumber=0x9
 
 [1600sub0]
-ParameterName=Number of mapped objects
+ParameterName=Number of mapped application objects in PDO
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0005
-AccessType=UNKNOWN
-DefaultValue=0x08
+AccessType=rw
+DefaultValue=0
 PDOMapping=0
 
 [1600sub1]
-ParameterName=Mapped object 1
+ParameterName=Mapping object 1
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
@@ -906,7 +909,7 @@ DefaultValue=0x00000000
 PDOMapping=0
 
 [1600sub2]
-ParameterName=Mapped object 2
+ParameterName=Mapping object 2
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
@@ -915,7 +918,7 @@ DefaultValue=0x00000000
 PDOMapping=0
 
 [1600sub3]
-ParameterName=Mapped object 3
+ParameterName=Mapping object 3
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
@@ -924,7 +927,7 @@ DefaultValue=0x00000000
 PDOMapping=0
 
 [1600sub4]
-ParameterName=Mapped object 4
+ParameterName=Mapping object 4
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
@@ -933,7 +936,7 @@ DefaultValue=0x00000000
 PDOMapping=0
 
 [1600sub5]
-ParameterName=Mapped object 5
+ParameterName=Mapping object 5
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
@@ -942,7 +945,7 @@ DefaultValue=0x00000000
 PDOMapping=0
 
 [1600sub6]
-ParameterName=Mapped object 6
+ParameterName=Mapping object 6
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
@@ -951,7 +954,7 @@ DefaultValue=0x00000000
 PDOMapping=0
 
 [1600sub7]
-ParameterName=Mapped object 7
+ParameterName=Mapping object 7
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
@@ -960,7 +963,7 @@ DefaultValue=0x00000000
 PDOMapping=0
 
 [1600sub8]
-ParameterName=Mapped object 8
+ParameterName=Mapping object 8
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
@@ -975,16 +978,16 @@ ObjectType=0x9
 SubNumber=0x9
 
 [1601sub0]
-ParameterName=Number of mapped objects
+ParameterName=Number of mapped application objects in PDO
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0005
-AccessType=UNKNOWN
-DefaultValue=0x08
+AccessType=rw
+DefaultValue=0
 PDOMapping=0
 
 [1601sub1]
-ParameterName=Mapped object 1
+ParameterName=Mapping object 1
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
@@ -993,7 +996,7 @@ DefaultValue=0x00000000
 PDOMapping=0
 
 [1601sub2]
-ParameterName=Mapped object 2
+ParameterName=Mapping object 2
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
@@ -1002,7 +1005,7 @@ DefaultValue=0x00000000
 PDOMapping=0
 
 [1601sub3]
-ParameterName=Mapped object 3
+ParameterName=Mapping object 3
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
@@ -1011,7 +1014,7 @@ DefaultValue=0x00000000
 PDOMapping=0
 
 [1601sub4]
-ParameterName=Mapped object 4
+ParameterName=Mapping object 4
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
@@ -1020,7 +1023,7 @@ DefaultValue=0x00000000
 PDOMapping=0
 
 [1601sub5]
-ParameterName=Mapped object 5
+ParameterName=Mapping object 5
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
@@ -1029,7 +1032,7 @@ DefaultValue=0x00000000
 PDOMapping=0
 
 [1601sub6]
-ParameterName=Mapped object 6
+ParameterName=Mapping object 6
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
@@ -1038,7 +1041,7 @@ DefaultValue=0x00000000
 PDOMapping=0
 
 [1601sub7]
-ParameterName=Mapped object 7
+ParameterName=Mapping object 7
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
@@ -1047,7 +1050,7 @@ DefaultValue=0x00000000
 PDOMapping=0
 
 [1601sub8]
-ParameterName=Mapped object 8
+ParameterName=Mapping object 8
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
@@ -1062,16 +1065,16 @@ ObjectType=0x9
 SubNumber=0x9
 
 [1602sub0]
-ParameterName=Number of mapped objects
+ParameterName=Number of mapped application objects in PDO
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0005
-AccessType=UNKNOWN
-DefaultValue=0x08
+AccessType=rw
+DefaultValue=0
 PDOMapping=0
 
 [1602sub1]
-ParameterName=Mapped object 1
+ParameterName=Mapping object 1
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
@@ -1080,7 +1083,7 @@ DefaultValue=0x00000000
 PDOMapping=0
 
 [1602sub2]
-ParameterName=Mapped object 2
+ParameterName=Mapping object 2
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
@@ -1089,7 +1092,7 @@ DefaultValue=0x00000000
 PDOMapping=0
 
 [1602sub3]
-ParameterName=Mapped object 3
+ParameterName=Mapping object 3
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
@@ -1098,7 +1101,7 @@ DefaultValue=0x00000000
 PDOMapping=0
 
 [1602sub4]
-ParameterName=Mapped object 4
+ParameterName=Mapping object 4
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
@@ -1107,7 +1110,7 @@ DefaultValue=0x00000000
 PDOMapping=0
 
 [1602sub5]
-ParameterName=Mapped object 5
+ParameterName=Mapping object 5
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
@@ -1116,7 +1119,7 @@ DefaultValue=0x00000000
 PDOMapping=0
 
 [1602sub6]
-ParameterName=Mapped object 6
+ParameterName=Mapping object 6
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
@@ -1125,7 +1128,7 @@ DefaultValue=0x00000000
 PDOMapping=0
 
 [1602sub7]
-ParameterName=Mapped object 7
+ParameterName=Mapping object 7
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
@@ -1134,7 +1137,7 @@ DefaultValue=0x00000000
 PDOMapping=0
 
 [1602sub8]
-ParameterName=Mapped object 8
+ParameterName=Mapping object 8
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
@@ -1149,16 +1152,16 @@ ObjectType=0x9
 SubNumber=0x9
 
 [1603sub0]
-ParameterName=Number of mapped objects
+ParameterName=Number of mapped application objects in PDO
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0005
-AccessType=UNKNOWN
-DefaultValue=0x08
+AccessType=rw
+DefaultValue=0
 PDOMapping=0
 
 [1603sub1]
-ParameterName=Mapped object 1
+ParameterName=Mapping object 1
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
@@ -1167,7 +1170,7 @@ DefaultValue=0x00000000
 PDOMapping=0
 
 [1603sub2]
-ParameterName=Mapped object 2
+ParameterName=Mapping object 2
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
@@ -1176,7 +1179,7 @@ DefaultValue=0x00000000
 PDOMapping=0
 
 [1603sub3]
-ParameterName=Mapped object 3
+ParameterName=Mapping object 3
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
@@ -1185,7 +1188,7 @@ DefaultValue=0x00000000
 PDOMapping=0
 
 [1603sub4]
-ParameterName=Mapped object 4
+ParameterName=Mapping object 4
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
@@ -1194,7 +1197,7 @@ DefaultValue=0x00000000
 PDOMapping=0
 
 [1603sub5]
-ParameterName=Mapped object 5
+ParameterName=Mapping object 5
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
@@ -1203,7 +1206,7 @@ DefaultValue=0x00000000
 PDOMapping=0
 
 [1603sub6]
-ParameterName=Mapped object 6
+ParameterName=Mapping object 6
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
@@ -1212,7 +1215,7 @@ DefaultValue=0x00000000
 PDOMapping=0
 
 [1603sub7]
-ParameterName=Mapped object 7
+ParameterName=Mapping object 7
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
@@ -1221,7 +1224,7 @@ DefaultValue=0x00000000
 PDOMapping=0
 
 [1603sub8]
-ParameterName=Mapped object 8
+ParameterName=Mapping object 8
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
@@ -1512,16 +1515,16 @@ ObjectType=0x9
 SubNumber=0x9
 
 [1A00sub0]
-ParameterName=Number of mapped objects
+ParameterName=Number of mapped application objects in PDO
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0005
-AccessType=UNKNOWN
-DefaultValue=0x08
+AccessType=rw
+DefaultValue=0
 PDOMapping=0
 
 [1A00sub1]
-ParameterName=Mapped object 1
+ParameterName=Mapping object 1
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
@@ -1530,7 +1533,7 @@ DefaultValue=0x00000000
 PDOMapping=0
 
 [1A00sub2]
-ParameterName=Mapped object 2
+ParameterName=Mapping object 2
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
@@ -1539,7 +1542,7 @@ DefaultValue=0x00000000
 PDOMapping=0
 
 [1A00sub3]
-ParameterName=Mapped object 3
+ParameterName=Mapping object 3
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
@@ -1548,7 +1551,7 @@ DefaultValue=0x00000000
 PDOMapping=0
 
 [1A00sub4]
-ParameterName=Mapped object 4
+ParameterName=Mapping object 4
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
@@ -1557,7 +1560,7 @@ DefaultValue=0x00000000
 PDOMapping=0
 
 [1A00sub5]
-ParameterName=Mapped object 5
+ParameterName=Mapping object 5
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
@@ -1566,7 +1569,7 @@ DefaultValue=0x00000000
 PDOMapping=0
 
 [1A00sub6]
-ParameterName=Mapped object 6
+ParameterName=Mapping object 6
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
@@ -1575,7 +1578,7 @@ DefaultValue=0x00000000
 PDOMapping=0
 
 [1A00sub7]
-ParameterName=Mapped object 7
+ParameterName=Mapping object 7
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
@@ -1584,7 +1587,7 @@ DefaultValue=0x00000000
 PDOMapping=0
 
 [1A00sub8]
-ParameterName=Mapped object 8
+ParameterName=Mapping object 8
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
@@ -1599,34 +1602,34 @@ ObjectType=0x9
 SubNumber=0x9
 
 [1A01sub0]
-ParameterName=Number of mapped objects
+ParameterName=Number of mapped application objects in PDO
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0005
-AccessType=UNKNOWN
-DefaultValue=0x08
+AccessType=rw
+DefaultValue=0
 PDOMapping=0
 
 [1A01sub1]
-ParameterName=Mapped object 1
+ParameterName=Mapping object 1
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
 AccessType=rw
-DefaultValue=0x31010120
+DefaultValue=0x00000000
 PDOMapping=0
 
 [1A01sub2]
-ParameterName=Mapped object 2
+ParameterName=Mapping object 2
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
 AccessType=rw
-DefaultValue=0x31010220
+DefaultValue=0x00000000
 PDOMapping=0
 
 [1A01sub3]
-ParameterName=Mapped object 3
+ParameterName=Mapping object 3
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
@@ -1635,7 +1638,7 @@ DefaultValue=0x00000000
 PDOMapping=0
 
 [1A01sub4]
-ParameterName=Mapped object 4
+ParameterName=Mapping object 4
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
@@ -1644,7 +1647,7 @@ DefaultValue=0x00000000
 PDOMapping=0
 
 [1A01sub5]
-ParameterName=Mapped object 5
+ParameterName=Mapping object 5
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
@@ -1653,7 +1656,7 @@ DefaultValue=0x00000000
 PDOMapping=0
 
 [1A01sub6]
-ParameterName=Mapped object 6
+ParameterName=Mapping object 6
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
@@ -1662,7 +1665,7 @@ DefaultValue=0x00000000
 PDOMapping=0
 
 [1A01sub7]
-ParameterName=Mapped object 7
+ParameterName=Mapping object 7
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
@@ -1671,7 +1674,7 @@ DefaultValue=0x00000000
 PDOMapping=0
 
 [1A01sub8]
-ParameterName=Mapped object 8
+ParameterName=Mapping object 8
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
@@ -1686,34 +1689,34 @@ ObjectType=0x9
 SubNumber=0x9
 
 [1A02sub0]
-ParameterName=Number of mapped objects
+ParameterName=Number of mapped application objects in PDO
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0005
-AccessType=UNKNOWN
-DefaultValue=0x08
+AccessType=rw
+DefaultValue=0
 PDOMapping=0
 
 [1A02sub1]
-ParameterName=Mapped object 1
+ParameterName=Mapping object 1
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
 AccessType=rw
-DefaultValue=0x31010320
+DefaultValue=0x00000000
 PDOMapping=0
 
 [1A02sub2]
-ParameterName=Mapped object 2
+ParameterName=Mapping object 2
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
 AccessType=rw
-DefaultValue=0x31010420
+DefaultValue=0x00000000
 PDOMapping=0
 
 [1A02sub3]
-ParameterName=Mapped object 3
+ParameterName=Mapping object 3
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
@@ -1722,7 +1725,7 @@ DefaultValue=0x00000000
 PDOMapping=0
 
 [1A02sub4]
-ParameterName=Mapped object 4
+ParameterName=Mapping object 4
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
@@ -1731,7 +1734,7 @@ DefaultValue=0x00000000
 PDOMapping=0
 
 [1A02sub5]
-ParameterName=Mapped object 5
+ParameterName=Mapping object 5
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
@@ -1740,7 +1743,7 @@ DefaultValue=0x00000000
 PDOMapping=0
 
 [1A02sub6]
-ParameterName=Mapped object 6
+ParameterName=Mapping object 6
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
@@ -1749,7 +1752,7 @@ DefaultValue=0x00000000
 PDOMapping=0
 
 [1A02sub7]
-ParameterName=Mapped object 7
+ParameterName=Mapping object 7
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
@@ -1758,7 +1761,7 @@ DefaultValue=0x00000000
 PDOMapping=0
 
 [1A02sub8]
-ParameterName=Mapped object 8
+ParameterName=Mapping object 8
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
@@ -1773,16 +1776,16 @@ ObjectType=0x9
 SubNumber=0x9
 
 [1A03sub0]
-ParameterName=Number of mapped objects
+ParameterName=Number of mapped application objects in PDO
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0005
-AccessType=UNKNOWN
-DefaultValue=0x08
+AccessType=rw
+DefaultValue=0
 PDOMapping=0
 
 [1A03sub1]
-ParameterName=Mapped object 1
+ParameterName=Mapping object 1
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
@@ -1791,7 +1794,7 @@ DefaultValue=0x00000000
 PDOMapping=0
 
 [1A03sub2]
-ParameterName=Mapped object 2
+ParameterName=Mapping object 2
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
@@ -1800,7 +1803,7 @@ DefaultValue=0x00000000
 PDOMapping=0
 
 [1A03sub3]
-ParameterName=Mapped object 3
+ParameterName=Mapping object 3
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
@@ -1809,7 +1812,7 @@ DefaultValue=0x00000000
 PDOMapping=0
 
 [1A03sub4]
-ParameterName=Mapped object 4
+ParameterName=Mapping object 4
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
@@ -1818,7 +1821,7 @@ DefaultValue=0x00000000
 PDOMapping=0
 
 [1A03sub5]
-ParameterName=Mapped object 5
+ParameterName=Mapping object 5
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
@@ -1827,7 +1830,7 @@ DefaultValue=0x00000000
 PDOMapping=0
 
 [1A03sub6]
-ParameterName=Mapped object 6
+ParameterName=Mapping object 6
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
@@ -1836,7 +1839,7 @@ DefaultValue=0x00000000
 PDOMapping=0
 
 [1A03sub7]
-ParameterName=Mapped object 7
+ParameterName=Mapping object 7
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
@@ -1845,7 +1848,7 @@ DefaultValue=0x00000000
 PDOMapping=0
 
 [1A03sub8]
-ParameterName=Mapped object 8
+ParameterName=Mapping object 8
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
@@ -1862,23 +1865,89 @@ AccessType=rw
 DefaultValue=0x00000008
 PDOMapping=0
 
+[6000]
+ParameterName=Test Camera
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x0002
+AccessType=rw
+DefaultValue=0
+PDOMapping=0
+
+[6001]
+ParameterName=Orienation
+ObjectType=0x9
+;StorageLocation=RAM
+SubNumber=0x5
+
+[6001sub0]
+ParameterName=Highest sub-index supported
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x0005
+AccessType=ro
+DefaultValue=0x04
+PDOMapping=0
+
+[6001sub1]
+ParameterName=Right Ascension
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x0008
+AccessType=UNKNOWN
+DefaultValue=0
+PDOMapping=1
+
+[6001sub2]
+ParameterName=Declination
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x0008
+AccessType=UNKNOWN
+DefaultValue=0
+PDOMapping=1
+
+[6001sub3]
+ParameterName=Roll
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x0008
+AccessType=UNKNOWN
+DefaultValue=0
+PDOMapping=1
+
+[6001sub4]
+ParameterName=Timestamp
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x0007
+AccessType=UNKNOWN
+DefaultValue=0
+PDOMapping=1
+
+[6002]
+ParameterName=Last solved filepath
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x0009
+AccessType=rw
+DefaultValue=0
+PDOMapping=0
+
 [ManufacturerObjects]
-SupportedObjects=15
+SupportedObjects=12
 1=0x2000
 2=0x2010
 3=0x2011
 4=0x2100
 5=0x2101
-6=0x3000
-7=0x3001
-8=0x3002
-9=0x3003
+6=0x3001
+7=0x3002
+8=0x3003
+9=0x3004
 10=0x3005
 11=0x3006
-12=0x30F0
-13=0x3100
-14=0x3101
-15=0x3102
+12=0x3100
 
 [2000]
 ParameterName=BUS management
@@ -1967,13 +2036,13 @@ AccessType=rw
 DefaultValue=0x12
 PDOMapping=0
 
-[3000]
+[3001]
 ParameterName=Board info
 ObjectType=0x9
 ;StorageLocation=RAM
 SubNumber=0x1D
 
-[3000sub0]
+[3001sub0]
 ParameterName=Highest sub-index supported
 ObjectType=0x7
 ;StorageLocation=RAM
@@ -1982,7 +2051,7 @@ AccessType=ro
 DefaultValue=0x1C
 PDOMapping=0
 
-[3000sub1]
+[3001sub1]
 ParameterName=OS name
 ObjectType=0x7
 ;StorageLocation=RAM
@@ -1991,7 +2060,7 @@ AccessType=ro
 DefaultValue=
 PDOMapping=0
 
-[3000sub2]
+[3001sub2]
 ParameterName=OS distro
 ObjectType=0x7
 ;StorageLocation=RAM
@@ -2000,7 +2069,7 @@ AccessType=ro
 DefaultValue=
 PDOMapping=0
 
-[3000sub3]
+[3001sub3]
 ParameterName=OS kernel version
 ObjectType=0x7
 ;StorageLocation=RAM
@@ -2009,7 +2078,7 @@ AccessType=ro
 DefaultValue=
 PDOMapping=0
 
-[3000sub4]
+[3001sub4]
 ParameterName=hostname
 ObjectType=0x7
 ;StorageLocation=RAM
@@ -2018,7 +2087,7 @@ AccessType=ro
 DefaultValue=
 PDOMapping=0
 
-[3000sub5]
+[3001sub5]
 ParameterName=Uptime
 ObjectType=0x7
 ;StorageLocation=RAM
@@ -2027,7 +2096,7 @@ AccessType=ro
 DefaultValue=0
 PDOMapping=0
 
-[3000sub6]
+[3001sub6]
 ParameterName=Number of CPUs
 ObjectType=0x7
 ;StorageLocation=RAM
@@ -2036,7 +2105,7 @@ AccessType=ro
 DefaultValue=0
 PDOMapping=0
 
-[3000sub7]
+[3001sub7]
 ParameterName=CPU architecture
 ObjectType=0x7
 ;StorageLocation=RAM
@@ -2045,7 +2114,7 @@ AccessType=ro
 DefaultValue=
 PDOMapping=0
 
-[3000sub8]
+[3001sub8]
 ParameterName=CPU governor
 ObjectType=0x7
 ;StorageLocation=RAM
@@ -2054,7 +2123,7 @@ AccessType=ro
 DefaultValue=0
 PDOMapping=0
 
-[3000sub9]
+[3001sub9]
 ParameterName=CPU frequency
 ObjectType=0x7
 ;StorageLocation=RAM
@@ -2063,7 +2132,7 @@ AccessType=ro
 DefaultValue=0
 PDOMapping=0
 
-[3000subA]
+[3001subA]
 ParameterName=Number of remoteprocs
 ObjectType=0x7
 ;StorageLocation=RAM
@@ -2072,7 +2141,7 @@ AccessType=ro
 DefaultValue=0
 PDOMapping=0
 
-[3000subB]
+[3001subB]
 ParameterName=RemoteprocX selector
 ObjectType=0x7
 ;StorageLocation=RAM
@@ -2081,7 +2150,7 @@ AccessType=rw
 DefaultValue=0
 PDOMapping=0
 
-[3000subC]
+[3001subC]
 ParameterName=RemoteprocX name
 ObjectType=0x7
 ;StorageLocation=RAM
@@ -2090,7 +2159,7 @@ AccessType=ro
 DefaultValue=
 PDOMapping=0
 
-[3000subD]
+[3001subD]
 ParameterName=RemoteprocX state
 ObjectType=0x7
 ;StorageLocation=RAM
@@ -2099,7 +2168,7 @@ AccessType=ro
 DefaultValue=
 PDOMapping=0
 
-[3000subE]
+[3001subE]
 ParameterName=Load average 1min
 ObjectType=0x7
 ;StorageLocation=RAM
@@ -2108,7 +2177,7 @@ AccessType=ro
 DefaultValue=0
 PDOMapping=0
 
-[3000subF]
+[3001subF]
 ParameterName=Load average 5min
 ObjectType=0x7
 ;StorageLocation=RAM
@@ -2117,7 +2186,7 @@ AccessType=ro
 DefaultValue=0
 PDOMapping=0
 
-[3000sub10]
+[3001sub10]
 ParameterName=Load average 15min
 ObjectType=0x7
 ;StorageLocation=RAM
@@ -2126,7 +2195,7 @@ AccessType=ro
 DefaultValue=0
 PDOMapping=0
 
-[3000sub11]
+[3001sub11]
 ParameterName=Ram total
 ObjectType=0x7
 ;StorageLocation=RAM
@@ -2135,7 +2204,7 @@ AccessType=ro
 DefaultValue=0
 PDOMapping=0
 
-[3000sub12]
+[3001sub12]
 ParameterName=Ram free
 ObjectType=0x7
 ;StorageLocation=RAM
@@ -2144,7 +2213,7 @@ AccessType=ro
 DefaultValue=0
 PDOMapping=0
 
-[3000sub13]
+[3001sub13]
 ParameterName=Ram shared
 ObjectType=0x7
 ;StorageLocation=RAM
@@ -2153,7 +2222,7 @@ AccessType=ro
 DefaultValue=0
 PDOMapping=0
 
-[3000sub14]
+[3001sub14]
 ParameterName=Ram buffered
 ObjectType=0x7
 ;StorageLocation=RAM
@@ -2162,7 +2231,7 @@ AccessType=ro
 DefaultValue=0
 PDOMapping=0
 
-[3000sub15]
+[3001sub15]
 ParameterName=Ram percent
 ObjectType=0x7
 ;StorageLocation=RAM
@@ -2171,7 +2240,7 @@ AccessType=ro
 DefaultValue=0
 PDOMapping=1
 
-[3000sub16]
+[3001sub16]
 ParameterName=Swap total
 ObjectType=0x7
 ;StorageLocation=RAM
@@ -2180,7 +2249,7 @@ AccessType=ro
 DefaultValue=0
 PDOMapping=0
 
-[3000sub17]
+[3001sub17]
 ParameterName=Swap free
 ObjectType=0x7
 ;StorageLocation=RAM
@@ -2189,7 +2258,7 @@ AccessType=ro
 DefaultValue=0
 PDOMapping=0
 
-[3000sub18]
+[3001sub18]
 ParameterName=Swap percent
 ObjectType=0x7
 ;StorageLocation=RAM
@@ -2198,7 +2267,7 @@ AccessType=ro
 DefaultValue=0
 PDOMapping=1
 
-[3000sub19]
+[3001sub19]
 ParameterName=Procs
 ObjectType=0x7
 ;StorageLocation=RAM
@@ -2207,7 +2276,7 @@ AccessType=ro
 DefaultValue=0
 PDOMapping=0
 
-[3000sub1A]
+[3001sub1A]
 ParameterName=Root parition total
 ObjectType=0x7
 ;StorageLocation=RAM
@@ -2216,7 +2285,7 @@ AccessType=ro
 DefaultValue=0
 PDOMapping=0
 
-[3000sub1B]
+[3001sub1B]
 ParameterName=Root parition free
 ObjectType=0x7
 ;StorageLocation=RAM
@@ -2225,7 +2294,7 @@ AccessType=ro
 DefaultValue=0
 PDOMapping=0
 
-[3000sub1C]
+[3001sub1C]
 ParameterName=Root parition percent
 ObjectType=0x7
 ;StorageLocation=RAM
@@ -2234,13 +2303,13 @@ AccessType=ro
 DefaultValue=0
 PDOMapping=1
 
-[3001]
+[3002]
 ParameterName=File caches
 ObjectType=0x9
 ;StorageLocation=RAM
 SubNumber=0xA
 
-[3001sub0]
+[3002sub0]
 ParameterName=Highest sub-index supported
 ObjectType=0x7
 ;StorageLocation=RAM
@@ -2249,7 +2318,7 @@ AccessType=ro
 DefaultValue=0x09
 PDOMapping=0
 
-[3001sub1]
+[3002sub1]
 ParameterName=Fread cache len
 ObjectType=0x7
 ;StorageLocation=RAM
@@ -2258,7 +2327,7 @@ AccessType=ro
 DefaultValue=0
 PDOMapping=1
 
-[3001sub2]
+[3002sub2]
 ParameterName=Fwrite cache len
 ObjectType=0x7
 ;StorageLocation=RAM
@@ -2267,7 +2336,7 @@ AccessType=ro
 DefaultValue=0
 PDOMapping=1
 
-[3001sub3]
+[3002sub3]
 ParameterName=Cache selector
 ObjectType=0x7
 ;StorageLocation=RAM
@@ -2276,7 +2345,7 @@ AccessType=rw
 DefaultValue=0
 PDOMapping=0
 
-[3001sub4]
+[3002sub4]
 ParameterName=Filter
 ObjectType=0x7
 ;StorageLocation=RAM
@@ -2285,7 +2354,7 @@ AccessType=rw
 DefaultValue=
 PDOMapping=0
 
-[3001sub5]
+[3002sub5]
 ParameterName=Cache len
 ObjectType=0x7
 ;StorageLocation=RAM
@@ -2294,7 +2363,7 @@ AccessType=ro
 DefaultValue=0
 PDOMapping=0
 
-[3001sub6]
+[3002sub6]
 ParameterName=Iterator
 ObjectType=0x7
 ;StorageLocation=RAM
@@ -2303,7 +2372,7 @@ AccessType=rw
 DefaultValue=0
 PDOMapping=0
 
-[3001sub7]
+[3002sub7]
 ParameterName=File name
 ObjectType=0x7
 ;StorageLocation=RAM
@@ -2312,7 +2381,7 @@ AccessType=ro
 DefaultValue=
 PDOMapping=0
 
-[3001sub8]
+[3002sub8]
 ParameterName=File size
 ObjectType=0x7
 ;StorageLocation=RAM
@@ -2321,58 +2390,7 @@ AccessType=ro
 DefaultValue=0
 PDOMapping=0
 
-[3001sub9]
-ParameterName=Delete file
-ObjectType=0x7
-;StorageLocation=RAM
-DataType=0x000F
-AccessType=wo
-DefaultValue=
-PDOMapping=0
-
-[3002]
-ParameterName=Fread
-ObjectType=0x9
-;StorageLocation=RAM
-SubNumber=0x5
-
-[3002sub0]
-ParameterName=Highest sub-index supported
-ObjectType=0x7
-;StorageLocation=RAM
-DataType=0x0005
-AccessType=ro
-DefaultValue=0x04
-PDOMapping=0
-
-[3002sub1]
-ParameterName=File name
-ObjectType=0x7
-;StorageLocation=RAM
-DataType=0x000F
-AccessType=rw
-DefaultValue=
-PDOMapping=0
-
-[3002sub2]
-ParameterName=File data
-ObjectType=0x7
-;StorageLocation=RAM
-DataType=0x000F
-AccessType=ro
-DefaultValue=
-PDOMapping=0
-
-[3002sub3]
-ParameterName=Reset
-ObjectType=0x7
-;StorageLocation=RAM
-DataType=0x000F
-AccessType=wo
-DefaultValue=
-PDOMapping=0
-
-[3002sub4]
+[3002sub9]
 ParameterName=Delete file
 ObjectType=0x7
 ;StorageLocation=RAM
@@ -2382,10 +2400,10 @@ DefaultValue=
 PDOMapping=0
 
 [3003]
-ParameterName=Fwrite
+ParameterName=Fread
 ObjectType=0x9
 ;StorageLocation=RAM
-SubNumber=0x4
+SubNumber=0x5
 
 [3003sub0]
 ParameterName=Highest sub-index supported
@@ -2393,7 +2411,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0005
 AccessType=ro
-DefaultValue=0x03
+DefaultValue=0x04
 PDOMapping=0
 
 [3003sub1]
@@ -2410,11 +2428,62 @@ ParameterName=File data
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
-AccessType=wo
+AccessType=ro
 DefaultValue=
 PDOMapping=0
 
 [3003sub3]
+ParameterName=Reset
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x000F
+AccessType=wo
+DefaultValue=
+PDOMapping=0
+
+[3003sub4]
+ParameterName=Delete file
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x000F
+AccessType=wo
+DefaultValue=
+PDOMapping=0
+
+[3004]
+ParameterName=Fwrite
+ObjectType=0x9
+;StorageLocation=RAM
+SubNumber=0x4
+
+[3004sub0]
+ParameterName=Highest sub-index supported
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x0005
+AccessType=ro
+DefaultValue=0x03
+PDOMapping=0
+
+[3004sub1]
+ParameterName=File name
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x000F
+AccessType=rw
+DefaultValue=
+PDOMapping=0
+
+[3004sub2]
+ParameterName=File data
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x000F
+AccessType=wo
+DefaultValue=
+PDOMapping=0
+
+[3004sub3]
 ParameterName=Reset
 ObjectType=0x7
 ;StorageLocation=RAM
@@ -2483,13 +2552,13 @@ AccessType=ro
 DefaultValue=0
 PDOMapping=0
 
-[30F0]
-ParameterName=Linux updater app
+[3100]
+ParameterName=Updater
 ObjectType=0x9
 ;StorageLocation=RAM
 SubNumber=0xA
 
-[30F0sub0]
+[3100sub0]
 ParameterName=Highest sub-index supported
 ObjectType=0x7
 ;StorageLocation=RAM
@@ -2498,7 +2567,7 @@ AccessType=ro
 DefaultValue=0x09
 PDOMapping=0
 
-[30F0sub1]
+[3100sub1]
 ParameterName=Current state
 ObjectType=0x7
 ;StorageLocation=RAM
@@ -2507,7 +2576,7 @@ AccessType=ro
 DefaultValue=0
 PDOMapping=0
 
-[30F0sub2]
+[3100sub2]
 ParameterName=Updates available
 ObjectType=0x7
 ;StorageLocation=RAM
@@ -2516,7 +2585,7 @@ AccessType=ro
 DefaultValue=0
 PDOMapping=0
 
-[30F0sub3]
+[3100sub3]
 ParameterName=Current update file
 ObjectType=0x7
 ;StorageLocation=RAM
@@ -2525,7 +2594,7 @@ AccessType=ro
 DefaultValue=
 PDOMapping=0
 
-[30F0sub4]
+[3100sub4]
 ParameterName=Error message
 ObjectType=0x7
 ;StorageLocation=RAM
@@ -2534,7 +2603,7 @@ AccessType=ro
 DefaultValue=
 PDOMapping=0
 
-[30F0sub5]
+[3100sub5]
 ParameterName=Add update file
 ObjectType=0x7
 ;StorageLocation=RAM
@@ -2543,7 +2612,7 @@ AccessType=wo
 DefaultValue=
 PDOMapping=0
 
-[30F0sub6]
+[3100sub6]
 ParameterName=Start update
 ObjectType=0x7
 ;StorageLocation=RAM
@@ -2552,7 +2621,7 @@ AccessType=wo
 DefaultValue=
 PDOMapping=0
 
-[30F0sub7]
+[3100sub7]
 ParameterName=Emergency stop update
 ObjectType=0x7
 ;StorageLocation=RAM
@@ -2561,7 +2630,7 @@ AccessType=wo
 DefaultValue=
 PDOMapping=0
 
-[30F0sub8]
+[3100sub8]
 ParameterName=Reset updater
 ObjectType=0x7
 ;StorageLocation=RAM
@@ -2570,81 +2639,12 @@ AccessType=wo
 DefaultValue=
 PDOMapping=0
 
-[30F0sub9]
+[3100sub9]
 ParameterName=Get apt list output
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
 AccessType=wo
 DefaultValue=
-PDOMapping=0
-
-[3100]
-ParameterName=Test Camera
-ObjectType=0x7
-;StorageLocation=RAM
-DataType=0x0002
-AccessType=rw
-DefaultValue=0
-PDOMapping=0
-
-[3101]
-ParameterName=Orienation
-ObjectType=0x9
-;StorageLocation=RAM
-SubNumber=0x5
-
-[3101sub0]
-ParameterName=Highest sub-index supported
-ObjectType=0x7
-;StorageLocation=RAM
-DataType=0x0005
-AccessType=ro
-DefaultValue=0x04
-PDOMapping=0
-
-[3101sub1]
-ParameterName=Right Ascension
-ObjectType=0x7
-;StorageLocation=RAM
-DataType=0x0008
-AccessType=UNKNOWN
-DefaultValue=0
-PDOMapping=1
-
-[3101sub2]
-ParameterName=Declination
-ObjectType=0x7
-;StorageLocation=RAM
-DataType=0x0008
-AccessType=UNKNOWN
-DefaultValue=0
-PDOMapping=1
-
-[3101sub3]
-ParameterName=Roll
-ObjectType=0x7
-;StorageLocation=RAM
-DataType=0x0008
-AccessType=UNKNOWN
-DefaultValue=0
-PDOMapping=1
-
-[3101sub4]
-ParameterName=Timestamp
-ObjectType=0x7
-;StorageLocation=RAM
-DataType=0x0007
-AccessType=UNKNOWN
-DefaultValue=0
-PDOMapping=1
-
-[3102]
-ParameterName=Last solved filepath
-ObjectType=0x7
-;StorageLocation=RAM
-DataType=0x0009
-AccessType=rw
-DefaultValue=0
 PDOMapping=0
 

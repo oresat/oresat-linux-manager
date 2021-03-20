@@ -48,7 +48,7 @@ file_caches_ODF(CO_ODF_arg_t *ODF_arg) {
 
     switch(ODF_arg->subIndex) {
 
-        case OD_3001_1_fileCaches_freadCacheLen: // read cache len, uint8, readonly
+        case OD_3002_1_fileCaches_freadCacheLen: // read cache len, uint8, readonly
 
             if (ODF_arg->reading) {
                 if (caches->fread_cache->len < UINT8_MAX)
@@ -61,7 +61,7 @@ file_caches_ODF(CO_ODF_arg_t *ODF_arg) {
 
             break;
 
-        case OD_3001_2_fileCaches_fwriteCacheLen: // write cache len, uint8, readonly
+        case OD_3002_2_fileCaches_fwriteCacheLen: // write cache len, uint8, readonly
 
             if (ODF_arg->reading) {
                 if (caches->fwrite_cache->len < UINT8_MAX)
@@ -74,7 +74,7 @@ file_caches_ODF(CO_ODF_arg_t *ODF_arg) {
 
             break;
 
-        case OD_3001_3_fileCaches_cacheSelector: // cache selector, uint8, readwrite
+        case OD_3002_3_fileCaches_cacheSelector: // cache selector, uint8, readwrite
 
             if (ODF_arg->reading) {
                 CO_setUint8(ODF_arg->data, caches->selector);
@@ -89,7 +89,7 @@ file_caches_ODF(CO_ODF_arg_t *ODF_arg) {
             
             break;
 
-        case OD_3001_4_fileCaches_filter: // filter to apply to file list, domain, readwrite
+        case OD_3002_4_fileCaches_filter: // filter to apply to file list, domain, readwrite
 
             if (ODF_arg->reading) {
                 if (caches->keyword == NULL) {
@@ -124,7 +124,7 @@ file_caches_ODF(CO_ODF_arg_t *ODF_arg) {
             
             break;
 
-        case OD_3001_5_fileCaches_cacheLen: // cache len for selected cache and filter, uint32, readonly
+        case OD_3002_5_fileCaches_cacheLen: // cache len for selected cache and filter, uint32, readonly
 
             if (ODF_arg->reading) {
                 uint32_t len;
@@ -141,7 +141,7 @@ file_caches_ODF(CO_ODF_arg_t *ODF_arg) {
 
             break;
 
-        case OD_3001_6_fileCaches_iterator: // filelist index selector, uint32, readwrite
+        case OD_3002_6_fileCaches_iterator: // filelist index selector, uint32, readwrite
 
             if (ODF_arg->reading) {
                 CO_setUint32(ODF_arg->data, caches->iterator);
@@ -168,7 +168,7 @@ file_caches_ODF(CO_ODF_arg_t *ODF_arg) {
             
             break;
 
-        case OD_3001_7_fileCaches_fileName: // file name, domain, readonly
+        case OD_3002_7_fileCaches_fileName: // file name, domain, readonly
 
             if (!ODF_arg->reading)
                 return CO_SDO_AB_READONLY;
@@ -182,7 +182,7 @@ file_caches_ODF(CO_ODF_arg_t *ODF_arg) {
 
             break;
 
-        case OD_3001_8_fileCaches_fileSize: // file size, uint32, readonly
+        case OD_3002_8_fileCaches_fileSize: // file size, uint32, readonly
 
             if (!ODF_arg->reading)
                 return CO_SDO_AB_READONLY;
@@ -194,7 +194,7 @@ file_caches_ODF(CO_ODF_arg_t *ODF_arg) {
 
             break;
 
-        case OD_3001_9_fileCaches_deleteFile: // delete current file, domain, writeonly
+        case OD_3002_9_fileCaches_deleteFile: // delete current file, domain, writeonly
 
             if (ODF_arg->reading)
                 return CO_SDO_AB_WRITEONLY;

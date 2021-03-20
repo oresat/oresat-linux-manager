@@ -8,7 +8,7 @@ Description=OreSat CFC
 CreationTime=11:09PM
 CreationDate=03-09-2021
 CreatedBy=Ryan Medick
-ModificationTime=3:02PM
+ModificationTime=4:32PM
 ModificationDate=03-19-2021
 ModifiedBy=Ryan Medick
 
@@ -1905,13 +1905,13 @@ SupportedObjects=12
 3=0x2011
 4=0x2100
 5=0x2101
-6=0x3000
-7=0x3001
-8=0x3002
-9=0x3003
+6=0x3001
+7=0x3002
+8=0x3003
+9=0x3004
 10=0x3005
 11=0x3006
-12=0x30F0
+12=0x3100
 
 [2000]
 ParameterName=BUS management
@@ -2000,13 +2000,13 @@ AccessType=rw
 DefaultValue=0x22
 PDOMapping=0
 
-[3000]
+[3001]
 ParameterName=Board info
 ObjectType=0x9
 ;StorageLocation=RAM
 SubNumber=0x1D
 
-[3000sub0]
+[3001sub0]
 ParameterName=Highest sub-index supported
 ObjectType=0x7
 ;StorageLocation=RAM
@@ -2015,7 +2015,7 @@ AccessType=ro
 DefaultValue=0x1C
 PDOMapping=0
 
-[3000sub1]
+[3001sub1]
 ParameterName=OS name
 ObjectType=0x7
 ;StorageLocation=RAM
@@ -2024,7 +2024,7 @@ AccessType=ro
 DefaultValue=
 PDOMapping=0
 
-[3000sub2]
+[3001sub2]
 ParameterName=OS distro
 ObjectType=0x7
 ;StorageLocation=RAM
@@ -2033,7 +2033,7 @@ AccessType=ro
 DefaultValue=
 PDOMapping=0
 
-[3000sub3]
+[3001sub3]
 ParameterName=OS kernel version
 ObjectType=0x7
 ;StorageLocation=RAM
@@ -2042,7 +2042,7 @@ AccessType=ro
 DefaultValue=
 PDOMapping=0
 
-[3000sub4]
+[3001sub4]
 ParameterName=hostname
 ObjectType=0x7
 ;StorageLocation=RAM
@@ -2051,7 +2051,7 @@ AccessType=ro
 DefaultValue=
 PDOMapping=0
 
-[3000sub5]
+[3001sub5]
 ParameterName=Uptime
 ObjectType=0x7
 ;StorageLocation=RAM
@@ -2060,7 +2060,7 @@ AccessType=ro
 DefaultValue=0
 PDOMapping=0
 
-[3000sub6]
+[3001sub6]
 ParameterName=Number of CPUs
 ObjectType=0x7
 ;StorageLocation=RAM
@@ -2069,7 +2069,7 @@ AccessType=ro
 DefaultValue=0
 PDOMapping=0
 
-[3000sub7]
+[3001sub7]
 ParameterName=CPU architecture
 ObjectType=0x7
 ;StorageLocation=RAM
@@ -2078,7 +2078,7 @@ AccessType=ro
 DefaultValue=
 PDOMapping=0
 
-[3000sub8]
+[3001sub8]
 ParameterName=CPU governor
 ObjectType=0x7
 ;StorageLocation=RAM
@@ -2087,7 +2087,7 @@ AccessType=ro
 DefaultValue=0
 PDOMapping=0
 
-[3000sub9]
+[3001sub9]
 ParameterName=CPU frequency
 ObjectType=0x7
 ;StorageLocation=RAM
@@ -2096,7 +2096,7 @@ AccessType=ro
 DefaultValue=0
 PDOMapping=0
 
-[3000subA]
+[3001subA]
 ParameterName=Number of remoteprocs
 ObjectType=0x7
 ;StorageLocation=RAM
@@ -2105,7 +2105,7 @@ AccessType=ro
 DefaultValue=0
 PDOMapping=0
 
-[3000subB]
+[3001subB]
 ParameterName=RemoteprocX selector
 ObjectType=0x7
 ;StorageLocation=RAM
@@ -2114,7 +2114,7 @@ AccessType=rw
 DefaultValue=0
 PDOMapping=0
 
-[3000subC]
+[3001subC]
 ParameterName=RemoteprocX name
 ObjectType=0x7
 ;StorageLocation=RAM
@@ -2123,7 +2123,7 @@ AccessType=ro
 DefaultValue=
 PDOMapping=0
 
-[3000subD]
+[3001subD]
 ParameterName=RemoteprocX state
 ObjectType=0x7
 ;StorageLocation=RAM
@@ -2132,7 +2132,7 @@ AccessType=ro
 DefaultValue=
 PDOMapping=0
 
-[3000subE]
+[3001subE]
 ParameterName=Load average 1min
 ObjectType=0x7
 ;StorageLocation=RAM
@@ -2141,7 +2141,7 @@ AccessType=ro
 DefaultValue=0
 PDOMapping=0
 
-[3000subF]
+[3001subF]
 ParameterName=Load average 5min
 ObjectType=0x7
 ;StorageLocation=RAM
@@ -2150,7 +2150,7 @@ AccessType=ro
 DefaultValue=0
 PDOMapping=0
 
-[3000sub10]
+[3001sub10]
 ParameterName=Load average 15min
 ObjectType=0x7
 ;StorageLocation=RAM
@@ -2159,7 +2159,7 @@ AccessType=ro
 DefaultValue=0
 PDOMapping=0
 
-[3000sub11]
+[3001sub11]
 ParameterName=Ram total
 ObjectType=0x7
 ;StorageLocation=RAM
@@ -2168,7 +2168,7 @@ AccessType=ro
 DefaultValue=0
 PDOMapping=0
 
-[3000sub12]
+[3001sub12]
 ParameterName=Ram free
 ObjectType=0x7
 ;StorageLocation=RAM
@@ -2177,7 +2177,7 @@ AccessType=ro
 DefaultValue=0
 PDOMapping=0
 
-[3000sub13]
+[3001sub13]
 ParameterName=Ram shared
 ObjectType=0x7
 ;StorageLocation=RAM
@@ -2186,7 +2186,7 @@ AccessType=ro
 DefaultValue=0
 PDOMapping=0
 
-[3000sub14]
+[3001sub14]
 ParameterName=Ram buffered
 ObjectType=0x7
 ;StorageLocation=RAM
@@ -2195,7 +2195,7 @@ AccessType=ro
 DefaultValue=0
 PDOMapping=0
 
-[3000sub15]
+[3001sub15]
 ParameterName=Ram percent
 ObjectType=0x7
 ;StorageLocation=RAM
@@ -2204,7 +2204,7 @@ AccessType=ro
 DefaultValue=0
 PDOMapping=1
 
-[3000sub16]
+[3001sub16]
 ParameterName=Swap total
 ObjectType=0x7
 ;StorageLocation=RAM
@@ -2213,7 +2213,7 @@ AccessType=ro
 DefaultValue=0
 PDOMapping=0
 
-[3000sub17]
+[3001sub17]
 ParameterName=Swap free
 ObjectType=0x7
 ;StorageLocation=RAM
@@ -2222,7 +2222,7 @@ AccessType=ro
 DefaultValue=0
 PDOMapping=0
 
-[3000sub18]
+[3001sub18]
 ParameterName=Swap percent
 ObjectType=0x7
 ;StorageLocation=RAM
@@ -2231,7 +2231,7 @@ AccessType=ro
 DefaultValue=0
 PDOMapping=1
 
-[3000sub19]
+[3001sub19]
 ParameterName=Procs
 ObjectType=0x7
 ;StorageLocation=RAM
@@ -2240,7 +2240,7 @@ AccessType=ro
 DefaultValue=0
 PDOMapping=0
 
-[3000sub1A]
+[3001sub1A]
 ParameterName=Root parition total
 ObjectType=0x7
 ;StorageLocation=RAM
@@ -2249,7 +2249,7 @@ AccessType=ro
 DefaultValue=0
 PDOMapping=0
 
-[3000sub1B]
+[3001sub1B]
 ParameterName=Root parition free
 ObjectType=0x7
 ;StorageLocation=RAM
@@ -2258,7 +2258,7 @@ AccessType=ro
 DefaultValue=0
 PDOMapping=0
 
-[3000sub1C]
+[3001sub1C]
 ParameterName=Root parition percent
 ObjectType=0x7
 ;StorageLocation=RAM
@@ -2267,13 +2267,13 @@ AccessType=ro
 DefaultValue=0
 PDOMapping=1
 
-[3001]
+[3002]
 ParameterName=File caches
 ObjectType=0x9
 ;StorageLocation=RAM
 SubNumber=0xA
 
-[3001sub0]
+[3002sub0]
 ParameterName=Highest sub-index supported
 ObjectType=0x7
 ;StorageLocation=RAM
@@ -2282,7 +2282,7 @@ AccessType=ro
 DefaultValue=0x09
 PDOMapping=0
 
-[3001sub1]
+[3002sub1]
 ParameterName=Fread cache len
 ObjectType=0x7
 ;StorageLocation=RAM
@@ -2291,7 +2291,7 @@ AccessType=ro
 DefaultValue=0
 PDOMapping=1
 
-[3001sub2]
+[3002sub2]
 ParameterName=Fwrite cache len
 ObjectType=0x7
 ;StorageLocation=RAM
@@ -2300,7 +2300,7 @@ AccessType=ro
 DefaultValue=0
 PDOMapping=1
 
-[3001sub3]
+[3002sub3]
 ParameterName=Cache selector
 ObjectType=0x7
 ;StorageLocation=RAM
@@ -2309,7 +2309,7 @@ AccessType=rw
 DefaultValue=0
 PDOMapping=0
 
-[3001sub4]
+[3002sub4]
 ParameterName=Filter
 ObjectType=0x7
 ;StorageLocation=RAM
@@ -2318,7 +2318,7 @@ AccessType=rw
 DefaultValue=
 PDOMapping=0
 
-[3001sub5]
+[3002sub5]
 ParameterName=Cache len
 ObjectType=0x7
 ;StorageLocation=RAM
@@ -2327,7 +2327,7 @@ AccessType=ro
 DefaultValue=0
 PDOMapping=0
 
-[3001sub6]
+[3002sub6]
 ParameterName=Iterator
 ObjectType=0x7
 ;StorageLocation=RAM
@@ -2336,7 +2336,7 @@ AccessType=rw
 DefaultValue=0
 PDOMapping=0
 
-[3001sub7]
+[3002sub7]
 ParameterName=File name
 ObjectType=0x7
 ;StorageLocation=RAM
@@ -2345,7 +2345,7 @@ AccessType=ro
 DefaultValue=
 PDOMapping=0
 
-[3001sub8]
+[3002sub8]
 ParameterName=File size
 ObjectType=0x7
 ;StorageLocation=RAM
@@ -2354,58 +2354,7 @@ AccessType=ro
 DefaultValue=0
 PDOMapping=0
 
-[3001sub9]
-ParameterName=Delete file
-ObjectType=0x7
-;StorageLocation=RAM
-DataType=0x000F
-AccessType=wo
-DefaultValue=
-PDOMapping=0
-
-[3002]
-ParameterName=Fread
-ObjectType=0x9
-;StorageLocation=RAM
-SubNumber=0x5
-
-[3002sub0]
-ParameterName=Highest sub-index supported
-ObjectType=0x7
-;StorageLocation=RAM
-DataType=0x0005
-AccessType=ro
-DefaultValue=0x04
-PDOMapping=0
-
-[3002sub1]
-ParameterName=File name
-ObjectType=0x7
-;StorageLocation=RAM
-DataType=0x000F
-AccessType=rw
-DefaultValue=
-PDOMapping=0
-
-[3002sub2]
-ParameterName=File data
-ObjectType=0x7
-;StorageLocation=RAM
-DataType=0x000F
-AccessType=ro
-DefaultValue=
-PDOMapping=0
-
-[3002sub3]
-ParameterName=Reset
-ObjectType=0x7
-;StorageLocation=RAM
-DataType=0x000F
-AccessType=wo
-DefaultValue=
-PDOMapping=0
-
-[3002sub4]
+[3002sub9]
 ParameterName=Delete file
 ObjectType=0x7
 ;StorageLocation=RAM
@@ -2415,10 +2364,10 @@ DefaultValue=
 PDOMapping=0
 
 [3003]
-ParameterName=Fwrite
+ParameterName=Fread
 ObjectType=0x9
 ;StorageLocation=RAM
-SubNumber=0x4
+SubNumber=0x5
 
 [3003sub0]
 ParameterName=Highest sub-index supported
@@ -2426,7 +2375,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0005
 AccessType=ro
-DefaultValue=0x03
+DefaultValue=0x04
 PDOMapping=0
 
 [3003sub1]
@@ -2443,11 +2392,62 @@ ParameterName=File data
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
-AccessType=wo
+AccessType=ro
 DefaultValue=
 PDOMapping=0
 
 [3003sub3]
+ParameterName=Reset
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x000F
+AccessType=wo
+DefaultValue=
+PDOMapping=0
+
+[3003sub4]
+ParameterName=Delete file
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x000F
+AccessType=wo
+DefaultValue=
+PDOMapping=0
+
+[3004]
+ParameterName=Fwrite
+ObjectType=0x9
+;StorageLocation=RAM
+SubNumber=0x4
+
+[3004sub0]
+ParameterName=Highest sub-index supported
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x0005
+AccessType=ro
+DefaultValue=0x03
+PDOMapping=0
+
+[3004sub1]
+ParameterName=File name
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x000F
+AccessType=rw
+DefaultValue=
+PDOMapping=0
+
+[3004sub2]
+ParameterName=File data
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x000F
+AccessType=wo
+DefaultValue=
+PDOMapping=0
+
+[3004sub3]
 ParameterName=Reset
 ObjectType=0x7
 ;StorageLocation=RAM
@@ -2516,13 +2516,13 @@ AccessType=ro
 DefaultValue=0
 PDOMapping=0
 
-[30F0]
-ParameterName=Linux updater app
+[3100]
+ParameterName=Updater
 ObjectType=0x9
 ;StorageLocation=RAM
 SubNumber=0xA
 
-[30F0sub0]
+[3100sub0]
 ParameterName=Highest sub-index supported
 ObjectType=0x7
 ;StorageLocation=RAM
@@ -2531,7 +2531,7 @@ AccessType=ro
 DefaultValue=0x09
 PDOMapping=0
 
-[30F0sub1]
+[3100sub1]
 ParameterName=Current state
 ObjectType=0x7
 ;StorageLocation=RAM
@@ -2540,7 +2540,7 @@ AccessType=ro
 DefaultValue=0
 PDOMapping=0
 
-[30F0sub2]
+[3100sub2]
 ParameterName=Updates available
 ObjectType=0x7
 ;StorageLocation=RAM
@@ -2549,7 +2549,7 @@ AccessType=ro
 DefaultValue=0
 PDOMapping=0
 
-[30F0sub3]
+[3100sub3]
 ParameterName=Current update file
 ObjectType=0x7
 ;StorageLocation=RAM
@@ -2558,7 +2558,7 @@ AccessType=ro
 DefaultValue=
 PDOMapping=0
 
-[30F0sub4]
+[3100sub4]
 ParameterName=Error message
 ObjectType=0x7
 ;StorageLocation=RAM
@@ -2567,7 +2567,7 @@ AccessType=ro
 DefaultValue=
 PDOMapping=0
 
-[30F0sub5]
+[3100sub5]
 ParameterName=Add update file
 ObjectType=0x7
 ;StorageLocation=RAM
@@ -2576,7 +2576,7 @@ AccessType=wo
 DefaultValue=
 PDOMapping=0
 
-[30F0sub6]
+[3100sub6]
 ParameterName=Start update
 ObjectType=0x7
 ;StorageLocation=RAM
@@ -2585,7 +2585,7 @@ AccessType=wo
 DefaultValue=
 PDOMapping=0
 
-[30F0sub7]
+[3100sub7]
 ParameterName=Emergency stop update
 ObjectType=0x7
 ;StorageLocation=RAM
@@ -2594,7 +2594,7 @@ AccessType=wo
 DefaultValue=
 PDOMapping=0
 
-[30F0sub8]
+[3100sub8]
 ParameterName=Reset updater
 ObjectType=0x7
 ;StorageLocation=RAM
@@ -2603,7 +2603,7 @@ AccessType=wo
 DefaultValue=
 PDOMapping=0
 
-[30F0sub9]
+[3100sub9]
 ParameterName=Get apt list output
 ObjectType=0x7
 ;StorageLocation=RAM
