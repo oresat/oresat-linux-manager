@@ -21,7 +21,7 @@ typedef struct {
     double timestamp; // TODO fix type
 } st_coordinates_t;
 
-olm_app_t* star_tracker_app_create(void);
+int star_tracker_app(olm_app_t *app);
 int star_tracker_coordinates(st_coordinates_t *coor);
 
 #endif /* STAR_TRACKER_APP_H */

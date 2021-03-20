@@ -1,5 +1,5 @@
 /**
- * Board main for the OreSat Star Tracker board.
+ *: Board main for the OreSat Star Tracker board.
  *
  * @file        board_main.c
  * @ingroup     star_tracker
@@ -20,15 +20,10 @@
 #define LINUX_UPDATER_APP   0 // linux_updater_app is always 0
 #define TOTAL_APPS          LINUX_UPDATER_APP+1
 
-olm_app_t **
+olm_app_t apps[TOTAL_APPS];
+
+olm_app_t *
 board_main(void) {
-    olm_app_t **apps;
-
-    if ((apps = malloc((TOTAL_APPS+1) * sizeof(olm_app_t *))) == NULL)
-        return apps;
-
-    apps[LINUX_UPDATER_APP] = linux_updater_app_create();
-    apps[TOTAL_APPS-1] = NULL; // last app is always NULL
-
+    linux_updater_app(&apps[LINUX_UPDATER_APP]);
     return apps;
 }

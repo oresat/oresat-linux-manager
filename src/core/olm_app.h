@@ -54,17 +54,16 @@ typedef struct {
     int (*data_free_cb)(void *data);
 } olm_app_t;
 
-#define OLM_APP_MALLOC_AND_NULL(app) \
-    if ((app = malloc(sizeof(olm_app_t))) != NULL) { \
-        app->name = NULL; \
-        app->service_file = NULL; \
-        app->fwrite_keyword = NULL; \
-        app->unit_object_path = NULL; \
-        app->unit_active_state = 0; \
-        app->fwrite_cb = NULL; \
-        app->data = NULL; \
-        app->data_free_cb = NULL; \
-    } \
+#define OLM_APP_INITIALIZER { \
+    .name = NULL; \
+    .service_file = NULL; \
+    .fwrite_keyword = NULL; \
+    .unit_object_path = NULL; \
+    .unit_active_state = 0; \
+    .fwrite_cb = NULL; \
+    .data = NULL; \
+    .data_free_cb = NULL; \
+    }
 
 #define OLM_APP_FREE(app) \
     if (app != NULL) { \
@@ -74,7 +73,6 @@ typedef struct {
         FREE(app->fwrite_keyword);\
         if (app->data != NULL) \
             app->data_free_cb(app->data); \
-        free(app); \
     } 
 
 #endif /* OLM_APP_H */

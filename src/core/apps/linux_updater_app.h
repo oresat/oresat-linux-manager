@@ -16,7 +16,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-olm_app_t *linux_updater_app_create(void);
+int linux_updater_app(olm_app_t *app);
 uint32_t linux_updater_updates_available(void);
 int linux_updater_app_add_update_file(const char *file);
 bool linux_updater_start_update(void);

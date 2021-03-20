@@ -39,25 +39,17 @@ extern dbus_data_t APP_DBUS;
 // lazy way to deal with all the D-Bus arguments
 #define DBUS_INFO APP_DBUS.bus, DESTINATION, OBJECT_PATH, INTERFACE_NAME
 
-olm_app_t*
-star_tracker_app_create(void) {
-    olm_app_t *app;
-   
-    OLM_APP_MALLOC_AND_NULL(app);
-    if (app == NULL) {
-        log_message(LOG_ERR, "olm_app_malloc() failed");
-        return app;
-    }
+int
+star_tracker_app(olm_app_t *app) {
+    MALLOC_STRNCPY_OR_GOTO(app->name, APP_NAME, star_tracker_app_error);
+    MALLOC_STRNCPY_OR_GOTO(app->service_file, SERVICE_FILE, star_tracker_app_error);
 
-    MALLOC_STRNCPY_OR_GOTO(app->name, APP_NAME, star_tracker_app_error)
-    MALLOC_STRNCPY_OR_GOTO(app->service_file, SERVICE_FILE, star_tracker_app_error)
-
-    return app;
+    return 1;
 
 star_tracker_app_error:
 
     OLM_APP_FREE(app);
-    return NULL;
+    return -1;
 }
 
 int

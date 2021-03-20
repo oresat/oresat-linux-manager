@@ -14,7 +14,7 @@
 
 #include "olm_app.h"
 
-olm_app_t* linux_updater_app_create(void);
+int linux_updater_app_create(olm_app_t *app);
 int template_app_fwrite_file(const char *file);
 
 #endif /* TEMPLATE_APP_H */

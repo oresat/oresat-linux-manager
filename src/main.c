@@ -191,7 +191,7 @@ int main (int argc, char *argv[]) {
     int opt;
     bool firstRun = true;
     bool daemon_flag = false;
-    olm_app_t **apps;
+    olm_app_t *apps = NULL;
 
     // file transfer data
     olm_file_cache_t *fread_cache = NULL;

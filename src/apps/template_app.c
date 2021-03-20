@@ -42,27 +42,19 @@ extern dbus_data_t APP_DBUS;
 // lazy way to deal with all the D-Bus arguments
 #define DBUS_INFO APP_DBUS.bus, DESTINATION, OBJECT_PATH, INTERFACE_NAME
 
-olm_app_t*
-template_app_create(void) {
-    olm_app_t *app;
-    
-    OLM_APP_MALLOC_AND_NULL(app);
-    if (app == NULL) {
-        log_message(LOG_ERR, "olm_app_malloc() failed");
-        return app;
-    }
-
-    MALLOC_STRNCPY_OR_GOTO(app->name, APP_NAME, template_app_error)
-    MALLOC_STRNCPY_OR_GOTO(app->service_file, SERVICE_FILE, template_app_error)
-    MALLOC_STRNCPY_OR_GOTO(app->fwrite_keyword, FWRITE_KEYWORD, template_app_error)
+int
+template_app(olm_app_t *app) {
+    MALLOC_STRNCPY_OR_GOTO(app->name, APP_NAME, template_app_error);
+    MALLOC_STRNCPY_OR_GOTO(app->service_file, SERVICE_FILE, template_app_error);
+    MALLOC_STRNCPY_OR_GOTO(app->fwrite_keyword, FWRITE_KEYWORD, template_app_error);
     app->fwrite_cb = template_app_fwrite_file;
 
-    return app;
+    return 1;
 
 template_app_error:
 
     OLM_APP_FREE(app);
-    return NULL;
+    return -1;
 }
 
 int

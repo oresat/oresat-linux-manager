@@ -42,15 +42,8 @@ extern dbus_data_t APP_DBUS;
 // lazy way to deal with all the D-Bus arguments
 #define DBUS_INFO APP_DBUS.bus, DESTINATION, OBJECT_PATH, INTERFACE_NAME
 
-olm_app_t *
-linux_updater_app_create(void) {
-    olm_app_t * app;
-    
-    OLM_APP_MALLOC_AND_NULL(app);
-
-    if (app == NULL)
-        return app;
-
+int
+linux_updater_app(olm_app_t *app) {
     MALLOC_STRNCPY_OR_GOTO(app->name, APP_NAME, linux_updater_app_error)
     MALLOC_STRNCPY_OR_GOTO(app->service_file, SERVICE_FILE, linux_updater_app_error)
     MALLOC_STRNCPY_OR_GOTO(app->fwrite_keyword, FWRITE_KEYWORD, linux_updater_app_error)
@@ -61,12 +54,12 @@ linux_updater_app_create(void) {
         LOG_DBUS_SIGNAL_MATCH_ERROR(LOG_CRIT, APP_NAME, "Status")
     */
 
-    return app;
+    return 1;
 
 linux_updater_app_error:
 
     OLM_APP_FREE(app);
-    return NULL;
+    return -1;
 }
 
 /*
