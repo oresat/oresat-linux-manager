@@ -20,57 +20,32 @@
 /** For @ref sd_bus_wait to return after x microseconds. */
 #define TIMEOUT_US 1000000
 
+extern volatile sig_atomic_t CO_endProgram; // defined in main.c
+
 /** GLOBAL to hold all the app dbus info */
 dbus_data_t      APP_DBUS;
 
-
-int
-app_manager_init(void) {
+void
+app_manager_dbus_run(void) {
     int r;
 
-    log_message(LOG_DEBUG, "openning dbus connection");
-
-    // open bus
-    if((r = sd_bus_open_system(&APP_DBUS.bus)) < 0)
+    if ((r = sd_bus_open_system(&APP_DBUS.bus)) < 0) {
         log_message(LOG_CRIT, "open system bus for apps failed");
+        return;
+    }
 
-    return r;
-}
-
-
-int
-app_manager_dbus_loop(void) {
-    APP_DBUS.loop_running = true;
-    int r;
-
-    while(APP_DBUS.loop_running) {
+    while (CO_endProgram == 0) {
         // Process requests
-        if((r = sd_bus_process(APP_DBUS.bus, NULL)) < 0)
+        if ((r = sd_bus_process(APP_DBUS.bus, NULL)) < 0)
             log_message(LOG_ERR, "process bus failed for apps");
         else if (r > 0) // processed a request, try to process another one right-away
             continue;
 
         // Wait for the next request to process
-        if(sd_bus_wait(APP_DBUS.bus, TIMEOUT_US) < 0)
+        if (sd_bus_wait(APP_DBUS.bus, TIMEOUT_US) < 0)
             log_message(LOG_ERR, "bus wait failed");
     }
 
-    APP_DBUS.loop_running = false;
-    return 0;
-}
-
-
-int
-app_manager_end(void) {
-    APP_DBUS.loop_running = false;
-
-    log_message(LOG_DEBUG, "closed dbus connection");
-
-    // close bus
-    if(APP_DBUS.bus == NULL) {
-        sd_bus_unref(APP_DBUS.bus);
-        APP_DBUS.bus = NULL;
-    }
-
-    return 0;
+    sd_bus_unref(APP_DBUS.bus);
+    APP_DBUS.bus = NULL;
 }

@@ -15,6 +15,7 @@
 #include "board_main.h"
 #include <stddef.h>
 #include <stdlib.h>
+#include <unistd.h>
 
 // apps index in list
 #define LINUX_UPDATER_APP   0 // linux_updater_app is always 0
@@ -30,4 +31,5 @@ board_init(void) {
 
 void
 board_loop(void) {
+    usleep(100000);
 }

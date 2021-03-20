@@ -9,14 +9,12 @@
  * Project home page is <https://github.com/oresat/oresat-linux-manager>.
  */
 
-
 #ifndef APP_MANAGER_H
 #define APP_MANAGER_H
 
 #include "olm_app.h"
 #include <systemd/sd-bus.h>
 #include <stdbool.h>
-
 
 /**
  * @defgroup app_manager DBus Controller
@@ -28,7 +26,6 @@
  * client connection thru the app_app_manager.
  */
 
-
 /**
  * Status on dbus connection
  *
@@ -38,36 +35,13 @@
 typedef struct {
     /** pointer to app dbus connection */
     sd_bus *bus;
-    /** status dbus loop */
-    bool loop_running;
 } dbus_data_t;
 
-
 /**
- * Initialize the app dbus connection.
- *
- * @return >= 0 on success, < 0 on failure
+ * A loop waiting for dbus signal that were register by app on the app dbus
+ * connection.
  */
-int app_manager_init(void);
-
-
-/**
- * A loop waiting for dbus signal that were register by app on the app dbus connection.
- *
- * Expected to be given its own thread.
- *
- * @return 0 on sucess
- */
-int app_manager_dbus_loop(void);
-
-
-/**
- * Ends the app dbus connection.
- *
- * @return 0 on sucess
- */
-int app_manager_end(void);
-
+void app_manager_dbus_run(void);
 
 /** @} */
 #endif /* APP_MANAGER_H */

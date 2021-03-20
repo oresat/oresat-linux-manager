@@ -399,7 +399,6 @@ int main (int argc, char *argv[]) {
             board_info_setup();
 
             apps = board_init();
-            app_manager_init();
 
             /* Create rt_thread and set priority */
             if (pthread_create(&rt_thread_id, NULL, rt_thread, NULL) != 0) {
@@ -457,7 +456,6 @@ int main (int argc, char *argv[]) {
     log_printf(LOG_DEBUG, "ending program");
 
 /* program exit ***************************************************************/
-    app_manager_end();
     board_info_end();
 
     // make sure the files are closed when ending program
@@ -533,10 +531,7 @@ static void*
 dbus_thread(void* arg) {
     (void)arg;
     log_printf(LOG_DEBUG, "dbus thread started");
-
-    /* Endless loop */
-    app_manager_dbus_loop();
-
+    app_manager_dbus_run(); /* Endless loop */
     log_printf(LOG_DEBUG, "dbus thread ended");
     return NULL;
 }
@@ -549,7 +544,6 @@ board_thread(void* arg) {
     /* Endless loop */
     while (CO_endProgram == 0) {
         board_loop(); 
-        sleep(0.10);
     }
 
     log_printf(LOG_DEBUG, "board thread ended");
