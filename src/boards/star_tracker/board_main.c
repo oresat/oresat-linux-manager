@@ -23,7 +23,11 @@
 olm_app_t apps[TOTAL_APPS];
 
 olm_app_t *
-board_main(void) {
+board_init(void) {
     linux_updater_app(&apps[LINUX_UPDATER_APP]);
     return apps;
+}
+
+void
+board_loop(void) {
 }

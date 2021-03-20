@@ -89,8 +89,12 @@ static void* rt_thread(void* arg);
 static void* dbus_thread(void* arg);
 static pthread_t dbus_thread_id;
 
+/* oresat linux manager board thread */
+static void* board_thread(void* arg);
+static pthread_t board_thread_id;
+
 /* make daemon */
-int make_daemon();
+int make_daemon(const char *pid_file);
 
 /* Signal handler */
 volatile sig_atomic_t CO_endProgram = 0;
@@ -282,7 +286,7 @@ int main (int argc, char *argv[]) {
     /* Run as daemon if needed */
     if (daemon_flag) {
         log_printf(LOG_INFO, "daemonizing process");
-        make_daemon();
+        make_daemon(DEFAULT_PID_FILE);
     }
 
     log_printf(LOG_INFO, DBG_CAN_OPEN_INFO, CO_pending.nodeId, "starting");
@@ -378,7 +382,7 @@ int main (int argc, char *argv[]) {
             CO_OD_configure(CO->SDO[0], OD_3002_fileCaches, file_caches_ODF, &caches_odf_data, 0, 0U);
             CO_OD_configure(CO->SDO[0], OD_3003_fread, CO_fread_ODF, &CO_fread_data, 0, 0U);
             CO_OD_configure(CO->SDO[0], OD_3004_fwrite, CO_fwrite_ODF, &CO_fwrite_data, 0, 0U);
-            //CO_OD_configure(CO->SDO[0], OD_3005_appManager, app_manager_ODF, NULL, 0, 0U);
+            CO_OD_configure(CO->SDO[0], OD_3005_appManager, app_manager_ODF, apps, 0, 0U);
             CO_OD_configure(CO->SDO[0], OD_3100_updater, updater_ODF, NULL, 0, 0U);
 
             log_printf(LOG_INFO, DBG_CAN_OPEN_INFO, CO_activeNodeId, "communication reset");
@@ -394,7 +398,7 @@ int main (int argc, char *argv[]) {
             // set up general ODFs
             board_info_setup();
 
-            apps = board_main();
+            apps = board_init();
             app_manager_init();
 
             /* Create rt_thread and set priority */
@@ -416,9 +420,15 @@ int main (int argc, char *argv[]) {
                 }
             }
 
-            //create app dbus thread
+            /* create app dbus thread */
             if(pthread_create(&dbus_thread_id, NULL, dbus_thread, NULL) != 0) {
                 log_printf(LOG_CRIT, DBG_ERRNO, "pthread_create(dbus_thread)");
+                exit(EXIT_FAILURE);
+            }
+
+            /* create board thread */
+            if(pthread_create(&board_thread_id, NULL, board_thread, NULL) != 0) {
+                log_printf(LOG_CRIT, DBG_ERRNO, "pthread_create(board_thread)");
                 exit(EXIT_FAILURE);
             }
         } /* if (firstRun) */
@@ -439,7 +449,6 @@ int main (int argc, char *argv[]) {
             CO_epoll_processRT(&epMain, CO, false);
             CO_epoll_processMain(&epMain, CO, &reset);
             CO_epoll_processLast(&epMain);
-
         }
 
         log_printf(LOG_DEBUG, "CO reset or end program signal");
@@ -466,6 +475,8 @@ int main (int argc, char *argv[]) {
     if (pthread_join(rt_thread_id, NULL) != 0)
         log_printf(LOG_CRIT, DBG_ERRNO, "pthread_join()");
     if (pthread_join(dbus_thread_id, NULL) != 0)
+        log_printf(LOG_CRIT, DBG_ERRNO, "pthread_join()");
+    if (pthread_join(board_thread_id, NULL) != 0)
         log_printf(LOG_CRIT, DBG_ERRNO, "pthread_join()");
 
     /* delete objects from memory */
@@ -519,16 +530,34 @@ static void* rt_thread(void* arg) {
 }
 
 static void*
-dbus_thread(__attribute__ ((unused)) void* arg) {
+dbus_thread(void* arg) {
+    (void)arg;
     log_printf(LOG_DEBUG, "dbus thread started");
-    app_manager_dbus_loop(); /* Endless loop */
+
+    /* Endless loop */
+    app_manager_dbus_loop();
+
     log_printf(LOG_DEBUG, "dbus thread ended");
     return NULL;
 }
 
+static void*
+board_thread(void* arg) {
+    (void)arg;
+    log_printf(LOG_DEBUG, "board thread started");
 
-int make_daemon(void) {
-    char *pid_file = DEFAULT_PID_FILE;
+    /* Endless loop */
+    while (CO_endProgram == 0) {
+        board_loop(); 
+        sleep(0.10);
+    }
+
+    log_printf(LOG_DEBUG, "board thread ended");
+    return NULL;
+}
+
+int
+make_daemon(const char *pid_file) {
     FILE *run_fp = NULL;
     pid_t pid = 0, sid = 0;
 

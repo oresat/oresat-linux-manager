@@ -14,6 +14,8 @@
 
 #include "olm_app.h"
 
-olm_app_t *board_main(void);
+olm_app_t *board_init(void);
+
+void board_loop(void);
 
 #endif /* BOARD_MAIN_H */
