@@ -5,6 +5,15 @@
 #include <stdlib.h>
 #include <stddef.h>
 
+enum active_states {
+    unit_inactive = 0,
+    unit_reloading = 1,
+    unit_active = 2,
+    unit_failed = 3, 
+    unit_activating = 4,
+    unit_deactivating = 5,
+};
+
 /**
  * All the data an app must provide to OLM's core. 
  *
@@ -55,14 +64,14 @@ typedef struct {
 } olm_app_t;
 
 #define OLM_APP_INITIALIZER { \
-    .name = NULL; \
-    .service_file = NULL; \
-    .fwrite_keyword = NULL; \
-    .unit_object_path = NULL; \
-    .unit_active_state = 0; \
-    .fwrite_cb = NULL; \
-    .data = NULL; \
-    .data_free_cb = NULL; \
+    .name = NULL, \
+    .service_file = NULL, \
+    .fwrite_keyword = NULL, \
+    .unit_object_path = NULL, \
+    .unit_active_state = unit_inactive, \
+    .fwrite_cb = NULL, \
+    .data = NULL, \
+    .data_free_cb = NULL, \
     }
 
 #define OLM_APP_FREE(app) \

@@ -18,7 +18,7 @@
 #include <systemd/sd-bus.h>
 
 /** For @ref sd_bus_wait to return after x microseconds. */
-#define TIMEOUT_US 1000000
+#define TIMEOUT_US 10000
 
 extern volatile sig_atomic_t CO_endProgram; // defined in main.c
 
@@ -34,12 +34,15 @@ app_manager_dbus_run(void) {
         return;
     }
 
+    log_message(LOG_CRIT, "bus client %d", sd_bus_is_bus_client(APP_DBUS.bus));
+
     while (CO_endProgram == 0) {
-        // Process requests
-        if ((r = sd_bus_process(APP_DBUS.bus, NULL)) < 0)
-            log_message(LOG_ERR, "process bus failed for apps");
-        else if (r > 0) // processed a request, try to process another one right-away
-            continue;
+        if ((r = sd_bus_process(APP_DBUS.bus, NULL)) < 0) {
+            log_message(LOG_CRIT, "sd_bus_process failed");
+            break;
+        } else if (r > 0) {
+            continue; // processed a request, try to process another one right-away
+        }
 
         // Wait for the next request to process
         if (sd_bus_wait(APP_DBUS.bus, TIMEOUT_US) < 0)

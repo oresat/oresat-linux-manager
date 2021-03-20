@@ -10,6 +10,7 @@
  */
 
 #include "log_message.h"
+#include "olm_app.h"
 #include "utility.h"
 #include "app_manager.h"
 #include "systemd_app.h"
@@ -36,9 +37,9 @@
 extern dbus_data_t APP_DBUS;
 
 const char *active_state_str[] = {
-    "active",
-    "reloading",
     "inactive",
+    "reloading",
+    "active",
     "failed",
     "activating",
     "deactivating",
