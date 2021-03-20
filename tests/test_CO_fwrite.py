@@ -5,7 +5,7 @@ import pytest
 from canopen import SdoAbortedError
 from common import connect_bus, FWRITE_CACHE_DIR, FWRITE_TMP_DIR
 
-FWRITE_INDEX = 0x3003
+FWRITE_INDEX = 0x3004
 NAME_SUBINDEX = 1
 DATA_SUBINDEX = 2
 RESET_SUBINDEX = 3

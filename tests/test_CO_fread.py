@@ -6,7 +6,7 @@ from canopen import SdoAbortedError
 from common import connect_bus, FREAD_CACHE_DIR, FREAD_TMP_DIR, FREAD_FILE, \
         FREAD_FILE2, FREAD_FILE3
 
-FREAD_INDEX = 0x3002
+FREAD_INDEX = 0x3003
 NAME_SUBINDEX = 1
 DATA_SUBINDEX = 2
 RESET_SUBINDEX = 3
