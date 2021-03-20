@@ -53,7 +53,7 @@ star_tracker_app_error:
 }
 
 int
-star_tracker_coordinates(st_coordinates_t *coor) {
+star_tracker_app_coordinates(st_coordinates_t *coor) {
     sd_bus_error err = SD_BUS_ERROR_NULL;
     sd_bus_message *mess = NULL;
     int r = 0;

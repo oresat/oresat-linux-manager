@@ -22,6 +22,6 @@ typedef struct {
 } st_coordinates_t;
 
 int star_tracker_app(olm_app_t *app);
-int star_tracker_coordinates(st_coordinates_t *coor);
+int star_tracker_app_coordinates(st_coordinates_t *coor);
 
 #endif /* STAR_TRACKER_APP_H */
