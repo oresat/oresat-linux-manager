@@ -145,8 +145,6 @@ target_link_libraries(oresat-linux-manager
     object_dictionary
     common
     core
-    core_apps
-    core_ODFs
     apps
     board
     ${LIBSYSTEMD_LIBRARIES}

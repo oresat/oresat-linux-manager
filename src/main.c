@@ -17,17 +17,17 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <pthread.h>
+#include <systemd/sd-bus.h>
 
 #include "CANopen.h"
 #include "CO_error.h"
 #include "CO_epoll_interface.h"
 
-#include "core/ODFs/CO_fstream_odf.h"
-#include "core/ODFs/file_caches_odf.h"
+#include "CO_fstream_odf.h"
+#include "file_caches_odf.h"
 #include "olm_app.h"
 #include "board_info.h"
 #include "board_main.h"
-#include "app_manager.h"
 #include "app_manager_odf.h"
 #include "linux_updater_odf.h"
 #include "olm_file_cache.h"
@@ -65,6 +65,8 @@
 #define FWRITE_CACHE_DIR        FILE_TRANSFER_DIR"fwrite/"
 #endif /* FWRITE_CACHE_DIR */
 
+#define DBUS_TIMEOUT_US         100000
+
 /* Configurable CAN bit-rate and CANopen node-id, store-able to non-volatile
  * memory. Can be set by argument and changed by LSS slave. */
 typedef struct {
@@ -79,7 +81,14 @@ static uint8_t CO_activeNodeId = 0x10;
 static CO_time_t            CO_time;            /* Object for current time */
 #endif
 
-/* Helper functions ***********************************************************/
+
+/* OLM globals  **************************************************************/
+// these are extern in globals.h
+sd_bus *system_bus = NULL;
+olm_file_cache_t *fread_cache = NULL;
+olm_file_cache_t *fwrite_cache = NULL;
+
+/* Helper functions **********************************************************/
 /* Realtime thread */
 CO_epoll_t epRT;
 static void* rt_thread(void* arg);
@@ -200,8 +209,6 @@ int main (int argc, char *argv[]) {
     olm_app_t *apps = NULL;
 
     // file transfer data
-    olm_file_cache_t *fread_cache = NULL;
-    olm_file_cache_t *fwrite_cache = NULL;
     olm_file_cache_new(FREAD_CACHE_DIR, &fread_cache);
     olm_file_cache_new(FWRITE_CACHE_DIR, &fwrite_cache);
     CO_fstream_t CO_fread_data = CO_FSTREAM_INITALIZER(FREAD_TMP_DIR, fread_cache);
@@ -387,6 +394,7 @@ int main (int argc, char *argv[]) {
 #endif
 
             // configure core ODFs
+            board_info_setup();
             CO_OD_configure(CO->SDO[0], OD_3002_fileCaches, file_caches_ODF, &caches_odf_data, 0, 0U);
             CO_OD_configure(CO->SDO[0], OD_3003_fread, CO_fread_ODF, &CO_fread_data, 0, 0U);
             CO_OD_configure(CO->SDO[0], OD_3004_fwrite, CO_fwrite_ODF, &CO_fwrite_data, 0, 0U);
@@ -404,7 +412,8 @@ int main (int argc, char *argv[]) {
             firstRun = false;
 
             // set up general ODFs
-            board_info_setup();
+            if (sd_bus_open_system(&system_bus) < 0)
+                log_printf(LOG_CRIT, "open system bus failed");
 
             apps = board_init();
 
@@ -485,6 +494,11 @@ int main (int argc, char *argv[]) {
     if (pthread_join(board_thread_id, NULL) != 0)
         log_printf(LOG_CRIT, DBG_ERRNO, "pthread_join()");
 
+    if (system_bus != NULL) {
+        sd_bus_unref(system_bus);
+        system_bus = NULL;
+    }
+
     /* delete objects from memory */
     CO_epoll_close(&epRT);
     CO_epoll_close(&epMain);
@@ -529,9 +543,6 @@ static void* rt_thread(void* arg) {
             CO_trace_process(CO->trace[i], *CO_time.epochTimeOffsetMs);
         }
 #endif
-
-        /* Execute optional additional 1ms application code here? */
-        // TODO
     }
 
     log_printf(LOG_DEBUG, "rt thread ended");
@@ -541,9 +552,23 @@ static void* rt_thread(void* arg) {
 static void*
 dbus_thread(void* arg) {
     (void)arg;
-    log_printf(LOG_DEBUG, "dbus thread started");
-    app_manager_dbus_run(); /* Endless loop */
-    log_printf(LOG_DEBUG, "dbus thread ended");
+    int r;
+    log_printf(LOG_DEBUG, "system dbus thread started");
+
+    while (CO_endProgram == 0) {
+        if ((r = sd_bus_process(system_bus, NULL)) < 0) {
+            log_printf(LOG_CRIT, "sd_bus_process failed");
+            break;
+        } else if (r > 0) {
+            continue; // processed a request, try to process another one right-away
+        }
+
+        // Wait for the next request to process
+        if (sd_bus_wait(system_bus, DBUS_TIMEOUT_US) < 0)
+            log_printf(LOG_ERR, "bus wait failed");
+    }
+
+    log_printf(LOG_DEBUG, "system dbus thread ended");
     return NULL;
 }
 

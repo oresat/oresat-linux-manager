@@ -9,9 +9,9 @@
  * Project home page is <https://github.com/oresat/oresat-linux-manager>.
  */
 
+#include "globals.h"
 #include "log_message.h"
 #include "olm_app.h"
-#include "app_manager.h"
 #include "logind_app.h"
 #include <systemd/sd-bus.h>
 
@@ -23,14 +23,8 @@
 /** Dbus object name for systemd power settings */
 #define OBJECT_PATH         "/org/freedesktop/logind1"
 
-/**
- * Gobal for all apps to use to get access to the OLM's
- * D-Bus connections. Apps should treat this as readonly.
- */
-extern dbus_data_t APP_DBUS;
-
 // lazy way to deal with all the dbus arguments
-#define DBUS_INFO APP_DBUS.bus, DESTINATION, OBJECT_PATH, INTERFACE_NAME
+#define DBUS_INFO system_bus, DESTINATION, OBJECT_PATH, INTERFACE_NAME
 
 int
 logind_reboot(void) {

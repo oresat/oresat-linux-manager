@@ -1,11 +1,16 @@
 
 set(COMMON_SOURCES
     log_message.c
+    olm_file.c
+    olm_file_cache.c
     utility.c
     )
 
 set(COMMON_HEADERS
     log_message.h
+    olm_app.h
+    olm_file.h
+    olm_file_cache.h
     utility.h
     )
 

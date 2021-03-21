@@ -1,3 +1,14 @@
+/**
+ * Utility functions.
+ *
+ * @file        utility.c
+ * @ingroup     utility
+ *
+ * This file is part of OreSat Linux Manager, a common CAN to Dbus interface
+ * for daemons running on OreSat Linux boards.
+ * Project home page is <https://github.com/oresat/oresat-linux-manager>.
+ */
+
 #include "utility.h"
 #include <dirent.h>
 #include <errno.h>

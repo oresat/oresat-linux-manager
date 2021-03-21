@@ -13,8 +13,6 @@ add_library(board ${BOARD_SOURCES} ${BOARD_HEADERS})
 target_link_libraries(board
     CANopenNode
     core
-    core_apps
-    core_ODFs
     common
     apps
     )
@@ -34,7 +32,7 @@ set(CPACK_DEBIAN_PACKAGE_DESCRIPTION "CANopen frontend to the Oresat Star Tracke
 set(CPACK_DEBIAN_PACKAGE_CONFLICTS "olm-generic olm-cfc olm-gps olm-live")
 
 # If this version of OLM need extra packages add_dependencies do:
-# set(CPACK_DEBIAN_PACKAGE_DEPENDS "${CPACK_DEBIAN_PACKAGE_DEPENDS} extra-package"
+# set(CPACK_DEBIAN_PACKAGE_DEPENDS "${CPACK_DEBIAN_PACKAGE_DEPENDS} extra-package)"
 
 # must be set/included after the rest, shouldn't need to be updated
 set(CPACK_PACKAGE_FILE_NAME "${CPACK_DEBIAN_PACKAGE_NAME}_${CPACK_DEBIAN_PACKAGE_VERSION}_${CPACK_DEBIAN_PACKAGE_ARCHITECTURE}")

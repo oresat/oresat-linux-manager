@@ -1,13 +1,19 @@
 # apps
 
 set(APPS_SOURCES
-    template_app.c
+    linux_updater_app.c
+    logind_app.c
     star_tracker_app.c
+    systemd_app.c
+    template_app.c
     )
 
 set(APPS_HEADERS
-    template_app.h
+    linux_updater_app.h
+    logind_app.h
     star_tracker_app.h
+    systemd_app.h
+    template_app.h
     )
 
 add_library(apps ${APPS_SOURCES} ${APPS_HEADERS})

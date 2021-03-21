@@ -9,10 +9,10 @@
  * Project home page is <https://github.com/oresat/oresat-linux-manager>.
  */
 
+#include "globals.h"
 #include "log_message.h"
 #include "olm_app.h"
 #include "utility.h"
-#include "app_manager.h"
 #include "systemd_app.h"
 #include <errno.h>
 #include <stdlib.h>
@@ -29,12 +29,6 @@
 #define UNIT_INTERFACE      DESTINATION".Unit"
 /** Systmed D-Bus object path. */
 #define OBJECT_PATH         "/org/freedesktop/systemd1"
-
-/**
- * Gobal for all apps to use to get access to the OLM's
- * D-Bus connections. Apps should treat this as readonly.
- */
-extern dbus_data_t APP_DBUS;
 
 const char *active_state_str[] = {
     "inactive",
@@ -54,7 +48,7 @@ get_unit(const char *name) {
     if (unit == NULL)
         return r;
     
-    if (sd_bus_call_method(APP_DBUS.bus, DESTINATION, OBJECT_PATH, \
+    if (sd_bus_call_method(system_bus, DESTINATION, OBJECT_PATH, \
                 MANAGER_INTERFACE, "GetUnit", &err, &mess, "s", name) < 0)
         LOG_DBUS_CALL_METHOD_ERROR(LOG_ERR, APP_NAME, "GetUnit", err.name);
     else if (sd_bus_message_read(mess, "o", &unit) < 0)
@@ -77,7 +71,7 @@ start_unit(const char *unit) {
     if (unit == NULL)
         return -EINVAL;
     
-    if ((r = sd_bus_call_method(APP_DBUS.bus, DESTINATION, unit, \
+    if ((r = sd_bus_call_method(system_bus, DESTINATION, unit, \
                 UNIT_INTERFACE, "StartUnit", &err, &mess, "s", "fail")) < 0)
         LOG_DBUS_CALL_METHOD_ERROR(LOG_ERR, APP_NAME, "StartUnit", err.name);
 
@@ -96,7 +90,7 @@ stop_unit(const char *unit) {
     if (unit == NULL)
         return -EINVAL;
     
-    if ((r = sd_bus_call_method(APP_DBUS.bus, DESTINATION, unit, \
+    if ((r = sd_bus_call_method(system_bus, DESTINATION, unit, \
                 UNIT_INTERFACE, "StopUnit", &err, &mess, "s", "fail")) < 0)
         LOG_DBUS_CALL_METHOD_ERROR(LOG_ERR, APP_NAME, "StoptUnit", err.name);
 
@@ -114,7 +108,7 @@ restart_unit(const char *unit) {
     if (unit == NULL)
         return -EINVAL;
     
-    if ((r = sd_bus_call_method(APP_DBUS.bus, DESTINATION, unit, \
+    if ((r = sd_bus_call_method(system_bus, DESTINATION, unit, \
                 UNIT_INTERFACE, "RestartUnit", &err, &mess, "s", "fail")) < 0)
         LOG_DBUS_CALL_METHOD_ERROR(LOG_ERR, APP_NAME, "RestartUnit", err.name);
 
@@ -133,7 +127,7 @@ get_active_state_unit(const char *unit) {
     if (unit == NULL)
         return -EINVAL;
 
-    if (sd_bus_get_property(APP_DBUS.bus, DESTINATION, unit, UNIT_INTERFACE, \
+    if (sd_bus_get_property(system_bus, DESTINATION, unit, UNIT_INTERFACE, \
                 "ActiveState", &err, &mess, "d") < 0)
         LOG_DBUS_GET_PROPERTY_ERROR(LOG_ERR, APP_NAME, "ActiveState", err.name);
     else if (sd_bus_message_read(mess, "s", &state) < 0)

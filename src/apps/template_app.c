@@ -9,10 +9,10 @@
  * Project home page is <https://github.com/oresat/oresat-linux-manager>.
  */
 
+#include "globals.h"
 #include "log_message.h"
 #include "olm_app.h"
 #include "utility.h"
-#include "app_manager.h"
 #include "template_app.h"
 #include <errno.h>
 #include <stddef.h>
@@ -33,14 +33,8 @@
 /** The app's unique keyword for receiving files written over can */
 #define FWRITE_KEYWORD      "template"
 
-/**
- * Gobal for all apps to use to get access to the OLM's
- * D-Bus connections. Apps should treat this as readonly.
- */
-extern dbus_data_t APP_DBUS;
-
 // lazy way to deal with all the D-Bus arguments
-#define DBUS_INFO APP_DBUS.bus, DESTINATION, OBJECT_PATH, INTERFACE_NAME
+#define DBUS_INFO system_bus, DESTINATION, OBJECT_PATH, INTERFACE_NAME
 
 int
 template_app(olm_app_t *app) {
