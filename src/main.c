@@ -26,6 +26,7 @@
 #include "CO_fstream_odf.h"
 #include "file_caches_odf.h"
 #include "olm_app.h"
+#include "async_loop.h"
 #include "board_info.h"
 #include "board_main.h"
 #include "app_manager_odf.h"
@@ -100,6 +101,10 @@ static pthread_t dbus_thread_id;
 /* oresat linux manager board thread */
 static void* board_thread(void* arg);
 static pthread_t board_thread_id;
+
+/* async thread */
+static void* async_thread(void* arg);
+static pthread_t async_thread_id;
 
 /* make daemon */
 int make_daemon(const char *pid_file);
@@ -443,6 +448,12 @@ int main (int argc, char *argv[]) {
             }
 
             /* create board thread */
+            if(pthread_create(&async_thread_id, NULL, async_thread, NULL) != 0) {
+                log_printf(LOG_CRIT, DBG_ERRNO, "pthread_create(async_thread)");
+                exit(EXIT_FAILURE);
+            }
+
+            /* create board thread */
             if(pthread_create(&board_thread_id, NULL, board_thread, NULL) != 0) {
                 log_printf(LOG_CRIT, DBG_ERRNO, "pthread_create(board_thread)");
                 exit(EXIT_FAILURE);
@@ -490,6 +501,8 @@ int main (int argc, char *argv[]) {
     if (pthread_join(rt_thread_id, NULL) != 0)
         log_printf(LOG_CRIT, DBG_ERRNO, "pthread_join()");
     if (pthread_join(dbus_thread_id, NULL) != 0)
+        log_printf(LOG_CRIT, DBG_ERRNO, "pthread_join()");
+    if (pthread_join(async_thread_id, NULL) != 0)
         log_printf(LOG_CRIT, DBG_ERRNO, "pthread_join()");
     if (pthread_join(board_thread_id, NULL) != 0)
         log_printf(LOG_CRIT, DBG_ERRNO, "pthread_join()");
@@ -583,6 +596,20 @@ board_thread(void* arg) {
     }
 
     log_printf(LOG_DEBUG, "board thread ended");
+    return NULL;
+}
+
+static void*
+async_thread(void* arg) {
+    (void)arg;
+    log_printf(LOG_DEBUG, "async thread started");
+
+    /* Endless loop */
+    while (CO_endProgram == 0) {
+        async_loop(); 
+    }
+
+    log_printf(LOG_DEBUG, "async thread ended");
     return NULL;
 }
 
