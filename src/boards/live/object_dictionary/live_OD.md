@@ -10,7 +10,7 @@ OreSat Live
 | File Version | 1                              |
 | Created      | 3/9/2021 11:27:16 PM           |
 | Created By   | Ryan Medick                    |
-| Modified     | 3/19/2021 4:33:46 PM           |
+| Modified     | 3/23/2021 4:52:03 PM           |
 | Modified By  | Ryan Medick                    |
 
 This file was automatically generated with [libedssharp](https://github.com/robincornelius/libedssharp) Object Dictionary Editor v0.8-123-g6c02323
@@ -317,39 +317,6 @@ Heartbeat producer time in ms (0 = disable transmission).
 | 0x01 | Command               | DOMAIN     | rw  | no  | no   |               |
 | 0x02 | Status                | UNSIGNED8  | ro  | no  | no   |               |
 | 0x03 | Reply                 | DOMAIN     | ro  | no  | no   |               |
-
-### 0x1024 - OS command mode
-| Object Type | Count Label    | Storage Group  |
-| ----------- | -------------- | -------------- |
-| VAR         |                | PERSIST_COMM   |
-
-| Data Type               | SDO | PDO | SRDO | Default Value                   |
-| ----------------------- | --- | --- | ---- | ------------------------------- |
-| UNSIGNED8               | wo  | no  | no   | 0x00                            |
-
-### 0x1025 - OS debugger interface
-| Object Type | Count Label    | Storage Group  |
-| ----------- | -------------- | -------------- |
-| RECORD      |                | RAM            |
-
-| Sub  | Name                  | Data Type  | SDO | PDO | SRDO | Default Value |
-| ---- | --------------------- | ---------- | --- | --- | ---- | ------------- |
-| 0x00 | Highest sub-index supported| UNSIGNED8  | ro  | no  | no   | 0x03          |
-| 0x01 | Command               | DOMAIN     | rw  | no  | no   |               |
-| 0x02 | Status                | UNSIGNED8  | ro  | no  | no   |               |
-| 0x03 | Reply                 | DOMAIN     | ro  | no  | no   |               |
-
-### 0x1026 - OS prompt
-| Object Type | Count Label    | Storage Group  |
-| ----------- | -------------- | -------------- |
-| ARRAY       |                | RAM            |
-
-| Sub  | Name                  | Data Type  | SDO | PDO | SRDO | Default Value |
-| ---- | --------------------- | ---------- | --- | --- | ---- | ------------- |
-| 0x00 | Highest sub-index supported| UNSIGNED8  | ro  | no  | no   | 0x03          |
-| 0x01 | StdIn                 | UNSIGNED8  | rw  | tr  | no   |               |
-| 0x02 | StdOut                | UNSIGNED8  | rw  | tr  | no   |               |
-| 0x03 | StdErr                | UNSIGNED8  | rw  | tr  | no   |               |
 
 ### 0x1029 - Error behavior
 | Object Type | Count Label    | Storage Group  |

@@ -25,10 +25,11 @@
 
 #include "CO_fstream_odf.h"
 #include "file_caches_odf.h"
+#include "core/os_command.h"
 #include "olm_app.h"
-#include "async_loop.h"
 #include "board_info.h"
 #include "board_main.h"
+#include "os_command.h"
 #include "app_manager_odf.h"
 #include "linux_updater_odf.h"
 #include "olm_file_cache.h"
@@ -40,8 +41,10 @@
 #define MAIN_THREAD_INTERVAL_US 100000
 #endif
 #ifndef TMR_THREAD_INTERVAL_US
-#define TMR_THREAD_INTERVAL_US 1000
+#define TMR_THREAD_INTERVAL_US  1000
 #endif
+
+#define ASYNC_DELAY             100000
 
 // pid file for daemon
 #define DEFAULT_PID_FILE        "/run/oresat-linux-managerd.pid"
@@ -88,6 +91,8 @@ static CO_time_t            CO_time;            /* Object for current time */
 sd_bus *system_bus = NULL;
 olm_file_cache_t *fread_cache = NULL;
 olm_file_cache_t *fwrite_cache = NULL;
+
+os_command_t os_command_data;
 
 /* Helper functions **********************************************************/
 /* Realtime thread */
@@ -400,6 +405,7 @@ int main (int argc, char *argv[]) {
 
             // configure core ODFs
             board_info_setup();
+            CO_OD_configure(CO->SDO[0], OD_1023_OSCommand, OS_COMMAND_1023_ODF, &os_command_data, 0, 0U);
             CO_OD_configure(CO->SDO[0], OD_3002_fileCaches, file_caches_ODF, &caches_odf_data, 0, 0U);
             CO_OD_configure(CO->SDO[0], OD_3003_fread, CO_fread_ODF, &CO_fread_data, 0, 0U);
             CO_OD_configure(CO->SDO[0], OD_3004_fwrite, CO_fwrite_ODF, &CO_fwrite_data, 0, 0U);
@@ -606,7 +612,8 @@ async_thread(void* arg) {
 
     /* Endless loop */
     while (CO_endProgram == 0) {
-        async_loop(); 
+        co_command_async(&os_command_data);
+        usleep(ASYNC_DELAY);
     }
 
     log_printf(LOG_DEBUG, "async thread ended");

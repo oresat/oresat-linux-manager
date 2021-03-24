@@ -77,7 +77,7 @@
 /*******************************************************************************
    OBJECT DICTIONARY
 *******************************************************************************/
-   #define CO_OD_NoOfElements             53
+   #define CO_OD_NoOfElements             50
 
 
 /*******************************************************************************
@@ -339,25 +339,6 @@
         #define OD_1023_1_OSCommand_command                         1
         #define OD_1023_2_OSCommand_status                          2
         #define OD_1023_3_OSCommand_reply                           3
-
-/*1024 */
-        #define OD_1024_OSCommandMode                               0x1024
-
-/*1025 */
-        #define OD_1025_OSDebuggerInterface                         0x1025
-
-        #define OD_1025_0_OSDebuggerInterface_maxSubIndex           0
-        #define OD_1025_1_OSDebuggerInterface_command               1
-        #define OD_1025_2_OSDebuggerInterface_status                2
-        #define OD_1025_3_OSDebuggerInterface_reply                 3
-
-/*1026 */
-        #define OD_1026_OSPrompt                                    0x1026
-
-        #define OD_1026_0_OSPrompt_maxSubIndex                      0
-        #define OD_1026_1_OSPrompt_stdIn                            1
-        #define OD_1026_2_OSPrompt_stdOut                           2
-        #define OD_1026_3_OSPrompt_stdErr                           3
 
 /*1029 */
         #define OD_1029_errorBehavior                               0x1029
@@ -683,8 +664,6 @@ struct sCO_OD_RAM{
 /*1010      */ UNSIGNED32      storeParameters[4];
 /*1011      */ UNSIGNED32      restoreDefaultParameters[4];
 /*1023      */ OD_OSCommand_t  OSCommand;
-/*1025      */ OD_OSDebuggerInterface_t OSDebuggerInterface;
-/*1026      */ UNSIGNED8       OSPrompt[3];
 /*2010      */ UNSIGNED64     SCET;
 /*2011      */ UNSIGNED64     UTC;
 /*2100      */ OCTET_STRING   errorStatusBits[10];
@@ -733,7 +712,6 @@ struct sCO_OD_PERSIST_COMM{
 /*1016      */ UNSIGNED32      consumerHeartbeatTime[8];
 /*1017      */ UNSIGNED16     producerHeartbeatTime;
 /*1019      */ UNSIGNED8      synchronousCounterOverflowValue;
-/*1024      */ UNSIGNED8      OSCommandMode;
 /*1029      */ UNSIGNED8       errorBehavior[2];
 /*1200      */ OD_SDOServerParameter_t SDOServerParameter[1];
 /*1400      */ OD_RPDOCommunicationParameter_t RPDOCommunicationParameter[4];
@@ -841,19 +819,6 @@ extern struct sCO_OD_PERSIST_MFR CO_OD_PERSIST_MFR;
 
 /*1023, Data Type: OSCommand_t */
         #define OD_OSCommand                                        CO_OD_RAM.OSCommand
-
-/*1024, Data Type: UNSIGNED8 */
-        #define OD_OSCommandMode                                    CO_OD_PERSIST_COMM.OSCommandMode
-
-/*1025, Data Type: OSDebuggerInterface_t */
-        #define OD_OSDebuggerInterface                              CO_OD_RAM.OSDebuggerInterface
-
-/*1026, Data Type: UNSIGNED8, Array[3] */
-        #define OD_OSPrompt                                         CO_OD_RAM.OSPrompt
-        #define ODL_OSPrompt_arrayLength                            3
-        #define ODA_OSPrompt_stdIn                                  0
-        #define ODA_OSPrompt_stdOut                                 1
-        #define ODA_OSPrompt_stdErr                                 2
 
 /*1029, Data Type: UNSIGNED8, Array[2] */
         #define OD_errorBehavior                                    CO_OD_PERSIST_COMM.errorBehavior

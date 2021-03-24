@@ -2,17 +2,16 @@
 
 set(CORE_SOURCES
     app_manager_odf.c
-    async_loop.c
     board_info.c
     CO_fstream_odf.c
     cpufreq.c
     file_caches_odf.c
     linux_updater_odf.c
+    os_command.c
     )
 
 set(CORE_HEADERS
     app_manager_odf.h
-    async_loop.h
     board_info.h
     board_main.h
     CO_fstream_odf.h
@@ -20,6 +19,7 @@ set(CORE_HEADERS
     file_caches_odf.h
     globals.h
     linux_updater_odf.h
+    os_command.h
     )
 
 add_library(core ${CORE_SOURCES} ${CORE_HEADERS})

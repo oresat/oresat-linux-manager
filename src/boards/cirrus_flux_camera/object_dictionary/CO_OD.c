@@ -38,8 +38,6 @@ struct sCO_OD_RAM CO_OD_RAM = {
 /*1010*/ {0x0001L, 0x0001L, 0x0001L, 0x0001L},
 /*1011*/ {0x0001L, 0x0001L, 0x0001L, 0x0001L},
 /*1023*/ {0x3L, 0, 0x0L, 0},
-/*1025*/ {0x3L, 0, 0x0L, 0},
-/*1026*/ {0x0L, 0x0L, 0x0L},
 /*2010*/ 0x00000000L,
 /*2011*/ 0x00000000L,
 /*2100*/ {0x0L, 0x0L, 0x0L, 0x0L, 0x0L, 0x0L, 0x0L, 0x0L, 0x0L, 0x0L},
@@ -91,7 +89,6 @@ struct sCO_OD_PERSIST_COMM CO_OD_PERSIST_COMM = {
 /*1016*/ {0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L},
 /*1017*/ 0x3E8,
 /*1019*/ 0x0L,
-/*1024*/ 0x0L,
 /*1029*/ {0x0L, 0x0L},
 /*1200*/ {{0x3L, 0x80000000L, 0x80000000L, 0x1L}},
 /*1400*/ {{0x5L, 0x80000200L, 0xFEL, 0x00},
@@ -145,13 +142,6 @@ struct sCO_OD_PERSIST_MFR CO_OD_PERSIST_MFR = {
            {(void*)&CO_OD_RAM.OSCommand.highestSubIndexSupported, 0x06, 0x1 },
            {(void*)0, 0x0E, 0x0 },
            {(void*)&CO_OD_RAM.OSCommand.status, 0x06, 0x1 },
-           {(void*)0, 0x06, 0x0 },
-};
-
-/*0x1025*/ const CO_OD_entryRecord_t OD_record1025[4] = {
-           {(void*)&CO_OD_RAM.OSDebuggerInterface.highestSubIndexSupported, 0x06, 0x1 },
-           {(void*)0, 0x0E, 0x0 },
-           {(void*)&CO_OD_RAM.OSDebuggerInterface.status, 0x06, 0x1 },
            {(void*)0, 0x06, 0x0 },
 };
 
@@ -438,9 +428,6 @@ const CO_OD_entry_t CO_OD[CO_OD_NoOfElements] = {
 {0x1018, 0x04, 0x00,  0, (void*)&OD_record1018},
 {0x1019, 0x00, 0x0F,  1, (void*)&CO_OD_PERSIST_COMM.synchronousCounterOverflowValue},
 {0x1023, 0x03, 0x00,  0, (void*)&OD_record1023},
-{0x1024, 0x00, 0x0B,  1, (void*)&CO_OD_PERSIST_COMM.OSCommandMode},
-{0x1025, 0x03, 0x00,  0, (void*)&OD_record1025},
-{0x1026, 0x03, 0x3E,  1, (void*)&CO_OD_RAM.OSPrompt[0]},
 {0x1029, 0x02, 0x0F,  1, (void*)&CO_OD_PERSIST_COMM.errorBehavior[0]},
 {0x1200, 0x03, 0x00,  0, (void*)&OD_record1200},
 {0x1400, 0x03, 0x00,  0, (void*)&OD_record1400},

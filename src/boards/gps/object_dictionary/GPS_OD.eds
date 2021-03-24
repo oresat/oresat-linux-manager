@@ -8,8 +8,8 @@ Description=OreSat GPS
 CreationTime=11:31PM
 CreationDate=03-09-2021
 CreatedBy=Ryan Medick
-ModificationTime=4:33PM
-ModificationDate=03-19-2021
+ModificationTime=4:52PM
+ModificationDate=03-23-2021
 ModifiedBy=Ryan Medick
 
 [DeviceInfo]
@@ -124,7 +124,7 @@ DefaultValue=0x00000000
 PDOMapping=0
 
 [OptionalObjects]
-SupportedObjects=38
+SupportedObjects=35
 1=0x1002
 2=0x1003
 3=0x1005
@@ -141,28 +141,25 @@ SupportedObjects=38
 14=0x1017
 15=0x1019
 16=0x1023
-17=0x1024
-18=0x1025
-19=0x1026
-20=0x1029
-21=0x1200
-22=0x1400
-23=0x1401
-24=0x1402
-25=0x1403
-26=0x1600
-27=0x1601
-28=0x1602
-29=0x1603
-30=0x1800
-31=0x1801
-32=0x1802
-33=0x1803
-34=0x1A00
-35=0x1A01
-36=0x1A02
-37=0x1A03
-38=0x1F80
+17=0x1029
+18=0x1200
+19=0x1400
+20=0x1401
+21=0x1402
+22=0x1403
+23=0x1600
+24=0x1601
+25=0x1602
+26=0x1603
+27=0x1800
+28=0x1801
+29=0x1802
+30=0x1803
+31=0x1A00
+32=0x1A01
+33=0x1A02
+34=0x1A03
+35=0x1F80
 
 [1002]
 ParameterName=Manufacturer status register
@@ -580,99 +577,6 @@ DataType=0x000F
 AccessType=ro
 DefaultValue=
 PDOMapping=0
-
-[1024]
-ParameterName=OS command mode
-ObjectType=0x7
-;StorageLocation=PERSIST_COMM
-DataType=0x0005
-AccessType=wo
-DefaultValue=0x00
-PDOMapping=0
-
-[1025]
-ParameterName=OS debugger interface
-ObjectType=0x9
-;StorageLocation=RAM
-SubNumber=0x4
-
-[1025sub0]
-ParameterName=Highest sub-index supported
-ObjectType=0x7
-;StorageLocation=RAM
-DataType=0x0005
-AccessType=ro
-DefaultValue=0x03
-PDOMapping=0
-
-[1025sub1]
-ParameterName=Command
-ObjectType=0x7
-;StorageLocation=RAM
-DataType=0x000F
-AccessType=rw
-DefaultValue=
-PDOMapping=0
-
-[1025sub2]
-ParameterName=Status
-ObjectType=0x7
-;StorageLocation=RAM
-DataType=0x0005
-AccessType=ro
-DefaultValue=
-PDOMapping=0
-
-[1025sub3]
-ParameterName=Reply
-ObjectType=0x7
-;StorageLocation=RAM
-DataType=0x000F
-AccessType=ro
-DefaultValue=
-PDOMapping=0
-
-[1026]
-ParameterName=OS prompt
-ObjectType=0x8
-;StorageLocation=RAM
-SubNumber=0x4
-
-[1026sub0]
-ParameterName=Highest sub-index supported
-ObjectType=0x7
-;StorageLocation=RAM
-DataType=0x0005
-AccessType=ro
-DefaultValue=0x03
-PDOMapping=0
-
-[1026sub1]
-ParameterName=StdIn
-ObjectType=0x7
-;StorageLocation=RAM
-DataType=0x0005
-AccessType=rw
-DefaultValue=
-PDOMapping=1
-
-[1026sub2]
-ParameterName=StdOut
-ObjectType=0x7
-;StorageLocation=RAM
-DataType=0x0005
-AccessType=rw
-DefaultValue=
-PDOMapping=1
-
-[1026sub3]
-ParameterName=StdErr
-ObjectType=0x7
-;StorageLocation=RAM
-DataType=0x0005
-AccessType=rw
-DefaultValue=
-PDOMapping=1
 
 [1029]
 ParameterName=Error behavior
