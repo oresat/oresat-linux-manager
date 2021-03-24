@@ -43,11 +43,6 @@ linux_updater_app(olm_app_t *app) {
     MALLOC_STRNCPY_OR_GOTO(app->fwrite_keyword, FWRITE_KEYWORD, linux_updater_app_error)
     // app->fwrite_cb = linux_updater_app_fwrite_file; TODO
 
-    /* TODO requires file transfer
-    if ((r = sd_bus_match_signal(DBUS_INFO, "AptList", status_cb, NULL)) < 0)
-        LOG_DBUS_SIGNAL_MATCH_ERROR(LOG_CRIT, APP_NAME, "Status")
-    */
-
     return 1;
 
 linux_updater_app_error:
@@ -55,26 +50,6 @@ linux_updater_app_error:
     OLM_APP_FREE(app);
     return -1;
 }
-
-/*
-static int
-apt_list_file_cb(sd_bus_message *m, void *userdata, sd_bus_error *ret_error) {
-    char *file;
-    linux_updater_app_t *data = (linux_updater_app_t *)userdata;
-
-    if (data == NULL) {
-        LOG_DBUS_SIGNAL_USERDATA_ERROR(LOG_ERR, APP_NAME, "CurrentUpdateFile"); 
-        return 0;
-    }
-    
-    if (sd_bus_message_read(m, "s", &file) == 0)
-        data->new_file_cb(file);
-    else
-        LOG_DBUS_SIGNAL_READ_ERROR(LOG_ERR, APP_NAME, "CurrentUpdateFile");
-
-    return 0;
-}
-*/
 
 uint32_t
 linux_updater_updates_available(void) {

@@ -99,10 +99,6 @@ os_command_t os_command_data;
 CO_epoll_t epRT;
 static void* rt_thread(void* arg);
 
-/* oresat linux manager apps thread */
-static void* dbus_thread(void* arg);
-static pthread_t dbus_thread_id;
-
 /* oresat linux manager board thread */
 static void* board_thread(void* arg);
 static pthread_t board_thread_id;
@@ -447,13 +443,7 @@ int main (int argc, char *argv[]) {
                 }
             }
 
-            /* create app dbus thread */
-            if(pthread_create(&dbus_thread_id, NULL, dbus_thread, NULL) != 0) {
-                log_printf(LOG_CRIT, DBG_ERRNO, "pthread_create(dbus_thread)");
-                exit(EXIT_FAILURE);
-            }
-
-            /* create board thread */
+            /* create async thread */
             if(pthread_create(&async_thread_id, NULL, async_thread, NULL) != 0) {
                 log_printf(LOG_CRIT, DBG_ERRNO, "pthread_create(async_thread)");
                 exit(EXIT_FAILURE);
@@ -505,8 +495,6 @@ int main (int argc, char *argv[]) {
     log_printf(LOG_DEBUG, "joining threads");
     CO_endProgram = 1;
     if (pthread_join(rt_thread_id, NULL) != 0)
-        log_printf(LOG_CRIT, DBG_ERRNO, "pthread_join()");
-    if (pthread_join(dbus_thread_id, NULL) != 0)
         log_printf(LOG_CRIT, DBG_ERRNO, "pthread_join()");
     if (pthread_join(async_thread_id, NULL) != 0)
         log_printf(LOG_CRIT, DBG_ERRNO, "pthread_join()");
@@ -565,29 +553,6 @@ static void* rt_thread(void* arg) {
     }
 
     log_printf(LOG_DEBUG, "rt thread ended");
-    return NULL;
-}
-
-static void*
-dbus_thread(void* arg) {
-    (void)arg;
-    int r;
-    log_printf(LOG_DEBUG, "system dbus thread started");
-
-    while (CO_endProgram == 0) {
-        if ((r = sd_bus_process(system_bus, NULL)) < 0) {
-            log_printf(LOG_CRIT, "sd_bus_process failed");
-            break;
-        } else if (r > 0) {
-            continue; // processed a request, try to process another one right-away
-        }
-
-        // Wait for the next request to process
-        if (sd_bus_wait(system_bus, DBUS_TIMEOUT_US) < 0)
-            log_printf(LOG_ERR, "bus wait failed");
-    }
-
-    log_printf(LOG_DEBUG, "system dbus thread ended");
     return NULL;
 }
 
