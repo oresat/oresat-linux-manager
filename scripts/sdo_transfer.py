@@ -110,7 +110,7 @@ elif args.mode == "w" or args.mode == "write":
     elif co_type == CANopenTypes.f64:
         raw_data = pack('d', float(args.value))
     elif co_type == CANopenTypes.s:
-        raw_data = raw_data.encode("utf-8")
+        raw_data = args.value.encode("utf-8")
     elif co_type == CANopenTypes.d:
         raw_data = args.value
 
