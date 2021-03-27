@@ -19,8 +19,8 @@
 #include <unistd.h>
 
 // apps index in list
-#define LINUX_UPDATER_APP   0 // linux_updater_app is always 0
-#define DXWIFI_APP          LINUX_UPDATER_APP+1
+#define UPDATER_APP         0 // linux_updater_app is always 0
+#define DXWIFI_APP          UPDATER_APP+1
 #define TOTAL_APPS          DXWIFI_APP+1
 
 olm_app_t apps[TOTAL_APPS] = {OLM_APP_INITIALIZER};
