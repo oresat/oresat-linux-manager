@@ -8,8 +8,8 @@ Description=OreSat Star Tracker
 CreationTime=1:57PM
 CreationDate=03-09-2021
 CreatedBy=Ryan Medick
-ModificationTime=4:52PM
-ModificationDate=03-23-2021
+ModificationTime=11:25PM
+ModificationDate=03-25-2021
 ModifiedBy=Ryan Medick
 
 [DeviceInfo]
@@ -2460,7 +2460,7 @@ PDOMapping=0
 ParameterName=Updater
 ObjectType=0x9
 ;StorageLocation=RAM
-SubNumber=0xA
+SubNumber=0x6
 
 [3100sub0]
 ParameterName=Highest sub-index supported
@@ -2468,14 +2468,14 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0005
 AccessType=ro
-DefaultValue=0x09
+DefaultValue=0x05
 PDOMapping=0
 
 [3100sub1]
-ParameterName=Current state
+ParameterName=Status
 ObjectType=0x7
 ;StorageLocation=RAM
-DataType=0x0004
+DataType=0x0005
 AccessType=ro
 DefaultValue=0
 PDOMapping=0
@@ -2484,13 +2484,13 @@ PDOMapping=0
 ParameterName=Updates available
 ObjectType=0x7
 ;StorageLocation=RAM
-DataType=0x0007
+DataType=0x0005
 AccessType=ro
 DefaultValue=0
 PDOMapping=0
 
 [3100sub3]
-ParameterName=Current update file
+ParameterName=List updates
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x000F
@@ -2499,55 +2499,19 @@ DefaultValue=
 PDOMapping=0
 
 [3100sub4]
-ParameterName=Error message
+ParameterName=Update
 ObjectType=0x7
 ;StorageLocation=RAM
-DataType=0x000F
-AccessType=ro
+DataType=0x0005
+AccessType=wo
 DefaultValue=
 PDOMapping=0
 
 [3100sub5]
-ParameterName=Add update file
+ParameterName=Make status file
 ObjectType=0x7
 ;StorageLocation=RAM
-DataType=0x000F
-AccessType=wo
-DefaultValue=
-PDOMapping=0
-
-[3100sub6]
-ParameterName=Start update
-ObjectType=0x7
-;StorageLocation=RAM
-DataType=0x000F
-AccessType=wo
-DefaultValue=
-PDOMapping=0
-
-[3100sub7]
-ParameterName=Emergency stop update
-ObjectType=0x7
-;StorageLocation=RAM
-DataType=0x000F
-AccessType=wo
-DefaultValue=
-PDOMapping=0
-
-[3100sub8]
-ParameterName=Reset updater
-ObjectType=0x7
-;StorageLocation=RAM
-DataType=0x000F
-AccessType=wo
-DefaultValue=
-PDOMapping=0
-
-[3100sub9]
-ParameterName=Get apt list output
-ObjectType=0x7
-;StorageLocation=RAM
-DataType=0x000F
+DataType=0x0005
 AccessType=wo
 DefaultValue=
 PDOMapping=0

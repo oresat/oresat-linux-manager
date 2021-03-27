@@ -11,21 +11,21 @@
 
 #include "CANopen.h"
 #include "olm_app.h"
-#include "linux_updater_app.h"
+#include "updater_app.h"
 #include "board_main.h"
 #include <stddef.h>
 #include <stdlib.h>
 #include <unistd.h>
 
 // apps index in list
-#define LINUX_UPDATER_APP   0 // linux_updater_app is always 0
-#define TOTAL_APPS          LINUX_UPDATER_APP+1
+#define UPDATER_APP         0 // linux_updater_app is always 0
+#define TOTAL_APPS          UPDATER_APP+1
 
 olm_app_t apps[TOTAL_APPS];
 
 olm_app_t *
 board_init(void) {
-    linux_updater_app(&apps[LINUX_UPDATER_APP]);
+    updater_app(&apps[UPDATER_APP]);
     return apps;
 }
 

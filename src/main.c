@@ -31,7 +31,7 @@
 #include "board_main.h"
 #include "os_command.h"
 #include "app_manager_odf.h"
-#include "linux_updater_odf.h"
+#include "updater_odf.h"
 #include "olm_file_cache.h"
 #include "CO_fstream_odf.h"
 #include "file_caches_odf.h"

@@ -11,8 +11,8 @@
 
 #include "CANopen.h"
 #include "olm_app.h"
-#include "linux_updater_app.h"
 #include "dxwifi_app.h"
+#include "updater_app.h"
 #include "board_main.h"
 #include <stddef.h>
 #include <stdlib.h>
@@ -27,7 +27,7 @@ olm_app_t apps[TOTAL_APPS] = {OLM_APP_INITIALIZER};
 
 olm_app_t *
 board_init(void) {
-    linux_updater_app(&apps[LINUX_UPDATER_APP]);
+    updater_app(&apps[UPDATER_APP]);
     dxwifi_app(&apps[DXWIFI_APP]);
     return apps;
 }

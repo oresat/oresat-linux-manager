@@ -223,15 +223,11 @@
                }              OD_appManager_t;
 /*3100      */ typedef struct {
                UNSIGNED8      highestSubIndexSupported;
-               INTEGER32      currentState;
-               UNSIGNED32     updatesAvailable;
-               DOMAIN         currentUpdateFile;
-               DOMAIN         errorMessage;
-               DOMAIN         addUpdateFile;
-               DOMAIN         startUpdate;
-               DOMAIN         emergencyStopUpdate;
-               DOMAIN         resetUpdater;
-               DOMAIN         getAptListOutput;
+               UNSIGNED8      status;
+               UNSIGNED8      updatesAvailable;
+               DOMAIN         listUpdates;
+               UNSIGNED8      update;
+               UNSIGNED8      makeStatusFile;
                }              OD_updater_t;
 
 /*******************************************************************************
@@ -639,15 +635,11 @@
         #define OD_3100_updater                                     0x3100
 
         #define OD_3100_0_updater_maxSubIndex                       0
-        #define OD_3100_1_updater_currentState                      1
+        #define OD_3100_1_updater_status                            1
         #define OD_3100_2_updater_updatesAvailable                  2
-        #define OD_3100_3_updater_currentUpdateFile                 3
-        #define OD_3100_4_updater_errorMessage                      4
-        #define OD_3100_5_updater_addUpdateFile                     5
-        #define OD_3100_6_updater_startUpdate                       6
-        #define OD_3100_7_updater_emergencyStopUpdate               7
-        #define OD_3100_8_updater_resetUpdater                      8
-        #define OD_3100_9_updater_getAptListOutput                  9
+        #define OD_3100_3_updater_listUpdates                       3
+        #define OD_3100_4_updater_update                            4
+        #define OD_3100_5_updater_makeStatusFile                    5
 
 /*******************************************************************************
    STRUCTURES FOR VARIABLES IN DIFFERENT MEMORY LOCATIONS

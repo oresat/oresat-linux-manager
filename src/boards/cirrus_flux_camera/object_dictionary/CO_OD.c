@@ -48,7 +48,7 @@ struct sCO_OD_RAM CO_OD_RAM = {
 /*3004*/ {0x3L, 0, 0, 0},
 /*3005*/ {0x4L, 0x0L, 0x0L, 0, 0x0},
 /*3006*/ 0x0L,
-/*3100*/ {0x9L, 0x0000L, 0x0000L, 0, 0, 0, 0, 0, 0, 0},
+/*3100*/ {0x5L, 0x0L, 0x0L, 0, 0x0L, 0x0L},
 
            CO_OD_FIRST_LAST_WORD,
 };
@@ -392,17 +392,13 @@ struct sCO_OD_PERSIST_MFR CO_OD_PERSIST_MFR = {
            {(void*)&CO_OD_RAM.appManager.daemonState, 0x0E, 0x1 },
 };
 
-/*0x3100*/ const CO_OD_entryRecord_t OD_record3100[10] = {
+/*0x3100*/ const CO_OD_entryRecord_t OD_record3100[6] = {
            {(void*)&CO_OD_RAM.updater.highestSubIndexSupported, 0x06, 0x1 },
-           {(void*)&CO_OD_RAM.updater.currentState, 0x86, 0x4 },
-           {(void*)&CO_OD_RAM.updater.updatesAvailable, 0x86, 0x4 },
+           {(void*)&CO_OD_RAM.updater.status, 0x06, 0x1 },
+           {(void*)&CO_OD_RAM.updater.updatesAvailable, 0x06, 0x1 },
            {(void*)0, 0x06, 0x0 },
-           {(void*)0, 0x06, 0x0 },
-           {(void*)0, 0x0A, 0x0 },
-           {(void*)0, 0x0A, 0x0 },
-           {(void*)0, 0x0A, 0x0 },
-           {(void*)0, 0x0A, 0x0 },
-           {(void*)0, 0x0A, 0x0 },
+           {(void*)&CO_OD_RAM.updater.update, 0x0A, 0x1 },
+           {(void*)&CO_OD_RAM.updater.makeStatusFile, 0x0A, 0x1 },
 };
 
 /*******************************************************************************
@@ -458,6 +454,6 @@ const CO_OD_entry_t CO_OD[CO_OD_NoOfElements] = {
 {0x3004, 0x03, 0x00,  0, (void*)&OD_record3004},
 {0x3005, 0x04, 0x00,  0, (void*)&OD_record3005},
 {0x3006, 0x00, 0x06,  1, (void*)&CO_OD_RAM.getLog},
-{0x3100, 0x09, 0x00,  0, (void*)&OD_record3100},
+{0x3100, 0x05, 0x00,  0, (void*)&OD_record3100},
 };
 // clang-format on

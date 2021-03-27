@@ -10,7 +10,7 @@ OreSat Live
 | File Version | 1                              |
 | Created      | 3/9/2021 11:27:16 PM           |
 | Created By   | Ryan Medick                    |
-| Modified     | 3/23/2021 4:52:03 PM           |
+| Modified     | 3/25/2021 11:25:35 PM          |
 | Modified By  | Ryan Medick                    |
 
 This file was automatically generated with [libedssharp](https://github.com/robincornelius/libedssharp) Object Dictionary Editor v0.8-123-g6c02323
@@ -1030,13 +1030,9 @@ Manufacturer may define its own constants up to index 0xFF. Of course, he must t
 
 | Sub  | Name                  | Data Type  | SDO | PDO | SRDO | Default Value |
 | ---- | --------------------- | ---------- | --- | --- | ---- | ------------- |
-| 0x00 | Highest sub-index supported| UNSIGNED8  | ro  | no  | no   | 0x09          |
-| 0x01 | Current state         | INTEGER32  | ro  | no  | no   | 0             |
-| 0x02 | Updates available     | UNSIGNED32 | ro  | no  | no   | 0             |
-| 0x03 | Current update file   | DOMAIN     | ro  | no  | no   |               |
-| 0x04 | Error message         | DOMAIN     | ro  | no  | no   |               |
-| 0x05 | Add update file       | DOMAIN     | wo  | no  | no   |               |
-| 0x06 | Start update          | DOMAIN     | wo  | no  | no   |               |
-| 0x07 | Emergency stop update | DOMAIN     | wo  | no  | no   |               |
-| 0x08 | Reset updater         | DOMAIN     | wo  | no  | no   |               |
-| 0x09 | Get apt list output   | DOMAIN     | wo  | no  | no   |               |
+| 0x00 | Highest sub-index supported| UNSIGNED8  | ro  | no  | no   | 0x05          |
+| 0x01 | Status                | UNSIGNED8  | ro  | no  | no   | 0             |
+| 0x02 | Updates available     | UNSIGNED8  | ro  | no  | no   | 0             |
+| 0x03 | List updates          | DOMAIN     | ro  | no  | no   |               |
+| 0x04 | Update                | UNSIGNED8  | wo  | no  | no   |               |
+| 0x05 | Make status file      | UNSIGNED8  | wo  | no  | no   |               |

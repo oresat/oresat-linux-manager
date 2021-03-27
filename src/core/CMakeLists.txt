@@ -6,8 +6,8 @@ set(CORE_SOURCES
     CO_fstream_odf.c
     cpufreq.c
     file_caches_odf.c
-    linux_updater_odf.c
     os_command.c
+    updater_odf.c
     )
 
 set(CORE_HEADERS
@@ -18,8 +18,8 @@ set(CORE_HEADERS
     cpufreq.h
     file_caches_odf.h
     globals.h
-    linux_updater_odf.h
     os_command.h
+    updater_odf.h
     )
 
 add_library(core ${CORE_SOURCES} ${CORE_HEADERS})
