@@ -5,6 +5,7 @@ set(APPS_SOURCES
     logind_app.c
     star_tracker_app.c
     systemd_app.c
+    dxwifi_app.c
     template_app.c
     )
 
@@ -13,6 +14,7 @@ set(APPS_HEADERS
     logind_app.h
     star_tracker_app.h
     systemd_app.h
+    dxwifi_app.h
     template_app.h
     )
 
