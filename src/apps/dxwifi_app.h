@@ -9,11 +9,11 @@
  * Project home page is <https://github.com/oresat/oresat-linux-manager>.
  */
 
-#ifndef TEMPLATE_APP_H
-#define TEMPLATE_APP_H
+#ifndef DXWIFI_APP_H
+#define DXWIFI_APP_H
 
 #include "olm_app.h"
 
 int dxwifi_app(olm_app_t *app);
 
-#endif /* TEMPLATE_APP_H */
+#endif /* DXWIFI_APP_H */
