@@ -17,8 +17,7 @@ enum active_states {
 /**
  * All the data an app must provide to OLM's core. 
  *
- * All apps must a #define to initialize this struct with the information for
- * that app.
+ * All apps must a function to make (with malloc) and fill this struct out.
  */
 typedef struct {
     /** The app's name. */
@@ -63,15 +62,15 @@ typedef struct {
     int (*data_free_cb)(void *data);
 } olm_app_t;
 
-#define OLM_APP_INITIALIZER { \
-    .name = NULL, \
-    .service_file = NULL, \
-    .fwrite_keyword = NULL, \
-    .unit_object_path = NULL, \
-    .unit_active_state = unit_inactive, \
-    .fwrite_cb = NULL, \
-    .data = NULL, \
-    .data_free_cb = NULL, \
+#define OLM_APP_DEFAULT {\
+        .name = NULL, \
+        .service_file = NULL, \
+        .fwrite_keyword = NULL, \
+        .unit_object_path = NULL, \
+        .unit_active_state = unit_inactive, \
+        .fwrite_cb = NULL, \
+        .data = NULL, \
+        .data_free_cb = NULL, \
     }
 
 #define OLM_APP_FREE(app) \

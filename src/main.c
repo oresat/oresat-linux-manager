@@ -212,7 +212,7 @@ int main (int argc, char *argv[]) {
     bool firstRun = true;
     bool daemon_flag = false;
     bool verbose = false;
-    olm_app_t *apps = NULL;
+    olm_board_t board;
 
     // file transfer data
     olm_file_cache_new(FREAD_CACHE_DIR, &fread_cache);
@@ -312,6 +312,12 @@ int main (int argc, char *argv[]) {
 
     log_printf(LOG_INFO, DBG_CAN_OPEN_INFO, CO_pending.nodeId, "starting");
 
+    if (sd_bus_open_system(&system_bus) < 0)
+        log_printf(LOG_CRIT, "open system bus failed");
+
+    if (board_init(&board) < 0)
+        log_printf(LOG_ERR, "board_init() failed");
+
     /* Allocate memory for CANopen objects */
     err = CO_new(NULL);
     if (err != CO_ERROR_NO) {
@@ -405,7 +411,7 @@ int main (int argc, char *argv[]) {
             CO_OD_configure(CO->SDO[0], OD_3002_fileCaches, file_caches_ODF, &caches_odf_data, 0, 0U);
             CO_OD_configure(CO->SDO[0], OD_3003_fread, CO_fread_ODF, &CO_fread_data, 0, 0U);
             CO_OD_configure(CO->SDO[0], OD_3004_fwrite, CO_fwrite_ODF, &CO_fwrite_data, 0, 0U);
-            CO_OD_configure(CO->SDO[0], OD_3005_appManager, app_manager_ODF, apps, 0, 0U);
+            CO_OD_configure(CO->SDO[0], OD_3005_appManager, app_manager_ODF, &board, 0, 0U);
             CO_OD_configure(CO->SDO[0], OD_3100_updater, updater_ODF, NULL, 0, 0U);
 
             log_printf(LOG_INFO, DBG_CAN_OPEN_INFO, CO_activeNodeId, "communication reset");
@@ -417,12 +423,6 @@ int main (int argc, char *argv[]) {
         /* First time only initialization. */
         if (firstRun) {
             firstRun = false;
-
-            // set up general ODFs
-            if (sd_bus_open_system(&system_bus) < 0)
-                log_printf(LOG_CRIT, "open system bus failed");
-
-            apps = board_init();
 
             /* Create rt_thread and set priority */
             if (pthread_create(&rt_thread_id, NULL, rt_thread, NULL) != 0) {

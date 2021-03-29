@@ -13,20 +13,30 @@
 #include "olm_app.h"
 #include "updater_app.h"
 #include "board_main.h"
+#include <errno.h>
 #include <stddef.h>
 #include <stdlib.h>
 #include <unistd.h>
 
 // apps index in list
-#define UPDATER_APP         0 // linux_updater_app is always 0
+#define UPDATER_APP         0 // updater app is always 0
 #define TOTAL_APPS          UPDATER_APP+1
 
-olm_app_t apps[TOTAL_APPS];
+olm_app_t apps[TOTAL_APPS] = {OLM_APP_DEFAULT};
 
-olm_app_t *
-board_init(void) {
+int
+board_init(olm_board_t *board) {
+
+    if (board == NULL)
+        return -EINVAL;
+
+    // fill out info for all apps
     updater_app(&apps[UPDATER_APP]);
-    return apps;
+
+    board->apps_len = TOTAL_APPS;
+    board->apps = apps;
+
+    return 1;
 }
 
 void

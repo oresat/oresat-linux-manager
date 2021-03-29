@@ -14,6 +14,6 @@
 
 #include "olm_app.h"
 
-int dxwifi_app(olm_app_t *app);
+void dxwifi_app(olm_app_t *app);
 
 #endif /* DXWIFI_APP_H */

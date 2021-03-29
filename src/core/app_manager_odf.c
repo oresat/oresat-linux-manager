@@ -11,7 +11,7 @@
 
 //#include "cpufreq.h"
 #include "systemd_app.h"
-#include "olm_app.h"
+#include "board_main.h"
 #include "app_manager_odf.h"
 #include <stdint.h>
 #include <string.h>
@@ -42,17 +42,20 @@ save_power(void) {
 CO_SDO_abortCode_t
 app_manager_ODF(CO_ODF_arg_t *ODF_arg) {
     CO_SDO_abortCode_t ret = CO_SDO_AB_NONE;
-    olm_app_t *apps = (olm_app_t *)ODF_arg->object;
+    olm_board_t *board = (olm_board_t *)ODF_arg->object;
+    olm_app_t *apps;
 
-    if (apps == NULL)
+    if (board == NULL || board->apps == NULL)
         return CO_SDO_AB_NO_DATA;
+
+    apps = (olm_app_t *)board->apps;
 
     switch (ODF_arg->subIndex) {
 
         case OD_3005_2_appManager_selectApp: // selected app, uint8, readwrite
 
             if (!ODF_arg->reading)
-                if (CO_getUint8(ODF_arg->data) > OD_appManager.totalApps)
+                if (CO_getUint8(ODF_arg->data) > board->apps_len)
                     ret = CO_SDO_AB_GENERAL; // TODO input must be less than total apps
 
             break;

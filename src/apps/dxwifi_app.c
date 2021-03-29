@@ -25,15 +25,15 @@
 /** The systemd service name for the app's daemon */
 #define SERVICE_FILE        "oresat-dxwifi-txd.service"
 
-int
+void
 dxwifi_app(olm_app_t *app) {
     MALLOC_STRNCPY_OR_GOTO(app->name, APP_NAME, dxwifi_app_error);
     MALLOC_STRNCPY_OR_GOTO(app->service_file, SERVICE_FILE, dxwifi_app_error);
 
-    return 1;
+    return;
 
 dxwifi_app_error:
 
     OLM_APP_FREE(app);
-    return -1;
+    return;
 }
