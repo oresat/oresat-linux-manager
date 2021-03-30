@@ -31,6 +31,7 @@
 #define OBJECT_PATH         "/org/freedesktop/systemd1"
 
 const char *active_state_str[] = {
+    "unknown",
     "inactive",
     "reloading",
     "active",
@@ -122,10 +123,10 @@ get_active_state_unit(const char *unit) {
     sd_bus_error err = SD_BUS_ERROR_NULL;
     sd_bus_message *mess = NULL;
     char *state;
-    int r = -1;
+    int r = unit_unknown;
 
     if (unit == NULL)
-        return -EINVAL;
+        return r;
 
     if (sd_bus_get_property(system_bus, DESTINATION, unit, UNIT_INTERFACE, \
                 "ActiveState", &err, &mess, "d") < 0)

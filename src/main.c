@@ -25,7 +25,7 @@
 
 #include "CO_fstream_odf.h"
 #include "file_caches_odf.h"
-#include "core/os_command.h"
+#include "os_command.h"
 #include "olm_app.h"
 #include "board_info.h"
 #include "board_main.h"
@@ -106,6 +106,7 @@ static pthread_t board_thread_id;
 /* async thread */
 static void* async_thread(void* arg);
 static pthread_t async_thread_id;
+static app_manager_t app_manager;
 
 /* make daemon */
 int make_daemon(const char *pid_file);
@@ -194,13 +195,16 @@ printf(
 "  -d                  Run the process as a daemon.\n");
 printf(
 "  -v                  Enable verbose logging.\n");
+printf(
+"  -c                  Enable CPU frequency control.\n");
 }
 
 
 /*******************************************************************************
  * Mainline thread
  ******************************************************************************/
-int main (int argc, char *argv[]) {
+int
+main(int argc, char *argv[]) {
     int programExit = EXIT_SUCCESS;
     CO_epoll_t epMain;
     pthread_t rt_thread_id;
@@ -213,6 +217,7 @@ int main (int argc, char *argv[]) {
     bool daemon_flag = false;
     bool verbose = false;
     olm_board_t board;
+    bool cpufreq_ctrl = false;
 
     // file transfer data
     olm_file_cache_new(FREAD_CACHE_DIR, &fread_cache);
@@ -230,7 +235,7 @@ int main (int argc, char *argv[]) {
         printUsage(argv[0]);
         exit(EXIT_SUCCESS);
     }
-    while ((opt = getopt(argc, argv, "i:p:rdv")) != -1) {
+    while ((opt = getopt(argc, argv, "i:p:rdvc")) != -1) {
         switch (opt) {
             case 'i':
                 nodeIdFromArgs = true;
@@ -243,6 +248,8 @@ int main (int argc, char *argv[]) {
             case 'd': daemon_flag = true;
                 break;
             case 'v': verbose = true;
+                break;
+            case 'c': cpufreq_ctrl = true;
                 break;
             default:
                 printUsage(argv[0]);
@@ -300,10 +307,6 @@ int main (int argc, char *argv[]) {
     clear_dir(FREAD_TMP_DIR);
     clear_dir(FWRITE_TMP_DIR);
 
-    // make cache objs
-    //olm_file_cache_new(FREAD_CACHE_DIR, &fread_cache);
-    //olm_file_cache_new(FWRITE_CACHE_DIR, &fwrite_cache);
-
     /* Run as daemon if needed */
     if (daemon_flag) {
         log_printf(LOG_INFO, "daemonizing process");
@@ -317,6 +320,9 @@ int main (int argc, char *argv[]) {
 
     if (board_init(&board) < 0)
         log_printf(LOG_ERR, "board_init() failed");
+    
+    if (app_manager_init(&app_manager, &board, cpufreq_ctrl) < 0)
+        log_printf(LOG_ERR, "app_manager_init() failed");
 
     /* Allocate memory for CANopen objects */
     err = CO_new(NULL);
@@ -411,7 +417,7 @@ int main (int argc, char *argv[]) {
             CO_OD_configure(CO->SDO[0], OD_3002_fileCaches, file_caches_ODF, &caches_odf_data, 0, 0U);
             CO_OD_configure(CO->SDO[0], OD_3003_fread, CO_fread_ODF, &CO_fread_data, 0, 0U);
             CO_OD_configure(CO->SDO[0], OD_3004_fwrite, CO_fwrite_ODF, &CO_fwrite_data, 0, 0U);
-            CO_OD_configure(CO->SDO[0], OD_3005_appManager, app_manager_ODF, &board, 0, 0U);
+            CO_OD_configure(CO->SDO[0], OD_3005_appManager, app_manager_ODF, &app_manager, 0, 0U);
             CO_OD_configure(CO->SDO[0], OD_3100_updater, updater_ODF, NULL, 0, 0U);
 
             log_printf(LOG_INFO, DBG_CAN_OPEN_INFO, CO_activeNodeId, "communication reset");
@@ -562,9 +568,8 @@ board_thread(void* arg) {
     log_printf(LOG_DEBUG, "board thread started");
 
     /* Endless loop */
-    while (CO_endProgram == 0) {
+    while (CO_endProgram == 0)
         board_loop(); 
-    }
 
     log_printf(LOG_DEBUG, "board thread ended");
     return NULL;
@@ -578,6 +583,7 @@ async_thread(void* arg) {
     /* Endless loop */
     while (CO_endProgram == 0) {
         co_command_async(&os_command_data);
+        app_manager_async(&app_manager);
         usleep(ASYNC_DELAY);
     }
 

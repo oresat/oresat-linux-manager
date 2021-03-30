@@ -12,6 +12,16 @@
 #ifndef SYSTEMD_APP_H
 #define SYSTEMD_APP_H
 
+enum active_states {
+    unit_unknown = 0,
+    unit_inactive = 1,
+    unit_reloading = 2,
+    unit_active = 3,
+    unit_failed = 4, 
+    unit_activating = 5,
+    unit_deactivating = 6,
+};
+
 /**
  * @brief Get the systemd unit object path for a unit.
  *
