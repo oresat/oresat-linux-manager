@@ -583,7 +583,7 @@ async_thread(void* arg) {
     /* Endless loop */
     while (CO_endProgram == 0) {
         co_command_async(&os_command_data);
-        app_manager_async(&app_manager);
+        app_manager_async(&app_manager, fwrite_cache);
         usleep(ASYNC_DELAY);
     }
 

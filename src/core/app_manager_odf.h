@@ -69,16 +69,15 @@ typedef struct {
  */
 int app_manager_init(app_manager_t *app_manager, olm_board_t *board, bool cpufreq_ctrl);
 
-/** @breif App Manager function to be called in the async thread/loop. */
-void app_manager_async(app_manager_t *app_manager);
-
 /**
- * Object Dictionary Function for app contoller OD entry.
+ * @breif App Manager function to be called in the async thread/loop.
  *
- * @param ODF_arg Current ODF arguemnt for SDO
- *
- * @return SDO abort code
+ * @param app_manager The App Manager's private data.
+ * @param fwrite_cache The file write cache.
  */
+void app_manager_async(app_manager_t *app_manager, olm_file_cache_t *fwrite_cache);
+
+/** Object Dictionary Function for App Manager OD entry. */
 CO_SDO_abortCode_t app_manager_ODF(CO_ODF_arg_t *ODF_arg);
 
 #endif /* APP_MANAGER_ODF_H */
