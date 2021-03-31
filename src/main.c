@@ -317,12 +317,6 @@ main(int argc, char *argv[]) {
     if (sd_bus_open_system(&system_bus) < 0)
         log_printf(LOG_CRIT, "open system bus failed");
 
-    if (board_init(&board) < 0)
-        log_printf(LOG_ERR, "board_init() failed");
-    
-    if (app_manager_init(&app_manager, &board, cpufreq_ctrl) < 0)
-        log_printf(LOG_ERR, "app_manager_init() failed");
-
     /* Allocate memory for CANopen objects */
     err = CO_new(NULL);
     if (err != CO_ERROR_NO) {
@@ -409,6 +403,12 @@ main(int argc, char *argv[]) {
             /* Initialize time */
             CO_time_init(&CO_time, CO->SDO[0], &OD_time.epochTimeBaseMs, &OD_time.epochTimeOffsetMs, 0x2130);
 #endif
+
+            if (board_init(&board) < 0)
+                log_printf(LOG_ERR, "board_init() failed");
+            
+            if (app_manager_init(&app_manager, &board, cpufreq_ctrl) < 0)
+                log_printf(LOG_ERR, "app_manager_init() failed");
 
             // configure core ODFs
             board_info_setup();

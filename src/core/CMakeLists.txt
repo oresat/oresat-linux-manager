@@ -24,6 +24,11 @@ set(CORE_HEADERS
 
 add_library(core ${CORE_SOURCES} ${CORE_HEADERS})
 
-target_link_libraries(core common board)
+target_link_libraries(core
+    CANopenNode
+    common
+    board
+    object_dictionary
+    )
 
 target_include_directories(core PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})

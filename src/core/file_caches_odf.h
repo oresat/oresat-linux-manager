@@ -27,26 +27,14 @@ typedef struct {
     olm_file_cache_t *fread_cache;
     /** The file cache for files written to the Linux board */
     olm_file_cache_t *fwrite_cache;
-    /** The cache selected, must be set to @ref READ_CACHE or @ref WRITE_CACHE. */
-    uint8_t selector;
     /** The current filter, will be NULL for no filter. */
     char *keyword;
-    /**
-     * The current index in file list selected, will be zero when cache is
-     * empty.
-     */
-    uint32_t iterator;
-    /** Data for the file te iterator is for. Can be NULL. */
-    olm_file_t *file;
 } file_caches_t;
 
 #define FILE_CACHES_INTIALIZER(_fread_cache, _fwrite_cache) { \
     .fread_cache = _fread_cache, \
     .fwrite_cache = _fwrite_cache,\
-    .selector = FREAD_CACHE, \
     .keyword = NULL, \
-    .iterator = 0, \
-    .file = NULL, \
 }
 
 void file_caches_free(file_caches_t *caches);

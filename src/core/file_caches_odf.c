@@ -30,11 +30,6 @@ file_caches_free(file_caches_t *caches) {
         caches->fwrite_cache = NULL; 
 
         FREE_AND_NULL(caches->keyword);
-
-        if (caches->file == NULL) { 
-            olm_file_free(caches->file);
-            caches->file = NULL;
-        }
     }
 }
 
@@ -42,9 +37,16 @@ CO_SDO_abortCode_t
 file_caches_ODF(CO_ODF_arg_t *ODF_arg) {
     file_caches_t *caches  = (file_caches_t *)ODF_arg->object;
     CO_SDO_abortCode_t ret = CO_SDO_AB_NONE;
+    olm_file_cache_t *cache = NULL;
+    olm_file_t *file = NULL;
 
     if (caches == NULL || caches->fread_cache == NULL || caches->fwrite_cache == NULL)
         return CO_SDO_AB_NO_DATA;
+
+    if (OD_fileCaches.cacheSelector == FREAD_CACHE)
+        cache = caches->fread_cache;
+    else
+        cache = caches->fwrite_cache;
 
     switch(ODF_arg->subIndex) {
 
@@ -52,9 +54,9 @@ file_caches_ODF(CO_ODF_arg_t *ODF_arg) {
 
             if (ODF_arg->reading) {
                 if (caches->fread_cache->len < UINT8_MAX)
-                    CO_setUint32(ODF_arg->data, (uint8_t)caches->fread_cache->len);
+                    CO_setUint8(ODF_arg->data, (uint8_t)caches->fread_cache->len);
                 else
-                    CO_setUint32(ODF_arg->data, UINT8_MAX);
+                    CO_setUint8(ODF_arg->data, UINT8_MAX);
             } else {
                 ret = CO_SDO_AB_READONLY;
             }
@@ -65,9 +67,9 @@ file_caches_ODF(CO_ODF_arg_t *ODF_arg) {
 
             if (ODF_arg->reading) {
                 if (caches->fwrite_cache->len < UINT8_MAX)
-                    CO_setUint32(ODF_arg->data, (uint8_t)caches->fwrite_cache->len);
+                    CO_setUint8(ODF_arg->data, (uint8_t)caches->fwrite_cache->len);
                 else
-                    CO_setUint32(ODF_arg->data, UINT8_MAX);
+                    CO_setUint8(ODF_arg->data, UINT8_MAX);
             } else {
                 ret = CO_SDO_AB_READONLY;
             }
@@ -76,14 +78,10 @@ file_caches_ODF(CO_ODF_arg_t *ODF_arg) {
 
         case OD_3002_3_fileCaches_cacheSelector: // cache selector, uint8, readwrite
 
-            if (ODF_arg->reading) {
-                CO_setUint8(ODF_arg->data, caches->selector);
-            } else {
+            if (!ODF_arg->reading) {
                 uint8_t temp = CO_getUint8(ODF_arg->data);
 
-                if (temp == FREAD_CACHE || temp == FWRITE_CACHE)
-                    caches->selector = temp;
-                else 
+                if (temp != FREAD_CACHE && temp != FWRITE_CACHE)
                     return CO_SDO_AB_VALUE_HIGH; // invalid selector
             }
             
@@ -129,7 +127,7 @@ file_caches_ODF(CO_ODF_arg_t *ODF_arg) {
             if (ODF_arg->reading) {
                 uint32_t len;
 
-                if (caches->selector == FREAD_CACHE)
+                if (OD_fileCaches.cacheSelector == FREAD_CACHE)
                     len = olm_file_cache_len(caches->fread_cache, caches->keyword);
                 else
                     len = olm_file_cache_len(caches->fwrite_cache, caches->keyword);
@@ -143,27 +141,9 @@ file_caches_ODF(CO_ODF_arg_t *ODF_arg) {
 
         case OD_3002_6_fileCaches_iterator: // filelist index selector, uint32, readwrite
 
-            if (ODF_arg->reading) {
-                CO_setUint32(ODF_arg->data, caches->iterator);
-            } else {
-                uint32_t iter;
-                olm_file_cache_t *cache;
-
-                olm_file_free(caches->file);
-                caches->file = NULL;
-
-                if (caches->selector == FREAD_CACHE)
-                    cache = caches->fread_cache;
-                else
-                    cache = caches->fwrite_cache;
-
-                iter = CO_getUint32(ODF_arg->data);
-                if (iter < olm_file_cache_len(cache, caches->keyword))
-                    caches->iterator = iter;
-                else
+            if (!ODF_arg->reading) {
+                if (CO_getUint32(ODF_arg->data) >= olm_file_cache_len(cache, caches->keyword))
                     return CO_SDO_AB_VALUE_HIGH; // invalid iterator value
-
-                olm_file_cache_index(cache, caches->iterator, caches->keyword, &caches->file);
             }
             
             break;
@@ -173,9 +153,10 @@ file_caches_ODF(CO_ODF_arg_t *ODF_arg) {
             if (!ODF_arg->reading)
                 return CO_SDO_AB_READONLY;
 
-            if (caches->file != NULL && caches->file->name != NULL) { // file exist
-                ODF_arg->dataLength = strlen(caches->file->name)+1;
-                memcpy(ODF_arg->data, caches->file->name, ODF_arg->dataLength);
+            olm_file_cache_index(cache, OD_fileCaches.iterator, caches->keyword, &file);
+            if (file != NULL && file->name != NULL) { // file exist
+                ODF_arg->dataLength = strlen(file->name)+1;
+                memcpy(ODF_arg->data, file->name, ODF_arg->dataLength);
             } else { // no file
                 ret = CO_SDO_AB_NO_DATA;
             }
@@ -187,8 +168,9 @@ file_caches_ODF(CO_ODF_arg_t *ODF_arg) {
             if (!ODF_arg->reading)
                 return CO_SDO_AB_READONLY;
 
-            if (caches->file != NULL && caches->file->name != NULL) // file exist
-                CO_setUint32(ODF_arg->data, caches->file->size);
+            olm_file_cache_index(cache, OD_fileCaches.iterator, caches->keyword, &file);
+            if (file != NULL) // file exist
+                CO_setUint32(ODF_arg->data, file->size);
             else // no file
                 ret = CO_SDO_AB_NO_DATA;
 
@@ -199,23 +181,19 @@ file_caches_ODF(CO_ODF_arg_t *ODF_arg) {
             if (ODF_arg->reading)
                 return CO_SDO_AB_WRITEONLY;
 
-            if (caches->file == NULL) // no file
-                return CO_SDO_AB_NO_DATA;
-
-            olm_file_cache_t *cache;
-
-            if (caches->selector == FREAD_CACHE)
-                cache = caches->fread_cache;
-            else
-                cache = caches->fwrite_cache;
-
-            olm_file_cache_remove(cache, caches->file->name);
-            olm_file_free(caches->file);
-            caches->file = NULL;
-            caches->iterator = 0;
+            olm_file_cache_index(cache, OD_fileCaches.iterator, caches->keyword, &file);
+            if (file != NULL) { // no file
+                olm_file_cache_remove(cache, file->name);
+                OD_fileCaches.iterator = 0;
+            } else {
+                ret = CO_SDO_AB_NO_DATA;
+            }
 
             break;
     }
+
+    if (file != NULL)
+        olm_file_free(file);
 
     return ret;
 }
