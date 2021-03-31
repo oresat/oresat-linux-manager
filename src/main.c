@@ -31,7 +31,6 @@
 #include "board_main.h"
 #include "os_command.h"
 #include "app_manager_odf.h"
-#include "updater_odf.h"
 #include "olm_file_cache.h"
 #include "CO_fstream_odf.h"
 #include "file_caches_odf.h"
@@ -418,7 +417,6 @@ main(int argc, char *argv[]) {
             CO_OD_configure(CO->SDO[0], OD_3003_fread, CO_fread_ODF, &CO_fread_data, 0, 0U);
             CO_OD_configure(CO->SDO[0], OD_3004_fwrite, CO_fwrite_ODF, &CO_fwrite_data, 0, 0U);
             CO_OD_configure(CO->SDO[0], OD_3005_appManager, app_manager_ODF, &app_manager, 0, 0U);
-            CO_OD_configure(CO->SDO[0], OD_3100_updater, updater_ODF, NULL, 0, 0U);
 
             log_printf(LOG_INFO, DBG_CAN_OPEN_INFO, CO_activeNodeId, "communication reset");
         }

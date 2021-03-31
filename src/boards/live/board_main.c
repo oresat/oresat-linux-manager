@@ -9,10 +9,12 @@
  * Project home page is <https://github.com/oresat/oresat-linux-manager>.
  */
 
+#include "globals.h"
 #include "CANopen.h"
 #include "olm_app.h"
 #include "dxwifi_app.h"
 #include "updater_app.h"
+#include "updater_odf.h"
 #include "board_main.h"
 #include <errno.h>
 #include <stddef.h>
@@ -39,10 +41,14 @@ board_init(olm_board_t *board) {
     board->apps_len = TOTAL_APPS;
     board->apps = apps;
 
+    // ODFs
+    CO_OD_configure(CO->SDO[0], OD_3100_updater, updater_ODF, NULL, 0, 0U);
+
     return 1;
 }
 
 void
 board_loop(void) {
+    updater_async(fwrite_cache);
     usleep(100000);
 }

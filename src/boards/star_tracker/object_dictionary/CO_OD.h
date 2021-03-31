@@ -225,8 +225,8 @@
                UNSIGNED8      status;
                UNSIGNED8      updatesAvailable;
                DOMAIN         listUpdates;
-               UNSIGNED8      update;
-               UNSIGNED8      makeStatusFile;
+               BOOLEAN        update;
+               BOOLEAN        makeStatusFile;
                }              OD_updater_t;
 /*6001      */ typedef struct {
                UNSIGNED8      highestSubIndexSupported;

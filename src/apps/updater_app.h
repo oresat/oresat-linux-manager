@@ -20,7 +20,9 @@
 /**
  * @brief Make the linux updater app.
  *
- * @return negative errno value on error.
+ * @param app @ref olm_app_t object to fill out.
+ *
+ * @return non negative number on sucess or negativer errno on error.
  */
 int updater_app(olm_app_t *app);
 
@@ -38,18 +40,19 @@ int updater_app_add_update_archive(const char *file);
 /**
  * @brief Tells the Updater to update.
  *
- * @return 0 on sucess or negativer errno  on error.
+ * @return non negative number on sucess or negativer errno on error.
  */
 int updater_app_update(void);
 
 /**
  * @brief Tells the OreSat Linux Updater to make a status archive.
  *
- * @param file The absolute path to the file.
+ * @param out The absolute path to the file. String must be freed with free()
+ * when no longer needed.
  *
- * @return 0 on sucess or negativer errno  on error.
+ * @return non negative number on sucess or negativer errno on error.
  */
-int updater_app_make_status_archive(void);
+int updater_app_make_status_archive(char **out);
 
 /**
  * @breif Gets the status enum.
@@ -65,17 +68,17 @@ int updater_app_status(uint8_t *state);
  * 
  * @param count The value to set.
  *
- * @return 0 on sucess or a negative errno value on error.
+ * @return non negative number on sucess or negativer errno on error.
  */
 int updater_app_updates_available(uint32_t *count);
 
 /**
  * @breif Gets the list of updates.
  *
- * @param out The list of updates string.
- * 
- * @return list of updates a JSON str on sucess or NULL on error. String must
+ * @param out The list of updates string as a JSON str on sucess. String must
  * be freed with free() when no longer needed.
+ *
+ * @return non negative number on sucess or negativer errno on error.
  */
 int updater_app_list_updates(char **out);
 

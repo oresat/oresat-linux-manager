@@ -12,12 +12,8 @@
 #ifndef GLOBALS_H
 #define GLOBALS_H
 
-#include "olm_app.h"
 #include "olm_file_cache.h"
 #include <systemd/sd-bus.h>
-
-/** List of OLM apps. Defined in board_main.c */
-extern olm_app_t *apps;
 
 /**
  * File cache for files that can be read over the CANbus by the Network

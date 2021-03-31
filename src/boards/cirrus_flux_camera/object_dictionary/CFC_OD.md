@@ -10,7 +10,7 @@ OreSat CFC
 | File Version | 1                              |
 | Created      | 3/9/2021 11:09:27 PM           |
 | Created By   | Ryan Medick                    |
-| Modified     | 3/25/2021 11:25:29 PM          |
+| Modified     | 3/30/2021 9:21:02 PM           |
 | Modified By  | Ryan Medick                    |
 
 This file was automatically generated with [libedssharp](https://github.com/robincornelius/libedssharp) Object Dictionary Editor v0.8-123-g6c02323
@@ -1034,5 +1034,5 @@ Manufacturer may define its own constants up to index 0xFF. Of course, he must t
 | 0x01 | Status                | UNSIGNED8  | ro  | no  | no   | 0             |
 | 0x02 | Updates available     | UNSIGNED8  | ro  | no  | no   | 0             |
 | 0x03 | List updates          | DOMAIN     | ro  | no  | no   |               |
-| 0x04 | Update                | UNSIGNED8  | wo  | no  | no   |               |
-| 0x05 | Make status file      | UNSIGNED8  | wo  | no  | no   |               |
+| 0x04 | Update                | BOOLEAN    | wo  | no  | no   | 0             |
+| 0x05 | Make status file      | BOOLEAN    | wo  | no  | no   | 0             |
