@@ -1,16 +1,16 @@
 /**
- * The app for interfacing with systemd over D-Bus.
+ * Module for interfacing with Systemd over D-Bus.
  *
- * @file        systemd_app.h
- * @ingroup     core_apps
+ * @file        systemd.c
+ * @ingroup     daemon_modules
  *
  * This file is part of OreSat Linux Manager, a common CAN to Dbus interface
  * for daemons running on OreSat Linux boards.
  * Project home page is <https://github.com/oresat/oresat-linux-manager>.
  */
 
-#ifndef SYSTEMD_APP_H
-#define SYSTEMD_APP_H
+#ifndef SYSTEMD_MODULE_H
+#define SYSTEMD_MODULE_H
 
 enum active_states {
     unit_unknown = 0,
@@ -68,4 +68,4 @@ int restart_unit(const char *unit);
  */
 int get_active_state_unit(const char *unit);
 
-#endif /* SYSTEMD_APP_H */
+#endif /* SYSTEMD_MODULE_H */

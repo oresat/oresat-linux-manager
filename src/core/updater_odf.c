@@ -1,7 +1,7 @@
 /**
  * OreSat Linux Updater dameon app.
  *
- * @file        updater_app.c
+ * @file        updaterd_app.c
  * @ingroup     apps
  *
  * This file is part of OreSat Linux Manager, a common CAN to Dbus interface
@@ -12,7 +12,8 @@
 #include "CANopen.h"
 #include "log_message.h"
 #include "utility.h"
-#include "updater_app.h"
+#include "olm_file_cache.h"
+#include "updaterd.h"
 #include "updater_odf.h"
 #include <linux/limits.h>
 #include <stdbool.h>
@@ -26,13 +27,13 @@ updater_async(olm_file_cache_t *fread_cache) {
     uint8_t temp_uint8;
     char *temp_str;
 
-    if (updater_app_status(&temp_uint8) < 0) {
+    if (updaterd_status(&temp_uint8) < 0) {
         CO_LOCK_OD();
         OD_updater.status = temp_uint8;
         CO_UNLOCK_OD();
     }
 
-    if (updater_app_updates_available(&temp_uint32) < 0) {
+    if (updaterd_updates_available(&temp_uint32) < 0) {
         CO_LOCK_OD();
         if (temp_uint32 > UINT8_MAX)
             OD_updater.updatesAvailable = UINT8_MAX;
@@ -42,7 +43,7 @@ updater_async(olm_file_cache_t *fread_cache) {
     }
 
     if (OD_updater.makeStatusFile) {
-        if (updater_app_make_status_archive(&temp_str) >= 0)
+        if (updaterd_make_status_archive(&temp_str) >= 0)
             if (olm_file_cache_add(fread_cache, temp_str) < 0)
                 log_message(LOG_ERR, "failed to add %s to fread cache", temp_str);
 
@@ -52,7 +53,7 @@ updater_async(olm_file_cache_t *fread_cache) {
     }
 
     if (OD_updater.update) {
-        updater_app_update();
+        updaterd_update();
 
         CO_LOCK_OD();
         OD_updater.update = false;
@@ -75,7 +76,7 @@ updater_ODF(CO_ODF_arg_t *ODF_arg) {
     if (ODF_arg->firstSegment) {
         FREE_AND_NULL(temp_str);
 
-        if (updater_app_list_updates(&temp_str) < 0)
+        if (updaterd_list_updates(&temp_str) < 0)
             return CO_SDO_AB_NO_DATA;
 
         ODF_arg->dataLengthTotal = strlen(temp_str)+1;

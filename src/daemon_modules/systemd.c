@@ -1,8 +1,8 @@
 /**
- * The app for interfacing with systemd over D-Bus.
+ * Module for interfacing with Systemd over D-Bus.
  *
- * @file        systemd_app.c
- * @ingroup     core_apps
+ * @file        systemd.c
+ * @ingroup     daemon_modules
  *
  * This file is part of OreSat Linux Manager, a common CAN to Dbus interface
  * for daemons running on OreSat Linux boards.
@@ -13,21 +13,16 @@
 #include "log_message.h"
 #include "olm_app.h"
 #include "utility.h"
-#include "systemd_app.h"
+#include "systemd.h"
 #include <errno.h>
 #include <stdlib.h>
 #include <string.h>
 #include <systemd/sd-bus.h>
 
-/** App's name */
-#define APP_NAME            "Systemd"
-/** Systemd D-Bus destionation */
+#define MODULE_NAME         "Systemd"
 #define DESTINATION         "org.freedesktop.systemd1"
-/** Systemd Manager D-Bus interface for systemd */
 #define MANAGER_INTERFACE   DESTINATION".Manager"
-/** Systemd Unit D-Bus interface. */
 #define UNIT_INTERFACE      DESTINATION".Unit"
-/** Systmed D-Bus object path. */
 #define OBJECT_PATH         "/org/freedesktop/systemd1"
 
 const char *active_state_str[] = {
@@ -51,9 +46,9 @@ get_unit(const char *name) {
     
     if (sd_bus_call_method(system_bus, DESTINATION, OBJECT_PATH, \
                 MANAGER_INTERFACE, "GetUnit", &err, &mess, "s", name) < 0)
-        LOG_DBUS_CALL_METHOD_ERROR(LOG_ERR, APP_NAME, "GetUnit", err.name);
+        LOG_DBUS_CALL_METHOD_ERROR(LOG_ERR, MODULE_NAME, "GetUnit", err.name);
     else if (sd_bus_message_read(mess, "o", &unit) < 0)
-        LOG_DBUS_METHOD_READ_ERROR(LOG_ERR, APP_NAME, "GetUnit", err.name);
+        LOG_DBUS_METHOD_READ_ERROR(LOG_ERR, MODULE_NAME, "GetUnit", err.name);
     else
         if ((r = malloc(strlen(unit)+1)) != NULL)  // must copy strings
             strncpy(r, unit, strlen(unit)+1);
@@ -74,7 +69,7 @@ start_unit(const char *unit) {
     
     if ((r = sd_bus_call_method(system_bus, DESTINATION, unit, \
                 UNIT_INTERFACE, "StartUnit", &err, &mess, "s", "fail")) < 0)
-        LOG_DBUS_CALL_METHOD_ERROR(LOG_ERR, APP_NAME, "StartUnit", err.name);
+        LOG_DBUS_CALL_METHOD_ERROR(LOG_ERR, MODULE_NAME, "StartUnit", err.name);
 
     sd_bus_message_unref(mess);
     sd_bus_error_free(&err);
@@ -93,7 +88,7 @@ stop_unit(const char *unit) {
     
     if ((r = sd_bus_call_method(system_bus, DESTINATION, unit, \
                 UNIT_INTERFACE, "StopUnit", &err, &mess, "s", "fail")) < 0)
-        LOG_DBUS_CALL_METHOD_ERROR(LOG_ERR, APP_NAME, "StoptUnit", err.name);
+        LOG_DBUS_CALL_METHOD_ERROR(LOG_ERR, MODULE_NAME, "StoptUnit", err.name);
 
     sd_bus_message_unref(mess);
     sd_bus_error_free(&err);
@@ -111,7 +106,7 @@ restart_unit(const char *unit) {
     
     if ((r = sd_bus_call_method(system_bus, DESTINATION, unit, \
                 UNIT_INTERFACE, "RestartUnit", &err, &mess, "s", "fail")) < 0)
-        LOG_DBUS_CALL_METHOD_ERROR(LOG_ERR, APP_NAME, "RestartUnit", err.name);
+        LOG_DBUS_CALL_METHOD_ERROR(LOG_ERR, MODULE_NAME, "RestartUnit", err.name);
 
     sd_bus_message_unref(mess);
     sd_bus_error_free(&err);
@@ -130,9 +125,9 @@ get_active_state_unit(const char *unit) {
 
     if (sd_bus_get_property(system_bus, DESTINATION, unit, UNIT_INTERFACE, \
                 "ActiveState", &err, &mess, "d") < 0)
-        LOG_DBUS_GET_PROPERTY_ERROR(LOG_ERR, APP_NAME, "ActiveState", err.name);
+        LOG_DBUS_GET_PROPERTY_ERROR(LOG_ERR, MODULE_NAME, "ActiveState", err.name);
     else if (sd_bus_message_read(mess, "s", &state) < 0)
-        LOG_DBUS_METHOD_READ_ERROR(LOG_ERR, APP_NAME, "ActiveState", err.name);
+        LOG_DBUS_METHOD_READ_ERROR(LOG_ERR, MODULE_NAME, "ActiveState", err.name);
     else 
         for (int i=0; i<sizeof(active_state_str); ++i)
             if (strncmp(state, active_state_str[i], strlen(state)+1) == 0) {

@@ -12,7 +12,7 @@
 #include "globals.h"
 #include "CANopen.h"
 #include "olm_app.h"
-#include "updater_app.h"
+#include "updaterd.h"
 #include "updater_odf.h"
 #include "board_main.h"
 #include <errno.h>
@@ -33,7 +33,7 @@ board_init(olm_board_t *board) {
         return -EINVAL;
 
     // fill out info for all apps
-    updater_app(&apps[UPDATER_APP]);
+    updaterd_app(&apps[UPDATER_APP]);
 
     board->apps_len = TOTAL_APPS;
     board->apps = apps;

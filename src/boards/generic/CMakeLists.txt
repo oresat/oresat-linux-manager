@@ -14,7 +14,7 @@ target_link_libraries(board
     CANopenNode
     core
     common
-    apps
+    daemon_modules
     )
 
 target_include_directories(board PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})

@@ -12,8 +12,8 @@
 #include "globals.h"
 #include "CANopen.h"
 #include "olm_app.h"
-#include "updater_app.h"
-#include "star_tracker_app.h"
+#include "updaterd.h"
+#include "star_tracker.h"
 #include "updater_odf.h"
 #include "board_main.h"
 #include <errno.h>
@@ -23,7 +23,7 @@
 #include <unistd.h>
 
 // apps index in list
-#define UPDATER_APP         0 // linux_updater_app is always 0
+#define UPDATER_APP         0 // linux_updaterd_app is always 0
 #define STAR_TRACKER_APP    UPDATER_APP+1
 #define TOTAL_APPS          STAR_TRACKER_APP+1
 
@@ -36,7 +36,7 @@ board_init(olm_board_t *board) {
         return -EINVAL;
 
     // fill out info for all apps
-    updater_app(&apps[UPDATER_APP]);
+    updaterd_app(&apps[UPDATER_APP]);
     star_tracker_app(&apps[STAR_TRACKER_APP]);
 
     board->apps_len = TOTAL_APPS;
@@ -52,7 +52,7 @@ void
 board_loop(void) {
     static st_coordinates_t coor;
 
-    if (star_tracker_app_coordinates(&coor) >= 0) {
+    if (star_tracker_coordinates(&coor) >= 0) {
         CO_LOCK_OD();
         OD_orienation.rightAscension = coor.right_ascension;
         OD_orienation.declination = coor.declination;

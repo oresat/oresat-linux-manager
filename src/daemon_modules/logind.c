@@ -1,8 +1,8 @@
 /**
- * App for interfacing with logind which has access to board power options.
+ * Module for interfacing with Logind over D-Bus.
  *
- * @file        logind_app.c
- * @ingroup     logind_app
+ * @file        logind.c
+ * @ingroup     daemon_modules
  *
  * This file is part of OreSat Linux Manager, a common CAN to Dbus interface
  * for daemons running on OreSat Linux boards.
@@ -12,15 +12,12 @@
 #include "globals.h"
 #include "log_message.h"
 #include "olm_app.h"
-#include "logind_app.h"
+#include "logind.h"
 #include <systemd/sd-bus.h>
 
-#define APP_NAME            "logind"
-/** Dbus destionation for systemd power settings */
+#define MODULE_NAME         "logind"
 #define DESTINATION         "org.freedesktop.logind1"
-/** Dbus interface name for systemd power settings */
 #define INTERFACE_NAME      DESTINATION".Manager"
-/** Dbus object name for systemd power settings */
 #define OBJECT_PATH         "/org/freedesktop/logind1"
 
 // lazy way to deal with all the dbus arguments
@@ -32,7 +29,7 @@ logind_reboot(void) {
     int r;
 
     if ((r = sd_bus_call_method(DBUS_INFO, "Reboot", &err, NULL, NULL)) < 0)
-        LOG_DBUS_CALL_METHOD_ERROR(LOG_ERR, APP_NAME, "GetUnit", err.name);
+        LOG_DBUS_CALL_METHOD_ERROR(LOG_ERR, MODULE_NAME, "GetUnit", err.name);
 
     sd_bus_error_free(&err);
     return r;
@@ -44,7 +41,7 @@ logind_poweroff(void) {
     int r;
 
     if ((r = sd_bus_call_method(DBUS_INFO, "PowerOff", &err, NULL, NULL)) < 0)
-        LOG_DBUS_CALL_METHOD_ERROR(LOG_ERR, APP_NAME, "GetUnit", err.name);
+        LOG_DBUS_CALL_METHOD_ERROR(LOG_ERR, MODULE_NAME, "GetUnit", err.name);
 
     sd_bus_error_free(&err);
     return r;

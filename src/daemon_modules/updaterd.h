@@ -1,18 +1,17 @@
 /**
- * OreSat Linux Updater daemon app.
+ * Module for interfacing with the OreSat Linux Updater daemon over D-Bus.
  *
- * @file        updater_app.h
- * @ingroup     apps
+ * @file        updater.h
+ * @ingroup     daemon_modules
  *
  * This file is part of OreSat Linux Manager, a common CAN to Dbus interface
  * for daemons running on OreSat Linux boards.
  * Project home page is <https://github.com/oresat/oresat-linux-manager>.
  */
 
-#ifndef UPDATER_APP_H
-#define UPDATER_APP_H
+#ifndef UPDATER_MODULE_H
+#define UPDATER_MODULE_H
 
-#include "olm_file_cache.h"
 #include "olm_app.h"
 #include <stdint.h>
 #include <stdbool.h>
@@ -24,7 +23,7 @@
  *
  * @return non negative number on sucess or negativer errno on error.
  */
-int updater_app(olm_app_t *app);
+int updaterd_app(olm_app_t *app);
 
 /**
  * @brief Give the OreSat Linux Updater daemon a new update archive. The
@@ -35,14 +34,14 @@ int updater_app(olm_app_t *app);
  * @return 1 if the file was added, 0 on if it wasn't, negativer errno on
  * error.
  */
-int updater_app_add_update_archive(const char *file);
+int updaterd_add_update_archive(const char *file);
 
 /**
  * @brief Tells the Updater to update.
  *
  * @return non negative number on sucess or negativer errno on error.
  */
-int updater_app_update(void);
+int updaterd_update(void);
 
 /**
  * @brief Tells the OreSat Linux Updater to make a status archive.
@@ -52,7 +51,7 @@ int updater_app_update(void);
  *
  * @return non negative number on sucess or negativer errno on error.
  */
-int updater_app_make_status_archive(char **out);
+int updaterd_make_status_archive(char **out);
 
 /**
  * @breif Gets the status enum.
@@ -61,7 +60,7 @@ int updater_app_make_status_archive(char **out);
  *
  * @return 0 on sucess or a negative errno value on error.
  */
-int updater_app_status(uint8_t *state);
+int updaterd_status(uint8_t *state);
 
 /**
  * @breif Gets the number of updates available.
@@ -70,7 +69,7 @@ int updater_app_status(uint8_t *state);
  *
  * @return non negative number on sucess or negativer errno on error.
  */
-int updater_app_updates_available(uint32_t *count);
+int updaterd_updates_available(uint32_t *count);
 
 /**
  * @breif Gets the list of updates.
@@ -80,6 +79,6 @@ int updater_app_updates_available(uint32_t *count);
  *
  * @return non negative number on sucess or negativer errno on error.
  */
-int updater_app_list_updates(char **out);
+int updaterd_list_updates(char **out);
 
-#endif /* UPDATER_APP_H */
+#endif /* UPDATER_MODULE_H */

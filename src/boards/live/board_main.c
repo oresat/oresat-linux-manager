@@ -12,8 +12,8 @@
 #include "globals.h"
 #include "CANopen.h"
 #include "olm_app.h"
-#include "dxwifi_app.h"
-#include "updater_app.h"
+#include "dxwifi.h"
+#include "updaterd.h"
 #include "updater_odf.h"
 #include "board_main.h"
 #include <errno.h>
@@ -22,7 +22,7 @@
 #include <unistd.h>
 
 // apps index in list
-#define UPDATER_APP         0 // linux_updater_app is always 0
+#define UPDATER_APP         0 // linux_updaterd_app is always 0
 #define DXWIFI_APP          UPDATER_APP+1
 #define TOTAL_APPS          DXWIFI_APP+1
 
@@ -35,7 +35,7 @@ board_init(olm_board_t *board) {
         return -EINVAL;
 
     // fill out info for all apps
-    updater_app(&apps[UPDATER_APP]);
+    updaterd_app(&apps[UPDATER_APP]);
     dxwifi_app(&apps[DXWIFI_APP]);
 
     board->apps_len = TOTAL_APPS;

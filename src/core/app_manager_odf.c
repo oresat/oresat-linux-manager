@@ -11,7 +11,7 @@
 
 //#include "cpufreq.h"
 #include "log_message.h"
-#include "systemd_app.h"
+#include "systemd.h"
 #include "board_main.h"
 #include "olm_file_cache.h"
 #include "app_manager_odf.h"
