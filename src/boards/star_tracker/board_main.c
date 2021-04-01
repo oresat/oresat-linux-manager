@@ -11,10 +11,10 @@
 
 #include "globals.h"
 #include "CANopen.h"
-#include "olm_app.h"
 #include "updaterd.h"
-#include "star_tracker.h"
 #include "updater_odf.h"
+#include "star_tracker_app.h"
+#include "olm_app.h"
 #include "board_main.h"
 #include <errno.h>
 #include <stddef.h>
@@ -22,45 +22,34 @@
 #include <stdio.h>
 #include <unistd.h>
 
-// apps index in list
-#define UPDATER_APP         0 // linux_updaterd_app is always 0
-#define STAR_TRACKER_APP    UPDATER_APP+1
-#define TOTAL_APPS          STAR_TRACKER_APP+1
+static olm_app_t updater_app = {
+    .name = "Updater",
+    .unit_name = UPDATER_SERVICE_FILE,
+    .fwrite_keyword = "Update",
+    .fwrite_cb = updaterd_add_update_archive,
+    .async_cb = updater_async,
+    .data = NULL,
+};
 
-olm_app_t apps[TOTAL_APPS] = {OLM_APP_DEFAULT};
+static olm_app_t star_tracker_app = {
+    .name = "Star Tracker",
+    .unit_name = STAR_TRACKER_SERVICE_FILE,
+    .fwrite_keyword = NULL,
+    .fwrite_cb = NULL,
+    .async_cb = star_tracker_app_async,
+    .data = NULL,
+};
 
-int
-board_init(olm_board_t *board) {
+static olm_app_t *apps[] = {
+    &updater_app, // updater app is always index 0
+    &star_tracker_app,
+    NULL, // always end with null
+};
 
-    if (board == NULL)
-        return -EINVAL;
-
-    // fill out info for all apps
-    updaterd_app(&apps[UPDATER_APP]);
-    star_tracker_app(&apps[STAR_TRACKER_APP]);
-
-    board->apps_len = TOTAL_APPS;
-    board->apps = apps;
-
-    // ODFs
-    CO_OD_configure(CO->SDO[0], OD_3100_updater, updater_ODF, NULL, 0, 0U);
-
-    return 1;
-}
+// global shared with main.c
+olm_app_t **APPS = apps;
 
 void
-board_loop(void) {
-    static st_coordinates_t coor;
-
-    if (star_tracker_coordinates(&coor) >= 0) {
-        CO_LOCK_OD();
-        OD_orienation.rightAscension = coor.right_ascension;
-        OD_orienation.declination = coor.declination;
-        OD_orienation.roll = coor.roll;
-        // TODO time stamp
-        CO_UNLOCK_OD();
-    }
-
-    updater_async(fwrite_cache);
-    usleep(1000000);
+board_init(void) {
+    CO_OD_configure(CO->SDO[0], OD_3100_updater, updater_ODF, NULL, 0, 0U);
 }

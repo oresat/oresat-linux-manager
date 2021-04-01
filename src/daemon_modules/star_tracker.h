@@ -12,7 +12,7 @@
 #ifndef STAR_TRACKER_MODULE_H
 #define STAR_TRACKER_MODULE_H
 
-#include "olm_app.h"
+#define STAR_TRACKER_SERVICE_FILE    "oresat-star-trackerd.service"
 
 typedef struct {
     double declination;
@@ -21,7 +21,6 @@ typedef struct {
     double timestamp; // TODO fix type
 } st_coordinates_t;
 
-int star_tracker_app(olm_app_t *app);
 int star_tracker_coordinates(st_coordinates_t *coor);
 
 #endif /* STAR_TRACKER_MODULE_H */

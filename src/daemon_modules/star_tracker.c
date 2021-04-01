@@ -11,7 +11,6 @@
 
 #include "globals.h"
 #include "log_message.h"
-#include "olm_app.h"
 #include "utility.h"
 #include "star_tracker.h"
 #include <errno.h>
@@ -27,19 +26,6 @@
 
 // lazy way to deal with all the D-Bus arguments
 #define DBUS_INFO system_bus, DESTINATION, OBJECT_PATH, INTERFACE_NAME
-
-int
-star_tracker_app(olm_app_t *app) {
-    MALLOC_STRNCPY_OR_GOTO(app->name, MODULE_NAME, star_tracker_error);
-    MALLOC_STRNCPY_OR_GOTO(app->service_file, SERVICE_FILE, star_tracker_error);
-
-    return 1;
-
-star_tracker_error:
-
-    OLM_APP_FREE(app);
-    return -1;
-}
 
 int
 star_tracker_coordinates(st_coordinates_t *coor) {

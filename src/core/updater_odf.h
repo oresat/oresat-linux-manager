@@ -15,7 +15,7 @@
 
 #include "CANopen.h"
 
-void updater_async(olm_file_cache_t *fread_cache);
+void updater_async(void *data, olm_file_cache_t *fread_cache);
 
 CO_SDO_abortCode_t updater_ODF(CO_ODF_arg_t *ODF_arg);
 

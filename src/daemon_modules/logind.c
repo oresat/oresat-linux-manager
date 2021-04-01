@@ -11,7 +11,6 @@
 
 #include "globals.h"
 #include "log_message.h"
-#include "olm_app.h"
 #include "logind.h"
 #include <systemd/sd-bus.h>
 

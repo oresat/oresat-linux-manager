@@ -12,15 +12,7 @@
 #ifndef SYSTEMD_MODULE_H
 #define SYSTEMD_MODULE_H
 
-enum active_states {
-    unit_unknown = 0,
-    unit_inactive = 1,
-    unit_reloading = 2,
-    unit_active = 3,
-    unit_failed = 4, 
-    unit_activating = 5,
-    unit_deactivating = 6,
-};
+#include "olm_app.h"
 
 /**
  * @brief Get the systemd unit object path for a unit.
@@ -64,8 +56,8 @@ int restart_unit(const char *unit);
  *
  * @param unit The unit object path to get the active state of.
  *
- * @return A @ref active_states value on success or negative on error.
+ * @return A @ref active_states value.
  */
-int get_active_state_unit(const char *unit);
+unit_active_states_t get_active_state_unit(const char *unit);
 
 #endif /* SYSTEMD_MODULE_H */

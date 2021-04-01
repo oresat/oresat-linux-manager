@@ -12,8 +12,6 @@
 #include "globals.h"
 #include "log_message.h"
 #include "utility.h"
-#include "olm_app.h"
-#include "updaterd.h"
 #include <errno.h>
 #include <stddef.h>
 #include <stdlib.h>
@@ -25,26 +23,9 @@
 #define DESTINATION         "org.oresat.updater"
 #define INTERFACE_NAME      DESTINATION
 #define OBJECT_PATH         "/org/oresat/updater"
-#define SERVICE_FILE        "oresat-linux-updaterd.service"
-#define FWRITE_KEYWORD      "update"
 
 // lazy way to deal with all the D-Bus arguments
 #define DBUS_INFO system_bus, DESTINATION, OBJECT_PATH, INTERFACE_NAME
-
-int
-updaterd_app(olm_app_t *app) {
-    MALLOC_STRNCPY_OR_GOTO(app->name, MODULE_NAME, updaterd_error)
-    MALLOC_STRNCPY_OR_GOTO(app->service_file, SERVICE_FILE, updaterd_error)
-    MALLOC_STRNCPY_OR_GOTO(app->fwrite_keyword, FWRITE_KEYWORD, updaterd_error)
-    app->fwrite_cb = updaterd_add_update_archive;
-
-    return 1;
-
-updaterd_error:
-
-    OLM_APP_FREE(app);
-    return -1;
-}
 
 int
 updaterd_add_update_archive(const char *file) {

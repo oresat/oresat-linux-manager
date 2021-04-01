@@ -11,8 +11,8 @@
 
 #include "globals.h"
 #include "log_message.h"
-#include "olm_app.h"
 #include "utility.h"
+#include "olm_app.h"
 #include "systemd.h"
 #include <errno.h>
 #include <stdlib.h>
@@ -25,8 +25,7 @@
 #define UNIT_INTERFACE      DESTINATION".Unit"
 #define OBJECT_PATH         "/org/freedesktop/systemd1"
 
-const char *active_state_str[] = {
-    "unknown",
+static const char *active_state_str[] = {
     "inactive",
     "reloading",
     "active",
@@ -113,27 +112,29 @@ restart_unit(const char *unit) {
     return r;
 }
 
-int
+unit_active_states_t
 get_active_state_unit(const char *unit) {
     sd_bus_error err = SD_BUS_ERROR_NULL;
     sd_bus_message *mess = NULL;
     char *state;
-    int r = unit_unknown;
+    int r = UNIT_UNKNOWN;
 
     if (unit == NULL)
         return r;
 
     if (sd_bus_get_property(system_bus, DESTINATION, unit, UNIT_INTERFACE, \
-                "ActiveState", &err, &mess, "d") < 0)
+                "ActiveState", &err, &mess, "d") < 0) {
         LOG_DBUS_GET_PROPERTY_ERROR(LOG_ERR, MODULE_NAME, "ActiveState", err.name);
-    else if (sd_bus_message_read(mess, "s", &state) < 0)
+    } else if (sd_bus_message_read(mess, "s", &state) < 0) {
         LOG_DBUS_METHOD_READ_ERROR(LOG_ERR, MODULE_NAME, "ActiveState", err.name);
-    else 
-        for (int i=0; i<sizeof(active_state_str); ++i)
+    } else  {
+        for (int i=0; i<sizeof(active_state_str); ++i) {
             if (strncmp(state, active_state_str[i], strlen(state)+1) == 0) {
                 r = i;
                 break;
             }
+        }
+    }
 
     sd_bus_message_unref(mess);
     sd_bus_error_free(&err);

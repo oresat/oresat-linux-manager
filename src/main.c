@@ -23,14 +23,15 @@
 #include "CO_error.h"
 #include "CO_epoll_interface.h"
 
+#include "utility.h"
 #include "CO_fstream_odf.h"
 #include "file_caches_odf.h"
-#include "os_command.h"
+#include "systemd.h"
 #include "olm_app.h"
 #include "board_info.h"
 #include "board_main.h"
 #include "os_command.h"
-#include "app_manager_odf.h"
+#include "app_manager.h"
 #include "olm_file_cache.h"
 #include "CO_fstream_odf.h"
 #include "file_caches_odf.h"
@@ -91,7 +92,7 @@ sd_bus *system_bus = NULL;
 olm_file_cache_t *fread_cache = NULL;
 olm_file_cache_t *fwrite_cache = NULL;
 
-os_command_t os_command_data;
+static os_command_t os_command_data;
 
 /* Helper functions **********************************************************/
 /* Realtime thread */
@@ -105,7 +106,6 @@ static pthread_t board_thread_id;
 /* async thread */
 static void* async_thread(void* arg);
 static pthread_t async_thread_id;
-static app_manager_t app_manager;
 
 /* make daemon */
 int make_daemon(const char *pid_file);
@@ -215,7 +215,6 @@ main(int argc, char *argv[]) {
     bool firstRun = true;
     bool daemon_flag = false;
     bool verbose = false;
-    olm_board_t board;
     bool cpufreq_ctrl = false;
 
     // file transfer data
@@ -404,19 +403,17 @@ main(int argc, char *argv[]) {
             CO_time_init(&CO_time, CO->SDO[0], &OD_time.epochTimeBaseMs, &OD_time.epochTimeOffsetMs, 0x2130);
 #endif
 
-            if (board_init(&board) < 0)
-                log_printf(LOG_ERR, "board_init() failed");
-            
-            if (app_manager_init(&app_manager, &board, cpufreq_ctrl) < 0)
+            if (app_manager_init(APPS) < 0)
                 log_printf(LOG_ERR, "app_manager_init() failed");
-
+            
             // configure core ODFs
+            board_init();
             board_info_setup();
             CO_OD_configure(CO->SDO[0], OD_1023_OSCommand, OS_COMMAND_1023_ODF, &os_command_data, 0, 0U);
             CO_OD_configure(CO->SDO[0], OD_3002_fileCaches, file_caches_ODF, &caches_odf_data, 0, 0U);
             CO_OD_configure(CO->SDO[0], OD_3003_fread, CO_fread_ODF, &CO_fread_data, 0, 0U);
             CO_OD_configure(CO->SDO[0], OD_3004_fwrite, CO_fwrite_ODF, &CO_fwrite_data, 0, 0U);
-            CO_OD_configure(CO->SDO[0], OD_3005_appManager, app_manager_ODF, &app_manager, 0, 0U);
+            CO_OD_configure(CO->SDO[0], OD_3005_appManager, app_manager_ODF, APPS, 0, 0U);
 
             log_printf(LOG_INFO, DBG_CAN_OPEN_INFO, CO_activeNodeId, "communication reset");
         }
@@ -566,8 +563,14 @@ board_thread(void* arg) {
     log_printf(LOG_DEBUG, "board thread started");
 
     /* Endless loop */
-    while (CO_endProgram == 0)
-        board_loop(); 
+    while (CO_endProgram == 0) {
+        for (int i=0; APPS[i] != NULL; ++i) {
+            if (APPS[i]->async_cb != NULL && APPS[i]->unit_state == UNIT_ACTIVE)
+                APPS[i]->async_cb(APPS[i]->data, fread_cache);
+        }
+
+        usleep(ASYNC_DELAY);
+    }
 
     log_printf(LOG_DEBUG, "board thread ended");
     return NULL;
@@ -581,7 +584,7 @@ async_thread(void* arg) {
     /* Endless loop */
     while (CO_endProgram == 0) {
         co_command_async(&os_command_data);
-        app_manager_async(&app_manager, fwrite_cache);
+        app_manager_async(APPS, fwrite_cache);
         usleep(ASYNC_DELAY);
     }
 

@@ -80,7 +80,7 @@ int olm_file_cache_remove(olm_file_cache_t *in, char *filename);
  * @return 0 on success or negative errno on failure.
  */
 int
-olm_file_cache_index(olm_file_cache_t *in, int index, char *keyword,
+olm_file_cache_index(olm_file_cache_t *in, int index, const char *keyword,
         olm_file_t **out);
 
 /**

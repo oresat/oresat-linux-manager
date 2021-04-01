@@ -22,7 +22,7 @@
 #include <string.h>
 
 void
-updater_async(olm_file_cache_t *fread_cache) {
+updater_async(void *data, olm_file_cache_t *fread_cache) {
     uint32_t temp_uint32;
     uint8_t temp_uint8;
     char *temp_str;

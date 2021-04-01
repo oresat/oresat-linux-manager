@@ -254,7 +254,7 @@ olm_file_cache_remove(olm_file_cache_t *in, char *filename) {
 }
 
 int
-olm_file_cache_index(olm_file_cache_t *in, int index, char *keyword,
+olm_file_cache_index(olm_file_cache_t *in, int index, const char *keyword,
         olm_file_t **out) {
     char filepath[PATH_MAX];
     uint32_t len;

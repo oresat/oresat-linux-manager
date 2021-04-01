@@ -12,18 +12,10 @@
 #ifndef UPDATER_MODULE_H
 #define UPDATER_MODULE_H
 
-#include "olm_app.h"
 #include <stdint.h>
 #include <stdbool.h>
 
-/**
- * @brief Make the linux updater app.
- *
- * @param app @ref olm_app_t object to fill out.
- *
- * @return non negative number on sucess or negativer errno on error.
- */
-int updaterd_app(olm_app_t *app);
+#define UPDATER_SERVICE_FILE    "oresat-linux-updaterd.service"
 
 /**
  * @brief Give the OreSat Linux Updater daemon a new update archive. The

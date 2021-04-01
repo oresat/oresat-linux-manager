@@ -1,7 +1,7 @@
 # core
 
 set(CORE_SOURCES
-    app_manager_odf.c
+    app_manager.c
     board_info.c
     CO_fstream_odf.c
     cpufreq.c
@@ -11,7 +11,7 @@ set(CORE_SOURCES
     )
 
 set(CORE_HEADERS
-    app_manager_odf.h
+    app_manager.h
     board_info.h
     board_main.h
     CO_fstream_odf.h

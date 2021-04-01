@@ -11,44 +11,43 @@
 
 #include "globals.h"
 #include "CANopen.h"
-#include "olm_app.h"
-#include "dxwifi.h"
 #include "updaterd.h"
 #include "updater_odf.h"
+#include "olm_app.h"
 #include "board_main.h"
 #include <errno.h>
 #include <stddef.h>
 #include <stdlib.h>
 #include <unistd.h>
 
-// apps index in list
-#define UPDATER_APP         0 // linux_updaterd_app is always 0
-#define DXWIFI_APP          UPDATER_APP+1
-#define TOTAL_APPS          DXWIFI_APP+1
+static olm_app_t updater_app = {
+    .name = "Updater",
+    .unit_name = UPDATER_SERVICE_FILE,
+    .fwrite_keyword = "Update",
+    .fwrite_cb = updaterd_add_update_archive,
+    .async_cb = updater_async,
+    .data = NULL,
+};
 
-olm_app_t apps[TOTAL_APPS] = {OLM_APP_DEFAULT};
+static olm_app_t dxwifi_app = {
+    .name = "DxWifi",
+    .unit_name = "oresat-dxwifi-txd.service",
+    .fwrite_keyword = NULL,
+    .fwrite_cb = NULL,
+    .async_cb = NULL,
+    .data = NULL,
+};
 
-int
-board_init(olm_board_t *board) {
+static olm_app_t *apps[] = {
+    &updater_app, // updater app is always index 0
+    &dxwifi_app,
+    NULL, // always end with null
+};
 
-    if (board == NULL)
-        return -EINVAL;
-
-    // fill out info for all apps
-    updaterd_app(&apps[UPDATER_APP]);
-    dxwifi_app(&apps[DXWIFI_APP]);
-
-    board->apps_len = TOTAL_APPS;
-    board->apps = apps;
-
-    // ODFs
-    CO_OD_configure(CO->SDO[0], OD_3100_updater, updater_ODF, NULL, 0, 0U);
-
-    return 1;
-}
+// global shared with main.c
+olm_app_t **APPS = apps;
 
 void
-board_loop(void) {
-    updater_async(fwrite_cache);
-    usleep(100000);
+board_init(void) {
+    CO_OD_configure(CO->SDO[0], OD_3100_updater, updater_ODF, NULL, 0, 0U);
 }

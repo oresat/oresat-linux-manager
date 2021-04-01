@@ -2,10 +2,11 @@
 
 set(BOARD_SOURCES
     board_main.c
+    star_tracker_app.c
     )
 
 set(BOARD_HEADERS
-    # temp.h
+    star_tracker_app.h
     )
 
 add_library(board ${BOARD_SOURCES} ${BOARD_HEADERS})
