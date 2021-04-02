@@ -10,7 +10,7 @@ OreSat CFC
 | File Version | 1                              |
 | Created      | 3/9/2021 11:09:27 PM           |
 | Created By   | Ryan Medick                    |
-| Modified     | 3/30/2021 9:21:02 PM           |
+| Modified     | 4/1/2021 7:52:10 PM            |
 | Modified By  | Ryan Medick                    |
 
 This file was automatically generated with [libedssharp](https://github.com/robincornelius/libedssharp) Object Dictionary Editor v0.8-123-g6c02323
@@ -921,7 +921,7 @@ Manufacturer may define its own constants up to index 0xFF. Of course, he must t
 | ----------------------- | --- | --- | ---- | ------------------------------- |
 | UNSIGNED8               | rw  | no  | no   | 0x22                            |
 
-### 0x3001 - Board info
+### 0x3001 - System info
 | Object Type | Count Label    | Storage Group  |
 | ----------- | -------------- | -------------- |
 | RECORD      |                | RAM            |

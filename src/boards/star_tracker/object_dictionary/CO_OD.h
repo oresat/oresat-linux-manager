@@ -187,7 +187,7 @@
                UNSIGNED32     rootParitionTotal;
                UNSIGNED32     rootParitionFree;
                UNSIGNED8      rootParitionPercent;
-               }              OD_boardInfo_t;
+               }              OD_systemInfo_t;
 /*3002      */ typedef struct {
                UNSIGNED8      highestSubIndexSupported;
                UNSIGNED8      freadCacheLen;
@@ -558,37 +558,37 @@
         #define OD_2101_CANNodeID                                   0x2101
 
 /*3001 */
-        #define OD_3001_boardInfo                                   0x3001
+        #define OD_3001_systemInfo                                  0x3001
 
-        #define OD_3001_0_boardInfo_maxSubIndex                     0
-        #define OD_3001_1_boardInfo_OSName                          1
-        #define OD_3001_2_boardInfo_OSDistro                        2
-        #define OD_3001_3_boardInfo_OSKernelVersion                 3
-        #define OD_3001_4_boardInfo_hostname                        4
-        #define OD_3001_5_boardInfo_uptime                          5
-        #define OD_3001_6_boardInfo_numberOfCPUs                    6
-        #define OD_3001_7_boardInfo_CPUArchitecture                 7
-        #define OD_3001_8_boardInfo_CPUGovernor                     8
-        #define OD_3001_9_boardInfo_CPUFrequency                    9
-        #define OD_3001_10_boardInfo_numberOfRemoteprocs            10
-        #define OD_3001_11_boardInfo_remoteprocXSelector            11
-        #define OD_3001_12_boardInfo_remoteprocXName                12
-        #define OD_3001_13_boardInfo_remoteprocXState               13
-        #define OD_3001_14_boardInfo_loadAverage1min                14
-        #define OD_3001_15_boardInfo_loadAverage5min                15
-        #define OD_3001_16_boardInfo_loadAverage15min               16
-        #define OD_3001_17_boardInfo_ramTotal                       17
-        #define OD_3001_18_boardInfo_ramFree                        18
-        #define OD_3001_19_boardInfo_ramShared                      19
-        #define OD_3001_20_boardInfo_ramBuffered                    20
-        #define OD_3001_21_boardInfo_ramPercent                     21
-        #define OD_3001_22_boardInfo_swapTotal                      22
-        #define OD_3001_23_boardInfo_swapFree                       23
-        #define OD_3001_24_boardInfo_swapPercent                    24
-        #define OD_3001_25_boardInfo_procs                          25
-        #define OD_3001_26_boardInfo_rootParitionTotal              26
-        #define OD_3001_27_boardInfo_rootParitionFree               27
-        #define OD_3001_28_boardInfo_rootParitionPercent            28
+        #define OD_3001_0_systemInfo_maxSubIndex                    0
+        #define OD_3001_1_systemInfo_OSName                         1
+        #define OD_3001_2_systemInfo_OSDistro                       2
+        #define OD_3001_3_systemInfo_OSKernelVersion                3
+        #define OD_3001_4_systemInfo_hostname                       4
+        #define OD_3001_5_systemInfo_uptime                         5
+        #define OD_3001_6_systemInfo_numberOfCPUs                   6
+        #define OD_3001_7_systemInfo_CPUArchitecture                7
+        #define OD_3001_8_systemInfo_CPUGovernor                    8
+        #define OD_3001_9_systemInfo_CPUFrequency                   9
+        #define OD_3001_10_systemInfo_numberOfRemoteprocs           10
+        #define OD_3001_11_systemInfo_remoteprocXSelector           11
+        #define OD_3001_12_systemInfo_remoteprocXName               12
+        #define OD_3001_13_systemInfo_remoteprocXState              13
+        #define OD_3001_14_systemInfo_loadAverage1min               14
+        #define OD_3001_15_systemInfo_loadAverage5min               15
+        #define OD_3001_16_systemInfo_loadAverage15min              16
+        #define OD_3001_17_systemInfo_ramTotal                      17
+        #define OD_3001_18_systemInfo_ramFree                       18
+        #define OD_3001_19_systemInfo_ramShared                     19
+        #define OD_3001_20_systemInfo_ramBuffered                   20
+        #define OD_3001_21_systemInfo_ramPercent                    21
+        #define OD_3001_22_systemInfo_swapTotal                     22
+        #define OD_3001_23_systemInfo_swapFree                      23
+        #define OD_3001_24_systemInfo_swapPercent                   24
+        #define OD_3001_25_systemInfo_procs                         25
+        #define OD_3001_26_systemInfo_rootParitionTotal             26
+        #define OD_3001_27_systemInfo_rootParitionFree              27
+        #define OD_3001_28_systemInfo_rootParitionPercent           28
 
 /*3002 */
         #define OD_3002_fileCaches                                  0x3002
@@ -677,7 +677,7 @@ struct sCO_OD_RAM{
 /*2011      */ UNSIGNED64     UTC;
 /*2100      */ OCTET_STRING   errorStatusBits[10];
 /*2101      */ UNSIGNED8      CANNodeID;
-/*3001      */ OD_boardInfo_t  boardInfo;
+/*3001      */ OD_systemInfo_t systemInfo;
 /*3002      */ OD_fileCaches_t fileCaches;
 /*3003      */ OD_fread_t      fread;
 /*3004      */ OD_fwrite_t     fwrite;
@@ -872,8 +872,8 @@ extern struct sCO_OD_PERSIST_MFR CO_OD_PERSIST_MFR;
 /*2101, Data Type: UNSIGNED8 */
         #define OD_CANNodeID                                        CO_OD_RAM.CANNodeID
 
-/*3001, Data Type: boardInfo_t */
-        #define OD_boardInfo                                        CO_OD_RAM.boardInfo
+/*3001, Data Type: systemInfo_t */
+        #define OD_systemInfo                                       CO_OD_RAM.systemInfo
 
 /*3002, Data Type: fileCaches_t */
         #define OD_fileCaches                                       CO_OD_RAM.fileCaches

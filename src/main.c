@@ -28,7 +28,7 @@
 #include "file_caches_odf.h"
 #include "systemd.h"
 #include "olm_app.h"
-#include "board_info.h"
+#include "system_info.h"
 #include "board_main.h"
 #include "os_command.h"
 #include "app_manager.h"
@@ -408,7 +408,7 @@ main(int argc, char *argv[]) {
             
             // configure core ODFs
             board_init();
-            board_info_setup();
+            system_info_setup();
             CO_OD_configure(CO->SDO[0], OD_1023_OSCommand, OS_COMMAND_1023_ODF, &os_command_data, 0, 0U);
             CO_OD_configure(CO->SDO[0], OD_3002_fileCaches, file_caches_ODF, &caches_odf_data, 0, 0U);
             CO_OD_configure(CO->SDO[0], OD_3003_fread, CO_fread_ODF, &CO_fread_data, 0, 0U);
@@ -481,7 +481,7 @@ main(int argc, char *argv[]) {
     log_printf(LOG_DEBUG, "ending program");
 
 /* program exit ***************************************************************/
-    board_info_end();
+    system_info_end();
 
     // make sure the files are closed when ending program
     log_printf(LOG_DEBUG, "closing any opened files");
