@@ -11,11 +11,10 @@
   - `$ sudo ./../scripts/vcan.sh`
 - Run setup script (it will add files to the OLM caches needed for tests)
   - `$ sudo python setup_pytest.py`
-- Build and start OLM
+- In one terminal: Build and start OLM
   - `$ cd ../build`
   - `$ cmake -DBOARD=generic ..`
   - `$ make`
-  - `$ cd -`
-  - `$ sudo ../build/oresat-linux-manager vcan0`
-- Run pytest
+  - `$ sudo ./oresat-linux-manager vcan0 -v`
+- In another terminal: Run pytest
   - `$ sudo pytest .`

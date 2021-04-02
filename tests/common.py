@@ -1,5 +1,7 @@
 """Common OLM pytest scripts"""
 
+from string import ascii_letters
+from random import choice
 import canopen
 
 # python canopen require an eds file, even if it is not used
@@ -45,3 +47,9 @@ def connect_bus():
     # network.nmt.state = "OPERATIONAL"
 
     return network, node
+
+
+def random_string_generator(str_size: int):
+    "Generates a random str"
+
+    return "".join(choice(ascii_letters) for x in range(str_size))

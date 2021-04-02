@@ -78,7 +78,7 @@ co_command_async(os_command_t *data) {
             if (data->reply_len > data->reply_buf_len) { // grow buffer
                 log_message(LOG_DEBUG, "growing bash reply buffer to %d", data->reply_buf_len);
 
-                if (data->reply_len < REPLY_BUFFER_LEN_MAX) {
+                if (data->reply_len > REPLY_BUFFER_LEN_MAX) {
                     log_message(LOG_INFO, "bash reply max limit hit");
                     break; // max len reached
                 }
