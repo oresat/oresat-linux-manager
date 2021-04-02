@@ -42,6 +42,7 @@ struct sCO_OD_RAM CO_OD_RAM = {
 /*2011*/ 0x00000000L,
 /*2100*/ {0x0L, 0x0L, 0x0L, 0x0L, 0x0L, 0x0L, 0x0L, 0x0L, 0x0L, 0x0L},
 /*2101*/ 0x21L,
+/*3000*/ {0x4L, 0, 0x64, 0x64, 1},
 /*3001*/ {0x1CL, 0, 0, 0, 0, 0x0000L, 0x0L, 0, 0x0L, 0x00, 0x0L, 0x0L, 0, 0, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0L, 0x0000L, 0x0000L, 0x0L, 0x0000L, 0x0000L, 0x0000L, 0x0L},
 /*3002*/ {0x9L, 0x0L, 0x0L, 0x0L, 0, 0x0000L, 0x0000L, 0, 0x0000L, 0},
 /*3003*/ {0x4L, 0, 0, 0, 0},
@@ -324,6 +325,14 @@ struct sCO_OD_PERSIST_MFR CO_OD_PERSIST_MFR = {
            {(void*)&CO_OD_PERSIST_MFR.BUSManagement.ctoggle, 0x0F, 0x1 },
 };
 
+/*0x3000*/ const CO_OD_entryRecord_t OD_record3000[5] = {
+           {(void*)&CO_OD_RAM.OLMControl.highestSubIndexSupported, 0x06, 0x1 },
+           {(void*)&CO_OD_RAM.OLMControl.quit, 0x0A, 0x1 },
+           {(void*)&CO_OD_RAM.OLMControl.coreAsyncThreadDelay, 0x8E, 0x2 },
+           {(void*)&CO_OD_RAM.OLMControl.appAsyncThreadDelay, 0x8E, 0x2 },
+           {(void*)&CO_OD_RAM.OLMControl.CPUfreqControl, 0x0E, 0x1 },
+};
+
 /*0x3001*/ const CO_OD_entryRecord_t OD_record3001[29] = {
            {(void*)&CO_OD_RAM.systemInfo.highestSubIndexSupported, 0x06, 0x1 },
            {(void*)0, 0x06, 0x0 },
@@ -448,6 +457,7 @@ const CO_OD_entry_t CO_OD[CO_OD_NoOfElements] = {
 {0x2011, 0x00, 0xBE,  8, (void*)&CO_OD_RAM.UTC},
 {0x2100, 0x00, 0x06, 10, (void*)&CO_OD_RAM.errorStatusBits},
 {0x2101, 0x00, 0x0E,  1, (void*)&CO_OD_RAM.CANNodeID},
+{0x3000, 0x04, 0x00,  0, (void*)&OD_record3000},
 {0x3001, 0x1C, 0x00,  0, (void*)&OD_record3001},
 {0x3002, 0x09, 0x00,  0, (void*)&OD_record3002},
 {0x3003, 0x04, 0x00,  0, (void*)&OD_record3003},

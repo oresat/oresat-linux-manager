@@ -77,7 +77,7 @@
 /*******************************************************************************
    OBJECT DICTIONARY
 *******************************************************************************/
-   #define CO_OD_NoOfElements             50
+   #define CO_OD_NoOfElements             51
 
 
 /*******************************************************************************
@@ -158,6 +158,13 @@
                UNSIGNED8      ntoggle;
                UNSIGNED8      ctoggle;
                }              OD_BUSManagement_t;
+/*3000      */ typedef struct {
+               UNSIGNED8      highestSubIndexSupported;
+               BOOLEAN        quit;
+               UNSIGNED32     coreAsyncThreadDelay;
+               UNSIGNED32     appAsyncThreadDelay;
+               BOOLEAN        CPUfreqControl;
+               }              OD_OLMControl_t;
 /*3001      */ typedef struct {
                UNSIGNED8      highestSubIndexSupported;
                DOMAIN         OSName;
@@ -555,6 +562,15 @@
 /*2101 */
         #define OD_2101_CANNodeID                                   0x2101
 
+/*3000 */
+        #define OD_3000_OLMControl                                  0x3000
+
+        #define OD_3000_0_OLMControl_maxSubIndex                    0
+        #define OD_3000_1_OLMControl_quit                           1
+        #define OD_3000_2_OLMControl_coreAsyncThreadDelay           2
+        #define OD_3000_3_OLMControl_appAsyncThreadDelay            3
+        #define OD_3000_4_OLMControl_CPUfreqControl                 4
+
 /*3001 */
         #define OD_3001_systemInfo                                  0x3001
 
@@ -660,6 +676,7 @@ struct sCO_OD_RAM{
 /*2011      */ UNSIGNED64     UTC;
 /*2100      */ OCTET_STRING   errorStatusBits[10];
 /*2101      */ UNSIGNED8      CANNodeID;
+/*3000      */ OD_OLMControl_t OLMControl;
 /*3001      */ OD_systemInfo_t systemInfo;
 /*3002      */ OD_fileCaches_t fileCaches;
 /*3003      */ OD_fread_t      fread;
@@ -851,6 +868,9 @@ extern struct sCO_OD_PERSIST_MFR CO_OD_PERSIST_MFR;
 
 /*2101, Data Type: UNSIGNED8 */
         #define OD_CANNodeID                                        CO_OD_RAM.CANNodeID
+
+/*3000, Data Type: OLMControl_t */
+        #define OD_OLMControl                                       CO_OD_RAM.OLMControl
 
 /*3001, Data Type: systemInfo_t */
         #define OD_systemInfo                                       CO_OD_RAM.systemInfo

@@ -99,9 +99,9 @@ static os_command_t os_command_data;
 CO_epoll_t epRT;
 static void* rt_thread(void* arg);
 
-/* oresat linux manager board thread */
-static void* board_thread(void* arg);
-static pthread_t board_thread_id;
+/* oresat linux manager app thread */
+static void* app_thread(void* arg);
+static pthread_t app_thread_id;
 
 /* async thread */
 static void* async_thread(void* arg);
@@ -215,7 +215,7 @@ main(int argc, char *argv[]) {
     bool firstRun = true;
     bool daemon_flag = false;
     bool verbose = false;
-    bool cpufreq_ctrl = false;
+    bool cpufreq_ctrl = true;
 
     // file transfer data
     olm_file_cache_new(FREAD_CACHE_DIR, &fread_cache);
@@ -247,7 +247,7 @@ main(int argc, char *argv[]) {
                 break;
             case 'v': verbose = true;
                 break;
-            case 'c': cpufreq_ctrl = true;
+            case 'c': cpufreq_ctrl = false;
                 break;
             default:
                 printUsage(argv[0]);
@@ -348,9 +348,20 @@ main(int argc, char *argv[]) {
         exit(EXIT_FAILURE);
     }
     CANptr.epoll_fd = epRT.epoll_fd;
+    
+    if (!cpufreq_ctrl) {
+        CO_LOCK_OD();
+        OD_OLMControl.CPUfreqControl = false;
+        CO_UNLOCK_OD();
+    }
 
     while (reset != CO_RESET_APP && reset != CO_RESET_QUIT && CO_endProgram == 0) {
 /* CANopen communication reset - initialize CANopen objects *******************/
+
+        if (OD_OLMControl.quit) {
+            CO_endProgram = true;
+            continue;
+        }
 
         /* Wait rt_thread. */
         if (!firstRun) {
@@ -450,9 +461,9 @@ main(int argc, char *argv[]) {
                 exit(EXIT_FAILURE);
             }
 
-            /* create board thread */
-            if(pthread_create(&board_thread_id, NULL, board_thread, NULL) != 0) {
-                log_printf(LOG_CRIT, DBG_ERRNO, "pthread_create(board_thread)");
+            /* create app thread */
+            if(pthread_create(&app_thread_id, NULL, app_thread, NULL) != 0) {
+                log_printf(LOG_CRIT, DBG_ERRNO, "pthread_create(app_thread)");
                 exit(EXIT_FAILURE);
             }
         } /* if (firstRun) */
@@ -499,7 +510,7 @@ main(int argc, char *argv[]) {
         log_printf(LOG_CRIT, DBG_ERRNO, "pthread_join()");
     if (pthread_join(async_thread_id, NULL) != 0)
         log_printf(LOG_CRIT, DBG_ERRNO, "pthread_join()");
-    if (pthread_join(board_thread_id, NULL) != 0)
+    if (pthread_join(app_thread_id, NULL) != 0)
         log_printf(LOG_CRIT, DBG_ERRNO, "pthread_join()");
 
     if (system_bus != NULL) {
@@ -558,9 +569,9 @@ static void* rt_thread(void* arg) {
 }
 
 static void*
-board_thread(void* arg) {
+app_thread(void* arg) {
     (void)arg;
-    log_printf(LOG_DEBUG, "board thread started");
+    log_printf(LOG_DEBUG, "app thread started");
 
     /* Endless loop */
     while (CO_endProgram == 0) {
@@ -569,10 +580,10 @@ board_thread(void* arg) {
                 APPS[i]->async_cb(APPS[i]->data, fread_cache);
         }
 
-        usleep(ASYNC_DELAY);
+        usleep(OD_OLMControl.appAsyncThreadDelay);
     }
 
-    log_printf(LOG_DEBUG, "board thread ended");
+    log_printf(LOG_DEBUG, "app thread ended");
     return NULL;
 }
 
@@ -585,7 +596,7 @@ async_thread(void* arg) {
     while (CO_endProgram == 0) {
         co_command_async(&os_command_data);
         app_manager_async(APPS, fwrite_cache);
-        usleep(ASYNC_DELAY);
+        usleep(OD_OLMControl.coreAsyncThreadDelay);
     }
 
     log_printf(LOG_DEBUG, "async thread ended");

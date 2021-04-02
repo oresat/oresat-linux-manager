@@ -15,7 +15,7 @@
         <ProfileTechnology>CANopen</ProfileTechnology>
       </ISO15745Reference>
     </ProfileHeader>
-    <ProfileBody xmlns:q1="http://www.canopen.org/xml/1.1" xsi:type="q1:ProfileBody_Device_CANopen" formatName="CANopen" formatVersion="1.0" fileName="oresat_linux_node.xpd" fileCreator="Ryan Medick" fileCreationDate="2021-03-09" fileCreationTime="13:57:28.0000000-07:00" fileModifiedBy="Ryan Medick" fileModificationDate="2021-04-01" fileModificationTime="19:51:53.3582140-07:00" fileVersion="1" supportedLanguages="en" xmlns="">
+    <ProfileBody xmlns:q1="http://www.canopen.org/xml/1.1" xsi:type="q1:ProfileBody_Device_CANopen" formatName="CANopen" formatVersion="1.0" fileName="oresat_linux_node.xpd" fileCreator="Ryan Medick" fileCreationDate="2021-03-09" fileCreationTime="13:57:28.0000000-07:00" fileModifiedBy="Ryan Medick" fileModificationDate="2021-04-01" fileModificationTime="20:47:20.9044190-07:00" fileVersion="1" supportedLanguages="en" xmlns="">
       <q1:DeviceIdentity>
         <q1:vendorName>Portland State Aerospace Society</q1:vendorName>
         <q1:vendorID>0</q1:vendorID>
@@ -553,6 +553,23 @@
             </q1:varDeclaration>
             <q1:varDeclaration name="Ctoggle" uniqueID="UID_RECSUB_200004">
               <USINT />
+            </q1:varDeclaration>
+          </q1:struct>
+          <q1:struct name="OLM control" uniqueID="UID_REC_3000">
+            <q1:varDeclaration name="Highest sub-index supported" uniqueID="UID_RECSUB_300000">
+              <USINT />
+            </q1:varDeclaration>
+            <q1:varDeclaration name="Quit" uniqueID="UID_RECSUB_300001">
+              <BOOL />
+            </q1:varDeclaration>
+            <q1:varDeclaration name="Core async thread delay" uniqueID="UID_RECSUB_300002">
+              <UINT />
+            </q1:varDeclaration>
+            <q1:varDeclaration name="App async thread delay" uniqueID="UID_RECSUB_300003">
+              <UINT />
+            </q1:varDeclaration>
+            <q1:varDeclaration name="CPUfreq control" uniqueID="UID_RECSUB_300004">
+              <BOOL />
             </q1:varDeclaration>
           </q1:struct>
           <q1:struct name="System info" uniqueID="UID_REC_3001">
@@ -2265,6 +2282,35 @@ Manufacturer may define its own constants up to index 0xFF. Of course, he must t
             <USINT />
             <q1:defaultValue value="0x10" />
           </q1:parameter>
+          <q1:parameter uniqueID="UID_OBJ_3000">
+            <label lang="en">OLM control</label>
+            <q1:dataTypeIDRef uniqueIDRef="UID_REC_3000" />
+          </q1:parameter>
+          <q1:parameter uniqueID="UID_SUB_300000">
+            <label lang="en">Highest sub-index supported</label>
+            <USINT />
+            <q1:defaultValue value="0x04" />
+          </q1:parameter>
+          <q1:parameter uniqueID="UID_SUB_300001" access="write">
+            <label lang="en">Quit</label>
+            <BOOL />
+            <q1:defaultValue value="0" />
+          </q1:parameter>
+          <q1:parameter uniqueID="UID_SUB_300002" access="readWrite">
+            <label lang="en">Core async thread delay</label>
+            <UINT />
+            <q1:defaultValue value="100" />
+          </q1:parameter>
+          <q1:parameter uniqueID="UID_SUB_300003" access="readWrite">
+            <label lang="en">App async thread delay</label>
+            <UINT />
+            <q1:defaultValue value="100" />
+          </q1:parameter>
+          <q1:parameter uniqueID="UID_SUB_300004" access="readWrite">
+            <label lang="en">CPUfreq control</label>
+            <BOOL />
+            <q1:defaultValue value="1" />
+          </q1:parameter>
           <q1:parameter uniqueID="UID_OBJ_3001">
             <label lang="en">System info</label>
             <q1:dataTypeIDRef uniqueIDRef="UID_REC_3001" />
@@ -2587,7 +2633,7 @@ Manufacturer may define its own constants up to index 0xFF. Of course, he must t
         <ProfileTechnology>CANopen</ProfileTechnology>
       </ISO15745Reference>
     </ProfileHeader>
-    <ProfileBody xmlns:q2="http://www.canopen.org/xml/1.1" xsi:type="q2:ProfileBody_CommunicationNetwork_CANopen" formatName="CANopen" formatVersion="1.0" fileName="oresat_linux_node.xpd" fileCreator="Ryan Medick" fileCreationDate="2021-03-09" fileCreationTime="13:57:28.0000000-07:00" fileModificationDate="2021-04-01" fileModificationTime="19:51:53.3582140-07:00" fileVersion="1" supportedLanguages="en" xmlns="">
+    <ProfileBody xmlns:q2="http://www.canopen.org/xml/1.1" xsi:type="q2:ProfileBody_CommunicationNetwork_CANopen" formatName="CANopen" formatVersion="1.0" fileName="oresat_linux_node.xpd" fileCreator="Ryan Medick" fileCreationDate="2021-03-09" fileCreationTime="13:57:28.0000000-07:00" fileModificationDate="2021-04-01" fileModificationTime="20:47:20.9044190-07:00" fileVersion="1" supportedLanguages="en" xmlns="">
       <ApplicationLayers>
         <q2:CANopenObjectList>
           <CANopenObject index="1000" name="Device type" objectType="7" PDOmapping="no" uniqueIDRef="UID_OBJ_1000" />
@@ -2866,6 +2912,13 @@ Manufacturer may define its own constants up to index 0xFF. Of course, he must t
           <CANopenObject index="2011" name="UTC" objectType="7" PDOmapping="optional" uniqueIDRef="UID_OBJ_2011" />
           <CANopenObject index="2100" name="Error status bits" objectType="7" PDOmapping="no" uniqueIDRef="UID_OBJ_2100" />
           <CANopenObject index="2101" name="CAN node ID" objectType="7" PDOmapping="no" uniqueIDRef="UID_OBJ_2101" />
+          <CANopenObject index="3000" name="OLM control" objectType="9" uniqueIDRef="UID_OBJ_3000" subNumber="5">
+            <CANopenSubObject subIndex="00" name="Highest sub-index supported" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_300000" />
+            <CANopenSubObject subIndex="01" name="Quit" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_300001" />
+            <CANopenSubObject subIndex="02" name="Core async thread delay" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_300002" />
+            <CANopenSubObject subIndex="03" name="App async thread delay" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_300003" />
+            <CANopenSubObject subIndex="04" name="CPUfreq control" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_300004" />
+          </CANopenObject>
           <CANopenObject index="3001" name="System info" objectType="9" uniqueIDRef="UID_OBJ_3001" subNumber="29">
             <CANopenSubObject subIndex="00" name="Highest sub-index supported" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_300100" />
             <CANopenSubObject subIndex="01" name="OS name" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_300101" />

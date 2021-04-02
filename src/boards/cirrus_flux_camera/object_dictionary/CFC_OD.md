@@ -10,7 +10,7 @@ OreSat CFC
 | File Version | 1                              |
 | Created      | 3/9/2021 11:09:27 PM           |
 | Created By   | Ryan Medick                    |
-| Modified     | 4/1/2021 7:52:10 PM            |
+| Modified     | 4/1/2021 8:47:13 PM            |
 | Modified By  | Ryan Medick                    |
 
 This file was automatically generated with [libedssharp](https://github.com/robincornelius/libedssharp) Object Dictionary Editor v0.8-123-g6c02323
@@ -920,6 +920,19 @@ Manufacturer may define its own constants up to index 0xFF. Of course, he must t
 | Data Type               | SDO | PDO | SRDO | Default Value                   |
 | ----------------------- | --- | --- | ---- | ------------------------------- |
 | UNSIGNED8               | rw  | no  | no   | 0x22                            |
+
+### 0x3000 - OLM control
+| Object Type | Count Label    | Storage Group  |
+| ----------- | -------------- | -------------- |
+| RECORD      |                | RAM            |
+
+| Sub  | Name                  | Data Type  | SDO | PDO | SRDO | Default Value |
+| ---- | --------------------- | ---------- | --- | --- | ---- | ------------- |
+| 0x00 | Highest sub-index supported| UNSIGNED8  | ro  | no  | no   | 0x04          |
+| 0x01 | Quit                  | BOOLEAN    | wo  | no  | no   | 0             |
+| 0x02 | Core async thread delay| UNSIGNED16 | rw  | no  | no   | 100           |
+| 0x03 | App async thread delay| UNSIGNED16 | rw  | no  | no   | 100           |
+| 0x04 | CPUfreq control       | BOOLEAN    | rw  | no  | no   | 1             |
 
 ### 0x3001 - System info
 | Object Type | Count Label    | Storage Group  |
