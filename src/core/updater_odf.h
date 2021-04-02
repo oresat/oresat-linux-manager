@@ -14,6 +14,7 @@
 #define UPDATER_ODF_H
 
 #include "CANopen.h"
+#include "olm_file_cache.h"
 
 void updater_async(void *data, olm_file_cache_t *fread_cache);
 

@@ -16,7 +16,6 @@ set(CORE_HEADERS
     CO_fstream_odf.h
     cpufreq.h
     file_caches_odf.h
-    globals.h
     os_command.h
     system_info.h
     updater_odf.h

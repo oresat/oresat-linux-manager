@@ -9,7 +9,6 @@
  * Project home page is <https://github.com/oresat/oresat-linux-manager>.
  */
 
-#include "globals.h"
 #include "log_message.h"
 #include "utility.h"
 #include <errno.h>
@@ -26,6 +25,9 @@
 
 // lazy way to deal with all the D-Bus arguments
 #define DBUS_INFO system_bus, DESTINATION, OBJECT_PATH, INTERFACE_NAME
+
+/** System D-Bus connection. Defined in main.c */
+extern sd_bus *system_bus;
 
 int
 updaterd_add_update_archive(const char *file) {

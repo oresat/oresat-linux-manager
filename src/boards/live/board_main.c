@@ -9,7 +9,6 @@
  * Project home page is <https://github.com/oresat/oresat-linux-manager>.
  */
 
-#include "globals.h"
 #include "CANopen.h"
 #include "updaterd.h"
 #include "updater_odf.h"

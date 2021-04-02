@@ -9,7 +9,6 @@
  * Project home page is <https://github.com/oresat/oresat-linux-manager>.
  */
 
-#include "globals.h"
 #include "log_message.h"
 #include "utility.h"
 #include "olm_app.h"
@@ -24,6 +23,9 @@
 #define MANAGER_INTERFACE   DESTINATION".Manager"
 #define UNIT_INTERFACE      DESTINATION".Unit"
 #define OBJECT_PATH         "/org/freedesktop/systemd1"
+
+/** System D-Bus connection. Defined in main.c */
+extern sd_bus *system_bus;
 
 static const char *active_state_str[] = {
     "inactive",
