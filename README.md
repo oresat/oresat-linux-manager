@@ -1,4 +1,4 @@
-# Oresat Linux Manager (OLM)
+# OreSat Linux Manager (OLM)
 
 [![License](https://img.shields.io/github/license/oresat/oresat-linux-manager)](./LICENSE)
 [![Issues](https://img.shields.io/github/issues/oresat/oresat-linux-manager)](https://github.com/oresat/oresat-linux-manager/issues)
@@ -35,9 +35,9 @@ DBus library or a DBus binding. A lot of languages do have DBus support, See
 
 ### To compile
 
-- For Debian:`apt install git libsystemd-dev cmake make gcc doxygen`
+- For Debian:`apt install git libsystemd-dev cmake make gcc doxygen pkg-config`
   - optional: `ninja-build`
-- For Arch: `pacman -S git systemd-libs cmake make gcc doxygen`
+- For Arch: `pacman -S git systemd-libs cmake make gcc doxygen pkgconfig`
   - optional: `ninja`
 
 ### To run
