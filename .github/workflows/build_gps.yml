@@ -5,26 +5,28 @@ on:
     branches: [ master ]
     paths:
       - '.github/workflows/build_gps.yml'
-      - 'src/boards/gps/**.c'
-      - 'src/boards/gps/**.h'
+      - 'src/boards/gps/**'
       - 'src/CANopenNode/**'
       - 'src/common/**'
       - 'src/core/**'
-      - 'src/apps/**'
-      - 'src/*.c'
+      - 'src/manitory_apps/**'
+      - 'src/daemon_modules/**'
+      - 'src/main.c'
+      - 'src/CO_driver_custom.h'
       - 'src/CMakeLists.txt'
       - 'CMakeLists.txt'
   pull_request:
     branches: [ master ]
     paths:
       - '.github/workflows/build_gps.yml'
-      - 'src/boards/gps/**.c'
-      - 'src/boards/gps/**.h'
+      - 'src/boards/gps/**'
       - 'src/CANopenNode/**'
       - 'src/common/**'
       - 'src/core/**'
-      - 'src/apps/**'
-      - 'src/*.c'
+      - 'src/manitory_apps/**'
+      - 'src/daemon_modules/**'
+      - 'src/main.c'
+      - 'src/CO_driver_custom.h'
       - 'src/CMakeLists.txt'
       - 'CMakeLists.txt'
 
