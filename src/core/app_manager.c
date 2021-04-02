@@ -74,8 +74,8 @@ app_manager_async(olm_app_t **apps, olm_file_cache_t *fwrite_cache) {
     int files;
     int r;
 
-    if (apps == NULL || fwrite_cache == NULL) {
-        log_message(LOG_CRIT, "missing input data in app_manager_async()");
+    if (apps == NULL) {
+        log_message(LOG_DEBUG, "missing apps input");
         return;
     }
 
@@ -110,8 +110,8 @@ app_manager_async(olm_app_t **apps, olm_file_cache_t *fwrite_cache) {
         // update state
         apps[i]->unit_state = get_active_state_unit(apps[i]->unit_systemd1_object_path);
 
-        if (apps[i]->fwrite_keyword == NULL || apps[i]->fwrite_cb 
-                || apps[i]->unit_state != UNIT_ACTIVE)
+        if (fwrite_cache == NULL || apps[i]->fwrite_keyword == NULL ||
+                apps[i]->fwrite_cb || apps[i]->unit_state != UNIT_ACTIVE)
             continue;
 
         // send file(s) from fwrite cache to daemon

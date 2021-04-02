@@ -22,7 +22,7 @@
 static olm_app_t updater_app = {
     .name = "Updater",
     .unit_name = UPDATER_SERVICE_FILE,
-    .fwrite_keyword = "Update",
+    .fwrite_keyword = "update",
     .fwrite_cb = updaterd_add_update_archive,
     .async_cb = updater_async,
     .data = NULL,
