@@ -10,7 +10,7 @@ OreSat Live
 | File Version | 1                              |
 | Created      | 3/9/2021 11:27:16 PM           |
 | Created By   | Ryan Medick                    |
-| Modified     | 4/1/2021 8:47:34 PM            |
+| Modified     | 4/1/2021 9:12:21 PM            |
 | Modified By  | Ryan Medick                    |
 
 This file was automatically generated with [libedssharp](https://github.com/robincornelius/libedssharp) Object Dictionary Editor v0.8-123-g6c02323
@@ -911,15 +911,6 @@ Generic errors (critical):
 
 Manufacturer specific errors:
 Manufacturer may define its own constants up to index 0xFF. Of course, he must then define large enough buffer for error status bits (up to 32 bytes).
-
-### 0x2101 - CAN node ID
-| Object Type | Count Label    | Storage Group  |
-| ----------- | -------------- | -------------- |
-| VAR         |                | RAM            |
-
-| Data Type               | SDO | PDO | SRDO | Default Value                   |
-| ----------------------- | --- | --- | ---- | ------------------------------- |
-| UNSIGNED8               | rw  | no  | no   | 0x21                            |
 
 ### 0x3000 - OLM control
 | Object Type | Count Label    | Storage Group  |

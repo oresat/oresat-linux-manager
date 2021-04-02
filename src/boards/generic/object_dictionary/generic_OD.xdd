@@ -15,7 +15,7 @@
         <ProfileTechnology>CANopen</ProfileTechnology>
       </ISO15745Reference>
     </ProfileHeader>
-    <ProfileBody xmlns:q1="http://www.canopen.org/xml/1.1" xsi:type="q1:ProfileBody_Device_CANopen" formatName="CANopen" formatVersion="1.0" fileName="generic_OD.xdd" fileCreator="Ryan Medick" fileCreationDate="2021-03-09" fileCreationTime="23:41:40.0000000-07:00" fileModifiedBy="Ryan Medick" fileModificationDate="2021-04-01" fileModificationTime="20:41:36.3658540-07:00" fileVersion="1" supportedLanguages="en" xmlns="">
+    <ProfileBody xmlns:q1="http://www.canopen.org/xml/1.1" xsi:type="q1:ProfileBody_Device_CANopen" formatName="CANopen" formatVersion="1.0" fileName="generic_OD.xdd" fileCreator="Ryan Medick" fileCreationDate="2021-03-09" fileCreationTime="23:41:40.0000000-07:00" fileModifiedBy="Ryan Medick" fileModificationDate="2021-04-01" fileModificationTime="21:12:18.4855930-07:00" fileVersion="1" supportedLanguages="en" xmlns="">
       <q1:DeviceIdentity>
         <q1:vendorName>Portland State Aerospace Society</q1:vendorName>
         <q1:vendorID>0</q1:vendorID>
@@ -2309,11 +2309,6 @@ Manufacturer may define its own constants up to index 0xFF. Of course, he must t
             <BITSTRING />
             <q1:defaultValue value="00 00 00 00 00 00 00 00 00 00" />
           </q1:parameter>
-          <q1:parameter uniqueID="UID_OBJ_2101" access="readWrite">
-            <label lang="en">CAN node ID</label>
-            <USINT />
-            <q1:defaultValue value="0x10" />
-          </q1:parameter>
           <q1:parameter uniqueID="UID_OBJ_3000">
             <label lang="en">OLM control</label>
             <q1:dataTypeIDRef uniqueIDRef="UID_REC_3000" />
@@ -2665,7 +2660,7 @@ Manufacturer may define its own constants up to index 0xFF. Of course, he must t
         <ProfileTechnology>CANopen</ProfileTechnology>
       </ISO15745Reference>
     </ProfileHeader>
-    <ProfileBody xmlns:q2="http://www.canopen.org/xml/1.1" xsi:type="q2:ProfileBody_CommunicationNetwork_CANopen" formatName="CANopen" formatVersion="1.0" fileName="generic_OD.xdd" fileCreator="Ryan Medick" fileCreationDate="2021-03-09" fileCreationTime="23:41:40.0000000-07:00" fileModificationDate="2021-04-01" fileModificationTime="20:41:36.3658540-07:00" fileVersion="1" supportedLanguages="en" xmlns="">
+    <ProfileBody xmlns:q2="http://www.canopen.org/xml/1.1" xsi:type="q2:ProfileBody_CommunicationNetwork_CANopen" formatName="CANopen" formatVersion="1.0" fileName="generic_OD.xdd" fileCreator="Ryan Medick" fileCreationDate="2021-03-09" fileCreationTime="23:41:40.0000000-07:00" fileModificationDate="2021-04-01" fileModificationTime="21:12:18.4855930-07:00" fileVersion="1" supportedLanguages="en" xmlns="">
       <ApplicationLayers>
         <q2:CANopenObjectList>
           <CANopenObject index="1000" name="Device type" objectType="7" PDOmapping="no" uniqueIDRef="UID_OBJ_1000" />
@@ -2947,7 +2942,6 @@ Manufacturer may define its own constants up to index 0xFF. Of course, he must t
           <CANopenObject index="2010" name="SCET" objectType="7" PDOmapping="optional" uniqueIDRef="UID_OBJ_2010" />
           <CANopenObject index="2011" name="UTC" objectType="7" PDOmapping="optional" uniqueIDRef="UID_OBJ_2011" />
           <CANopenObject index="2100" name="Error status bits" objectType="7" PDOmapping="no" uniqueIDRef="UID_OBJ_2100" />
-          <CANopenObject index="2101" name="CAN node ID" objectType="7" PDOmapping="no" uniqueIDRef="UID_OBJ_2101" />
           <CANopenObject index="3000" name="OLM control" objectType="9" uniqueIDRef="UID_OBJ_3000" subNumber="5">
             <CANopenSubObject subIndex="00" name="Highest sub-index supported" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_300000" />
             <CANopenSubObject subIndex="01" name="Quit" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_300001" />

@@ -77,7 +77,7 @@
 /*******************************************************************************
    OBJECT DICTIONARY
 *******************************************************************************/
-   #define CO_OD_NoOfElements             54
+   #define CO_OD_NoOfElements             53
 
 
 /*******************************************************************************
@@ -561,9 +561,6 @@
 /*2100 */
         #define OD_2100_errorStatusBits                             0x2100
 
-/*2101 */
-        #define OD_2101_CANNodeID                                   0x2101
-
 /*3000 */
         #define OD_3000_OLMControl                                  0x3000
 
@@ -692,7 +689,6 @@ struct sCO_OD_RAM{
 /*2010      */ UNSIGNED64     SCET;
 /*2011      */ UNSIGNED64     UTC;
 /*2100      */ OCTET_STRING   errorStatusBits[10];
-/*2101      */ UNSIGNED8      CANNodeID;
 /*3000      */ OD_OLMControl_t OLMControl;
 /*3001      */ OD_systemInfo_t systemInfo;
 /*3002      */ OD_fileCaches_t fileCaches;
@@ -885,9 +881,6 @@ extern struct sCO_OD_PERSIST_MFR CO_OD_PERSIST_MFR;
 /*2100, Data Type: OCTET_STRING */
         #define OD_errorStatusBits                                  CO_OD_RAM.errorStatusBits
         #define ODL_errorStatusBits_stringLength                    10
-
-/*2101, Data Type: UNSIGNED8 */
-        #define OD_CANNodeID                                        CO_OD_RAM.CANNodeID
 
 /*3000, Data Type: OLMControl_t */
         #define OD_OLMControl                                       CO_OD_RAM.OLMControl

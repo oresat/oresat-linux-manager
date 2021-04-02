@@ -71,6 +71,10 @@
 
 #define DBUS_TIMEOUT_US         100000
 
+#ifndef DEFAULT_NODE_ID
+#define DEFAULT_NODE_ID         0x10
+#endif /* DEFAULT_NODE_ID */
+
 /* Configurable CAN bit-rate and CANopen node-id, store-able to non-volatile
  * memory. Can be set by argument and changed by LSS slave. */
 typedef struct {
@@ -78,8 +82,8 @@ typedef struct {
     uint8_t nodeId;
 } CO_pending_t;
 
-static CO_pending_t CO_pending = { .bitRate = 0, .nodeId = 0x10 };
-static uint8_t CO_activeNodeId = 0x10;
+static CO_pending_t CO_pending = { .bitRate = 0, .nodeId = DEFAULT_NODE_ID };
+static uint8_t CO_activeNodeId = DEFAULT_NODE_ID;
 
 #if (CO_CONFIG_TRACE) & CO_CONFIG_TRACE_ENABLE
 static CO_time_t            CO_time;            /* Object for current time */
@@ -271,7 +275,7 @@ main(int argc, char *argv[]) {
 
     if (!nodeIdFromArgs) {
         /* use value from Object dictionary, if not set by program arguments */
-        CO_pending.nodeId = OD_CANNodeID;
+        CO_pending.nodeId = DEFAULT_NODE_ID;
     }
 
     if (CO_pending.nodeId < 1 || CO_pending.nodeId > 127) {
