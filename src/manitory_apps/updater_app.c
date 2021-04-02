@@ -14,7 +14,7 @@
 #include "utility.h"
 #include "olm_file_cache.h"
 #include "updaterd.h"
-#include "updater_odf.h"
+#include "updater_app.h"
 #include <linux/limits.h>
 #include <stdbool.h>
 #include <stdint.h>

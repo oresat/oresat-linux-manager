@@ -51,5 +51,6 @@ target_include_directories(CANopenNode PUBLIC
 
 add_subdirectory(common)
 add_subdirectory(core)
+add_subdirectory(manitory_apps)
 add_subdirectory(daemon_modules)
 add_subdirectory(boards)

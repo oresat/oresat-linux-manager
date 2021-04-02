@@ -15,6 +15,7 @@ target_link_libraries(board
     CANopenNode
     core
     common
+    manitory_apps
     daemon_modules
     )
 

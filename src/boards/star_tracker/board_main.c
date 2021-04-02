@@ -11,8 +11,8 @@
 
 #include "CANopen.h"
 #include "updaterd.h"
-#include "updater_odf.h"
 #include "star_tracker_app.h"
+#include "updater_app.h"
 #include "olm_app.h"
 #include "board_main.h"
 #include <errno.h>

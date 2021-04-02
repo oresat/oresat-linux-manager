@@ -150,6 +150,7 @@ target_link_libraries(oresat-linux-manager
     object_dictionary
     common
     core
+    manitory_apps
     daemon_modules
     board
     ${LIBSYSTEMD_LIBRARIES}

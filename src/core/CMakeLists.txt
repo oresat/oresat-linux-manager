@@ -7,7 +7,6 @@ set(CORE_SOURCES
     file_caches_odf.c
     os_command.c
     system_info.c
-    updater_odf.c
     )
 
 set(CORE_HEADERS
@@ -18,7 +17,6 @@ set(CORE_HEADERS
     file_caches_odf.h
     os_command.h
     system_info.h
-    updater_odf.h
     )
 
 add_library(core ${CORE_SOURCES} ${CORE_HEADERS})
