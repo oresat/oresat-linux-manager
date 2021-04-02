@@ -89,6 +89,7 @@ static CO_time_t            CO_time;            /* Object for current time */
 /* OLM globals  **************************************************************/
 // these are extern in globals.h
 sd_bus *system_bus = NULL;
+sd_bus *session_bus = NULL;
 olm_file_cache_t *fread_cache = NULL;
 olm_file_cache_t *fwrite_cache = NULL;
 
@@ -315,6 +316,8 @@ main(int argc, char *argv[]) {
 
     if (sd_bus_open_system(&system_bus) < 0)
         log_printf(LOG_CRIT, "open system bus failed");
+    if (sd_bus_open_user(&session_bus) < 0)
+        log_printf(LOG_CRIT, "open session bus failed");
 
     /* Allocate memory for CANopen objects */
     err = CO_new(NULL);
@@ -513,10 +516,10 @@ main(int argc, char *argv[]) {
     if (pthread_join(app_thread_id, NULL) != 0)
         log_printf(LOG_CRIT, DBG_ERRNO, "pthread_join()");
 
-    if (system_bus != NULL) {
+    if (system_bus != NULL)
         sd_bus_unref(system_bus);
-        system_bus = NULL;
-    }
+    if (session_bus != NULL)
+        sd_bus_unref(session_bus);
 
     /* delete objects from memory */
     CO_epoll_close(&epRT);
