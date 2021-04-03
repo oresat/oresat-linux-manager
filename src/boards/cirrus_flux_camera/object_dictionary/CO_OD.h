@@ -39,7 +39,7 @@
 
 /*******************************************************************************
    FILE INFO:
-      FileName:     CFC_OD.xdd
+      FileName:     cfc.xdd
       FileVersion:  1
       CreationTime: 11:09PM
       CreationDate: 03-09-2021

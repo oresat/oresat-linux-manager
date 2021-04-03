@@ -39,7 +39,7 @@
 
 /*******************************************************************************
    FILE INFO:
-      FileName:     dxwifi_OD.xdd
+      FileName:     dxwifi.xdd
       FileVersion:  1
       CreationTime: 11:27PM
       CreationDate: 03-09-2021

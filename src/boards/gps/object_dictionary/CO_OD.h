@@ -39,7 +39,7 @@
 
 /*******************************************************************************
    FILE INFO:
-      FileName:     GPS_OD.xdd
+      FileName:     gps.xdd
       FileVersion:  1
       CreationTime: 11:31PM
       CreationDate: 03-09-2021

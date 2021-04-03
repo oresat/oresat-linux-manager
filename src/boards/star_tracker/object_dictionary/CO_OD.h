@@ -39,7 +39,7 @@
 
 /*******************************************************************************
    FILE INFO:
-      FileName:     star_tracker_OD.xdd
+      FileName:     star_tracker.xdd
       FileVersion:  1
       CreationTime: 1:57PM
       CreationDate: 03-09-2021

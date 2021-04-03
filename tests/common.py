@@ -5,7 +5,7 @@ from random import choice
 import canopen
 
 # python canopen require an eds file, even if it is not used
-EDS_FILE = "../src/boards/generic/object_dictionary/generic_OD.eds"
+EDS_FILE = "../src/boards/generic/object_dictionary/generic.eds"
 
 FILE_TRANSFER_DIR = "/var/cache/oresat_linux_manager/"
 FREAD_CACHE_DIR = FILE_TRANSFER_DIR + "fread/"

@@ -39,7 +39,7 @@
 
 /*******************************************************************************
    FILE INFO:
-      FileName:     generic_OD.xdd
+      FileName:     generic.xdd
       FileVersion:  1
       CreationTime: 11:41PM
       CreationDate: 03-09-2021
