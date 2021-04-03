@@ -160,10 +160,10 @@
                }              OD_BUSManagement_t;
 /*3000      */ typedef struct {
                UNSIGNED8      highestSubIndexSupported;
+               DOMAIN         rebootBoard;
+               DOMAIN         poweroffBoard;
                BOOLEAN        quit;
-               UNSIGNED16     coreAsyncThreadDelay;
-               UNSIGNED16     appAsyncThreadDelay;
-               BOOLEAN        CPUfreqControl;
+               BOOLEAN        CPUFrequency;
                }              OD_OLMControl_t;
 /*3001      */ typedef struct {
                UNSIGNED8      highestSubIndexSupported;
@@ -226,7 +226,7 @@
                UNSIGNED8      totalApps;
                UNSIGNED8      selectApp;
                DOMAIN         appName;
-               INTEGER8       daemonState;
+               UNSIGNED8      daemonState;
                }              OD_appManager_t;
 /*3100      */ typedef struct {
                UNSIGNED8      highestSubIndexSupported;
@@ -563,10 +563,10 @@
         #define OD_3000_OLMControl                                  0x3000
 
         #define OD_3000_0_OLMControl_maxSubIndex                    0
-        #define OD_3000_1_OLMControl_quit                           1
-        #define OD_3000_2_OLMControl_coreAsyncThreadDelay           2
-        #define OD_3000_3_OLMControl_appAsyncThreadDelay            3
-        #define OD_3000_4_OLMControl_CPUfreqControl                 4
+        #define OD_3000_1_OLMControl_rebootBoard                    1
+        #define OD_3000_2_OLMControl_poweroffBoard                  2
+        #define OD_3000_3_OLMControl_quit                           3
+        #define OD_3000_4_OLMControl_CPUFrequency                   4
 
 /*3001 */
         #define OD_3001_systemInfo                                  0x3001

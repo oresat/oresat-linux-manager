@@ -41,12 +41,12 @@ struct sCO_OD_RAM CO_OD_RAM = {
 /*2010*/ 0x00000000L,
 /*2011*/ 0x00000000L,
 /*2100*/ {0x0L, 0x0L, 0x0L, 0x0L, 0x0L, 0x0L, 0x0L, 0x0L, 0x0L, 0x0L},
-/*3000*/ {0x4L, 0, 0x186A0L, 0x186A0L, 1},
+/*3000*/ {0x4L, 0, 0, 0, 0},
 /*3001*/ {0x1CL, 0, 0, 0, 0, 0x0000L, 0x0L, 0, 0x0L, 0x00, 0x0L, 0x0L, 0, 0, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0L, 0x0000L, 0x0000L, 0x0L, 0x0000L, 0x0000L, 0x0000L, 0x0L},
 /*3002*/ {0x9L, 0x0L, 0x0L, 0x0L, 0, 0x0000L, 0x0000L, 0, 0x0000L, 0},
 /*3003*/ {0x4L, 0, 0, 0, 0},
 /*3004*/ {0x3L, 0, 0, 0},
-/*3005*/ {0x4L, 0x0L, 0x0L, 0, 0x0},
+/*3005*/ {0x4L, 0x0L, 0x0L, 0, 0x0L},
 /*3006*/ 0x0L,
 /*3100*/ {0x5L, 0x0L, 0x0L, 0, 0, 0},
 
@@ -326,10 +326,10 @@ struct sCO_OD_PERSIST_MFR CO_OD_PERSIST_MFR = {
 
 /*0x3000*/ const CO_OD_entryRecord_t OD_record3000[5] = {
            {(void*)&CO_OD_RAM.OLMControl.highestSubIndexSupported, 0x06, 0x1 },
+           {(void*)0, 0x0A, 0x0 },
+           {(void*)0, 0x0A, 0x0 },
            {(void*)&CO_OD_RAM.OLMControl.quit, 0x0A, 0x1 },
-           {(void*)&CO_OD_RAM.OLMControl.coreAsyncThreadDelay, 0x8E, 0x4 },
-           {(void*)&CO_OD_RAM.OLMControl.appAsyncThreadDelay, 0x8E, 0x4 },
-           {(void*)&CO_OD_RAM.OLMControl.CPUfreqControl, 0x0E, 0x1 },
+           {(void*)&CO_OD_RAM.OLMControl.CPUFrequency, 0x0E, 0x1 },
 };
 
 /*0x3001*/ const CO_OD_entryRecord_t OD_record3001[29] = {
@@ -405,8 +405,8 @@ struct sCO_OD_PERSIST_MFR CO_OD_PERSIST_MFR = {
            {(void*)&CO_OD_RAM.updater.status, 0x06, 0x1 },
            {(void*)&CO_OD_RAM.updater.updatesAvailable, 0x06, 0x1 },
            {(void*)0, 0x06, 0x0 },
-           {(void*)&CO_OD_RAM.updater.update, 0x0A, 0x1 },
-           {(void*)&CO_OD_RAM.updater.makeStatusFile, 0x0A, 0x1 },
+           {(void*)&CO_OD_RAM.updater.update, 0x3A, 0x1 },
+           {(void*)&CO_OD_RAM.updater.makeStatusFile, 0x3A, 0x1 },
 };
 
 /*******************************************************************************
@@ -461,7 +461,7 @@ const CO_OD_entry_t CO_OD[CO_OD_NoOfElements] = {
 {0x3003, 0x04, 0x00,  0, (void*)&OD_record3003},
 {0x3004, 0x03, 0x00,  0, (void*)&OD_record3004},
 {0x3005, 0x04, 0x00,  0, (void*)&OD_record3005},
-{0x3006, 0x00, 0x06,  1, (void*)&CO_OD_RAM.getLog},
+{0x3006, 0x00, 0x0E,  1, (void*)&CO_OD_RAM.getLog},
 {0x3100, 0x05, 0x00,  0, (void*)&OD_record3100},
 };
 // clang-format on

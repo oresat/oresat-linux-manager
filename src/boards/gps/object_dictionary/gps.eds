@@ -8,7 +8,7 @@ Description=OreSat GPS
 CreationTime=11:31PM
 CreationDate=03-09-2021
 CreatedBy=Ryan Medick
-ModificationTime=1:20PM
+ModificationTime=1:51PM
 ModificationDate=04-03-2021
 ModifiedBy=Ryan Medick
 
@@ -1911,39 +1911,39 @@ DefaultValue=0x04
 PDOMapping=0
 
 [3000sub1]
-ParameterName=Quit
+ParameterName=Reboot Board
 ObjectType=0x7
 ;StorageLocation=RAM
-DataType=0x0001
+DataType=0x000F
 AccessType=wo
-DefaultValue=0
+DefaultValue=
 PDOMapping=0
 
 [3000sub2]
-ParameterName=Core async thread delay
+ParameterName=Poweroff Board
 ObjectType=0x7
 ;StorageLocation=RAM
-DataType=0x0006
-AccessType=rw
-DefaultValue=100
+DataType=0x000F
+AccessType=wo
+DefaultValue=
 PDOMapping=0
 
 [3000sub3]
-ParameterName=App async thread delay
+ParameterName=Quit
 ObjectType=0x7
 ;StorageLocation=RAM
-DataType=0x0006
-AccessType=rw
-DefaultValue=100
+DataType=0x000F
+AccessType=wo
+DefaultValue=
 PDOMapping=0
 
 [3000sub4]
-ParameterName=CPUfreq control
+ParameterName=CPU frequency
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0001
 AccessType=rw
-DefaultValue=1
+DefaultValue=0
 PDOMapping=0
 
 [3001]
@@ -2448,7 +2448,7 @@ PDOMapping=0
 ParameterName=Daemon state
 ObjectType=0x7
 ;StorageLocation=RAM
-DataType=0x0002
+DataType=0x0005
 AccessType=rw
 DefaultValue=0
 PDOMapping=0
@@ -2458,7 +2458,7 @@ ParameterName=Get log
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0005
-AccessType=ro
+AccessType=rw
 DefaultValue=0
 PDOMapping=0
 
@@ -2511,7 +2511,7 @@ ObjectType=0x7
 DataType=0x0001
 AccessType=wo
 DefaultValue=0
-PDOMapping=0
+PDOMapping=1
 
 [3100sub5]
 ParameterName=Make status file
@@ -2520,5 +2520,5 @@ ObjectType=0x7
 DataType=0x0001
 AccessType=wo
 DefaultValue=0
-PDOMapping=0
+PDOMapping=1
 

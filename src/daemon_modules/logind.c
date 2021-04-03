@@ -18,11 +18,11 @@
 #define INTERFACE_NAME      DESTINATION".Manager"
 #define OBJECT_PATH         "/org/freedesktop/logind1"
 
-// lazy way to deal with all the dbus arguments
-#define DBUS_INFO system_bus, DESTINATION, OBJECT_PATH, INTERFACE_NAME
-
 /** System D-Bus connection. Defined in main.c */
 extern sd_bus *system_bus;
+
+// lazy way to deal with all the dbus arguments
+#define DBUS_INFO system_bus, DESTINATION, OBJECT_PATH, INTERFACE_NAME
 
 int
 logind_reboot(void) {
@@ -30,7 +30,7 @@ logind_reboot(void) {
     int r;
 
     if ((r = sd_bus_call_method(DBUS_INFO, "Reboot", &err, NULL, NULL)) < 0)
-        LOG_DBUS_CALL_METHOD_ERROR(LOG_ERR, MODULE_NAME, "GetUnit", err.name);
+        LOG_DBUS_CALL_METHOD_ERROR(LOG_ERR, MODULE_NAME, "Reboot", err.name);
 
     sd_bus_error_free(&err);
     return r;
@@ -42,7 +42,7 @@ logind_poweroff(void) {
     int r;
 
     if ((r = sd_bus_call_method(DBUS_INFO, "PowerOff", &err, NULL, NULL)) < 0)
-        LOG_DBUS_CALL_METHOD_ERROR(LOG_ERR, MODULE_NAME, "GetUnit", err.name);
+        LOG_DBUS_CALL_METHOD_ERROR(LOG_ERR, MODULE_NAME, "PowerOff", err.name);
 
     sd_bus_error_free(&err);
     return r;

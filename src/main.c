@@ -31,6 +31,7 @@
 #include "system_info.h"
 #include "board_main.h"
 #include "os_command.h"
+#include "olm_control_odf.h"
 #include "app_manager.h"
 #include "olm_file_cache.h"
 #include "CO_fstream_odf.h"
@@ -218,7 +219,7 @@ main(int argc, char *argv[]) {
     bool firstRun = true;
     bool daemon_flag = false;
     bool verbose = false;
-    bool cpufreq_ctrl = true;
+    bool cpufreq_ctrl = false;
 
     // file transfer data
     olm_file_cache_new(FREAD_CACHE_DIR, &fread_cache);
@@ -250,7 +251,7 @@ main(int argc, char *argv[]) {
                 break;
             case 'v': verbose = true;
                 break;
-            case 'c': cpufreq_ctrl = false;
+            case 'c': cpufreq_ctrl = true;
                 break;
             default:
                 printUsage(argv[0]);
@@ -354,9 +355,9 @@ main(int argc, char *argv[]) {
     }
     CANptr.epoll_fd = epRT.epoll_fd;
     
-    if (!cpufreq_ctrl) {
+    if (cpufreq_ctrl) {
         CO_LOCK_OD();
-        OD_OLMControl.CPUfreqControl = false;
+        OD_OLMControl.CPUFrequency = true;
         CO_UNLOCK_OD();
     }
 
@@ -426,6 +427,7 @@ main(int argc, char *argv[]) {
             board_init();
             system_info_setup();
             CO_OD_configure(CO->SDO[0], OD_1023_OSCommand, OS_COMMAND_1023_ODF, &os_command_data, 0, 0U);
+            CO_OD_configure(CO->SDO[0], OD_3000_OLMControl, olm_control_ODF, NULL, 0, 0U);
             CO_OD_configure(CO->SDO[0], OD_3002_fileCaches, file_caches_ODF, &caches_odf_data, 0, 0U);
             CO_OD_configure(CO->SDO[0], OD_3003_fread, CO_fread_ODF, &CO_fread_data, 0, 0U);
             CO_OD_configure(CO->SDO[0], OD_3004_fwrite, CO_fwrite_ODF, &CO_fwrite_data, 0, 0U);
@@ -585,7 +587,7 @@ app_thread(void* arg) {
                 APPS[i]->async_cb(APPS[i]->data, fread_cache);
         }
 
-        usleep(OD_OLMControl.appAsyncThreadDelay);
+        usleep(ASYNC_DELAY);
     }
 
     log_printf(LOG_DEBUG, "app thread ended");
@@ -601,7 +603,7 @@ async_thread(void* arg) {
     while (CO_endProgram == 0) {
         co_command_async(&os_command_data);
         app_manager_async(APPS, fwrite_cache);
-        usleep(OD_OLMControl.coreAsyncThreadDelay);
+        usleep(ASYNC_DELAY);
     }
 
     log_printf(LOG_DEBUG, "async thread ended");

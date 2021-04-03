@@ -5,6 +5,7 @@ set(CORE_SOURCES
     CO_fstream_odf.c
     cpufreq.c
     file_caches_odf.c
+    olm_control_odf.c
     os_command.c
     system_info.c
     )
@@ -15,6 +16,7 @@ set(CORE_HEADERS
     CO_fstream_odf.h
     cpufreq.h
     file_caches_odf.h
+    olm_control_odf.h
     os_command.h
     system_info.h
     )
