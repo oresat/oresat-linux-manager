@@ -3,7 +3,8 @@
 from os.path import isfile
 import pytest
 from canopen import SdoAbortedError
-from common import connect_bus, FWRITE_CACHE_DIR, FWRITE_TMP_DIR
+from common import connect_bus, FWRITE_CACHE_DIR, FWRITE_TMP_DIR, \
+        random_string_generator
 
 FWRITE_INDEX = 0x3004
 NAME_SUBINDEX = 1
@@ -49,7 +50,7 @@ def test_fwrite_data():
     # write a file over CANbus
     new_file = "test_write_123.txt"
     name_subindex.raw = new_file.encode("utf-8")
-    file_data = "test"
+    file_data = random_string_generator(10)
     data_subindex.raw = file_data.encode("utf-8")
     assert isfile(FWRITE_CACHE_DIR + new_file)
     with open(FWRITE_CACHE_DIR + new_file, "r") as fptr:
@@ -58,7 +59,7 @@ def test_fwrite_data():
     # write another file over CANbus that require multiple blocks
     new_file2 = "test_write_456.txt"
     name_subindex.raw = new_file2.encode("utf-8")
-    file2_data = "this is a test " * 127
+    file2_data = random_string_generator(2000)
     data_subindex.raw = file2_data.encode("utf-8")
     assert isfile(FWRITE_CACHE_DIR + new_file2)
     with open(FWRITE_CACHE_DIR + new_file2, "r") as fptr:
@@ -66,7 +67,7 @@ def test_fwrite_data():
 
     # write another file over CANbus with same name as last
     name_subindex.raw = new_file2.encode("utf-8")
-    file2b_data = "override file"
+    file2b_data = random_string_generator(50)
     data_subindex.raw = file2b_data.encode("utf-8")
     assert isfile(FWRITE_CACHE_DIR + new_file2)
     with open(FWRITE_CACHE_DIR + new_file2, "r") as fptr:

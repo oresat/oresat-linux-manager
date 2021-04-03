@@ -6,7 +6,7 @@ from pathlib import Path
 from os import listdir, remove, geteuid
 from common import FREAD_CACHE_DIR, FWRITE_CACHE_DIR, FREAD_FILE, FREAD_FILE2,\
         FCACHES_FREAD_VALID_FILES, FCACHES_FREAD_INVALID_FILES,\
-        FCACHES_FREAD_EMPTY_FILE
+        FCACHES_FREAD_EMPTY_FILE, random_string_generator
 
 if geteuid() != 0:
     print("Run as root")
@@ -28,15 +28,15 @@ with open(FREAD_CACHE_DIR + FREAD_FILE, "w") as fptr:
 
 # make fread test file for block SDO transfer testing
 with open(FREAD_CACHE_DIR + FREAD_FILE2, "w") as fptr:
-    fptr.write("This is a test. " * 100)
+    fptr.write(random_string_generator(2000))
 
 # make files for file caches tests
 for f in FCACHES_FREAD_VALID_FILES:
     with open(FREAD_CACHE_DIR + f, "w") as fptr:
-        fptr.write("This is a test. ")
+        fptr.write(random_string_generator(100))
 for f in FCACHES_FREAD_INVALID_FILES:
     with open(FREAD_CACHE_DIR + f, "w") as fptr:
-        fptr.write("This is a test. ")
+        fptr.write(random_string_generator(100))
 
 # make empty file for file caches tests
 Path(FREAD_CACHE_DIR + FCACHES_FREAD_EMPTY_FILE).touch()
