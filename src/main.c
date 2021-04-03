@@ -71,9 +71,7 @@
 
 #define DBUS_TIMEOUT_US         100000
 
-#ifndef DEFAULT_NODE_ID
-#define DEFAULT_NODE_ID         0x10
-#endif /* DEFAULT_NODE_ID */
+#define DEFAULT_NODE_ID         0x7F
 
 /* Configurable CAN bit-rate and CANopen node-id, store-able to non-volatile
  * memory. Can be set by argument and changed by LSS slave. */
