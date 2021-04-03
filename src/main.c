@@ -511,14 +511,17 @@ main(int argc, char *argv[]) {
     olm_file_cache_free(fread_cache);
     olm_file_cache_free(fwrite_cache);
 
-    log_printf(LOG_DEBUG, "joining threads");
-    CO_endProgram = 1;
-    if (pthread_join(rt_thread_id, NULL) != 0)
-        log_printf(LOG_CRIT, DBG_ERRNO, "pthread_join()");
-    if (pthread_join(async_thread_id, NULL) != 0)
-        log_printf(LOG_CRIT, DBG_ERRNO, "pthread_join()");
-    if (pthread_join(app_thread_id, NULL) != 0)
-        log_printf(LOG_CRIT, DBG_ERRNO, "pthread_join()");
+    if (!firstRun) {
+        log_printf(LOG_DEBUG, "joining threads");
+        CO_endProgram = 1;
+
+        if (pthread_join(rt_thread_id, NULL) != 0)
+            log_printf(LOG_CRIT, DBG_ERRNO, "pthread_join()");
+        if (pthread_join(async_thread_id, NULL) != 0)
+            log_printf(LOG_CRIT, DBG_ERRNO, "pthread_join()");
+        if (pthread_join(app_thread_id, NULL) != 0)
+            log_printf(LOG_CRIT, DBG_ERRNO, "pthread_join()");
+    }
 
     if (system_bus != NULL)
         sd_bus_unref(system_bus);
