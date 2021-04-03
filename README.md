@@ -7,7 +7,7 @@
 ![build gps](https://github.com/oresat/oresat-linux-manager/workflows/build%20gps/badge.svg)
 ![build star tracker](https://github.com/oresat/oresat-linux-manager/workflows/build%20star%20tracker/badge.svg)
 ![build cfc](https://github.com/oresat/oresat-linux-manager/workflows/build%20cfc/badge.svg)
-![build live](https://github.com/oresat/oresat-linux-manager/workflows/build%20live/badge.svg)
+![build dxwifi](https://github.com/oresat/oresat-linux-manager/workflows/build%20dxwifi/badge.svg)
 
 OreSat Linux Manager is the Linux board controller / CAN interface program for
 all Linux boards on OreSat. It is built ontop of [CANopenNode] and interfaces

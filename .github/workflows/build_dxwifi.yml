@@ -1,11 +1,11 @@
-name: build live
+name: build dxwifi
 
 on:
   push:
     branches: [ master ]
     paths:
-      - '.github/workflows/build_live.yml'
-      - 'src/boards/live/**'
+      - '.github/workflows/build_dxwifi.yml'
+      - 'src/boards/dxwifi/**'
       - 'src/CANopenNode/**'
       - 'src/common/**'
       - 'src/core/**'
@@ -18,8 +18,8 @@ on:
   pull_request:
     branches: [ master ]
     paths:
-      - '.github/workflows/build_live.yml'
-      - 'src/boards/live/**'
+      - '.github/workflows/build_dxwifi.yml'
+      - 'src/boards/dxwifi/**'
       - 'src/CANopenNode/**'
       - 'src/common/**'
       - 'src/core/**'
@@ -32,7 +32,7 @@ on:
 
 env:
   BUILD_TYPE: Release
-  BOARD: live
+  BOARD: dxwifi
 
 jobs:
   build:

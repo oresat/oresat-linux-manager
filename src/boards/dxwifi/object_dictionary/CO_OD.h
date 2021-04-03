@@ -39,7 +39,7 @@
 
 /*******************************************************************************
    FILE INFO:
-      FileName:     live_OD.xdd
+      FileName:     dxwifi_OD.xdd
       FileVersion:  1
       CreationTime: 11:27PM
       CreationDate: 03-09-2021
@@ -51,7 +51,7 @@
    DEVICE INFO:
       VendorName:     Portland State Aerospace Society
       VendorNumber:   0
-      ProductName:    OreSat Live
+      ProductName:    OreSat DxWifi
       ProductNumber:  0
 *******************************************************************************/
 
@@ -689,7 +689,7 @@ struct sCO_OD_ROM{
                UNSIGNED32     FirstWord;
 
 /*1000      */ UNSIGNED32     deviceType;
-/*1008      */ VISIBLE_STRING manufacturerDeviceName[11];
+/*1008      */ VISIBLE_STRING manufacturerDeviceName[13];
 /*1009      */ VISIBLE_STRING manufacturerHardwareVersion[3];
 /*100A      */ VISIBLE_STRING manufacturerSoftwareVersion[5];
 /*1018      */ OD_identity_t   identity;
@@ -776,7 +776,7 @@ extern struct sCO_OD_PERSIST_MFR CO_OD_PERSIST_MFR;
 
 /*1008, Data Type: VISIBLE_STRING */
         #define OD_manufacturerDeviceName                           CO_OD_ROM.manufacturerDeviceName
-        #define ODL_manufacturerDeviceName_stringLength             11
+        #define ODL_manufacturerDeviceName_stringLength             13
 
 /*1009, Data Type: VISIBLE_STRING */
         #define OD_manufacturerHardwareVersion                      CO_OD_ROM.manufacturerHardwareVersion

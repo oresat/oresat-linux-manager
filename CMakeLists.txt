@@ -26,9 +26,9 @@ if(NOT BOARD)
         "ie: cmake -DBOARD=star-tracker ..\n"
         "Valid boards:\n"
         "   cfc\n"
+        "   dxwifi\n"
         "   generic\n"
         "   gps\n"
-        "   live\n"
         "   star-tracker\n"
         )
 endif()
@@ -42,9 +42,9 @@ if(BOARD MATCHES "cirrus-flux-camera" OR BOARD MATCHES "cirrus_flux_camera" OR B
 elseif(BOARD MATCHES "gps")
     set(BOARD_NAME "GPS")
     set(BOARD_DIR "gps")
-elseif(BOARD MATCHES "live")
-    set(BOARD_NAME "OreSat Live")
-    set(BOARD_DIR "live")
+elseif(BOARD MATCHES "dxwifi")
+    set(BOARD_NAME "DxWifi")
+    set(BOARD_DIR "dxwifi")
 elseif(BOARD MATCHES "star-tracker" OR BOARD MATCHES "star_tracker" OR BOARD MATCHES "st" OR BOARD MATCHES "startracker")
     set(BOARD_NAME "Star Tracker")
     set(BOARD_DIR "star_tracker")

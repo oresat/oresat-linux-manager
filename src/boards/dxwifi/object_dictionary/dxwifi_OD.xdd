@@ -15,14 +15,14 @@
         <ProfileTechnology>CANopen</ProfileTechnology>
       </ISO15745Reference>
     </ProfileHeader>
-    <ProfileBody xmlns:q1="http://www.canopen.org/xml/1.1" xsi:type="q1:ProfileBody_Device_CANopen" formatName="CANopen" formatVersion="1.0" fileName="live_OD.xdd" fileCreator="Ryan Medick" fileCreationDate="2021-03-09" fileCreationTime="23:27:16.0000000-07:00" fileModifiedBy="Ryan Medick" fileModificationDate="2021-04-01" fileModificationTime="21:12:21.1597690-07:00" fileVersion="1" supportedLanguages="en" xmlns="">
+    <ProfileBody xmlns:q1="http://www.canopen.org/xml/1.1" xsi:type="q1:ProfileBody_Device_CANopen" formatName="CANopen" formatVersion="1.0" fileName="dxwifi_OD.xdd" fileCreator="Ryan Medick" fileCreationDate="2021-03-09" fileCreationTime="23:27:16.0000000-07:00" fileModifiedBy="Ryan Medick" fileModificationDate="2021-04-03" fileModificationTime="12:46:08.5936460-07:00" fileVersion="1" supportedLanguages="en" xmlns="">
       <q1:DeviceIdentity>
         <q1:vendorName>Portland State Aerospace Society</q1:vendorName>
         <q1:vendorID>0</q1:vendorID>
-        <q1:productName>OreSat Live</q1:productName>
+        <q1:productName>OreSat DxWifi</q1:productName>
         <q1:productID>0</q1:productID>
         <q1:productText>
-          <description lang="en">OreSat Live</description>
+          <description lang="en">OreSat DxWifi</description>
         </q1:productText>
         <q1:version versionType="SW">0</q1:version>
         <q1:version versionType="FW">0</q1:version>
@@ -879,7 +879,7 @@
           <q1:parameter uniqueID="UID_OBJ_1008">
             <label lang="en">Manufacturer device name</label>
             <STRING />
-            <q1:defaultValue value="OreSat Live" />
+            <q1:defaultValue value="OreSat DxWifi" />
             <q1:property name="CO_storageGroup" value="ROM" />
           </q1:parameter>
           <q1:parameter uniqueID="UID_OBJ_1009">
@@ -2660,7 +2660,7 @@ Manufacturer may define its own constants up to index 0xFF. Of course, he must t
         <ProfileTechnology>CANopen</ProfileTechnology>
       </ISO15745Reference>
     </ProfileHeader>
-    <ProfileBody xmlns:q2="http://www.canopen.org/xml/1.1" xsi:type="q2:ProfileBody_CommunicationNetwork_CANopen" formatName="CANopen" formatVersion="1.0" fileName="live_OD.xdd" fileCreator="Ryan Medick" fileCreationDate="2021-03-09" fileCreationTime="23:27:16.0000000-07:00" fileModificationDate="2021-04-01" fileModificationTime="21:12:21.1597690-07:00" fileVersion="1" supportedLanguages="en" xmlns="">
+    <ProfileBody xmlns:q2="http://www.canopen.org/xml/1.1" xsi:type="q2:ProfileBody_CommunicationNetwork_CANopen" formatName="CANopen" formatVersion="1.0" fileName="dxwifi_OD.xdd" fileCreator="Ryan Medick" fileCreationDate="2021-03-09" fileCreationTime="23:27:16.0000000-07:00" fileModificationDate="2021-04-03" fileModificationTime="12:46:08.5936460-07:00" fileVersion="1" supportedLanguages="en" xmlns="">
       <ApplicationLayers>
         <q2:CANopenObjectList>
           <CANopenObject index="1000" name="Device type" objectType="7" PDOmapping="no" uniqueIDRef="UID_OBJ_1000" />

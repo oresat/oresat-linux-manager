@@ -1,16 +1,16 @@
 CANopen device documentation
 ============================
-**OreSat Live**
+**OreSat DxWifi**
 
-OreSat Live
+OreSat DxWifi
 
 |              |                                |
 | ------------ | ------------------------------ |
-| Project File | live_OD.xdd                    |
+| Project File | dxwifi_OD.xdd                  |
 | File Version | 1                              |
 | Created      | 3/9/2021 11:27:16 PM           |
 | Created By   | Ryan Medick                    |
-| Modified     | 4/1/2021 9:12:21 PM            |
+| Modified     | 4/3/2021 12:46:08 PM           |
 | Modified By  | Ryan Medick                    |
 
 This file was automatically generated with [libedssharp](https://github.com/robincornelius/libedssharp) Object Dictionary Editor v0.8-123-g6c02323
@@ -28,7 +28,7 @@ Device Information {#device-information}
 | ------------ | ------------------------------ |
 | Vendor Name  | Portland State Aerospace Society |
 | Vendor ID    | 0                              |
-| Product Name | OreSat Live                    |
+| Product Name | OreSat DxWifi                  |
 | Product ID   | 0                              |
 | Granularity  | 8                              |
 | RPDO count   | 4                              |
@@ -158,7 +158,7 @@ Synchronous window leghth in µs (0 = not used). All synchronous PDOs must be tr
 
 | Data Type               | SDO | PDO | SRDO | Default Value                   |
 | ----------------------- | --- | --- | ---- | ------------------------------- |
-| VISIBLE_STRING          | ro  | no  | no   | OreSat Live                     |
+| VISIBLE_STRING          | ro  | no  | no   | OreSat DxWifi                   |
 
 ### 0x1009 - Manufacturer hardware version
 | Object Type | Count Label    | Storage Group  |

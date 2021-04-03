@@ -1,8 +1,8 @@
 /**
- * Board main for the OreSat Live board.
+ * Board main for the OreSat DxWifi board.
  *
  * @file        board_main.c
- * @ingroup     oresat_live
+ * @ingroup     oresat_dxwifi
  *
  * This file is part of OreSat Linux Manager, a common CAN to Dbus interface
  * for daemons running on OreSat Linux boards.
