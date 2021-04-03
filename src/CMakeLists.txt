@@ -1,12 +1,8 @@
 # src
 
 set(CANOPEN_DIR CANopenNode)
-set(STACK_DRIVER_DIR ${CANOPEN_DIR}/socketCAN)
 
 set(CANOPENNODE_SOURCES
-    ${STACK_DRIVER_DIR}/CO_driver.c
-    ${STACK_DRIVER_DIR}/CO_error.c
-    ${STACK_DRIVER_DIR}/CO_epoll_interface.c
     ${CANOPEN_DIR}/301/CO_NMT_Heartbeat.c
     ${CANOPEN_DIR}/301/CO_HBconsumer.c
     ${CANOPEN_DIR}/301/CO_Emergency.c
@@ -23,10 +19,6 @@ set(CANOPENNODE_SOURCES
 set(CANOPENNODE_HEADERS
     CO_driver_custom.h
     ${CANOPEN_DIR}/301/CO_config.h
-    ${STACK_DRIVER_DIR}/CO_driver_target.h
-    ${STACK_DRIVER_DIR}/CO_error.h
-    ${STACK_DRIVER_DIR}/CO_epoll_interface.h
-    ${STACK_DRIVER_DIR}/CO_error_msgs.h
     ${CANOPEN_DIR}/301/CO_driver.h
     ${CANOPEN_DIR}/301/CO_HBconsumer.h
     ${CANOPEN_DIR}/301/CO_NMT_Heartbeat.h
@@ -42,13 +34,17 @@ set(CANOPENNODE_HEADERS
 
 add_library(CANopenNode ${CANOPENNODE_SOURCES} ${CANOPENNODE_HEADERS})
 
-target_include_directories(CANopenNode PUBLIC
-    ${CMAKE_CURRENT_SOURCE_DIR}
-    ${CMAKE_CURRENT_SOURCE_DIR}/${CANOPEN_DIR}
-    ${CMAKE_CURRENT_SOURCE_DIR}/${STACK_DRIVER_DIR} 
-    ${CMAKE_CURRENT_SOURCE_DIR}/boards/${BOARD_DIR}/object_dictionary
+target_link_libraries(CANopenNode
+    socketCAN
+    object_dictionary
     )
 
+target_include_directories(CANopenNode PUBLIC
+    ${CMAKE_CURRENT_SOURCE_DIR} 
+    ${CMAKE_CURRENT_SOURCE_DIR}/${CANOPEN_DIR}
+    )
+
+add_subdirectory(socketCAN_mod)
 add_subdirectory(common)
 add_subdirectory(core)
 add_subdirectory(manitory_apps)

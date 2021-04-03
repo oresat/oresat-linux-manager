@@ -142,6 +142,7 @@ add_subdirectory(src)
 
 target_link_libraries(oresat-linux-manager
     CANopenNode
+    socketCAN
     object_dictionary
     common
     core
