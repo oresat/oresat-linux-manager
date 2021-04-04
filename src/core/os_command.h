@@ -17,18 +17,16 @@
 #include <stdio.h>
 
 typedef struct {
-    /** Linear link list of command todo */
+    /** Bash command buffer. */
     char *command;
-    /** Lenght of the command linear link list */
+    /** Lenght of the Bash command buffer. */
     int command_len;
-    /** Reply buffer */
+    /** Reply buffer. */
     char * reply_buf;
-    /** Reply buffer length */
+    /** Reply buffer length. */
     uint32_t reply_buf_len;
-    /** Reply length in buffer */
+    /** Reply length in the buffer. */
     uint32_t reply_len;
-    /** Bytes transfer */
-    uint32_t bytes_transfered;
 } os_command_t;
 
 void co_command_async(os_command_t *data);

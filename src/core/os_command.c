@@ -21,8 +21,8 @@
 #include <stdlib.h>
 
 #define SDO_BLOCK_LEN           (127*7)
-#define REPLY_BUFFER_LEN        1024
-#define REPLY_BUFFER_LEN_MAX    (REPLY_BUFFER_LEN*128)
+#define BUFFER_LEN              1024
+#define BUFFER_LEN_MAX          (BUFFER_LEN*128)
 
 /** OS command status values defined by CiA 301 */
 enum os_command_status {
@@ -55,9 +55,13 @@ co_command_async(os_command_t *data) {
         return;
     }
 
-    log_printf(LOG_DEBUG, "running bash command: %s", data->command);
+    if (data->command_len < 50)
+        log_printf(LOG_DEBUG, "running bash command: %s", data->command);
+    else
+        log_printf(LOG_DEBUG, "running long bash command");
 
-    if ((pipe = popen(data->command, "r")) == NULL) {
+    pipe = popen(data->command, "r");
+    if (pipe == NULL) {
         CO_LOCK_OD();
         OD_OSCommand.status = os_cmd_error_no_reply;
         CO_UNLOCK_OD();
@@ -65,8 +69,8 @@ co_command_async(os_command_t *data) {
     } else {
         // initialize buffer
         FREE(data->reply_buf);
-        data->reply_buf_len = REPLY_BUFFER_LEN;
-        if ((data->reply_buf = malloc(REPLY_BUFFER_LEN)) == NULL) {
+        data->reply_buf_len = BUFFER_LEN;
+        if ((data->reply_buf = malloc(BUFFER_LEN)) == NULL) {
             CO_LOCK_OD();
             OD_OSCommand.status = os_cmd_no_error_no_reply;
             CO_UNLOCK_OD();
@@ -76,9 +80,7 @@ co_command_async(os_command_t *data) {
 
         for (data->reply_len=0; (c = fgetc(pipe)) != EOF; ++data->reply_len) {
             if (data->reply_len > data->reply_buf_len) { // grow buffer
-                log_printf(LOG_DEBUG, "growing bash reply buffer to %d", data->reply_buf_len);
-
-                if (data->reply_len > REPLY_BUFFER_LEN_MAX) {
+                if (data->reply_len > BUFFER_LEN_MAX) {
                     log_printf(LOG_INFO, "bash reply max limit hit");
                     break; // max len reached
                 }
@@ -124,12 +126,12 @@ OS_COMMAND_1023_ODF(CO_ODF_arg_t *ODF_arg) {
                     if (data->command == NULL)
                         return CO_SDO_AB_NO_DATA;
 
-                    data->bytes_transfered = 0;
+                    ODF_arg->offset = 0;
                     ODF_arg->dataLengthTotal = strlen(data->command)+1;
                 }
 
                 // Check if there are more segements needed
-                bytes_left = ODF_arg->dataLengthTotal - data->bytes_transfered;
+                bytes_left = ODF_arg->dataLengthTotal - ODF_arg->offset;
                 if (bytes_left > SDO_BLOCK_LEN) { // more segements needed
                     ODF_arg->dataLength = SDO_BLOCK_LEN;
                     ODF_arg->lastSegment = false;
@@ -138,17 +140,15 @@ OS_COMMAND_1023_ODF(CO_ODF_arg_t *ODF_arg) {
                     ODF_arg->lastSegment = true;
                 }
 
-                memcpy(ODF_arg->data, &data->command[data->bytes_transfered],
+                memcpy(ODF_arg->data, &data->command[ODF_arg->offset],
                         ODF_arg->dataLength);
-
-                if (!ODF_arg->lastSegment)
-                    data->bytes_transfered += ODF_arg->dataLength;
-
             } else { // writing
                 uint32_t len;
 
                 // add on incase it is missing '\0'
-                if (ODF_arg->dataLengthTotal != 0)
+                if (ODF_arg->dataLengthTotal > BUFFER_LEN_MAX)
+                    return CO_SDO_AB_GENERAL;
+                else if (ODF_arg->dataLengthTotal != 0)
                     len = ODF_arg->dataLengthTotal+1;
                 else
                     len = ODF_arg->dataLength+1;
@@ -156,17 +156,20 @@ OS_COMMAND_1023_ODF(CO_ODF_arg_t *ODF_arg) {
                 if (ODF_arg->firstSegment) {
                     FREE(data->command);
                     data->command_len = len;
-                    data->bytes_transfered = 0;
+                    ODF_arg->offset = 0;
+
+                    // free reply buffer
+                    FREE(data->reply_buf);
+                    data->reply_buf_len = 0;
+                    data->reply_buf = 0;
 
                     if ((data->command = malloc(data->command_len)) == NULL)
                         return CO_SDO_AB_OUT_OF_MEM;
                 }
 
-                memcpy(&data->command[data->bytes_transfered], ODF_arg->data,
+                memcpy(&data->command[ODF_arg->offset], ODF_arg->data,
                         ODF_arg->dataLength);
                     
-                data->bytes_transfered += ODF_arg->dataLength;
-
                 if (ODF_arg->lastSegment) {
                     data->command[len-1] = '\0';
                     OD_OSCommand.status = os_cmd_executing;
@@ -182,12 +185,12 @@ OS_COMMAND_1023_ODF(CO_ODF_arg_t *ODF_arg) {
                             OD_OSCommand.status != os_cmd_error_reply)
                         return CO_SDO_AB_NO_DATA;
 
-                    data->bytes_transfered = 0;
+                    ODF_arg->offset = 0;
                     ODF_arg->dataLengthTotal = data->reply_len;
                 }
 
                 // Check if there are more segements needed
-                bytes_left = ODF_arg->dataLengthTotal - data->bytes_transfered;
+                bytes_left = ODF_arg->dataLengthTotal - ODF_arg->offset;
                 if (bytes_left > SDO_BLOCK_LEN) { // more segements needed
                     ODF_arg->dataLength = SDO_BLOCK_LEN;
                     ODF_arg->lastSegment = false;
@@ -196,11 +199,8 @@ OS_COMMAND_1023_ODF(CO_ODF_arg_t *ODF_arg) {
                     ODF_arg->lastSegment = true;
                 }
 
-                memcpy(ODF_arg->data, &data->reply_buf[data->bytes_transfered],
+                memcpy(ODF_arg->data, &data->reply_buf[ODF_arg->offset],
                         ODF_arg->dataLength);
-
-                if (!ODF_arg->lastSegment)
-                    data->bytes_transfered += ODF_arg->dataLength;
             } else {
                 return CO_SDO_AB_READONLY;
             }
