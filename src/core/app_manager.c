@@ -10,7 +10,7 @@
  */
 
 //#include "cpufreq.h"
-#include "log_message.h"
+#include "logging.h"
 #include "systemd.h"
 #include "board_main.h"
 #include "olm_file_cache.h"
@@ -75,7 +75,7 @@ app_manager_async(olm_app_t **apps, olm_file_cache_t *fwrite_cache) {
     int r;
 
     if (apps == NULL) {
-        log_message(LOG_DEBUG, "missing apps input");
+        log_printf(LOG_DEBUG, "missing apps input");
         return;
     }
 
@@ -90,19 +90,19 @@ app_manager_async(olm_app_t **apps, olm_file_cache_t *fwrite_cache) {
             case UNIT_NO_CMD:
                 break;
             case UNIT_START:
-                log_message(LOG_INFO, "starting %s", apps[i]->unit_name);
+                log_printf(LOG_INFO, "starting %s", apps[i]->unit_name);
                 start_unit(apps[i]->unit_systemd1_object_path);
                 break;
             case UNIT_STOP:
-                log_message(LOG_INFO, "stoping %s", apps[i]->unit_name);
+                log_printf(LOG_INFO, "stoping %s", apps[i]->unit_name);
                 stop_unit(apps[i]->unit_systemd1_object_path);
                 break;
             case UNIT_RESTART:
-                log_message(LOG_INFO, "restarting %s", apps[i]->unit_name);
+                log_printf(LOG_INFO, "restarting %s", apps[i]->unit_name);
                 restart_unit(apps[i]->unit_systemd1_object_path);
                 break;
             default: // this should not happen
-                log_message(LOG_ERR, "unknown state %d", apps[i]->unit_state);
+                log_printf(LOG_ERR, "unknown state %d", apps[i]->unit_state);
         }
 
         apps[i]->unit_command = UNIT_NO_CMD;
@@ -122,13 +122,13 @@ app_manager_async(olm_app_t **apps, olm_file_cache_t *fwrite_cache) {
 
             r = apps[i]->fwrite_cb(path);
             if ((r = apps[i]->fwrite_cb(path)) == 0) { // not now
-                log_message(LOG_DEBUG, "%s cannot recieve %s right now", apps[i]->unit_name, file->name);
+                log_printf(LOG_DEBUG, "%s cannot recieve %s right now", apps[i]->unit_name, file->name);
             } else if (r < 0) { // was successful
-                log_message(LOG_INFO, "deleting %s from fwrite cache", file->name);
+                log_printf(LOG_INFO, "deleting %s from fwrite cache", file->name);
                 if (olm_file_cache_remove(fwrite_cache, file->name) >= 0)
                     --j; // adjust for the removed file
             } else { // error
-                log_message(LOG_CRIT, "%s cannot recieve %s", apps[i]->unit_name, file->name);
+                log_printf(LOG_CRIT, "%s cannot recieve %s", apps[i]->unit_name, file->name);
             }
 
             olm_file_free(file);

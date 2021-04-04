@@ -20,6 +20,7 @@
 #include <systemd/sd-bus.h>
 
 #include "CANopen.h"
+#include "logging.h"
 #include "CO_error.h"
 #include "CO_epoll_interface.h"
 
@@ -119,15 +120,6 @@ volatile sig_atomic_t CO_endProgram = 0;
 static void sigHandler(int sig) {
     (void)sig;
     CO_endProgram = 1;
-}
-
-/* Message logging function */
-void log_printf(int priority, const char *format, ...) {
-    va_list ap;
-
-    va_start(ap, format);
-    vsyslog(priority, format, ap);
-    va_end(ap);
 }
 
 #if (CO_CONFIG_EM) & CO_CONFIG_EM_CONSUMER

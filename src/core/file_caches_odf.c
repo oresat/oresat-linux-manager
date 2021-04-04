@@ -13,7 +13,7 @@
 #include "olm_file.h"
 #include "olm_file_cache.h"
 #include "utility.h"
-#include "log_message.h"
+#include "logging.h"
 #include "file_caches_odf.h"
 #include <linux/limits.h>
 #include <string.h>

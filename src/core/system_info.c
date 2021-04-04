@@ -12,7 +12,7 @@
 #include "CANopen.h"
 #include "CO_OD.h"
 #include "cpufreq.h"
-#include "log_message.h"
+#include "logging.h"
 #include "system_info.h"
 #include <dirent.h>
 #include <errno.h>
@@ -77,7 +77,7 @@ system_info_setup(void) {
         if(os_name != NULL)
             strncpy(os_name, name.sysname, len);
         else
-            log_message(LOG_CRIT, "malloc failed for os_distro");
+            log_printf(LOG_CRIT, "malloc failed for os_distro");
 
         // kernel version
         len = strlen(name.release)+1;
@@ -85,7 +85,7 @@ system_info_setup(void) {
         if(kernel_version != NULL)
             strncpy(kernel_version, name.release, len);
         else
-            log_message(LOG_CRIT, "malloc failed for kernel_version");
+            log_printf(LOG_CRIT, "malloc failed for kernel_version");
 
         // hostname
         len = strlen(name.nodename)+1;
@@ -93,7 +93,7 @@ system_info_setup(void) {
         if(hostname != NULL)
             strncpy(hostname, name.nodename, len);
         else
-            log_message(LOG_CRIT, "malloc failed for hostname");
+            log_printf(LOG_CRIT, "malloc failed for hostname");
 
         // architecture
         len = strlen(name.machine)+1;
@@ -101,7 +101,7 @@ system_info_setup(void) {
         if(architecture != NULL)
             strncpy(architecture, name.machine, len);
         else
-            log_message(LOG_CRIT, "malloc failed for architecture");
+            log_printf(LOG_CRIT, "malloc failed for architecture");
     }
 
     // os distro name

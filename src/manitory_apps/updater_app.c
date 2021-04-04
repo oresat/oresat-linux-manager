@@ -10,7 +10,7 @@
  */
 
 #include "CANopen.h"
-#include "log_message.h"
+#include "logging.h"
 #include "utility.h"
 #include "olm_file_cache.h"
 #include "updaterd.h"
@@ -45,7 +45,7 @@ updater_async(void *data, olm_file_cache_t *fread_cache) {
     if (OD_updater.makeStatusFile) {
         if (updaterd_make_status_archive(&temp_str) >= 0)
             if (olm_file_cache_add(fread_cache, temp_str) < 0)
-                log_message(LOG_ERR, "failed to add %s to fread cache", temp_str);
+                log_printf(LOG_ERR, "failed to add %s to fread cache", temp_str);
 
         CO_LOCK_OD();
         OD_updater.makeStatusFile = false;

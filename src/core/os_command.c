@@ -11,7 +11,7 @@
 
 #include "CANopen.h"
 #include "utility.h"
-#include "log_message.h"
+#include "logging.h"
 #include "os_command.h"
 #include <errno.h>
 #include <string.h>
@@ -41,7 +41,7 @@ co_command_async(os_command_t *data) {
     char c;
 
     if (data == NULL) {
-        log_message(LOG_DEBUG, "os command is missing argument data");
+        log_printf(LOG_DEBUG, "os command is missing argument data");
         return;
     } else if (OD_OSCommand.status != os_cmd_executing) {
         return; // nothing todo
@@ -51,17 +51,17 @@ co_command_async(os_command_t *data) {
         CO_LOCK_OD();
         OD_OSCommand.status = os_cmd_error_no_reply;
         CO_UNLOCK_OD();
-        log_message(LOG_DEBUG, "no command in excuting state");
+        log_printf(LOG_DEBUG, "no command in excuting state");
         return;
     }
 
-    log_message(LOG_DEBUG, "running bash command: %s", data->command);
+    log_printf(LOG_DEBUG, "running bash command: %s", data->command);
 
     if ((pipe = popen(data->command, "r")) == NULL) {
         CO_LOCK_OD();
         OD_OSCommand.status = os_cmd_error_no_reply;
         CO_UNLOCK_OD();
-        log_message(LOG_ERR, "popen failed");
+        log_printf(LOG_ERR, "popen failed");
     } else {
         // initialize buffer
         FREE(data->reply_buf);
@@ -70,26 +70,26 @@ co_command_async(os_command_t *data) {
             CO_LOCK_OD();
             OD_OSCommand.status = os_cmd_no_error_no_reply;
             CO_UNLOCK_OD();
-            log_message(LOG_ERR, "bash reply malloc failed");
+            log_printf(LOG_ERR, "bash reply malloc failed");
             return;
         }
 
         for (data->reply_len=0; (c = fgetc(pipe)) != EOF; ++data->reply_len) {
             if (data->reply_len > data->reply_buf_len) { // grow buffer
-                log_message(LOG_DEBUG, "growing bash reply buffer to %d", data->reply_buf_len);
+                log_printf(LOG_DEBUG, "growing bash reply buffer to %d", data->reply_buf_len);
 
                 if (data->reply_len > REPLY_BUFFER_LEN_MAX) {
-                    log_message(LOG_INFO, "bash reply max limit hit");
+                    log_printf(LOG_INFO, "bash reply max limit hit");
                     break; // max len reached
                 }
 
                 data->reply_buf_len *= 2;
 
                 if ((temp = realloc(data->reply_buf, data->reply_buf_len)) == NULL) {
-                    log_message(LOG_ERR, "bash reply realloc failed");
+                    log_printf(LOG_ERR, "bash reply realloc failed");
                     break; // realloc failed;
                 } else {
-                    log_message(LOG_DEBUG, "bash reply realloc to %d", data->reply_buf_len);
+                    log_printf(LOG_DEBUG, "bash reply realloc to %d", data->reply_buf_len);
                     data->reply_buf = temp;
                 }
             }

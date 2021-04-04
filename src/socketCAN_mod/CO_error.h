@@ -28,6 +28,10 @@
 #ifndef CO_ERROR_H
 #define CO_ERROR_H
 
+#ifdef ORESAT
+#include "logging.h"
+#endif /* ORESAT */
+
 #include <stdint.h>
 #include <errno.h>
 #include <string.h>
@@ -52,6 +56,7 @@ extern "C" {
  * CANopen Errors and System message log
  */
 
+#ifndef ORESAT
 /**
  * Message logging function.
  *
@@ -73,6 +78,7 @@ extern "C" {
  * @param format format string as in printf
  */
 void log_printf(int priority, const char *format, ...);
+#endif /* ORESAT */
 
 
 /**

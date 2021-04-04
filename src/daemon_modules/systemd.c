@@ -9,7 +9,7 @@
  * Project home page is <https://github.com/oresat/oresat-linux-manager>.
  */
 
-#include "log_message.h"
+#include "logging.h"
 #include "utility.h"
 #include "olm_app.h"
 #include "systemd.h"
