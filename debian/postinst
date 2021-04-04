@@ -1,6 +1,20 @@
 #!/bin/sh
 
 SERVICE_FILE=oresat-linux-managerd.service
+CONF_FILE=/etc/oresat-linux-manager.conf
+
+# make default config file if it doesn't exist
+if [ ! -f $CONF_FILE ]; then
+cat > "$CONF_FILE" <<-__EOF__
+# Configuration file for OreSat Linux Manager
+#
+# Note: some of these setting can be overriden by program arguments.
+
+[Node]
+ID=0x7F
+BitRate=0
+__EOF__
+fi
 
 systemctl daemon-reload
 systemctl enable $SERVICE_FILE

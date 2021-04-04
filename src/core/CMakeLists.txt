@@ -3,6 +3,7 @@
 set(CORE_SOURCES
     app_manager.c
     CO_fstream_odf.c
+    configs.c
     cpufreq.c
     file_caches_odf.c
     olm_control_odf.c
@@ -14,6 +15,7 @@ set(CORE_HEADERS
     app_manager.h
     board_main.h
     CO_fstream_odf.h
+    configs.h
     cpufreq.h
     file_caches_odf.h
     olm_control_odf.h

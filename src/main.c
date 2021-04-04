@@ -1,3 +1,4 @@
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/syslog.h>
@@ -24,6 +25,7 @@
 #include "CO_error.h"
 #include "CO_epoll_interface.h"
 
+#include "configs.h"
 #include "utility.h"
 #include "CO_fstream_odf.h"
 #include "file_caches_odf.h"
@@ -73,31 +75,21 @@
 
 #define DBUS_TIMEOUT_US         100000
 
-#define DEFAULT_NODE_ID         0x7F
-
-/* Configurable CAN bit-rate and CANopen node-id, store-able to non-volatile
- * memory. Can be set by argument and changed by LSS slave. */
-typedef struct {
-    uint16_t bitRate;
-    uint8_t nodeId;
-} CO_pending_t;
-
-static CO_pending_t CO_pending = { .bitRate = 0, .nodeId = DEFAULT_NODE_ID };
-static uint8_t CO_activeNodeId = DEFAULT_NODE_ID;
+static uint8_t CO_activeNodeId = NODE_ID_DEFAULT;
 
 #if (CO_CONFIG_TRACE) & CO_CONFIG_TRACE_ENABLE
 static CO_time_t            CO_time;            /* Object for current time */
 #endif
 
-
 /* OLM globals  **************************************************************/
-// these are extern in globals.h
+
+static olm_configs_t configs = OLM_CONFIGS_DEFAULT;
+static os_command_t os_command_data;
+
 sd_bus *system_bus = NULL;
 sd_bus *session_bus = NULL;
 olm_file_cache_t *fread_cache = NULL;
 olm_file_cache_t *fwrite_cache = NULL;
-
-static os_command_t os_command_data;
 
 /* Helper functions **********************************************************/
 /* Realtime thread */
@@ -212,6 +204,7 @@ main(int argc, char *argv[]) {
     bool daemon_flag = false;
     bool verbose = false;
     bool cpufreq_ctrl = false;
+    uint8_t arg_node_id;
 
     // file transfer data
     olm_file_cache_new(FREAD_CACHE_DIR, &fread_cache);
@@ -223,7 +216,7 @@ main(int argc, char *argv[]) {
     char* CANdevice = NULL;         /* CAN device, configurable by arguments. */
     bool nodeIdFromArgs = false;    /* True, if program arguments are used for CANopen Node Id */
     bool rebootEnable = false;      /* Configurable by arguments */
-
+    
     /* Get program options */
     if (argc < 2 || strcmp(argv[1], "--help") == 0){
         printUsage(argv[0]);
@@ -233,7 +226,7 @@ main(int argc, char *argv[]) {
         switch (opt) {
             case 'i':
                 nodeIdFromArgs = true;
-                CO_pending.nodeId = (uint8_t)strtol(optarg, NULL, 0);
+                arg_node_id = (uint8_t)strtol(optarg, NULL, 0);
                 break;
             case 'p': rtPriority = strtol(optarg, NULL, 0);
                 break;
@@ -256,21 +249,22 @@ main(int argc, char *argv[]) {
     else
         setlogmask(LOG_UPTO (LOG_INFO)); 
 
-    if (!daemon_flag) /* print also to standard error */
-        openlog(argv[0], LOG_PID | LOG_PERROR, LOG_USER); 
+    if (!daemon_flag)
+        openlog(argv[0], LOG_PID | LOG_PERROR, LOG_USER); /* print also to standard error */
+    read_config_file(&configs);
 
     if (optind < argc) {
         CANdevice = argv[optind];
         CANptr.can_ifindex = if_nametoindex(CANdevice);
     }
 
-    if (!nodeIdFromArgs) {
+    if (nodeIdFromArgs) {
         /* use value from Object dictionary, if not set by program arguments */
-        CO_pending.nodeId = DEFAULT_NODE_ID;
+        configs.node_id = arg_node_id;
     }
 
-    if (CO_pending.nodeId < 1 || CO_pending.nodeId > 127) {
-        log_printf(LOG_CRIT, DBG_WRONG_NODE_ID, CO_pending.nodeId);
+    if (configs.node_id < 1 || configs.node_id > 127) {
+        log_printf(LOG_CRIT, DBG_WRONG_NODE_ID, configs.node_id);
         printUsage(argv[0]);
         exit(EXIT_FAILURE);
     }
@@ -307,7 +301,7 @@ main(int argc, char *argv[]) {
         make_daemon(DEFAULT_PID_FILE);
     }
 
-    log_printf(LOG_INFO, DBG_CAN_OPEN_INFO, CO_pending.nodeId, "starting");
+    log_printf(LOG_INFO, DBG_CAN_OPEN_INFO, configs.node_id, "starting");
 
     if (sd_bus_open_system(&system_bus) < 0)
         log_printf(LOG_CRIT, "open system bus failed");
@@ -382,7 +376,7 @@ main(int argc, char *argv[]) {
             continue;
         }
 
-        CO_activeNodeId = CO_pending.nodeId;
+        CO_activeNodeId = configs.node_id;
 
         err = CO_CANopenInit(CO_activeNodeId);
         if (err != CO_ERROR_NO && err != CO_ERROR_NODE_ID_UNCONFIGURED_LSS) {
