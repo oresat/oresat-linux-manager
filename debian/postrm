@@ -4,13 +4,8 @@ CACHES_DIR=/var/cache/oresat_linux_manager
 CONF_FILE=/etc/oresat-linux-manager.conf
 
 if [ $1 = "purge" ]; then
-    # remove OLM's file cache dirs
     rm -rf $CACHES_DIR
-    
-    # remove OLM's config file
-    if [ ! -f $CONF_FILE ]; then
-        rm -rf $CONF_FILE
-    fi
+    rm -rf $CONF_FILE
 fi
 
 systemctl daemon-reload
