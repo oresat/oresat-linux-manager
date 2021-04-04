@@ -16,6 +16,8 @@
 
 /** All OLM's configs from conf file. */
 typedef struct {
+    /** CANbus interface */
+    char interface[100];
     /** Node ID, must be between 0x01 and 0x7F. */
     uint8_t node_id;
     /** CANbus bit rate in kbit/s. Can be 0 for Max is 1000. */
@@ -26,6 +28,7 @@ typedef struct {
 #define BIT_RATE_DEFAULT    0
 
 #define OLM_CONFIGS_DEFAULT { \
+    .interface = "can0", \
     .node_id = NODE_ID_DEFAULT, \
     .bit_rate = BIT_RATE_DEFAULT, \
 }

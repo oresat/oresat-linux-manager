@@ -8,7 +8,10 @@ if [ ! -f $CONF_FILE ]; then
 cat > "$CONF_FILE" <<-__EOF__
 # Configuration file for OreSat Linux Manager
 #
-# Note: some of these setting can be overriden by program arguments.
+# Note: Some of these settings can be overridden by program arguments.
+
+[Bus]
+Name=can0
 
 [Node]
 ID=0x7F

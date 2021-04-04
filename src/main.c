@@ -82,14 +82,14 @@ static CO_time_t            CO_time;            /* Object for current time */
 #endif
 
 /* OLM globals  **************************************************************/
-
 static olm_configs_t configs = OLM_CONFIGS_DEFAULT;
 static os_command_t os_command_data;
+static olm_file_cache_t *fread_cache = NULL;
+static olm_file_cache_t *fwrite_cache = NULL;
 
+// not static
 sd_bus *system_bus = NULL;
 sd_bus *session_bus = NULL;
-olm_file_cache_t *fread_cache = NULL;
-olm_file_cache_t *fwrite_cache = NULL;
 
 /* Helper functions **********************************************************/
 /* Realtime thread */
@@ -167,23 +167,27 @@ static void HeartbeatNmtChangedCallback(uint8_t nodeId, uint8_t idx,
 /* Print usage */
 static void printUsage(char *progName) {
 printf(
-"Usage: %s <CAN device name> [options]\n", progName);
+"Usage: %s [options]\n", progName);
 printf(
 "\n"
-"Options:\n"
-"  -i <Node ID>        CANopen Node-id (1..127) or 0xFF(unconfigured). If not\n"
-"                      specified, value from Object dictionary (0x2101) is used.\n");
+"Options:\n");
 printf(
-"  -p <RT priority>    Real-time priority of RT thread (1 .. 99). If not set or\n"
-"                      set to -1, then normal scheduler is used for RT thread.\n");
+"  -h                   Print this message and exit.\n");
 printf(
-"  -r                  Enable reboot on CANopen NMT reset_node command. \n");
+"  -i <Interface>       CANbus interface (can0, vcan0, etc).\n");
 printf(
-"  -d                  Run the process as a daemon.\n");
+"  -n <Node ID>         CANopen Node-id (1..127).\n");
 printf(
-"  -v                  Enable verbose logging.\n");
+"  -p <RT priority>     Real-time priority of RT thread (1 .. 99). If not set or\n"
+"                       set to -1, then normal scheduler is used for RT thread.\n");
 printf(
-"  -c                  Enable CPU frequency control.\n");
+"  -r                   Enable reboot on CANopen NMT reset_node command. \n");
+printf(
+"  -d                   Run the process as a daemon.\n");
+printf(
+"  -v                   Enable verbose logging.\n");
+printf(
+"  -c                   Enable CPU frequency control.\n");
 }
 
 
@@ -204,39 +208,37 @@ main(int argc, char *argv[]) {
     bool daemon_flag = false;
     bool verbose = false;
     bool cpufreq_ctrl = false;
-    uint8_t arg_node_id;
+    bool rebootEnable = false;
 
-    // file transfer data
-    olm_file_cache_new(FREAD_CACHE_DIR, &fread_cache);
-    olm_file_cache_new(FWRITE_CACHE_DIR, &fwrite_cache);
-    CO_fstream_t CO_fread_data = CO_FSTREAM_INITALIZER(FREAD_TMP_DIR, fread_cache);
-    CO_fstream_t CO_fwrite_data = CO_FSTREAM_INITALIZER(FWRITE_TMP_DIR, fwrite_cache);
-    file_caches_t caches_odf_data = FILE_CACHES_INTIALIZER(fread_cache, fwrite_cache);
-
-    char* CANdevice = NULL;         /* CAN device, configurable by arguments. */
-    bool nodeIdFromArgs = false;    /* True, if program arguments are used for CANopen Node Id */
-    bool rebootEnable = false;      /* Configurable by arguments */
+    /* Read conf file */
+    read_config_file(&configs);
     
     /* Get program options */
-    if (argc < 2 || strcmp(argv[1], "--help") == 0){
-        printUsage(argv[0]);
-        exit(EXIT_SUCCESS);
-    }
-    while ((opt = getopt(argc, argv, "i:p:rdvc")) != -1) {
+    while ((opt = getopt(argc, argv, "hi:n:p:rdvc")) != -1) {
         switch (opt) {
+            case 'h':
+                printUsage(argv[0]);
+                exit(EXIT_SUCCESS);
             case 'i':
-                nodeIdFromArgs = true;
-                arg_node_id = (uint8_t)strtol(optarg, NULL, 0);
+                strncpy(configs.interface, optarg, strlen(optarg)+1);
                 break;
-            case 'p': rtPriority = strtol(optarg, NULL, 0);
+            case 'n':
+                configs.node_id = (uint8_t)strtol(optarg, NULL, 0);
                 break;
-            case 'r': rebootEnable = true;
+            case 'p':
+                rtPriority = strtol(optarg, NULL, 0);
                 break;
-            case 'd': daemon_flag = true;
+            case 'r':
+                rebootEnable = true;
                 break;
-            case 'v': verbose = true;
+            case 'd':
+                daemon_flag = true;
                 break;
-            case 'c': cpufreq_ctrl = true;
+            case 'v':
+                verbose = true;
+                break;
+            case 'c':
+                cpufreq_ctrl = true;
                 break;
             default:
                 printUsage(argv[0]);
@@ -251,17 +253,8 @@ main(int argc, char *argv[]) {
 
     if (!daemon_flag)
         openlog(argv[0], LOG_PID | LOG_PERROR, LOG_USER); /* print also to standard error */
-    read_config_file(&configs);
 
-    if (optind < argc) {
-        CANdevice = argv[optind];
-        CANptr.can_ifindex = if_nametoindex(CANdevice);
-    }
-
-    if (nodeIdFromArgs) {
-        /* use value from Object dictionary, if not set by program arguments */
-        configs.node_id = arg_node_id;
-    }
+    CANptr.can_ifindex = if_nametoindex(configs.interface);
 
     if (configs.node_id < 1 || configs.node_id > 127) {
         log_printf(LOG_CRIT, DBG_WRONG_NODE_ID, configs.node_id);
@@ -277,7 +270,7 @@ main(int argc, char *argv[]) {
     }
 
     if (CANptr.can_ifindex == 0) {
-        log_printf(LOG_CRIT, DBG_NO_CAN_DEVICE, CANdevice);
+        log_printf(LOG_CRIT, DBG_NO_CAN_DEVICE, configs.interface);
         exit(EXIT_FAILURE);
     }
 
@@ -294,6 +287,13 @@ main(int argc, char *argv[]) {
     // clean up any file in the tmp dirs
     clear_dir(FREAD_TMP_DIR);
     clear_dir(FWRITE_TMP_DIR);
+
+    // file transfer data
+    olm_file_cache_new(FREAD_CACHE_DIR, &fread_cache);
+    olm_file_cache_new(FWRITE_CACHE_DIR, &fwrite_cache);
+    CO_fstream_t CO_fread_data = CO_FSTREAM_INITALIZER(FREAD_TMP_DIR, fread_cache);
+    CO_fstream_t CO_fwrite_data = CO_FSTREAM_INITALIZER(FWRITE_TMP_DIR, fwrite_cache);
+    file_caches_t caches_odf_data = FILE_CACHES_INTIALIZER(fread_cache, fwrite_cache);
 
     /* Run as daemon if needed */
     if (daemon_flag) {

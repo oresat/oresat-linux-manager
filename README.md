@@ -54,9 +54,8 @@ DBus library or a DBus binding. A lot of languages do have DBus support, See
 - Optional cmake flags, 1st option in `[ ]` is default when not specified:
   - `-DCMAKE_BUILD_TYPE=[Debug|Release]` to turn the -g -Wall cflags on/off
 - Running OLM
-  - `$ ./oresat-linux-manager <device>` as a process
-  - `$ ./oresat-linux-manager <device> -d` as a daemon
-  - `$ ./oresat-linux-manager <device> -h` for help message
+  - `$ sudo ./oresat-linux-manager`
+  - `$ ./oresat-linux-manager -h` for help message
 - Building deb binary package
   - `$ make package` or`$ ninja package`
 
