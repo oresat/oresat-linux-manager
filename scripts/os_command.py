@@ -1,13 +1,12 @@
 #!/usr/bin/env python3
 """SDO transfer script"""
 
-import sys
 from time import sleep
 import argparse
 import canopen
 
 
-EDS_FILE = "../src/boards/generic/object_dictionary/generic_OD.eds"
+EDS_FILE = "../src/boards/generic/object_dictionary/generic.eds"
 OS_COMMAND_INDEX = 0x1023
 COMMAND_SUBINDEX = 1
 STATUS_SUBINDEX = 2

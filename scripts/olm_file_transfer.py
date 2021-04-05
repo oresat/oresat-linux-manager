@@ -1,11 +1,10 @@
 #!/usr/bin/env python3
 
-import os
 import sys
 import argparse
 import canopen
 
-EDS_FILE = "../src/boards/generic/object_dictionary/generic_OD.eds"
+EDS_FILE = "../src/boards/generic/object_dictionary/generic.eds"
 
 # valid cache selector inputs
 FREAD_CACHE = 0

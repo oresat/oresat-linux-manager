@@ -8,7 +8,7 @@ from enum import Enum, auto
 import canopen
 
 
-EDS_FILE = "../src/boards/generic/object_dictionary/generic_OD.eds"
+EDS_FILE = "../src/boards/generic/object_dictionary/generic.eds"
 
 
 class CANopenTypes(Enum):
