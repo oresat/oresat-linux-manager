@@ -71,7 +71,7 @@ mkdir_path(const char *path, mode_t mode) {
         return -EINVAL;
 
     // start on 1 to skip 1st '/' in absolut path
-    for (int i=1; i<=strlen(path) && i<PATH_MAX-1; ++i) {
+    for (size_t i=1; i<=strlen(path) && i<PATH_MAX-1; ++i) {
         if (path[i] == '/' || i == strlen(path)) {
             strncpy(temp_path, path, i);
             temp_path[i] = '\0';

@@ -257,23 +257,23 @@ int
 olm_file_cache_index(olm_file_cache_t *in, int index, const char *keyword,
         olm_file_t **out) {
     char filepath[PATH_MAX];
-    uint32_t len;
+    size_t len;
     struct olm_file_index_t *current;
     int r = 0;
 
     len = olm_file_cache_len(in, keyword);
-    if (index >= len)
+    if ((size_t)index >= len)
         return -EINVAL;
 
     pthread_mutex_lock(&in->mutex);
 
-    int i=0;
+    size_t i=0;
     for (current = in->files; current != NULL && i <= len; current = current->next) {
         if (keyword != NULL && strncmp(current->data->keyword,
                     keyword, strlen(keyword)+1) != 0)
             continue;
 
-        if (i == index) {
+        if (i == (size_t)index) {
             sprintf(filepath, "%s%s", in->dir, current->data->name);
             r = olm_file_new(filepath, out);
             break; // index was found, no need to continue

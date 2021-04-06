@@ -5,17 +5,15 @@ endif()
 cmake_minimum_required(VERSION 3.13 FATAL_ERROR)
 project(OreSat-Linux-Manager C)
 
-set(CMAKE_C_STANDARD 99)
+set(CMAKE_C_STANDARD 11)
 set(CMAKE_C_STANDARD_REQUIRED TRUE)
 
 if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Debug)
 endif()
 
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=gnu99 -Wall -DCO_VERSION_MAJOR=2 -DCO_DRIVER_CUSTOM=1 -DORESAT")
-set(CMAKE_C_FLAGS_DEBUG "-g")
-set(CMAKE_C_FLAGS_RELEASE "-O3")
-
+set(CMAKE_C_FLAGS "-DCO_VERSION_MAJOR=2 -DCO_DRIVER_CUSTOM=1 -DORESAT")
+add_compile_options(-Wall -Wextra -pedantic -Wno-unused-parameter)
 
 ##############################################################################
 # Figure out which board

@@ -130,7 +130,7 @@ get_active_state_unit(const char *unit) {
     } else if (sd_bus_message_read(mess, "s", &state) < 0) {
         LOG_DBUS_METHOD_READ_ERROR(LOG_ERR, MODULE_NAME, "ActiveState", err.name);
     } else  {
-        for (int i=0; i<sizeof(active_state_str); ++i) {
+        for (size_t i=0; i<sizeof(active_state_str); ++i) {
             if (strncmp(state, active_state_str[i], strlen(state)+1) == 0) {
                 r = i;
                 break;

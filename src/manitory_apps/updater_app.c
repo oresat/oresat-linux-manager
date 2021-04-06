@@ -26,6 +26,7 @@ updater_async(void *data, olm_file_cache_t *fread_cache) {
     uint32_t temp_uint32;
     uint8_t temp_uint8;
     char *temp_str;
+    (void)data;
 
     if (updaterd_status(&temp_uint8) < 0) {
         CO_LOCK_OD();

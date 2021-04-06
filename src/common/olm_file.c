@@ -54,7 +54,7 @@ olm_file_new(char *filepath, olm_file_t **out) {
         return -EINVAL; // no board field
 
     // find all '_' locations and the start of the extension (the 1st '.')
-    for (int i=0; i<strlen(filename); ++i) {
+    for (size_t i=0; i<strlen(filename); ++i) {
         if (filename[i] == '_') { // find keyword and data locs
             if (keyword_loc == 0) {
                 keyword_loc = i+1; // add 1 to not include '_'
@@ -103,7 +103,7 @@ olm_file_new(char *filepath, olm_file_t **out) {
     new_file->keyword[len-1] = '\0';
 
     // copy unix time
-    len = (ext_loc == 0 ? strlen(filename) + 1 : ext_loc) - date_loc + 1;
+    len = (ext_loc == 0 ? (int)strlen(filename) + 1 : ext_loc) - date_loc + 1;
     if ((unix_time_str = malloc(len)) == NULL)
         goto olm_file_mem_error;
     strncpy(unix_time_str, &filename[date_loc], len);
@@ -141,7 +141,7 @@ is_olm_file(char *filepath) {
     filename = basename(filepath);
 
     // find all '_' locations and the start of the extension (the 1st '.')
-    for (int i=0; i<strlen(filename); ++i) {
+    for (size_t i=0; i<strlen(filename); ++i) {
         if (filename[i] == '_') { // find keyword and data locs
             if (keyword_loc == 0) {
                 keyword_loc = i+1; // add 1 to not include '_'
