@@ -38,7 +38,7 @@ void
 co_command_async(os_command_t *data) {
     FILE *pipe;
     char *temp;
-    char c;
+    int c;
 
     if (data == NULL) {
         log_printf(LOG_DEBUG, "os command is missing argument data");
@@ -95,7 +95,7 @@ co_command_async(os_command_t *data) {
                     data->reply_buf = temp;
                 }
             }
-            data->reply_buf[data->reply_len] = c;
+            data->reply_buf[data->reply_len] = (char)c; // old compiler fix
         }
 
         CO_LOCK_OD();
