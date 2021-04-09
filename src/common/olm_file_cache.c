@@ -120,7 +120,6 @@ olm_file_cache_remove_rec(struct olm_file_index_t **index, char *filename) {
 int
 olm_file_cache_new(char *dir_path, olm_file_cache_t **out) {
     olm_file_cache_t *new_cache;
-    char dir_abs_path[PATH_MAX];
     struct dirent *dir;
     char temp_path[PATH_MAX];
     olm_file_t *new_olm_file;
@@ -128,13 +127,8 @@ olm_file_cache_new(char *dir_path, olm_file_cache_t **out) {
     DIR *d;
     int r = 0;
 
-    if (realpath(dir_path, dir_abs_path) == NULL)
+    if (dir_path == NULL || dir_path[0] != '/')
         return -EINVAL;
-
-    if (dir_abs_path[strlen(dir_abs_path)] != '/') {
-        dir_abs_path[strlen(dir_abs_path)] = '/';
-        dir_abs_path[strlen(dir_abs_path)+1] = '\0';
-    }
 
     if ((new_cache = malloc(sizeof(olm_file_cache_t))) == NULL)
         return -ENOMEM;
@@ -144,12 +138,21 @@ olm_file_cache_new(char *dir_path, olm_file_cache_t **out) {
     new_cache->len = 0;
     pthread_mutex_init(&new_cache->mutex, NULL);
 
+    if (dir_path[strlen(dir_path)] == '/')
+    	new_cache->dir = malloc(strlen(dir_path)+1);
+    else // add remove for '/'
+    	new_cache->dir = malloc(strlen(dir_path)+2);
+
     // set dir name
-    if ((new_cache->dir = malloc(strlen(dir_abs_path)+1)) == NULL) {
+    if (new_cache->dir == NULL) {
         free(new_cache);
         return -ENOMEM;
     }
-    strncpy(new_cache->dir, dir_abs_path, strlen(dir_abs_path)+1);
+    strncpy(new_cache->dir, dir_path, strlen(dir_path)+1);
+    if (dir_path[strlen(dir_path)] == '/') {
+	    new_cache->dir[strlen(dir_path)] = '/';
+	    new_cache->dir[strlen(dir_path)+1] = '\0';
+    }
 
     if ((d = opendir(dir_path)) != NULL) { // add all existing file to linked list
         while ((dir = readdir(d)) != NULL) { // directory found
