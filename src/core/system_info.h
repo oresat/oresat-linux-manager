@@ -15,23 +15,38 @@
 
 
 #include "CANopen.h"
+#include <stdbool.h>
+#include <stdint.h>
 
+/** Private data for system info ODF to use */
+typedef struct {
+    /** Flag for 1st time accessed */
+    bool init;
+    /** Hostname */
+    char *hostname;
+    /** OS */
+    char *os_name;
+    /** OS distro */
+    char *os_distro;
+    /** Kernel version */
+    char *kernel_version;
+    /** Architecture */
+    char *architecture;
+} system_info_t;
 
-/**
- * Configure the OD function for system info.
- *
- * @return 0 on success
- */
-int system_info_setup(void);
+#define SYSTEM_INFO_DEFAULT { \
+    .init = true, \
+    .hostname = NULL, \
+    .os_name = NULL, \
+    .os_distro = NULL, \
+    .kernel_version = NULL, \
+    .architecture = NULL, \
+}
 
+/** Free all data in a @ref system_info_t object. */
+void system_info_free(system_info_t * info);
 
-/**
- * Configure the OD function for system info.
- *
- * @return 0 on success or negative errno on error
- */
-int system_info_end(void);
-
+void system_info_async(system_info_t *info);
 
 /**
  * Callback for using inside CO_OD_configure() function for getting the systems

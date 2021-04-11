@@ -10,10 +10,10 @@
  */
 
 #include "CANopen.h"
-#include "CO_OD.h"
 #include "cpufreq.h"
 #include "logging.h"
 #include "system_info.h"
+#include "utility.h"
 #include <dirent.h>
 #include <errno.h>
 #include <linux/limits.h>
@@ -32,74 +32,52 @@
 /** filepath remoteproc directory */
 #define REMOTEPROC_DIR          "/sys/class/remoteproc/"
 
-/** number of CPU(s) */
-static uint8_t cpu_num = 0;
-/** number of remote processors */
-static uint8_t rproc_num = 0;
-/** current remote processors */
-static uint8_t rproc_cur = 0;
-/** total ram memory */
-static uint32_t ram_total = 0;
-/** total swap memory */
-static uint32_t swap_total = 0;
-/** total root space */
-static uint32_t root_total = 0;
-/** hostname */
-static char *hostname = NULL;
-/** OS */
-static char *os_name = NULL;
-/** OS distro */
-static char *os_distro = NULL;
-/** kernel version */
-static char *kernel_version = NULL;
-/** CPU architecture */
-static char *architecture = NULL;
-
 // see function definition for doxygen comments
 static int get_linux_distro_name(char *buf, int buf_len);
 static int get_nremoteprocs(void);
+static void system_info_fill(system_info_t *info);
 
-int
-system_info_setup(void) {
+
+static void
+system_info_fill(system_info_t *info) {
     struct utsname name;
-    struct sysinfo info;
-    struct statvfs fs_info;
     int buf_len = 256;
     char buf[buf_len];
     int len;
 
-    CO_OD_configure(CO->SDO[0], OD_3001_systemInfo, system_info_ODF, NULL, 0, 0U);
+    if (!info->init)
+        return;
 
-    if(uname(&name) == 0) {
+    if (uname(&name) == 0) {
         // os name
         len = strlen(name.sysname)+1;
-        os_name = (char *)malloc(len * sizeof(char));
-        if(os_name != NULL)
-            strncpy(os_name, name.sysname, len);
+        info->os_name = malloc(len * sizeof(char));
+        if (info->os_name != NULL)
+            strncpy(info->os_name, name.sysname, len);
         else
             log_printf(LOG_CRIT, "malloc failed for os_distro");
 
         // kernel version
         len = strlen(name.release)+1;
-        kernel_version = (char *)malloc(len * sizeof(char));
-        if(kernel_version != NULL)
-            strncpy(kernel_version, name.release, len);
+        info->kernel_version = malloc(len * sizeof(char));
+        if (info->kernel_version != NULL)
+            strncpy(info->kernel_version, name.release, len);
         else
             log_printf(LOG_CRIT, "malloc failed for kernel_version");
 
         // hostname
         len = strlen(name.nodename)+1;
-        hostname = (char *)malloc(len * sizeof(char));
-        if(hostname != NULL)
-            strncpy(hostname, name.nodename, len);
+        info->hostname = malloc(len * sizeof(char));
+        if (info->hostname != NULL)
+            strncpy(info->hostname, name.nodename, len);
         else
             log_printf(LOG_CRIT, "malloc failed for hostname");
 
         // architecture
         len = strlen(name.machine)+1;
-        architecture = (char *)malloc(len * sizeof(char));
-        if(architecture != NULL)
-            strncpy(architecture, name.machine, len);
+        info->architecture = malloc(len * sizeof(char));
+        if (info->architecture != NULL)
+            strncpy(info->architecture, name.machine, len);
         else
             log_printf(LOG_CRIT, "malloc failed for architecture");
     }
@@ -107,267 +85,146 @@ system_info_setup(void) {
     // os distro name
     if (get_linux_distro_name(buf, buf_len) == 0) {
         len = strlen(buf)+1;
-        os_distro = (char *)malloc(len * sizeof(char));
-        strncpy(os_distro, buf, len);
+        info->os_distro = malloc(len * sizeof(char));
+        strncpy(info->os_distro, buf, len);
     }
-
-    if(sysinfo(&info) == 0) {
-        swap_total = (uint32_t)(info.totalswap/1024/1024);
-        ram_total = (uint32_t)(info.totalram/1024/1024);
-    }
-
-    if(statvfs("/", &fs_info) == 0)
-        // the order help with int overflow on 32bit systems
-        root_total = (uint32_t)(fs_info.f_blocks/1024*fs_info.f_bsize/1024);
-    
-    cpu_num = get_nprocs();
-    rproc_num = get_nremoteprocs();
-    
-    return 0;
 }
 
-int
-system_info_end(void) {
-    if(os_distro != NULL)
-        free(os_distro);
+void
+system_info_free(system_info_t *info) {
+    FREE(info->os_distro);
+    FREE(info->kernel_version);
+    FREE(info->hostname);
+    FREE(info->architecture);
+    FREE(info->os_name);
+}
 
-    if(kernel_version != NULL)
-        free(kernel_version);
+void
+system_info_async(system_info_t *data) {
+    struct sysinfo info;
+    struct statvfs fs_info;
 
-    if(hostname != NULL)
-        free(hostname);
+    CO_LOCK_OD();
 
-    if(architecture != NULL)
-        free(architecture);
+    if (data->init) {
+        system_info_fill(data);
 
-    if(os_name != NULL)
-        free(os_name);
+        if (sysinfo(&info) == 0) {
+            OD_systemInfo.swapTotal = (uint32_t)(info.totalswap/1024/1024);
+            OD_systemInfo.ramTotal = (uint32_t)(info.totalram/1024/1024);
+        }
 
-    return 0;
+        if (statvfs("/", &fs_info) == 0)
+            // the order help with int overflow on 32bit systems
+            OD_systemInfo.rootParitionTotal = (uint32_t)(fs_info.f_blocks/1024*fs_info.f_bsize/1024);
+        
+        OD_systemInfo.numberOfCPUs = get_nprocs();
+        OD_systemInfo.numberOfRemoteprocs = get_nremoteprocs();
+        OD_systemInfo.CPUGovernor = get_cpufreq_gov();
+        OD_systemInfo.CPUFrequency = get_cpufreq();
+
+        data->init = false;
+    }
+
+    if (sysinfo(&info) != -1) {
+        OD_systemInfo.uptime = (uint32_t)(info.uptime/60);
+        OD_systemInfo.loadAverage1min = (uint32_t)info.loads[0];
+        OD_systemInfo.loadAverage5min = (uint32_t)info.loads[1];
+        OD_systemInfo.loadAverage15min = (uint32_t)info.loads[2];
+        OD_systemInfo.ramFree = (uint32_t)(info.freeram/1024/1024);
+        OD_systemInfo.ramShared = (uint32_t)(info.sharedram/1024/1024);
+        OD_systemInfo.ramBuffered = (uint32_t)(info.bufferram/1024/1024);
+        OD_systemInfo.ramPercent = (uint8_t)((info.totalram - info.freeram) * 100 / info.totalram);
+        if (OD_systemInfo.swapTotal > 0) {
+            OD_systemInfo.swapFree = (uint32_t)(info.freeswap/1024/1024);
+            OD_systemInfo.swapPercent = (uint8_t)((info.totalswap - info.freeswap) * 100 / info.totalswap);
+        }
+        OD_systemInfo.procs = (uint32_t)info.procs;
+    }
+
+    if ((statvfs("/", &fs_info)) == 0 ) {
+        // the order help with int overflow on 32bit systems
+        OD_systemInfo.rootParitionFree = (uint32_t)(fs_info.f_bavail/1024*fs_info.f_bsize/1024);
+        OD_systemInfo.rootParitionPercent = (uint8_t)((fs_info.f_blocks - fs_info.f_bavail) * 100 / fs_info.f_blocks);
+    }
+
+    CO_UNLOCK_OD();
 }
 
 CO_SDO_abortCode_t
 system_info_ODF(CO_ODF_arg_t *ODF_arg) {
     CO_SDO_abortCode_t ret = CO_SDO_AB_NONE;
-    struct sysinfo info;
-    struct statvfs fs_info;
+    system_info_t *data = (system_info_t *)ODF_arg->object;
     FILE *fptr = NULL; 
     int buf_len = 256;
     char filepath[PATH_MAX], buf[buf_len];
-    uint8_t temp_uint8_t = 0;
-    uint16_t temp_uint16_t = 0;
-    uint32_t temp_uint32_t = 0;
 
-    if(ODF_arg->reading == false && ODF_arg->subIndex != OD_3001_11_systemInfo_remoteprocXSelector)
-        // every subindex is readonly except the remoteprocX selector subindex is readwrite
-        return CO_SDO_AB_READONLY; 
+    if (data == NULL)
+        return CO_SDO_AB_GENERAL;
+
+    // every subindex is readonly except the remoteprocX selector subindex is readwrite
+    if (ODF_arg->reading == false && ODF_arg->subIndex != OD_3001_11_systemInfo_remoteprocXSelector)
+        return CO_SDO_AB_READONLY;
 
     switch(ODF_arg->subIndex) {
         case OD_3001_1_systemInfo_OSName: // OS, domain, readonly
-            ODF_arg->dataLength = strlen(os_name)+1;
-            memcpy(ODF_arg->data, os_name, ODF_arg->dataLength);
+            ODF_arg->dataLength = strlen(data->os_name)+1;
+            memcpy(ODF_arg->data, data->os_name, ODF_arg->dataLength);
             break;
 
         case OD_3001_2_systemInfo_OSDistro: // OS distro, domain, readonly
-            ODF_arg->dataLength = strlen(os_distro)+1;
-            memcpy(ODF_arg->data, os_distro, ODF_arg->dataLength);
+            ODF_arg->dataLength = strlen(data->os_distro)+1;
+            memcpy(ODF_arg->data, data->os_distro, ODF_arg->dataLength);
             break;
 
         case OD_3001_3_systemInfo_OSKernelVersion: // kernel version, domain, readonly
-            ODF_arg->dataLength = strlen(kernel_version)+1;
-            memcpy(ODF_arg->data, kernel_version, ODF_arg->dataLength);
+            ODF_arg->dataLength = strlen(data->kernel_version)+1;
+            memcpy(ODF_arg->data, data->kernel_version, ODF_arg->dataLength);
             break;
 
         case OD_3001_4_systemInfo_hostname: // hostname, domain, readonly
-            ODF_arg->dataLength = strlen(hostname)+1;
-            memcpy(ODF_arg->data, hostname, ODF_arg->dataLength);
-            break;
-
-        case OD_3001_5_systemInfo_uptime: // uptime (in min), uint32_t, readonly 
-            if(sysinfo(&info) != -1)
-                temp_uint32_t = (uint32_t)(info.uptime/60);
-
-            ODF_arg->dataLength = sizeof(temp_uint32_t);
-            memcpy(ODF_arg->data, &temp_uint32_t, ODF_arg->dataLength);
-            break;
-
-        case OD_3001_6_systemInfo_numberOfCPUs: // CPU(s), uint8_t, readonly
-            ODF_arg->dataLength = sizeof(cpu_num);
-            memcpy(ODF_arg->data, &cpu_num, ODF_arg->dataLength);
+            ODF_arg->dataLength = strlen(data->hostname)+1;
+            memcpy(ODF_arg->data, data->hostname, ODF_arg->dataLength);
             break;
 
         case OD_3001_7_systemInfo_CPUArchitecture: // CPU Architecture, domain, readonly
-            ODF_arg->dataLength = strlen(architecture)+1;
-            memcpy(ODF_arg->data, architecture, ODF_arg->dataLength);
-            break;
-
-        case OD_3001_8_systemInfo_CPUGovernor: // CPU Governor, uint8_t, readonly
-            temp_uint8_t = get_cpufreq_gov();
-            ODF_arg->dataLength = sizeof(temp_uint8_t);
-            memcpy(ODF_arg->data, &temp_uint8_t, ODF_arg->dataLength);
-            break;
-
-        case OD_3001_9_systemInfo_CPUFrequency: // CPU freq, uint16_t, readonly
-            temp_uint16_t = get_cpufreq();
-            ODF_arg->dataLength = sizeof(temp_uint16_t);
-            memcpy(ODF_arg->data, &temp_uint16_t, ODF_arg->dataLength);
-            break;
-
-        case OD_3001_10_systemInfo_numberOfRemoteprocs: // Remoteproc(s), uint8_t, readonly
-            ODF_arg->dataLength = sizeof(rproc_num);
-            memcpy(ODF_arg->data, &rproc_num, ODF_arg->dataLength);
+            ODF_arg->dataLength = strlen(data->architecture)+1;
+            memcpy(ODF_arg->data, data->architecture, ODF_arg->dataLength);
             break;
 
         case OD_3001_11_systemInfo_remoteprocXSelector: // RemoteprocX, uint8_t, readwrite
-            if(ODF_arg->reading) {
-                ODF_arg->dataLength = sizeof(rproc_cur);
-                memcpy(ODF_arg->data, &rproc_cur, ODF_arg->dataLength);
-            }
-            else {
-                memcpy(&temp_uint8_t, ODF_arg->data, ODF_arg->dataLength);
-                if(temp_uint8_t < rproc_num)
-                    rproc_cur = temp_uint8_t;
+            if (!ODF_arg->reading) {
+                if (CO_getUint8(data) > OD_systemInfo.numberOfRemoteprocs)
+                    return CO_SDO_AB_GENERAL; //TODO
             }
             break;
 
         case OD_3001_12_systemInfo_remoteprocXName: // RemoteprocX name, domain, readonly
-        sprintf(filepath, "%sremoteproc%d/name", REMOTEPROC_DIR, rproc_cur);
-            if((fptr = fopen(filepath, "r")) != NULL) {
+            sprintf(filepath, "%sremoteproc%d/name", REMOTEPROC_DIR, OD_systemInfo.remoteprocXSelector);
+            if ((fptr = fopen(filepath, "r")) != NULL) {
                 fgets(buf, buf_len, fptr);
                 fclose(fptr);
                 buf[strlen(buf)-1] = '\0';
+            } else { // incase of file not exsiting
+                return CO_SDO_AB_NO_DATA;
             }
-            else // incase of file not exsiting
-                buf[0] = '\0';
 
             ODF_arg->dataLength = strlen(buf)+1;
             memcpy(ODF_arg->data, buf, ODF_arg->dataLength);
             break;
 
         case OD_3001_13_systemInfo_remoteprocXState: // RemoteprocX state, uint8_t, readonly
-            sprintf(filepath, "%sremoteproc%d/state", REMOTEPROC_DIR, rproc_cur);
-            if((fptr = fopen(filepath, "r")) != NULL) {
+            sprintf(filepath, "%sremoteproc%d/state", REMOTEPROC_DIR, OD_systemInfo.remoteprocXSelector);
+            if ((fptr = fopen(filepath, "r")) != NULL) {
                 fgets(buf, buf_len, fptr);
                 fclose(fptr);
                 buf[strlen(buf)-1] = '\0';
+            } else { // incase of file not exsiting
+                return CO_SDO_AB_NO_DATA;
             }
-            else // incase of file not exsiting
-                buf[0] = '\0';
 
             ODF_arg->dataLength = strlen(buf)+1;
             memcpy(ODF_arg->data, buf, ODF_arg->dataLength);
-            break;
-
-        case OD_3001_14_systemInfo_loadAverage1min: // 1min load avg, uint32_t, readonly
-            if(sysinfo(&info) != -1)
-                temp_uint32_t = (uint32_t)info.loads[0];
-
-            ODF_arg->dataLength = sizeof(temp_uint32_t);
-            memcpy(ODF_arg->data, &temp_uint32_t, ODF_arg->dataLength);
-            break;
-
-        case OD_3001_15_systemInfo_loadAverage5min: // 5min load avg, uint32_t, readonly
-            if(sysinfo(&info) != -1)
-                temp_uint32_t = (uint32_t)info.loads[1];
-
-            ODF_arg->dataLength = sizeof(temp_uint32_t);
-            memcpy(ODF_arg->data, &temp_uint32_t, ODF_arg->dataLength);
-            break;
-
-        case OD_3001_16_systemInfo_loadAverage15min: // 15min load avg, uint32_t, readonly
-            if(sysinfo(&info) != -1)
-                temp_uint32_t = (uint32_t)info.loads[2];
-
-            ODF_arg->dataLength = sizeof(temp_uint32_t);
-            memcpy(ODF_arg->data, &temp_uint32_t, ODF_arg->dataLength);
-            break;
-
-        case OD_3001_17_systemInfo_ramTotal: // Free ram (in MiB), uint32_t, readonly
-            ODF_arg->dataLength = sizeof(temp_uint32_t);
-            memcpy(ODF_arg->data, &ram_total, ODF_arg->dataLength);
-            break;
-
-        case OD_3001_18_systemInfo_ramFree: // Free ram (in MiB), uint32_t, readonly
-            if(sysinfo(&info) != -1)
-                temp_uint32_t = (uint32_t)(info.freeram/1024/1024);
-
-            ODF_arg->dataLength = sizeof(temp_uint32_t);
-            memcpy(ODF_arg->data, &temp_uint32_t, ODF_arg->dataLength);
-            break;
-
-        case OD_3001_19_systemInfo_ramShared: // Shared ram (in MiB), uint32_t, readonly
-            if(sysinfo(&info) != -1)
-                temp_uint32_t = (uint32_t)(info.sharedram/1024/1024);
-
-            ODF_arg->dataLength = sizeof(temp_uint32_t);
-            memcpy(ODF_arg->data, &temp_uint32_t, ODF_arg->dataLength);
-            break;
-
-        case OD_3001_20_systemInfo_ramBuffered: // Buffer ram (in MiB), uint32_t, readonly
-            if(sysinfo(&info) != -1)
-                temp_uint32_t = (uint32_t)(info.bufferram/1024/1024);
-
-            ODF_arg->dataLength = sizeof(temp_uint32_t);
-            memcpy(ODF_arg->data, &temp_uint32_t, ODF_arg->dataLength);
-            break;
-
-        case OD_3001_21_systemInfo_ramPercent: // Ram usage percent (0-100%), uint8_t, readonly
-            if(sysinfo(&info) != -1) 
-                temp_uint8_t = (uint8_t)((info.totalram - info.freeram) * 100 / info.totalram);
-
-            ODF_arg->dataLength = sizeof(temp_uint8_t);
-            memcpy(ODF_arg->data, &temp_uint8_t, ODF_arg->dataLength);
-            break;
-
-        case OD_3001_22_systemInfo_swapTotal: // Total swap (in MiB), uint32_t, readonly
-            ODF_arg->dataLength = sizeof(swap_total);
-            memcpy(ODF_arg->data, &swap_total, ODF_arg->dataLength);
-            break;
-
-        case OD_3001_23_systemInfo_swapFree: // Free swap (in MiB), uint32_t, readonly
-            if(swap_total != 0 && sysinfo(&info) != -1) 
-                temp_uint32_t = (uint32_t)(info.freeswap/1024/1024);
-
-            ODF_arg->dataLength = sizeof(temp_uint32_t);
-            memcpy(ODF_arg->data, &temp_uint32_t, ODF_arg->dataLength);
-            break;
-
-        case OD_3001_24_systemInfo_swapPercent: // Swap usage percent (0-100%), uint8_t, readonly
-            if(swap_total != 0 && sysinfo(&info) != -1) 
-                temp_uint8_t = (uint8_t)((info.totalswap - info.freeswap) * 100 / info.totalswap);
-
-            ODF_arg->dataLength = sizeof(temp_uint8_t);
-            memcpy(ODF_arg->data, &temp_uint8_t, ODF_arg->dataLength);
-            break;
-
-        case OD_3001_25_systemInfo_procs: // Number of procs, uint32_t, readonly
-            if(sysinfo(&info) != -1)
-                temp_uint32_t = (uint32_t)info.procs;
-
-            ODF_arg->dataLength = sizeof(temp_uint32_t);
-            memcpy(ODF_arg->data, &temp_uint32_t, ODF_arg->dataLength);
-            break;
-
-        case OD_3001_26_systemInfo_rootParitionTotal: // Root partion total (in MiB), uint32_t, readonly
-            ODF_arg->dataLength = sizeof(temp_uint32_t);
-            memcpy(ODF_arg->data, &root_total, ODF_arg->dataLength);
-            break;
-
-        case OD_3001_27_systemInfo_rootParitionFree: // Root partion free (in MiB), uint32_t, readonly
-            if((statvfs("/", &fs_info)) == 0 )
-                // the order help with int overflow on 32bit systems
-                temp_uint32_t = (uint32_t)(fs_info.f_bavail/1024*fs_info.f_bsize/1024);
-
-            ODF_arg->dataLength = sizeof(temp_uint32_t);
-            memcpy(ODF_arg->data, &temp_uint32_t, ODF_arg->dataLength);
-            break;
-
-        case OD_3001_28_systemInfo_rootParitionPercent: // Root partion usage percent (0-100%), uint8_t, readonly
-            if((statvfs("/", &fs_info)) == 0 )
-                temp_uint8_t = (uint8_t)((fs_info.f_blocks - fs_info.f_bavail) * 100 / fs_info.f_blocks);
-
-            ODF_arg->dataLength = sizeof(temp_uint8_t);
-            memcpy(ODF_arg->data, &temp_uint8_t, ODF_arg->dataLength);
             break;
     }
 
@@ -380,11 +237,11 @@ get_linux_distro_name(char *buf, int buf_len) {
     bool found = false;
     char *temp  = NULL;
 
-    if((filePointer = fopen("/etc/os-release", "r")) == NULL)
+    if ((filePointer = fopen("/etc/os-release", "r")) == NULL)
         return -ENOENT;
    
-    while(fgets(buf, buf_len, filePointer)) {
-        if(strncmp(buf, "PRETTY_NAME", strlen("PRETTY_NAME")) == 0) {
+    while (fgets(buf, buf_len, filePointer)) {
+        if (strncmp(buf, "PRETTY_NAME", strlen("PRETTY_NAME")) == 0) {
             found = true;
             break;
         }
@@ -392,10 +249,9 @@ get_linux_distro_name(char *buf, int buf_len) {
     
     fclose(filePointer);
 
-    if(found != true) {
+    if (found != true) {
         buf[0] = '\0';
-    }
-    else { 
+    } else { 
         temp = strrchr(buf, '\"');
         *temp = '\0';
         temp = strchr(buf, '\"');
@@ -413,13 +269,13 @@ get_nremoteprocs(void) {
     int nremoteproc = 0;
 
     // make sure dir exist
-    if(stat(REMOTEPROC_DIR, &st) == -1) {
+    if (stat(REMOTEPROC_DIR, &st) == -1) {
         return nremoteproc;
     }
     
-    if((d = opendir(REMOTEPROC_DIR)) != NULL) { // add all existing file to list
-        while((dir = readdir(d)) != NULL) { // directory found
-            if(strncmp(dir->d_name, ".", sizeof(dir->d_name)) == 0 ||
+    if ((d = opendir(REMOTEPROC_DIR)) != NULL) { // add all existing file to list
+        while ((dir = readdir(d)) != NULL) { // directory found
+            if (strncmp(dir->d_name, ".", sizeof(dir->d_name)) == 0 ||
                     strncmp(dir->d_name, "..", sizeof(dir->d_name)) == 0)
                 continue; // skip . and ..
 

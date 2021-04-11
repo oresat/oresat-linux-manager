@@ -86,6 +86,7 @@ static olm_configs_t configs = OLM_CONFIGS_DEFAULT;
 static os_command_t os_command_data;
 static olm_file_cache_t *fread_cache = NULL;
 static olm_file_cache_t *fwrite_cache = NULL;
+static system_info_t system_info = SYSTEM_INFO_DEFAULT;
 
 // not static
 sd_bus *system_bus = NULL;
@@ -411,9 +412,9 @@ main(int argc, char *argv[]) {
             
             // configure core ODFs
             board_init();
-            system_info_setup();
             CO_OD_configure(CO->SDO[0], OD_1023_OSCommand, OS_COMMAND_1023_ODF, &os_command_data, 0, 0U);
             CO_OD_configure(CO->SDO[0], OD_3000_OLMControl, olm_control_ODF, NULL, 0, 0U);
+            CO_OD_configure(CO->SDO[0], OD_3001_systemInfo, system_info_ODF, &system_info, 0, 0U);
             CO_OD_configure(CO->SDO[0], OD_3002_fileCaches, file_caches_ODF, &caches_odf_data, 0, 0U);
             CO_OD_configure(CO->SDO[0], OD_3003_fread, CO_fread_ODF, &CO_fread_data, 0, 0U);
             CO_OD_configure(CO->SDO[0], OD_3004_fwrite, CO_fwrite_ODF, &CO_fwrite_data, 0, 0U);
@@ -485,7 +486,7 @@ main(int argc, char *argv[]) {
     log_printf(LOG_DEBUG, "ending program");
 
 /* program exit ***************************************************************/
-    system_info_end();
+    system_info_free(&system_info);
 
     // make sure the files are closed when ending program
     log_printf(LOG_DEBUG, "closing any opened files");
@@ -590,6 +591,7 @@ async_thread(void* arg) {
 
     /* Endless loop */
     while (CO_endProgram == 0) {
+        system_info_async(&system_info);
         co_command_async(&os_command_data);
         app_manager_async(APPS, fwrite_cache);
         usleep(ASYNC_DELAY);
