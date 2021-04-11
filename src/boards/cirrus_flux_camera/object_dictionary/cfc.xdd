@@ -15,7 +15,7 @@
         <ProfileTechnology>CANopen</ProfileTechnology>
       </ISO15745Reference>
     </ProfileHeader>
-    <ProfileBody xmlns:q1="http://www.canopen.org/xml/1.1" xsi:type="q1:ProfileBody_Device_CANopen" formatName="CANopen" formatVersion="1.0" fileName="cfc.xdd" fileCreator="Ryan Medick" fileCreationDate="2021-03-09" fileCreationTime="23:09:27.0000000-07:00" fileModifiedBy="Ryan Medick" fileModificationDate="2021-04-03" fileModificationTime="14:20:14.2570960-07:00" fileVersion="1" supportedLanguages="en" xmlns="">
+    <ProfileBody xmlns:q1="http://www.canopen.org/xml/1.1" xsi:type="q1:ProfileBody_Device_CANopen" formatName="CANopen" formatVersion="1.0" fileName="cfc.xdd" fileCreator="Ryan Medick" fileCreationDate="2021-03-09" fileCreationTime="23:09:27.0000000-07:00" fileModifiedBy="Ryan Medick" fileModificationDate="2021-04-10" fileModificationTime="17:44:33.0983810-07:00" fileVersion="1" supportedLanguages="en" xmlns="">
       <q1:DeviceIdentity>
         <q1:vendorName>Portland State Aerospace Society</q1:vendorName>
         <q1:vendorID>0</q1:vendorID>
@@ -743,13 +743,19 @@
             <q1:varDeclaration name="Total apps" uniqueID="UID_RECSUB_300501">
               <USINT />
             </q1:varDeclaration>
-            <q1:varDeclaration name="Select app" uniqueID="UID_RECSUB_300502">
+            <q1:varDeclaration name="Active apps" uniqueID="UID_RECSUB_300502">
               <USINT />
             </q1:varDeclaration>
-            <q1:varDeclaration name="App name" uniqueID="UID_RECSUB_300503">
+            <q1:varDeclaration name="Failed apps" uniqueID="UID_RECSUB_300503">
+              <USINT />
+            </q1:varDeclaration>
+            <q1:varDeclaration name="Select app" uniqueID="UID_RECSUB_300504">
+              <USINT />
+            </q1:varDeclaration>
+            <q1:varDeclaration name="App name" uniqueID="UID_RECSUB_300505">
               <BITSTRING />
             </q1:varDeclaration>
-            <q1:varDeclaration name="Daemon state" uniqueID="UID_RECSUB_300504">
+            <q1:varDeclaration name="Daemon state" uniqueID="UID_RECSUB_300506">
               <USINT />
             </q1:varDeclaration>
           </q1:struct>
@@ -2582,23 +2588,33 @@ Manufacturer may define its own constants up to index 0xFF. Of course, he must t
           <q1:parameter uniqueID="UID_SUB_300500">
             <label lang="en">Highest sub-index supported</label>
             <USINT />
-            <q1:defaultValue value="0x04" />
+            <q1:defaultValue value="0x06" />
           </q1:parameter>
           <q1:parameter uniqueID="UID_SUB_300501">
             <label lang="en">Total apps</label>
             <USINT />
             <q1:defaultValue value="0" />
           </q1:parameter>
-          <q1:parameter uniqueID="UID_SUB_300502" access="readWrite">
-            <label lang="en">Select app</label>
+          <q1:parameter uniqueID="UID_SUB_300502">
+            <label lang="en">Active apps</label>
             <USINT />
             <q1:defaultValue value="0" />
           </q1:parameter>
           <q1:parameter uniqueID="UID_SUB_300503">
+            <label lang="en">Failed apps</label>
+            <USINT />
+            <q1:defaultValue value="0" />
+          </q1:parameter>
+          <q1:parameter uniqueID="UID_SUB_300504" access="readWrite">
+            <label lang="en">Select app</label>
+            <USINT />
+            <q1:defaultValue value="0" />
+          </q1:parameter>
+          <q1:parameter uniqueID="UID_SUB_300505">
             <label lang="en">App name</label>
             <BITSTRING />
           </q1:parameter>
-          <q1:parameter uniqueID="UID_SUB_300504" access="readWrite">
+          <q1:parameter uniqueID="UID_SUB_300506" access="readWrite">
             <label lang="en">Daemon state</label>
             <USINT />
             <q1:defaultValue value="0" />
@@ -2658,7 +2674,7 @@ Manufacturer may define its own constants up to index 0xFF. Of course, he must t
         <ProfileTechnology>CANopen</ProfileTechnology>
       </ISO15745Reference>
     </ProfileHeader>
-    <ProfileBody xmlns:q2="http://www.canopen.org/xml/1.1" xsi:type="q2:ProfileBody_CommunicationNetwork_CANopen" formatName="CANopen" formatVersion="1.0" fileName="cfc.xdd" fileCreator="Ryan Medick" fileCreationDate="2021-03-09" fileCreationTime="23:09:27.0000000-07:00" fileModificationDate="2021-04-03" fileModificationTime="14:20:14.2570960-07:00" fileVersion="1" supportedLanguages="en" xmlns="">
+    <ProfileBody xmlns:q2="http://www.canopen.org/xml/1.1" xsi:type="q2:ProfileBody_CommunicationNetwork_CANopen" formatName="CANopen" formatVersion="1.0" fileName="cfc.xdd" fileCreator="Ryan Medick" fileCreationDate="2021-03-09" fileCreationTime="23:09:27.0000000-07:00" fileModificationDate="2021-04-10" fileModificationTime="17:44:33.0983810-07:00" fileVersion="1" supportedLanguages="en" xmlns="">
       <ApplicationLayers>
         <q2:CANopenObjectList>
           <CANopenObject index="1000" name="Device type" objectType="7" PDOmapping="no" uniqueIDRef="UID_OBJ_1000" />
@@ -3003,21 +3019,23 @@ Manufacturer may define its own constants up to index 0xFF. Of course, he must t
             <CANopenSubObject subIndex="02" name="File data" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_300402" />
             <CANopenSubObject subIndex="03" name="Reset" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_300403" />
           </CANopenObject>
-          <CANopenObject index="3005" name="App manager" objectType="9" uniqueIDRef="UID_OBJ_3005" subNumber="5">
+          <CANopenObject index="3005" name="App manager" objectType="9" uniqueIDRef="UID_OBJ_3005" subNumber="7">
             <CANopenSubObject subIndex="00" name="Highest sub-index supported" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_300500" />
-            <CANopenSubObject subIndex="01" name="Total apps" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_300501" />
-            <CANopenSubObject subIndex="02" name="Select app" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_300502" />
-            <CANopenSubObject subIndex="03" name="App name" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_300503" />
-            <CANopenSubObject subIndex="04" name="Daemon state" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_300504" />
+            <CANopenSubObject subIndex="01" name="Total apps" objectType="7" PDOmapping="TPDO" uniqueIDRef="UID_SUB_300501" />
+            <CANopenSubObject subIndex="02" name="Active apps" objectType="7" PDOmapping="TPDO" uniqueIDRef="UID_SUB_300502" />
+            <CANopenSubObject subIndex="03" name="Failed apps" objectType="7" PDOmapping="TPDO" uniqueIDRef="UID_SUB_300503" />
+            <CANopenSubObject subIndex="04" name="Select app" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_300504" />
+            <CANopenSubObject subIndex="05" name="App name" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_300505" />
+            <CANopenSubObject subIndex="06" name="Daemon state" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_300506" />
           </CANopenObject>
           <CANopenObject index="3006" name="Get log" objectType="7" PDOmapping="no" uniqueIDRef="UID_OBJ_3006" />
           <CANopenObject index="3100" name="Updater" objectType="9" uniqueIDRef="UID_OBJ_3100" subNumber="6">
             <CANopenSubObject subIndex="00" name="Highest sub-index supported" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_310000" />
-            <CANopenSubObject subIndex="01" name="Status" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_310001" />
-            <CANopenSubObject subIndex="02" name="Updates available" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_310002" />
+            <CANopenSubObject subIndex="01" name="Status" objectType="7" PDOmapping="TPDO" uniqueIDRef="UID_SUB_310001" />
+            <CANopenSubObject subIndex="02" name="Updates available" objectType="7" PDOmapping="TPDO" uniqueIDRef="UID_SUB_310002" />
             <CANopenSubObject subIndex="03" name="List updates" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_310003" />
-            <CANopenSubObject subIndex="04" name="Update" objectType="7" PDOmapping="TPDO" uniqueIDRef="UID_SUB_310004" />
-            <CANopenSubObject subIndex="05" name="Make status file" objectType="7" PDOmapping="TPDO" uniqueIDRef="UID_SUB_310005" />
+            <CANopenSubObject subIndex="04" name="Update" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_310004" />
+            <CANopenSubObject subIndex="05" name="Make status file" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_310005" />
           </CANopenObject>
         </q2:CANopenObjectList>
         <dummyUsage>

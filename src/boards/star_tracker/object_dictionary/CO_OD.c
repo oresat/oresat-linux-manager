@@ -46,7 +46,7 @@ struct sCO_OD_RAM CO_OD_RAM = {
 /*3002*/ {0x9L, 0x0L, 0x0L, 0x0L, 0, 0x0000L, 0x0000L, 0, 0x0000L, 0},
 /*3003*/ {0x4L, 0, 0, 0, 0},
 /*3004*/ {0x3L, 0, 0, 0},
-/*3005*/ {0x4L, 0x0L, 0x0L, 0, 0x0L},
+/*3005*/ {0x6L, 0x0L, 0x0L, 0x0L, 0x0L, 0, 0x0L},
 /*3006*/ 0x0L,
 /*3100*/ {0x5L, 0x0L, 0x0L, 0, 0, 0},
 /*6000*/ 0x0,
@@ -391,9 +391,11 @@ struct sCO_OD_PERSIST_MFR CO_OD_PERSIST_MFR = {
            {(void*)0, 0x0A, 0x0 },
 };
 
-/*0x3005*/ const CO_OD_entryRecord_t OD_record3005[5] = {
+/*0x3005*/ const CO_OD_entryRecord_t OD_record3005[7] = {
            {(void*)&CO_OD_RAM.appManager.highestSubIndexSupported, 0x06, 0x1 },
-           {(void*)&CO_OD_RAM.appManager.totalApps, 0x06, 0x1 },
+           {(void*)&CO_OD_RAM.appManager.totalApps, 0x26, 0x1 },
+           {(void*)&CO_OD_RAM.appManager.activeApps, 0x26, 0x1 },
+           {(void*)&CO_OD_RAM.appManager.failedApps, 0x26, 0x1 },
            {(void*)&CO_OD_RAM.appManager.selectApp, 0x0E, 0x1 },
            {(void*)0, 0x06, 0x0 },
            {(void*)&CO_OD_RAM.appManager.daemonState, 0x0E, 0x1 },
@@ -401,11 +403,11 @@ struct sCO_OD_PERSIST_MFR CO_OD_PERSIST_MFR = {
 
 /*0x3100*/ const CO_OD_entryRecord_t OD_record3100[6] = {
            {(void*)&CO_OD_RAM.updater.highestSubIndexSupported, 0x06, 0x1 },
-           {(void*)&CO_OD_RAM.updater.status, 0x06, 0x1 },
-           {(void*)&CO_OD_RAM.updater.updatesAvailable, 0x06, 0x1 },
+           {(void*)&CO_OD_RAM.updater.status, 0x26, 0x1 },
+           {(void*)&CO_OD_RAM.updater.updatesAvailable, 0x26, 0x1 },
            {(void*)0, 0x06, 0x0 },
-           {(void*)&CO_OD_RAM.updater.update, 0x3A, 0x1 },
-           {(void*)&CO_OD_RAM.updater.makeStatusFile, 0x3A, 0x1 },
+           {(void*)&CO_OD_RAM.updater.update, 0x0A, 0x1 },
+           {(void*)&CO_OD_RAM.updater.makeStatusFile, 0x0A, 0x1 },
 };
 
 /*0x6001*/ const CO_OD_entryRecord_t OD_record6001[5] = {
@@ -467,7 +469,7 @@ const CO_OD_entry_t CO_OD[CO_OD_NoOfElements] = {
 {0x3002, 0x09, 0x00,  0, (void*)&OD_record3002},
 {0x3003, 0x04, 0x00,  0, (void*)&OD_record3003},
 {0x3004, 0x03, 0x00,  0, (void*)&OD_record3004},
-{0x3005, 0x04, 0x00,  0, (void*)&OD_record3005},
+{0x3005, 0x06, 0x00,  0, (void*)&OD_record3005},
 {0x3006, 0x00, 0x0E,  1, (void*)&CO_OD_RAM.getLog},
 {0x3100, 0x05, 0x00,  0, (void*)&OD_record3100},
 {0x6000, 0x00, 0x0E,  1, (void*)&CO_OD_RAM.testCamera},

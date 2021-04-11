@@ -71,8 +71,8 @@ void
 app_manager_async(olm_app_t **apps, olm_file_cache_t *fwrite_cache) {
     char path[PATH_MAX];
     olm_file_t *file;
-    int files;
-    int r;
+    uint32_t active_apps = 0, failed_apps = 0;
+    int files, r;
 
     if (apps == NULL) {
         log_printf(LOG_DEBUG, "missing apps input");
@@ -110,6 +110,11 @@ app_manager_async(olm_app_t **apps, olm_file_cache_t *fwrite_cache) {
         // update state
         apps[i]->unit_state = get_active_state_unit(apps[i]->unit_systemd1_object_path);
 
+        if (apps[i]->unit_state == UNIT_ACTIVE)
+            ++active_apps; 
+        else if (apps[i]->unit_state == UNIT_FAILED)
+            ++failed_apps; 
+
         if (fwrite_cache == NULL || apps[i]->fwrite_keyword == NULL ||
                 apps[i]->fwrite_cb || apps[i]->unit_state != UNIT_ACTIVE)
             continue;
@@ -134,6 +139,11 @@ app_manager_async(olm_app_t **apps, olm_file_cache_t *fwrite_cache) {
             olm_file_free(file);
         }
     }
+
+    CO_LOCK_OD();
+    OD_appManager.activeApps = (uint8_t)active_apps;
+    OD_appManager.failedApps = (uint8_t)failed_apps;
+    CO_UNLOCK_OD();
 }
 
 CO_SDO_abortCode_t
@@ -149,7 +159,7 @@ app_manager_ODF(CO_ODF_arg_t *ODF_arg) {
     app = apps[OD_appManager.selectApp];
 
     switch (ODF_arg->subIndex) {
-        case OD_3005_2_appManager_selectApp: // app selector, uint8, readwrite
+        case OD_3005_4_appManager_selectApp: // app selector, uint8, readwrite
 
             // make sure input is valid
             if (!ODF_arg->reading) {
@@ -160,7 +170,7 @@ app_manager_ODF(CO_ODF_arg_t *ODF_arg) {
 
             break;
 
-        case OD_3005_3_appManager_appName: // app name, domain, readonly
+        case OD_3005_5_appManager_appName: // app name, domain, readonly
 
             if (ODF_arg->reading) {
                 if (app->name == NULL) {
@@ -175,7 +185,7 @@ app_manager_ODF(CO_ODF_arg_t *ODF_arg) {
 
             break;
 
-        case OD_3005_4_appManager_daemonState: // app's daemon state, uint8, readwrite
+        case OD_3005_6_appManager_daemonState: // app's daemon state, uint8, readwrite
 
             // make sure input is valid
             if (ODF_arg->reading) {

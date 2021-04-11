@@ -223,6 +223,8 @@
 /*3005      */ typedef struct {
                UNSIGNED8      highestSubIndexSupported;
                UNSIGNED8      totalApps;
+               UNSIGNED8      activeApps;
+               UNSIGNED8      failedApps;
                UNSIGNED8      selectApp;
                DOMAIN         appName;
                UNSIGNED8      daemonState;
@@ -639,9 +641,11 @@
 
         #define OD_3005_0_appManager_maxSubIndex                    0
         #define OD_3005_1_appManager_totalApps                      1
-        #define OD_3005_2_appManager_selectApp                      2
-        #define OD_3005_3_appManager_appName                        3
-        #define OD_3005_4_appManager_daemonState                    4
+        #define OD_3005_2_appManager_activeApps                     2
+        #define OD_3005_3_appManager_failedApps                     3
+        #define OD_3005_4_appManager_selectApp                      4
+        #define OD_3005_5_appManager_appName                        5
+        #define OD_3005_6_appManager_daemonState                    6
 
 /*3006 */
         #define OD_3006_getLog                                      0x3006

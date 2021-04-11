@@ -4,18 +4,18 @@ FileVersion=1
 FileRevision=1
 LastEDS=
 EDSVersion=4.0
-Description=OreSat DxWifi
+Description=OreSat DxWifFi
 CreationTime=11:27PM
 CreationDate=03-09-2021
 CreatedBy=Ryan Medick
-ModificationTime=2:20PM
-ModificationDate=04-03-2021
+ModificationTime=5:45PM
+ModificationDate=04-10-2021
 ModifiedBy=Ryan Medick
 
 [DeviceInfo]
 VendorName=Portland State Aerospace Society
 VendorNumber=0
-ProductName=OreSat DxWifi
+ProductName=OreSat DxWiFi
 ProductNumber=0
 RevisionNumber=0
 BaudRate_10=1
@@ -290,7 +290,7 @@ ObjectType=0x7
 ;StorageLocation=ROM
 DataType=0x0009
 AccessType=ro
-DefaultValue=OreSat DxWifi
+DefaultValue=OreSat DxWiFi
 PDOMapping=0
 
 [1009]
@@ -2406,7 +2406,7 @@ PDOMapping=0
 ParameterName=App manager
 ObjectType=0x9
 ;StorageLocation=RAM
-SubNumber=0x5
+SubNumber=0x7
 
 [3005sub0]
 ParameterName=Highest sub-index supported
@@ -2414,7 +2414,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0005
 AccessType=ro
-DefaultValue=0x04
+DefaultValue=0x06
 PDOMapping=0
 
 [3005sub1]
@@ -2424,9 +2424,27 @@ ObjectType=0x7
 DataType=0x0005
 AccessType=ro
 DefaultValue=0
-PDOMapping=0
+PDOMapping=1
 
 [3005sub2]
+ParameterName=Active apps
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x0005
+AccessType=ro
+DefaultValue=0
+PDOMapping=1
+
+[3005sub3]
+ParameterName=Failed apps
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x0005
+AccessType=ro
+DefaultValue=0
+PDOMapping=1
+
+[3005sub4]
 ParameterName=Select app
 ObjectType=0x7
 ;StorageLocation=RAM
@@ -2435,7 +2453,7 @@ AccessType=rw
 DefaultValue=0
 PDOMapping=0
 
-[3005sub3]
+[3005sub5]
 ParameterName=App name
 ObjectType=0x7
 ;StorageLocation=RAM
@@ -2444,7 +2462,7 @@ AccessType=ro
 DefaultValue=
 PDOMapping=0
 
-[3005sub4]
+[3005sub6]
 ParameterName=Daemon state
 ObjectType=0x7
 ;StorageLocation=RAM
@@ -2484,7 +2502,7 @@ ObjectType=0x7
 DataType=0x0005
 AccessType=ro
 DefaultValue=0
-PDOMapping=0
+PDOMapping=1
 
 [3100sub2]
 ParameterName=Updates available
@@ -2493,7 +2511,7 @@ ObjectType=0x7
 DataType=0x0005
 AccessType=ro
 DefaultValue=0
-PDOMapping=0
+PDOMapping=1
 
 [3100sub3]
 ParameterName=List updates
@@ -2511,7 +2529,7 @@ ObjectType=0x7
 DataType=0x0001
 AccessType=wo
 DefaultValue=0
-PDOMapping=1
+PDOMapping=0
 
 [3100sub5]
 ParameterName=Make status file
@@ -2520,5 +2538,5 @@ ObjectType=0x7
 DataType=0x0001
 AccessType=wo
 DefaultValue=0
-PDOMapping=1
+PDOMapping=0
 
