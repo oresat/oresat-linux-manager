@@ -666,7 +666,7 @@
         #define OD_3100_5_updater_makeStatusFile                    5
 
 /*6000 */
-        #define OD_6000_testCamera                                  0x6000
+        #define OD_6000_starTrackerStatus                           0x6000
 
 /*6001 */
         #define OD_6001_orienation                                  0x6001
@@ -678,7 +678,7 @@
         #define OD_6001_4_orienation_timestamp                      4
 
 /*6002 */
-        #define OD_6002_lastSolvedFilepath                          0x6002
+        #define OD_6002_capture                                     0x6002
 
 /*******************************************************************************
    STRUCTURES FOR VARIABLES IN DIFFERENT MEMORY LOCATIONS
@@ -706,9 +706,9 @@ struct sCO_OD_RAM{
 /*3005      */ OD_appManager_t appManager;
 /*3006      */ UNSIGNED8      getLog;
 /*3100      */ OD_updater_t    updater;
-/*6000      */ INTEGER8       testCamera;
+/*6000      */ UNSIGNED8      starTrackerStatus;
 /*6001      */ OD_orienation_t orienation;
-/*6002      */ VISIBLE_STRING lastSolvedFilepath[1];
+/*6002      */ UNSIGNED8      capture;
 
                UNSIGNED32     LastWord;
 };
@@ -718,7 +718,7 @@ struct sCO_OD_ROM{
                UNSIGNED32     FirstWord;
 
 /*1000      */ UNSIGNED32     deviceType;
-/*1008      */ VISIBLE_STRING manufacturerDeviceName[19];
+/*1008      */ VISIBLE_STRING manufacturerDeviceName[11];
 /*1009      */ VISIBLE_STRING manufacturerHardwareVersion[3];
 /*100A      */ VISIBLE_STRING manufacturerSoftwareVersion[5];
 /*1018      */ OD_identity_t   identity;
@@ -805,7 +805,7 @@ extern struct sCO_OD_PERSIST_MFR CO_OD_PERSIST_MFR;
 
 /*1008, Data Type: VISIBLE_STRING */
         #define OD_manufacturerDeviceName                           CO_OD_ROM.manufacturerDeviceName
-        #define ODL_manufacturerDeviceName_stringLength             19
+        #define ODL_manufacturerDeviceName_stringLength             11
 
 /*1009, Data Type: VISIBLE_STRING */
         #define OD_manufacturerHardwareVersion                      CO_OD_ROM.manufacturerHardwareVersion
@@ -915,15 +915,14 @@ extern struct sCO_OD_PERSIST_MFR CO_OD_PERSIST_MFR;
 /*3100, Data Type: updater_t */
         #define OD_updater                                          CO_OD_RAM.updater
 
-/*6000, Data Type: INTEGER8 */
-        #define OD_testCamera                                       CO_OD_RAM.testCamera
+/*6000, Data Type: UNSIGNED8 */
+        #define OD_starTrackerStatus                                CO_OD_RAM.starTrackerStatus
 
 /*6001, Data Type: orienation_t */
         #define OD_orienation                                       CO_OD_RAM.orienation
 
-/*6002, Data Type: VISIBLE_STRING */
-        #define OD_lastSolvedFilepath                               CO_OD_RAM.lastSolvedFilepath
-        #define ODL_lastSolvedFilepath_stringLength                 1
+/*6002, Data Type: UNSIGNED8 */
+        #define OD_capture                                          CO_OD_RAM.capture
 
 #endif
 // clang-format on
