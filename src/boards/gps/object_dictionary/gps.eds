@@ -8,7 +8,7 @@ Description=OreSat GPS
 CreationTime=11:31PM
 CreationDate=03-09-2021
 CreatedBy=Ryan Medick
-ModificationTime=6:12PM
+ModificationTime=6:55PM
 ModificationDate=04-10-2021
 ModifiedBy=Ryan Medick
 
@@ -124,7 +124,7 @@ DefaultValue=0x00000000
 PDOMapping=0
 
 [OptionalObjects]
-SupportedObjects=35
+SupportedObjects=38
 1=0x1002
 2=0x1003
 3=0x1005
@@ -160,6 +160,9 @@ SupportedObjects=35
 33=0x1A02
 34=0x1A03
 35=0x1F80
+36=0x6000
+37=0x6001
+38=0x6002
 
 [1002]
 ParameterName=Manufacturer status register
@@ -1259,7 +1262,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
 AccessType=rw
-DefaultValue=0xC0000280+$NODEID
+DefaultValue=0x40000280+$NODEID
 PDOMapping=0
 
 [1801sub2]
@@ -1295,7 +1298,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0006
 AccessType=rw
-DefaultValue=0
+DefaultValue=1000
 PDOMapping=0
 
 [1801sub6]
@@ -1328,7 +1331,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
 AccessType=rw
-DefaultValue=0xC0000380+$NODEID
+DefaultValue=0x40000380+$NODEID
 PDOMapping=0
 
 [1802sub2]
@@ -1364,7 +1367,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0006
 AccessType=rw
-DefaultValue=0
+DefaultValue=1000
 PDOMapping=0
 
 [1802sub6]
@@ -1397,7 +1400,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
 AccessType=rw
-DefaultValue=0xC0000480+$NODEID
+DefaultValue=0x40000480+$NODEID
 PDOMapping=0
 
 [1803sub2]
@@ -1433,7 +1436,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0006
 AccessType=rw
-DefaultValue=0
+DefaultValue=1000
 PDOMapping=0
 
 [1803sub6]
@@ -1544,7 +1547,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0005
 AccessType=rw
-DefaultValue=0
+DefaultValue=0x02
 PDOMapping=0
 
 [1A01sub1]
@@ -1553,7 +1556,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
 AccessType=rw
-DefaultValue=0x00000000
+DefaultValue=0x60020120
 PDOMapping=0
 
 [1A01sub2]
@@ -1562,7 +1565,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
 AccessType=rw
-DefaultValue=0x00000000
+DefaultValue=0x60020220
 PDOMapping=0
 
 [1A01sub3]
@@ -1631,7 +1634,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0005
 AccessType=rw
-DefaultValue=0
+DefaultValue=0x02
 PDOMapping=0
 
 [1A02sub1]
@@ -1640,7 +1643,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
 AccessType=rw
-DefaultValue=0x00000000
+DefaultValue=0x60020320
 PDOMapping=0
 
 [1A02sub2]
@@ -1649,7 +1652,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
 AccessType=rw
-DefaultValue=0x00000000
+DefaultValue=0x60020420
 PDOMapping=0
 
 [1A02sub3]
@@ -1718,7 +1721,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0005
 AccessType=rw
-DefaultValue=0
+DefaultValue=0x05
 PDOMapping=0
 
 [1A03sub1]
@@ -1727,7 +1730,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
 AccessType=rw
-DefaultValue=0x00000000
+DefaultValue=0x60000008
 PDOMapping=0
 
 [1A03sub2]
@@ -1736,7 +1739,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
 AccessType=rw
-DefaultValue=0x00000000
+DefaultValue=0x60010008
 PDOMapping=0
 
 [1A03sub3]
@@ -1745,7 +1748,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
 AccessType=rw
-DefaultValue=0x00000000
+DefaultValue=0x60020510
 PDOMapping=0
 
 [1A03sub4]
@@ -1754,7 +1757,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
 AccessType=rw
-DefaultValue=0x00000000
+DefaultValue=0x60020610
 PDOMapping=0
 
 [1A03sub5]
@@ -1763,7 +1766,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
 AccessType=rw
-DefaultValue=0x00000000
+DefaultValue=0x60020710
 PDOMapping=0
 
 [1A03sub6]
@@ -1801,6 +1804,102 @@ DataType=0x0007
 AccessType=rw
 DefaultValue=0x00000008
 PDOMapping=0
+
+[6000]
+ParameterName=GPS status
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x0005
+AccessType=ro
+DefaultValue=0
+PDOMapping=1
+
+[6001]
+ParameterName=Satellites locked
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x0005
+AccessType=ro
+DefaultValue=0
+PDOMapping=1
+
+[6002]
+ParameterName=State vector
+ObjectType=0x9
+;StorageLocation=RAM
+SubNumber=0x8
+
+[6002sub0]
+ParameterName=Highest sub-index supported
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x0005
+AccessType=ro
+DefaultValue=0x07
+PDOMapping=0
+
+[6002sub1]
+ParameterName=Time stamp
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x0007
+AccessType=ro
+DefaultValue=0
+PDOMapping=1
+
+[6002sub2]
+ParameterName=Position X
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x0008
+AccessType=ro
+DefaultValue=0
+PDOMapping=1
+
+[6002sub3]
+ParameterName=Position Y
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x0008
+AccessType=ro
+DefaultValue=0
+PDOMapping=1
+
+[6002sub4]
+ParameterName=Position Z
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x0008
+AccessType=ro
+DefaultValue=0
+PDOMapping=1
+
+[6002sub5]
+ParameterName=Velocity X
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x0006
+AccessType=ro
+DefaultValue=0
+PDOMapping=1
+
+[6002sub6]
+ParameterName=Velocity Y
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x0006
+AccessType=ro
+DefaultValue=0
+PDOMapping=1
+
+[6002sub7]
+ParameterName=Velocity Z
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x0006
+AccessType=ro
+DefaultValue=0
+PDOMapping=1
 
 [ManufacturerObjects]
 SupportedObjects=12

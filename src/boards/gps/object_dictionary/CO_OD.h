@@ -77,7 +77,7 @@
 /*******************************************************************************
    OBJECT DICTIONARY
 *******************************************************************************/
-   #define CO_OD_NoOfElements             50
+   #define CO_OD_NoOfElements             53
 
 
 /*******************************************************************************
@@ -238,6 +238,16 @@
                BOOLEAN        update;
                BOOLEAN        makeStatusFile;
                }              OD_updater_t;
+/*6002      */ typedef struct {
+               UNSIGNED8      highestSubIndexSupported;
+               UNSIGNED32     timeStamp;
+               REAL32         positionX;
+               REAL32         positionY;
+               REAL32         positionZ;
+               UNSIGNED16     velocityX;
+               UNSIGNED16     velocityY;
+               UNSIGNED16     velocityZ;
+               }              OD_stateVector_t;
 
 /*******************************************************************************
    TYPE DEFINITIONS FOR OBJECT DICTIONARY INDEXES
@@ -658,6 +668,24 @@
         #define OD_3100_4_updater_update                            4
         #define OD_3100_5_updater_makeStatusFile                    5
 
+/*6000 */
+        #define OD_6000_GPSStatus                                   0x6000
+
+/*6001 */
+        #define OD_6001_satellitesLocked                            0x6001
+
+/*6002 */
+        #define OD_6002_stateVector                                 0x6002
+
+        #define OD_6002_0_stateVector_maxSubIndex                   0
+        #define OD_6002_1_stateVector_timeStamp                     1
+        #define OD_6002_2_stateVector_positionX                     2
+        #define OD_6002_3_stateVector_positionY                     3
+        #define OD_6002_4_stateVector_positionZ                     4
+        #define OD_6002_5_stateVector_velocityX                     5
+        #define OD_6002_6_stateVector_velocityY                     6
+        #define OD_6002_7_stateVector_velocityZ                     7
+
 /*******************************************************************************
    STRUCTURES FOR VARIABLES IN DIFFERENT MEMORY LOCATIONS
 *******************************************************************************/
@@ -684,6 +712,9 @@ struct sCO_OD_RAM{
 /*3005      */ OD_appManager_t appManager;
 /*3006      */ UNSIGNED8      getLog;
 /*3100      */ OD_updater_t    updater;
+/*6000      */ UNSIGNED8      GPSStatus;
+/*6001      */ UNSIGNED8      satellitesLocked;
+/*6002      */ OD_stateVector_t stateVector;
 
                UNSIGNED32     LastWord;
 };
@@ -889,6 +920,15 @@ extern struct sCO_OD_PERSIST_MFR CO_OD_PERSIST_MFR;
 
 /*3100, Data Type: updater_t */
         #define OD_updater                                          CO_OD_RAM.updater
+
+/*6000, Data Type: UNSIGNED8 */
+        #define OD_GPSStatus                                        CO_OD_RAM.GPSStatus
+
+/*6001, Data Type: UNSIGNED8 */
+        #define OD_satellitesLocked                                 CO_OD_RAM.satellitesLocked
+
+/*6002, Data Type: stateVector_t */
+        #define OD_stateVector                                      CO_OD_RAM.stateVector
 
 #endif
 // clang-format on
