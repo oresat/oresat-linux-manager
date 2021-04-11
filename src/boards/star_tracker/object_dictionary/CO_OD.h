@@ -115,9 +115,10 @@
                UNSIGNED8      nodeIDOfTheSDOServer;
                }              OD_SDOClientParameter_t;
 /*1400      */ typedef struct {
-               UNSIGNED8      maxSubIndex;
+               UNSIGNED8      highestSubIndexSupported;
                UNSIGNED32     COB_IDUsedByRPDO;
                UNSIGNED8      transmissionType;
+               UNSIGNED16     eventTimer;
                }              OD_RPDOCommunicationParameter_t;
 /*1600      */ typedef struct {
                UNSIGNED8      numberOfMappedApplicationObjectsInPDO;
@@ -131,7 +132,7 @@
                UNSIGNED32     mappingObject8;
                }              OD_RPDOMappingParameter_t;
 /*1800      */ typedef struct {
-               UNSIGNED8      maxSubIndex;
+               UNSIGNED8      highestSubIndexSupported;
                UNSIGNED32     COB_IDUsedByTPDO;
                UNSIGNED8      transmissionType;
                UNSIGNED16     inhibitTime;
@@ -372,6 +373,7 @@
         #define OD_1400_0_RPDOCommunicationParameter_maxSubIndex    0
         #define OD_1400_1_RPDOCommunicationParameter_COB_IDUsedByRPDO 1
         #define OD_1400_2_RPDOCommunicationParameter_transmissionType 2
+        #define OD_1400_5_RPDOCommunicationParameter_eventTimer     5
 
 /*1401 */
         #define OD_1401_RPDOCommunicationParameter                  0x1401
@@ -379,6 +381,7 @@
         #define OD_1401_0_RPDOCommunicationParameter_maxSubIndex    0
         #define OD_1401_1_RPDOCommunicationParameter_COB_IDUsedByRPDO 1
         #define OD_1401_2_RPDOCommunicationParameter_transmissionType 2
+        #define OD_1401_5_RPDOCommunicationParameter_eventTimer     5
 
 /*1402 */
         #define OD_1402_RPDOCommunicationParameter                  0x1402
@@ -386,6 +389,7 @@
         #define OD_1402_0_RPDOCommunicationParameter_maxSubIndex    0
         #define OD_1402_1_RPDOCommunicationParameter_COB_IDUsedByRPDO 1
         #define OD_1402_2_RPDOCommunicationParameter_transmissionType 2
+        #define OD_1402_5_RPDOCommunicationParameter_eventTimer     5
 
 /*1403 */
         #define OD_1403_RPDOCommunicationParameter                  0x1403
@@ -393,6 +397,7 @@
         #define OD_1403_0_RPDOCommunicationParameter_maxSubIndex    0
         #define OD_1403_1_RPDOCommunicationParameter_COB_IDUsedByRPDO 1
         #define OD_1403_2_RPDOCommunicationParameter_transmissionType 2
+        #define OD_1403_5_RPDOCommunicationParameter_eventTimer     5
 
 /*1600 */
         #define OD_1600_RPDOMappingParameter                        0x1600

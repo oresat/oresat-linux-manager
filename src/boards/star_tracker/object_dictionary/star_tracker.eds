@@ -8,7 +8,7 @@ Description=OreSat Star Tracker
 CreationTime=1:57PM
 CreationDate=03-09-2021
 CreatedBy=Ryan Medick
-ModificationTime=5:47PM
+ModificationTime=6:21PM
 ModificationDate=04-10-2021
 ModifiedBy=Ryan Medick
 
@@ -660,15 +660,15 @@ PDOMapping=0
 ParameterName=RPDO communication parameter
 ObjectType=0x9
 ;StorageLocation=PERSIST_COMM
-SubNumber=0x3
+SubNumber=0x4
 
 [1400sub0]
-ParameterName=max sub-index
+ParameterName=Highest sub-index supported
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0005
-AccessType=UNKNOWN
-DefaultValue=6
+AccessType=ro
+DefaultValue=0x05
 PDOMapping=0
 
 [1400sub1]
@@ -676,32 +676,41 @@ ParameterName=COB-ID used by RPDO
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
-AccessType=UNKNOWN
-DefaultValue=0x80000200
+AccessType=rw
+DefaultValue=0x80000200+$NODEID
 PDOMapping=0
 
 [1400sub2]
-ParameterName=transmission type
+ParameterName=Transmission type
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0005
-AccessType=UNKNOWN
+AccessType=rw
 DefaultValue=254
+PDOMapping=0
+
+[1400sub5]
+ParameterName=Event timer
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x0006
+AccessType=rw
+DefaultValue=0
 PDOMapping=0
 
 [1401]
 ParameterName=RPDO communication parameter
 ObjectType=0x9
 ;StorageLocation=PERSIST_COMM
-SubNumber=0x3
+SubNumber=0x4
 
 [1401sub0]
-ParameterName=max sub-index
+ParameterName=Highest sub-index supported
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0005
-AccessType=UNKNOWN
-DefaultValue=6
+AccessType=ro
+DefaultValue=0x05
 PDOMapping=0
 
 [1401sub1]
@@ -709,32 +718,41 @@ ParameterName=COB-ID used by RPDO
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
-AccessType=UNKNOWN
-DefaultValue=0x80000300
+AccessType=rw
+DefaultValue=0x80000300+$NODEID
 PDOMapping=0
 
 [1401sub2]
-ParameterName=transmission type
+ParameterName=Transmission type
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0005
-AccessType=UNKNOWN
+AccessType=rw
 DefaultValue=254
+PDOMapping=0
+
+[1401sub5]
+ParameterName=Event timer
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x0006
+AccessType=rw
+DefaultValue=0
 PDOMapping=0
 
 [1402]
 ParameterName=RPDO communication parameter
 ObjectType=0x9
 ;StorageLocation=PERSIST_COMM
-SubNumber=0x3
+SubNumber=0x4
 
 [1402sub0]
-ParameterName=max sub-index
+ParameterName=Highest sub-index supported
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0005
-AccessType=UNKNOWN
-DefaultValue=6
+AccessType=ro
+DefaultValue=0x05
 PDOMapping=0
 
 [1402sub1]
@@ -742,32 +760,41 @@ ParameterName=COB-ID used by RPDO
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
-AccessType=UNKNOWN
-DefaultValue=0x80000400
+AccessType=rw
+DefaultValue=0x80000400+$NODEID
 PDOMapping=0
 
 [1402sub2]
-ParameterName=transmission type
+ParameterName=Transmission type
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0005
-AccessType=UNKNOWN
+AccessType=rw
 DefaultValue=254
+PDOMapping=0
+
+[1402sub5]
+ParameterName=Event timer
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x0006
+AccessType=rw
+DefaultValue=0
 PDOMapping=0
 
 [1403]
 ParameterName=RPDO communication parameter
 ObjectType=0x9
 ;StorageLocation=PERSIST_COMM
-SubNumber=0x3
+SubNumber=0x4
 
 [1403sub0]
-ParameterName=max sub-index
+ParameterName=Highest sub-index supported
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0005
-AccessType=UNKNOWN
-DefaultValue=6
+AccessType=ro
+DefaultValue=0x05
 PDOMapping=0
 
 [1403sub1]
@@ -775,17 +802,26 @@ ParameterName=COB-ID used by RPDO
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
-AccessType=UNKNOWN
-DefaultValue=0x80000500
+AccessType=rw
+DefaultValue=0x80000500+$NODEID
 PDOMapping=0
 
 [1403sub2]
-ParameterName=transmission type
+ParameterName=Transmission type
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0005
-AccessType=UNKNOWN
+AccessType=rw
 DefaultValue=254
+PDOMapping=0
+
+[1403sub5]
+ParameterName=Event timer
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x0006
+AccessType=rw
+DefaultValue=0
 PDOMapping=0
 
 [1600]
@@ -1143,12 +1179,12 @@ ObjectType=0x9
 SubNumber=0x7
 
 [1800sub0]
-ParameterName=max sub-index
+ParameterName=Highest sub-index supported
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0005
-AccessType=UNKNOWN
-DefaultValue=6
+AccessType=ro
+DefaultValue=0x06
 PDOMapping=0
 
 [1800sub1]
@@ -1156,25 +1192,25 @@ ParameterName=COB-ID used by TPDO
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
-AccessType=UNKNOWN
-DefaultValue=0xc0000180
+AccessType=rw
+DefaultValue=0x40000180+$NODEID
 PDOMapping=0
 
 [1800sub2]
-ParameterName=transmission type
+ParameterName=Transmission type
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0005
-AccessType=UNKNOWN
+AccessType=rw
 DefaultValue=254
 PDOMapping=0
 
 [1800sub3]
-ParameterName=inhibit time
+ParameterName=Inhibit time
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0006
-AccessType=UNKNOWN
+AccessType=rw
 DefaultValue=0
 PDOMapping=0
 
@@ -1183,17 +1219,17 @@ ParameterName=compatibility entry
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0005
-AccessType=UNKNOWN
+AccessType=ro
 DefaultValue=0
 PDOMapping=0
 
 [1800sub5]
-ParameterName=event timer
+ParameterName=Event timer
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0006
-AccessType=UNKNOWN
-DefaultValue=0
+AccessType=rw
+DefaultValue=5000
 PDOMapping=0
 
 [1800sub6]
@@ -1201,7 +1237,7 @@ ParameterName=SYNC start value
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0005
-AccessType=UNKNOWN
+AccessType=rw
 DefaultValue=0
 PDOMapping=0
 
@@ -1212,12 +1248,12 @@ ObjectType=0x9
 SubNumber=0x7
 
 [1801sub0]
-ParameterName=max sub-index
+ParameterName=Highest sub-index supported
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0005
-AccessType=UNKNOWN
-DefaultValue=6
+AccessType=ro
+DefaultValue=0x06
 PDOMapping=0
 
 [1801sub1]
@@ -1225,25 +1261,25 @@ ParameterName=COB-ID used by TPDO
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
-AccessType=UNKNOWN
-DefaultValue=0xc0000280
+AccessType=rw
+DefaultValue=0xC0000280+$NODEID
 PDOMapping=0
 
 [1801sub2]
-ParameterName=transmission type
+ParameterName=Transmission type
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0005
-AccessType=UNKNOWN
+AccessType=rw
 DefaultValue=254
 PDOMapping=0
 
 [1801sub3]
-ParameterName=inhibit time
+ParameterName=Inhibit time
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0006
-AccessType=UNKNOWN
+AccessType=rw
 DefaultValue=0
 PDOMapping=0
 
@@ -1252,16 +1288,16 @@ ParameterName=compatibility entry
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0005
-AccessType=UNKNOWN
+AccessType=ro
 DefaultValue=0
 PDOMapping=0
 
 [1801sub5]
-ParameterName=event timer
+ParameterName=Event timer
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0006
-AccessType=UNKNOWN
+AccessType=rw
 DefaultValue=0
 PDOMapping=0
 
@@ -1270,7 +1306,7 @@ ParameterName=SYNC start value
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0005
-AccessType=UNKNOWN
+AccessType=rw
 DefaultValue=0
 PDOMapping=0
 
@@ -1281,12 +1317,12 @@ ObjectType=0x9
 SubNumber=0x7
 
 [1802sub0]
-ParameterName=max sub-index
+ParameterName=Highest sub-index supported
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0005
-AccessType=UNKNOWN
-DefaultValue=6
+AccessType=ro
+DefaultValue=0x06
 PDOMapping=0
 
 [1802sub1]
@@ -1294,25 +1330,25 @@ ParameterName=COB-ID used by TPDO
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
-AccessType=UNKNOWN
-DefaultValue=0xc0000380
+AccessType=rw
+DefaultValue=0xC0000380+$NODEID
 PDOMapping=0
 
 [1802sub2]
-ParameterName=transmission type
+ParameterName=Transmission type
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0005
-AccessType=UNKNOWN
+AccessType=rw
 DefaultValue=254
 PDOMapping=0
 
 [1802sub3]
-ParameterName=inhibit time
+ParameterName=Inhibit time
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0006
-AccessType=UNKNOWN
+AccessType=rw
 DefaultValue=0
 PDOMapping=0
 
@@ -1321,16 +1357,16 @@ ParameterName=compatibility entry
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0005
-AccessType=UNKNOWN
+AccessType=ro
 DefaultValue=0
 PDOMapping=0
 
 [1802sub5]
-ParameterName=event timer
+ParameterName=Event timer
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0006
-AccessType=UNKNOWN
+AccessType=rw
 DefaultValue=0
 PDOMapping=0
 
@@ -1339,7 +1375,7 @@ ParameterName=SYNC start value
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0005
-AccessType=UNKNOWN
+AccessType=rw
 DefaultValue=0
 PDOMapping=0
 
@@ -1350,12 +1386,12 @@ ObjectType=0x9
 SubNumber=0x7
 
 [1803sub0]
-ParameterName=max sub-index
+ParameterName=Highest sub-index supported
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0005
-AccessType=UNKNOWN
-DefaultValue=6
+AccessType=ro
+DefaultValue=0x06
 PDOMapping=0
 
 [1803sub1]
@@ -1363,25 +1399,25 @@ ParameterName=COB-ID used by TPDO
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
-AccessType=UNKNOWN
-DefaultValue=0xc0000480
+AccessType=rw
+DefaultValue=0xC0000480+$NODEID
 PDOMapping=0
 
 [1803sub2]
-ParameterName=transmission type
+ParameterName=Transmission type
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0005
-AccessType=UNKNOWN
+AccessType=rw
 DefaultValue=254
 PDOMapping=0
 
 [1803sub3]
-ParameterName=inhibit time
+ParameterName=Inhibit time
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0006
-AccessType=UNKNOWN
+AccessType=rw
 DefaultValue=0
 PDOMapping=0
 
@@ -1390,16 +1426,16 @@ ParameterName=compatibility entry
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0005
-AccessType=UNKNOWN
+AccessType=ro
 DefaultValue=0
 PDOMapping=0
 
 [1803sub5]
-ParameterName=event timer
+ParameterName=Event timer
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0006
-AccessType=UNKNOWN
+AccessType=rw
 DefaultValue=0
 PDOMapping=0
 
@@ -1408,7 +1444,7 @@ ParameterName=SYNC start value
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0005
-AccessType=UNKNOWN
+AccessType=rw
 DefaultValue=0
 PDOMapping=0
 
@@ -1424,7 +1460,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0005
 AccessType=rw
-DefaultValue=0
+DefaultValue=0x08
 PDOMapping=0
 
 [1A00sub1]
@@ -1433,7 +1469,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
 AccessType=rw
-DefaultValue=0x00000000
+DefaultValue=0x30011C08
 PDOMapping=0
 
 [1A00sub2]
@@ -1442,7 +1478,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
 AccessType=rw
-DefaultValue=0x00000000
+DefaultValue=0x30011508
 PDOMapping=0
 
 [1A00sub3]
@@ -1451,7 +1487,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
 AccessType=rw
-DefaultValue=0x00000000
+DefaultValue=0x30020108
 PDOMapping=0
 
 [1A00sub4]
@@ -1460,7 +1496,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
 AccessType=rw
-DefaultValue=0x00000000
+DefaultValue=0x30020208
 PDOMapping=0
 
 [1A00sub5]
@@ -1469,7 +1505,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
 AccessType=rw
-DefaultValue=0x00000000
+DefaultValue=0x30050208
 PDOMapping=0
 
 [1A00sub6]
@@ -1478,7 +1514,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
 AccessType=rw
-DefaultValue=0x00000000
+DefaultValue=0x30050308
 PDOMapping=0
 
 [1A00sub7]
@@ -1487,7 +1523,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
 AccessType=rw
-DefaultValue=0x00000000
+DefaultValue=0x31000108
 PDOMapping=0
 
 [1A00sub8]
@@ -1496,7 +1532,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
 AccessType=rw
-DefaultValue=0x00000000
+DefaultValue=0x31000108
 PDOMapping=0
 
 [1A01]

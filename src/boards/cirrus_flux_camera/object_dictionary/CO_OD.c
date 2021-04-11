@@ -99,11 +99,11 @@ struct sCO_OD_PERSIST_COMM CO_OD_PERSIST_COMM = {
 /*1601*/ {0x0L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L},
 /*1602*/ {0x0L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L},
 /*1603*/ {0x0L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L}},
-/*1800*/ {{0x6L, 0xC0000180L, 0xFEL, 0x00, 0x0L, 0x00, 0x0L},
+/*1800*/ {{0x6L, 0x40000180L, 0xFEL, 0x00, 0x0L, 0x1388, 0x0L},
 /*1801*/ {0x6L, 0xC0000280L, 0xFEL, 0x00, 0x0L, 0x00, 0x0L},
 /*1802*/ {0x6L, 0xC0000380L, 0xFEL, 0x00, 0x0L, 0x00, 0x0L},
 /*1803*/ {0x6L, 0xC0000480L, 0xFEL, 0x00, 0x0L, 0x00, 0x0L}},
-/*1A00*/ {{0x0L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L},
+/*1A00*/ {{0x8L, 0x30011C08L, 0x30011508L, 0x30020108L, 0x30020208L, 0x30050208L, 0x30050308L, 0x31000108L, 0x31000108L},
 /*1A01*/ {0x0L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L},
 /*1A02*/ {0x0L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L},
 /*1A03*/ {0x0L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L}},
@@ -181,7 +181,7 @@ struct sCO_OD_PERSIST_MFR CO_OD_PERSIST_MFR = {
 };
 
 /*0x1600*/ const CO_OD_entryRecord_t OD_record1600[9] = {
-           {(void*)&CO_OD_PERSIST_COMM.RPDOMappingParameter[0].highestSubIndexSupported, 0x0F, 0x1 },
+           {(void*)&CO_OD_PERSIST_COMM.RPDOMappingParameter[0].numberOfMappedApplicationObjectsInPDO, 0x0F, 0x1 },
            {(void*)&CO_OD_PERSIST_COMM.RPDOMappingParameter[0].mappingObject1, 0x8F, 0x4 },
            {(void*)&CO_OD_PERSIST_COMM.RPDOMappingParameter[0].mappingObject2, 0x8F, 0x4 },
            {(void*)&CO_OD_PERSIST_COMM.RPDOMappingParameter[0].mappingObject3, 0x8F, 0x4 },
@@ -193,7 +193,7 @@ struct sCO_OD_PERSIST_MFR CO_OD_PERSIST_MFR = {
 };
 
 /*0x1601*/ const CO_OD_entryRecord_t OD_record1601[9] = {
-           {(void*)&CO_OD_PERSIST_COMM.RPDOMappingParameter[1].highestSubIndexSupported, 0x0F, 0x1 },
+           {(void*)&CO_OD_PERSIST_COMM.RPDOMappingParameter[1].numberOfMappedApplicationObjectsInPDO, 0x0F, 0x1 },
            {(void*)&CO_OD_PERSIST_COMM.RPDOMappingParameter[1].mappingObject1, 0x8F, 0x4 },
            {(void*)&CO_OD_PERSIST_COMM.RPDOMappingParameter[1].mappingObject2, 0x8F, 0x4 },
            {(void*)&CO_OD_PERSIST_COMM.RPDOMappingParameter[1].mappingObject3, 0x8F, 0x4 },
@@ -205,7 +205,7 @@ struct sCO_OD_PERSIST_MFR CO_OD_PERSIST_MFR = {
 };
 
 /*0x1602*/ const CO_OD_entryRecord_t OD_record1602[9] = {
-           {(void*)&CO_OD_PERSIST_COMM.RPDOMappingParameter[2].highestSubIndexSupported, 0x0F, 0x1 },
+           {(void*)&CO_OD_PERSIST_COMM.RPDOMappingParameter[2].numberOfMappedApplicationObjectsInPDO, 0x0F, 0x1 },
            {(void*)&CO_OD_PERSIST_COMM.RPDOMappingParameter[2].mappingObject1, 0x8F, 0x4 },
            {(void*)&CO_OD_PERSIST_COMM.RPDOMappingParameter[2].mappingObject2, 0x8F, 0x4 },
            {(void*)&CO_OD_PERSIST_COMM.RPDOMappingParameter[2].mappingObject3, 0x8F, 0x4 },
@@ -217,7 +217,7 @@ struct sCO_OD_PERSIST_MFR CO_OD_PERSIST_MFR = {
 };
 
 /*0x1603*/ const CO_OD_entryRecord_t OD_record1603[9] = {
-           {(void*)&CO_OD_PERSIST_COMM.RPDOMappingParameter[3].highestSubIndexSupported, 0x0F, 0x1 },
+           {(void*)&CO_OD_PERSIST_COMM.RPDOMappingParameter[3].numberOfMappedApplicationObjectsInPDO, 0x0F, 0x1 },
            {(void*)&CO_OD_PERSIST_COMM.RPDOMappingParameter[3].mappingObject1, 0x8F, 0x4 },
            {(void*)&CO_OD_PERSIST_COMM.RPDOMappingParameter[3].mappingObject2, 0x8F, 0x4 },
            {(void*)&CO_OD_PERSIST_COMM.RPDOMappingParameter[3].mappingObject3, 0x8F, 0x4 },
@@ -269,7 +269,7 @@ struct sCO_OD_PERSIST_MFR CO_OD_PERSIST_MFR = {
 };
 
 /*0x1A00*/ const CO_OD_entryRecord_t OD_record1A00[9] = {
-           {(void*)&CO_OD_PERSIST_COMM.TPDOMappingParameter[0].highestSubIndexSupported, 0x0F, 0x1 },
+           {(void*)&CO_OD_PERSIST_COMM.TPDOMappingParameter[0].numberOfMappedApplicationObjectsInPDO, 0x0F, 0x1 },
            {(void*)&CO_OD_PERSIST_COMM.TPDOMappingParameter[0].mappingObject1, 0x8F, 0x4 },
            {(void*)&CO_OD_PERSIST_COMM.TPDOMappingParameter[0].mappingObject2, 0x8F, 0x4 },
            {(void*)&CO_OD_PERSIST_COMM.TPDOMappingParameter[0].mappingObject3, 0x8F, 0x4 },
@@ -281,7 +281,7 @@ struct sCO_OD_PERSIST_MFR CO_OD_PERSIST_MFR = {
 };
 
 /*0x1A01*/ const CO_OD_entryRecord_t OD_record1A01[9] = {
-           {(void*)&CO_OD_PERSIST_COMM.TPDOMappingParameter[1].highestSubIndexSupported, 0x0F, 0x1 },
+           {(void*)&CO_OD_PERSIST_COMM.TPDOMappingParameter[1].numberOfMappedApplicationObjectsInPDO, 0x0F, 0x1 },
            {(void*)&CO_OD_PERSIST_COMM.TPDOMappingParameter[1].mappingObject1, 0x8F, 0x4 },
            {(void*)&CO_OD_PERSIST_COMM.TPDOMappingParameter[1].mappingObject2, 0x8F, 0x4 },
            {(void*)&CO_OD_PERSIST_COMM.TPDOMappingParameter[1].mappingObject3, 0x8F, 0x4 },
@@ -293,7 +293,7 @@ struct sCO_OD_PERSIST_MFR CO_OD_PERSIST_MFR = {
 };
 
 /*0x1A02*/ const CO_OD_entryRecord_t OD_record1A02[9] = {
-           {(void*)&CO_OD_PERSIST_COMM.TPDOMappingParameter[2].highestSubIndexSupported, 0x0F, 0x1 },
+           {(void*)&CO_OD_PERSIST_COMM.TPDOMappingParameter[2].numberOfMappedApplicationObjectsInPDO, 0x0F, 0x1 },
            {(void*)&CO_OD_PERSIST_COMM.TPDOMappingParameter[2].mappingObject1, 0x8F, 0x4 },
            {(void*)&CO_OD_PERSIST_COMM.TPDOMappingParameter[2].mappingObject2, 0x8F, 0x4 },
            {(void*)&CO_OD_PERSIST_COMM.TPDOMappingParameter[2].mappingObject3, 0x8F, 0x4 },
@@ -305,7 +305,7 @@ struct sCO_OD_PERSIST_MFR CO_OD_PERSIST_MFR = {
 };
 
 /*0x1A03*/ const CO_OD_entryRecord_t OD_record1A03[9] = {
-           {(void*)&CO_OD_PERSIST_COMM.TPDOMappingParameter[3].highestSubIndexSupported, 0x0F, 0x1 },
+           {(void*)&CO_OD_PERSIST_COMM.TPDOMappingParameter[3].numberOfMappedApplicationObjectsInPDO, 0x0F, 0x1 },
            {(void*)&CO_OD_PERSIST_COMM.TPDOMappingParameter[3].mappingObject1, 0x8F, 0x4 },
            {(void*)&CO_OD_PERSIST_COMM.TPDOMappingParameter[3].mappingObject2, 0x8F, 0x4 },
            {(void*)&CO_OD_PERSIST_COMM.TPDOMappingParameter[3].mappingObject3, 0x8F, 0x4 },

@@ -94,19 +94,19 @@ struct sCO_OD_PERSIST_COMM CO_OD_PERSIST_COMM = {
 /*1019*/ 0x0L,
 /*1029*/ {0x0L, 0x0L},
 /*1200*/ {{0x3L, 0x80000000L, 0x80000000L, 0x1L}},
-/*1400*/ {{0x6L, 0x80000200L, 0xFEL},
-/*1401*/ {0x6L, 0x80000300L, 0xFEL},
-/*1402*/ {0x6L, 0x80000400L, 0xFEL},
-/*1403*/ {0x6L, 0x80000500L, 0xFEL}},
+/*1400*/ {{0x5L, 0x80000200L, 0xFEL, 0x00},
+/*1401*/ {0x5L, 0x80000300L, 0xFEL, 0x00},
+/*1402*/ {0x5L, 0x80000400L, 0xFEL, 0x00},
+/*1403*/ {0x5L, 0x80000500L, 0xFEL, 0x00}},
 /*1600*/ {{0x0L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L},
 /*1601*/ {0x0L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L},
 /*1602*/ {0x0L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L},
 /*1603*/ {0x0L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L}},
-/*1800*/ {{0x6L, 0xC0000180L, 0xFEL, 0x00, 0x0L, 0x00, 0x0L},
+/*1800*/ {{0x6L, 0x40000180L, 0xFEL, 0x00, 0x0L, 0x1388, 0x0L},
 /*1801*/ {0x6L, 0xC0000280L, 0xFEL, 0x00, 0x0L, 0x00, 0x0L},
 /*1802*/ {0x6L, 0xC0000380L, 0xFEL, 0x00, 0x0L, 0x00, 0x0L},
 /*1803*/ {0x6L, 0xC0000480L, 0xFEL, 0x00, 0x0L, 0x00, 0x0L}},
-/*1A00*/ {{0x0L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L},
+/*1A00*/ {{0x8L, 0x30011C08L, 0x30011508L, 0x30020108L, 0x30020208L, 0x30050208L, 0x30050308L, 0x31000108L, 0x31000108L},
 /*1A01*/ {0x0L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L},
 /*1A02*/ {0x0L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L},
 /*1A03*/ {0x0L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L}},
@@ -155,28 +155,32 @@ struct sCO_OD_PERSIST_MFR CO_OD_PERSIST_MFR = {
            {(void*)&CO_OD_PERSIST_COMM.SDOServerParameter[0].nodeIDOfTheSDOClient, 0x0F, 0x1 },
 };
 
-/*0x1400*/ const CO_OD_entryRecord_t OD_record1400[3] = {
-           {(void*)&CO_OD_PERSIST_COMM.RPDOCommunicationParameter[0].maxSubIndex, 0x03, 0x1 },
-           {(void*)&CO_OD_PERSIST_COMM.RPDOCommunicationParameter[0].COB_IDUsedByRPDO, 0x83, 0x4 },
-           {(void*)&CO_OD_PERSIST_COMM.RPDOCommunicationParameter[0].transmissionType, 0x03, 0x1 },
+/*0x1400*/ const CO_OD_entryRecord_t OD_record1400[4] = {
+           {(void*)&CO_OD_PERSIST_COMM.RPDOCommunicationParameter[0].highestSubIndexSupported, 0x07, 0x1 },
+           {(void*)&CO_OD_PERSIST_COMM.RPDOCommunicationParameter[0].COB_IDUsedByRPDO, 0x8F, 0x4 },
+           {(void*)&CO_OD_PERSIST_COMM.RPDOCommunicationParameter[0].transmissionType, 0x0F, 0x1 },
+           {(void*)&CO_OD_PERSIST_COMM.RPDOCommunicationParameter[0].eventTimer, 0x8F, 0x2 },
 };
 
-/*0x1401*/ const CO_OD_entryRecord_t OD_record1401[3] = {
-           {(void*)&CO_OD_PERSIST_COMM.RPDOCommunicationParameter[1].maxSubIndex, 0x03, 0x1 },
-           {(void*)&CO_OD_PERSIST_COMM.RPDOCommunicationParameter[1].COB_IDUsedByRPDO, 0x83, 0x4 },
-           {(void*)&CO_OD_PERSIST_COMM.RPDOCommunicationParameter[1].transmissionType, 0x03, 0x1 },
+/*0x1401*/ const CO_OD_entryRecord_t OD_record1401[4] = {
+           {(void*)&CO_OD_PERSIST_COMM.RPDOCommunicationParameter[1].highestSubIndexSupported, 0x07, 0x1 },
+           {(void*)&CO_OD_PERSIST_COMM.RPDOCommunicationParameter[1].COB_IDUsedByRPDO, 0x8F, 0x4 },
+           {(void*)&CO_OD_PERSIST_COMM.RPDOCommunicationParameter[1].transmissionType, 0x0F, 0x1 },
+           {(void*)&CO_OD_PERSIST_COMM.RPDOCommunicationParameter[1].eventTimer, 0x8F, 0x2 },
 };
 
-/*0x1402*/ const CO_OD_entryRecord_t OD_record1402[3] = {
-           {(void*)&CO_OD_PERSIST_COMM.RPDOCommunicationParameter[2].maxSubIndex, 0x03, 0x1 },
-           {(void*)&CO_OD_PERSIST_COMM.RPDOCommunicationParameter[2].COB_IDUsedByRPDO, 0x83, 0x4 },
-           {(void*)&CO_OD_PERSIST_COMM.RPDOCommunicationParameter[2].transmissionType, 0x03, 0x1 },
+/*0x1402*/ const CO_OD_entryRecord_t OD_record1402[4] = {
+           {(void*)&CO_OD_PERSIST_COMM.RPDOCommunicationParameter[2].highestSubIndexSupported, 0x07, 0x1 },
+           {(void*)&CO_OD_PERSIST_COMM.RPDOCommunicationParameter[2].COB_IDUsedByRPDO, 0x8F, 0x4 },
+           {(void*)&CO_OD_PERSIST_COMM.RPDOCommunicationParameter[2].transmissionType, 0x0F, 0x1 },
+           {(void*)&CO_OD_PERSIST_COMM.RPDOCommunicationParameter[2].eventTimer, 0x8F, 0x2 },
 };
 
-/*0x1403*/ const CO_OD_entryRecord_t OD_record1403[3] = {
-           {(void*)&CO_OD_PERSIST_COMM.RPDOCommunicationParameter[3].maxSubIndex, 0x03, 0x1 },
-           {(void*)&CO_OD_PERSIST_COMM.RPDOCommunicationParameter[3].COB_IDUsedByRPDO, 0x83, 0x4 },
-           {(void*)&CO_OD_PERSIST_COMM.RPDOCommunicationParameter[3].transmissionType, 0x03, 0x1 },
+/*0x1403*/ const CO_OD_entryRecord_t OD_record1403[4] = {
+           {(void*)&CO_OD_PERSIST_COMM.RPDOCommunicationParameter[3].highestSubIndexSupported, 0x07, 0x1 },
+           {(void*)&CO_OD_PERSIST_COMM.RPDOCommunicationParameter[3].COB_IDUsedByRPDO, 0x8F, 0x4 },
+           {(void*)&CO_OD_PERSIST_COMM.RPDOCommunicationParameter[3].transmissionType, 0x0F, 0x1 },
+           {(void*)&CO_OD_PERSIST_COMM.RPDOCommunicationParameter[3].eventTimer, 0x8F, 0x2 },
 };
 
 /*0x1600*/ const CO_OD_entryRecord_t OD_record1600[9] = {
@@ -228,43 +232,43 @@ struct sCO_OD_PERSIST_MFR CO_OD_PERSIST_MFR = {
 };
 
 /*0x1800*/ const CO_OD_entryRecord_t OD_record1800[7] = {
-           {(void*)&CO_OD_PERSIST_COMM.TPDOCommunicationParameter[0].maxSubIndex, 0x03, 0x1 },
-           {(void*)&CO_OD_PERSIST_COMM.TPDOCommunicationParameter[0].COB_IDUsedByTPDO, 0x83, 0x4 },
-           {(void*)&CO_OD_PERSIST_COMM.TPDOCommunicationParameter[0].transmissionType, 0x03, 0x1 },
-           {(void*)&CO_OD_PERSIST_COMM.TPDOCommunicationParameter[0].inhibitTime, 0x83, 0x2 },
-           {(void*)&CO_OD_PERSIST_COMM.TPDOCommunicationParameter[0].compatibilityEntry, 0x03, 0x1 },
-           {(void*)&CO_OD_PERSIST_COMM.TPDOCommunicationParameter[0].eventTimer, 0x83, 0x2 },
-           {(void*)&CO_OD_PERSIST_COMM.TPDOCommunicationParameter[0].SYNCStartValue, 0x03, 0x1 },
+           {(void*)&CO_OD_PERSIST_COMM.TPDOCommunicationParameter[0].highestSubIndexSupported, 0x07, 0x1 },
+           {(void*)&CO_OD_PERSIST_COMM.TPDOCommunicationParameter[0].COB_IDUsedByTPDO, 0x8F, 0x4 },
+           {(void*)&CO_OD_PERSIST_COMM.TPDOCommunicationParameter[0].transmissionType, 0x0F, 0x1 },
+           {(void*)&CO_OD_PERSIST_COMM.TPDOCommunicationParameter[0].inhibitTime, 0x8F, 0x2 },
+           {(void*)&CO_OD_PERSIST_COMM.TPDOCommunicationParameter[0].compatibilityEntry, 0x07, 0x1 },
+           {(void*)&CO_OD_PERSIST_COMM.TPDOCommunicationParameter[0].eventTimer, 0x8F, 0x2 },
+           {(void*)&CO_OD_PERSIST_COMM.TPDOCommunicationParameter[0].SYNCStartValue, 0x0F, 0x1 },
 };
 
 /*0x1801*/ const CO_OD_entryRecord_t OD_record1801[7] = {
-           {(void*)&CO_OD_PERSIST_COMM.TPDOCommunicationParameter[1].maxSubIndex, 0x03, 0x1 },
-           {(void*)&CO_OD_PERSIST_COMM.TPDOCommunicationParameter[1].COB_IDUsedByTPDO, 0x83, 0x4 },
-           {(void*)&CO_OD_PERSIST_COMM.TPDOCommunicationParameter[1].transmissionType, 0x03, 0x1 },
-           {(void*)&CO_OD_PERSIST_COMM.TPDOCommunicationParameter[1].inhibitTime, 0x83, 0x2 },
-           {(void*)&CO_OD_PERSIST_COMM.TPDOCommunicationParameter[1].compatibilityEntry, 0x03, 0x1 },
-           {(void*)&CO_OD_PERSIST_COMM.TPDOCommunicationParameter[1].eventTimer, 0x83, 0x2 },
-           {(void*)&CO_OD_PERSIST_COMM.TPDOCommunicationParameter[1].SYNCStartValue, 0x03, 0x1 },
+           {(void*)&CO_OD_PERSIST_COMM.TPDOCommunicationParameter[1].highestSubIndexSupported, 0x07, 0x1 },
+           {(void*)&CO_OD_PERSIST_COMM.TPDOCommunicationParameter[1].COB_IDUsedByTPDO, 0x8F, 0x4 },
+           {(void*)&CO_OD_PERSIST_COMM.TPDOCommunicationParameter[1].transmissionType, 0x0F, 0x1 },
+           {(void*)&CO_OD_PERSIST_COMM.TPDOCommunicationParameter[1].inhibitTime, 0x8F, 0x2 },
+           {(void*)&CO_OD_PERSIST_COMM.TPDOCommunicationParameter[1].compatibilityEntry, 0x07, 0x1 },
+           {(void*)&CO_OD_PERSIST_COMM.TPDOCommunicationParameter[1].eventTimer, 0x8F, 0x2 },
+           {(void*)&CO_OD_PERSIST_COMM.TPDOCommunicationParameter[1].SYNCStartValue, 0x0F, 0x1 },
 };
 
 /*0x1802*/ const CO_OD_entryRecord_t OD_record1802[7] = {
-           {(void*)&CO_OD_PERSIST_COMM.TPDOCommunicationParameter[2].maxSubIndex, 0x03, 0x1 },
-           {(void*)&CO_OD_PERSIST_COMM.TPDOCommunicationParameter[2].COB_IDUsedByTPDO, 0x83, 0x4 },
-           {(void*)&CO_OD_PERSIST_COMM.TPDOCommunicationParameter[2].transmissionType, 0x03, 0x1 },
-           {(void*)&CO_OD_PERSIST_COMM.TPDOCommunicationParameter[2].inhibitTime, 0x83, 0x2 },
-           {(void*)&CO_OD_PERSIST_COMM.TPDOCommunicationParameter[2].compatibilityEntry, 0x03, 0x1 },
-           {(void*)&CO_OD_PERSIST_COMM.TPDOCommunicationParameter[2].eventTimer, 0x83, 0x2 },
-           {(void*)&CO_OD_PERSIST_COMM.TPDOCommunicationParameter[2].SYNCStartValue, 0x03, 0x1 },
+           {(void*)&CO_OD_PERSIST_COMM.TPDOCommunicationParameter[2].highestSubIndexSupported, 0x07, 0x1 },
+           {(void*)&CO_OD_PERSIST_COMM.TPDOCommunicationParameter[2].COB_IDUsedByTPDO, 0x8F, 0x4 },
+           {(void*)&CO_OD_PERSIST_COMM.TPDOCommunicationParameter[2].transmissionType, 0x0F, 0x1 },
+           {(void*)&CO_OD_PERSIST_COMM.TPDOCommunicationParameter[2].inhibitTime, 0x8F, 0x2 },
+           {(void*)&CO_OD_PERSIST_COMM.TPDOCommunicationParameter[2].compatibilityEntry, 0x07, 0x1 },
+           {(void*)&CO_OD_PERSIST_COMM.TPDOCommunicationParameter[2].eventTimer, 0x8F, 0x2 },
+           {(void*)&CO_OD_PERSIST_COMM.TPDOCommunicationParameter[2].SYNCStartValue, 0x0F, 0x1 },
 };
 
 /*0x1803*/ const CO_OD_entryRecord_t OD_record1803[7] = {
-           {(void*)&CO_OD_PERSIST_COMM.TPDOCommunicationParameter[3].maxSubIndex, 0x03, 0x1 },
-           {(void*)&CO_OD_PERSIST_COMM.TPDOCommunicationParameter[3].COB_IDUsedByTPDO, 0x83, 0x4 },
-           {(void*)&CO_OD_PERSIST_COMM.TPDOCommunicationParameter[3].transmissionType, 0x03, 0x1 },
-           {(void*)&CO_OD_PERSIST_COMM.TPDOCommunicationParameter[3].inhibitTime, 0x83, 0x2 },
-           {(void*)&CO_OD_PERSIST_COMM.TPDOCommunicationParameter[3].compatibilityEntry, 0x03, 0x1 },
-           {(void*)&CO_OD_PERSIST_COMM.TPDOCommunicationParameter[3].eventTimer, 0x83, 0x2 },
-           {(void*)&CO_OD_PERSIST_COMM.TPDOCommunicationParameter[3].SYNCStartValue, 0x03, 0x1 },
+           {(void*)&CO_OD_PERSIST_COMM.TPDOCommunicationParameter[3].highestSubIndexSupported, 0x07, 0x1 },
+           {(void*)&CO_OD_PERSIST_COMM.TPDOCommunicationParameter[3].COB_IDUsedByTPDO, 0x8F, 0x4 },
+           {(void*)&CO_OD_PERSIST_COMM.TPDOCommunicationParameter[3].transmissionType, 0x0F, 0x1 },
+           {(void*)&CO_OD_PERSIST_COMM.TPDOCommunicationParameter[3].inhibitTime, 0x8F, 0x2 },
+           {(void*)&CO_OD_PERSIST_COMM.TPDOCommunicationParameter[3].compatibilityEntry, 0x07, 0x1 },
+           {(void*)&CO_OD_PERSIST_COMM.TPDOCommunicationParameter[3].eventTimer, 0x8F, 0x2 },
+           {(void*)&CO_OD_PERSIST_COMM.TPDOCommunicationParameter[3].SYNCStartValue, 0x0F, 0x1 },
 };
 
 /*0x1A00*/ const CO_OD_entryRecord_t OD_record1A00[9] = {
@@ -443,10 +447,10 @@ const CO_OD_entry_t CO_OD[CO_OD_NoOfElements] = {
 {0x1023, 0x03, 0x00,  0, (void*)&OD_record1023},
 {0x1029, 0x02, 0x0F,  1, (void*)&CO_OD_PERSIST_COMM.errorBehavior[0]},
 {0x1200, 0x03, 0x00,  0, (void*)&OD_record1200},
-{0x1400, 0x02, 0x00,  0, (void*)&OD_record1400},
-{0x1401, 0x02, 0x00,  0, (void*)&OD_record1401},
-{0x1402, 0x02, 0x00,  0, (void*)&OD_record1402},
-{0x1403, 0x02, 0x00,  0, (void*)&OD_record1403},
+{0x1400, 0x03, 0x00,  0, (void*)&OD_record1400},
+{0x1401, 0x03, 0x00,  0, (void*)&OD_record1401},
+{0x1402, 0x03, 0x00,  0, (void*)&OD_record1402},
+{0x1403, 0x03, 0x00,  0, (void*)&OD_record1403},
 {0x1600, 0x08, 0x00,  0, (void*)&OD_record1600},
 {0x1601, 0x08, 0x00,  0, (void*)&OD_record1601},
 {0x1602, 0x08, 0x00,  0, (void*)&OD_record1602},

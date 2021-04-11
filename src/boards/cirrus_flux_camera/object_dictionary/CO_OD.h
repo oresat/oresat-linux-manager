@@ -121,7 +121,7 @@
                UNSIGNED16     eventTimer;
                }              OD_RPDOCommunicationParameter_t;
 /*1600      */ typedef struct {
-               UNSIGNED8      highestSubIndexSupported;
+               UNSIGNED8      numberOfMappedApplicationObjectsInPDO;
                UNSIGNED32     mappingObject1;
                UNSIGNED32     mappingObject2;
                UNSIGNED32     mappingObject3;
@@ -141,7 +141,7 @@
                UNSIGNED8      SYNCStartValue;
                }              OD_TPDOCommunicationParameter_t;
 /*1A00      */ typedef struct {
-               UNSIGNED8      highestSubIndexSupported;
+               UNSIGNED8      numberOfMappedApplicationObjectsInPDO;
                UNSIGNED32     mappingObject1;
                UNSIGNED32     mappingObject2;
                UNSIGNED32     mappingObject3;
