@@ -38,7 +38,7 @@ get_cpufreq(void) {
         r = strtol(buf, NULL, 10)/1000;
     }
 
-    return r/1000;
+    return r;
 }
 
 

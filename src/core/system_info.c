@@ -313,28 +313,28 @@ system_info_ODF(CO_ODF_arg_t *ODF_arg) {
 
         case OD_3001_21_systemInfo_ramPercent: // Ram usage percent (0-100%), uint8_t, readonly
             if(sysinfo(&info) != -1) 
-                temp_uint8_t = (uint8_t)((info.totalram - info.freehigh) / info.totalram);
+                temp_uint8_t = (uint8_t)((info.totalram - info.freeram) * 100 / info.totalram);
 
             ODF_arg->dataLength = sizeof(temp_uint8_t);
             memcpy(ODF_arg->data, &temp_uint8_t, ODF_arg->dataLength);
             break;
 
         case OD_3001_22_systemInfo_swapTotal: // Total swap (in MiB), uint32_t, readonly
-            if(sysinfo(&info) != -1)
-                temp_uint32_t = (uint32_t)(info.totalswap/1024/1024);
+            ODF_arg->dataLength = sizeof(swap_total);
+            memcpy(ODF_arg->data, &swap_total, ODF_arg->dataLength);
+            break;
+
+        case OD_3001_23_systemInfo_swapFree: // Free swap (in MiB), uint32_t, readonly
+            if(swap_total != 0 && sysinfo(&info) != -1) 
+                temp_uint32_t = (uint32_t)(info.freeswap/1024/1024);
 
             ODF_arg->dataLength = sizeof(temp_uint32_t);
             memcpy(ODF_arg->data, &temp_uint32_t, ODF_arg->dataLength);
             break;
 
-        case OD_3001_23_systemInfo_swapFree: // Free swap (in MiB), uint32_t, readonly
-            ODF_arg->dataLength = sizeof(temp_uint32_t);
-            memcpy(ODF_arg->data, &swap_total, ODF_arg->dataLength);
-            break;
-
         case OD_3001_24_systemInfo_swapPercent: // Swap usage percent (0-100%), uint8_t, readonly
-            if(sysinfo(&info) != -1) 
-                temp_uint8_t = (uint8_t)((info.totalswap - info.freeswap) / info.totalswap);
+            if(swap_total != 0 && sysinfo(&info) != -1) 
+                temp_uint8_t = (uint8_t)((info.totalswap - info.freeswap) * 100 / info.totalswap);
 
             ODF_arg->dataLength = sizeof(temp_uint8_t);
             memcpy(ODF_arg->data, &temp_uint8_t, ODF_arg->dataLength);
@@ -364,7 +364,7 @@ system_info_ODF(CO_ODF_arg_t *ODF_arg) {
 
         case OD_3001_28_systemInfo_rootParitionPercent: // Root partion usage percent (0-100%), uint8_t, readonly
             if((statvfs("/", &fs_info)) == 0 )
-                temp_uint8_t = (uint8_t)((fs_info.f_blocks - fs_info.f_bavail) / fs_info.f_blocks);
+                temp_uint8_t = (uint8_t)((fs_info.f_blocks - fs_info.f_bavail) * 100 / fs_info.f_blocks);
 
             ODF_arg->dataLength = sizeof(temp_uint8_t);
             memcpy(ODF_arg->data, &temp_uint8_t, ODF_arg->dataLength);
