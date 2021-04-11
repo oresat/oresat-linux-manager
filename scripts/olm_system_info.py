@@ -1,16 +1,15 @@
 #!/usr/bin/env python3
-"""CANopen Network Manager script"""
+"""System info script"""
 
-import argparse
+from argparse import ArgumentParser
 import canopen
 
 EDS_FILE = "../src/boards/generic/object_dictionary/generic.eds"
 SYSTEM_INFO_INDEX = 0x3001
 
-parser = argparse.ArgumentParser(description='Read or write value to a node\'s \
-        object dictionary.')
-parser.add_argument('bus', help='CAN bus to use')
-parser.add_argument('node', help='device node name in hex')
+parser = ArgumentParser(description="System info")
+parser.add_argument("bus", help="CAN bus to use")
+parser.add_argument("node", help="device node name in hex")
 args = parser.parse_args()
 
 network = canopen.Network()
