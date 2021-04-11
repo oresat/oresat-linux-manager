@@ -62,6 +62,13 @@ updater_async(void *data, olm_file_cache_t *fread_cache) {
     }
 }
 
+void
+updater_end(void *data) {
+    CO_LOCK_OD();
+    OD_updater.status = 0xFF;
+    CO_UNLOCK_OD();
+}
+
 CO_SDO_abortCode_t
 updater_ODF(CO_ODF_arg_t *ODF_arg) {
     CO_SDO_abortCode_t ret = CO_SDO_AB_NONE;

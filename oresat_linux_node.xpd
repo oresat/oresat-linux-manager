@@ -15,7 +15,7 @@
         <ProfileTechnology>CANopen</ProfileTechnology>
       </ISO15745Reference>
     </ProfileHeader>
-    <ProfileBody xmlns:q1="http://www.canopen.org/xml/1.1" xsi:type="q1:ProfileBody_Device_CANopen" formatName="CANopen" formatVersion="1.0" fileName="oresat_linux_node.xpd" fileCreator="Ryan Medick" fileCreationDate="2021-03-09" fileCreationTime="13:57:28.0000000-07:00" fileModifiedBy="Ryan Medick" fileModificationDate="2021-04-10" fileModificationTime="18:11:08.1078900-07:00" fileVersion="1" supportedLanguages="en" xmlns="">
+    <ProfileBody xmlns:q1="http://www.canopen.org/xml/1.1" xsi:type="q1:ProfileBody_Device_CANopen" formatName="CANopen" formatVersion="1.0" fileName="oresat_linux_node.xpd" fileCreator="Ryan Medick" fileCreationDate="2021-03-09" fileCreationTime="13:57:28.0000000-07:00" fileModifiedBy="Ryan Medick" fileModificationDate="2021-04-10" fileModificationTime="21:20:45.4302790-07:00" fileVersion="1" supportedLanguages="en" xmlns="">
       <q1:DeviceIdentity>
         <q1:vendorName>Portland State Aerospace Society</q1:vendorName>
         <q1:vendorID>0</q1:vendorID>
@@ -1994,7 +1994,7 @@
           <q1:parameter uniqueID="UID_SUB_1A0008" access="readWrite">
             <label lang="en">Mapping object 8</label>
             <UDINT />
-            <q1:defaultValue value="0x31000108" />
+            <q1:defaultValue value="0x31000208" />
           </q1:parameter>
           <q1:parameter uniqueID="UID_OBJ_1A01">
             <description lang="en">* Number of mapped application objects in PDO:
@@ -2604,7 +2604,7 @@ Manufacturer may define its own constants up to index 0xFF. Of course, he must t
           <q1:parameter uniqueID="UID_SUB_310001">
             <label lang="en">Status</label>
             <USINT />
-            <q1:defaultValue value="0" />
+            <q1:defaultValue value="0xFF" />
           </q1:parameter>
           <q1:parameter uniqueID="UID_SUB_310002">
             <label lang="en">Updates available</label>
@@ -2642,7 +2642,7 @@ Manufacturer may define its own constants up to index 0xFF. Of course, he must t
         <ProfileTechnology>CANopen</ProfileTechnology>
       </ISO15745Reference>
     </ProfileHeader>
-    <ProfileBody xmlns:q2="http://www.canopen.org/xml/1.1" xsi:type="q2:ProfileBody_CommunicationNetwork_CANopen" formatName="CANopen" formatVersion="1.0" fileName="oresat_linux_node.xpd" fileCreator="Ryan Medick" fileCreationDate="2021-03-09" fileCreationTime="13:57:28.0000000-07:00" fileModificationDate="2021-04-10" fileModificationTime="18:11:08.1078900-07:00" fileVersion="1" supportedLanguages="en" xmlns="">
+    <ProfileBody xmlns:q2="http://www.canopen.org/xml/1.1" xsi:type="q2:ProfileBody_CommunicationNetwork_CANopen" formatName="CANopen" formatVersion="1.0" fileName="oresat_linux_node.xpd" fileCreator="Ryan Medick" fileCreationDate="2021-03-09" fileCreationTime="13:57:28.0000000-07:00" fileModificationDate="2021-04-10" fileModificationTime="21:20:45.4302790-07:00" fileVersion="1" supportedLanguages="en" xmlns="">
       <ApplicationLayers>
         <q2:CANopenObjectList>
           <CANopenObject index="1000" name="Device type" objectType="7" PDOmapping="no" uniqueIDRef="UID_OBJ_1000" />

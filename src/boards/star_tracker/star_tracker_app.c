@@ -24,3 +24,10 @@ star_tracker_app_async(void *data, olm_file_cache_t *fread_cache) {
         CO_UNLOCK_OD();
     }
 }
+
+void
+star_tracker_app_end(void *data) {
+        CO_LOCK_OD();
+        OD_starTrackerStatus = 0xFF;
+        CO_UNLOCK_OD();
+}

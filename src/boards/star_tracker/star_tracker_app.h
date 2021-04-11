@@ -6,4 +6,6 @@
 
 void star_tracker_app_async(void *data, olm_file_cache_t *fread_cache);
 
+void star_tracker_app_end(void *data);
+
 #endif /* STAR_TRACKER_APP_H */

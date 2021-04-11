@@ -27,6 +27,7 @@ static olm_app_t updater_app = {
     .fwrite_keyword = "update",
     .fwrite_cb = updaterd_add_update_archive,
     .async_cb = updater_async,
+    .daemon_end_cb = updater_end,
     .data = NULL,
 };
 
@@ -36,6 +37,7 @@ static olm_app_t star_tracker_app = {
     .fwrite_keyword = NULL,
     .fwrite_cb = NULL,
     .async_cb = star_tracker_app_async,
+    .daemon_end_cb = star_tracker_app_end,
     .data = NULL,
 };
 

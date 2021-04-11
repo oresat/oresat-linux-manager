@@ -61,14 +61,20 @@ typedef struct {
      */
     int (*fwrite_cb)(const char *filepath);
     /**
-     * Callback function to call every async loop thread. Set to NULL if not
-     * needed.
+     * Callback function called in async loop thread. Will only be called when
+     * daemon is in UNIT_ACTIVE state. Set to NULL if not needed.
      */
     void (*async_cb)(void *data, olm_file_cache_t *fread_cache);
     /**
-     * Pointer to private data to be the input to @ref async_cb. Useful for
-     * sharing data between the ODF and async_cb functions. Set to NULL if not
-     * needed.
+     * Callback function called when daemon has transition from UNIT_ACTIVE
+     * state to another state. Useful to set OD values and/or make sure
+     * hardware is in correct state. Set to NULL if not needed.
+     */
+    void (*daemon_end_cb)(void *data);
+    /**
+     * Pointer to private data to be the input to @ref async_cbi and @ref
+     * daemon_end_cb. Useful for sharing data between the ODF and async_cb
+     * functions. Set to NULL if not needed.
      */
     void *data;
 } olm_app_t;

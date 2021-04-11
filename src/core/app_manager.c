@@ -72,6 +72,7 @@ app_manager_async(olm_app_t **apps, olm_file_cache_t *fwrite_cache) {
     char path[PATH_MAX];
     olm_file_t *file;
     uint32_t active_apps = 0, failed_apps = 0;
+    uint8_t last_state;
     int files, r;
 
     if (apps == NULL) {
@@ -106,10 +107,17 @@ app_manager_async(olm_app_t **apps, olm_file_cache_t *fwrite_cache) {
         }
 
         apps[i]->unit_command = UNIT_NO_CMD;
-
+        
         // update state
+        last_state = apps[i]->unit_state;
         apps[i]->unit_state = get_active_state_unit(apps[i]->unit_systemd1_object_path);
 
+        // call daemon_end_cb if daemon has stopped / failed
+        if (apps[i]->daemon_end_cb != NULL && last_state == UNIT_ACTIVE 
+                && apps[i]->unit_state != UNIT_ACTIVE)
+            apps[i]->daemon_end_cb(apps[i]->data);
+
+        // count failed / active daemons
         if (apps[i]->unit_state == UNIT_ACTIVE)
             ++active_apps; 
         else if (apps[i]->unit_state == UNIT_FAILED)
