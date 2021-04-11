@@ -77,7 +77,7 @@
 /*******************************************************************************
    OBJECT DICTIONARY
 *******************************************************************************/
-   #define CO_OD_NoOfElements             50
+   #define CO_OD_NoOfElements             51
 
 
 /*******************************************************************************
@@ -658,6 +658,9 @@
         #define OD_3100_4_updater_update                            4
         #define OD_3100_5_updater_makeStatusFile                    5
 
+/*6000 */
+        #define OD_6000_dxWiFiStatus                                0x6000
+
 /*******************************************************************************
    STRUCTURES FOR VARIABLES IN DIFFERENT MEMORY LOCATIONS
 *******************************************************************************/
@@ -684,6 +687,7 @@ struct sCO_OD_RAM{
 /*3005      */ OD_appManager_t appManager;
 /*3006      */ UNSIGNED8      getLog;
 /*3100      */ OD_updater_t    updater;
+/*6000      */ BOOLEAN        dxWiFiStatus;
 
                UNSIGNED32     LastWord;
 };
@@ -889,6 +893,9 @@ extern struct sCO_OD_PERSIST_MFR CO_OD_PERSIST_MFR;
 
 /*3100, Data Type: updater_t */
         #define OD_updater                                          CO_OD_RAM.updater
+
+/*6000, Data Type: BOOLEAN */
+        #define OD_dxWiFiStatus                                     CO_OD_RAM.dxWiFiStatus
 
 #endif
 // clang-format on

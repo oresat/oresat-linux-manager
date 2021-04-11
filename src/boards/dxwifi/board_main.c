@@ -12,6 +12,7 @@
 #include "CANopen.h"
 #include "updaterd.h"
 #include "updater_app.h"
+#include "dxwifi_app.h"
 #include "olm_app.h"
 #include "board_main.h"
 #include <errno.h>
@@ -34,8 +35,8 @@ static olm_app_t dxwifi_app = {
     .unit_name = "oresat-dxwifi-txd.service",
     .fwrite_keyword = NULL,
     .fwrite_cb = NULL,
-    .async_cb = NULL,
-    .daemon_end_cb = NULL,
+    .async_cb = dxwifi_app_async,
+    .daemon_end_cb = dxwifi_app_end,
     .data = NULL,
 };
 
