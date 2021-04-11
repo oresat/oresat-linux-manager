@@ -45,8 +45,6 @@ CO_fstream_reset(CO_fstream_t *data) {
         clear_dir(data->dir);
 
         FREE_AND_NULL(data->file);
-
-        data->bytes_transfered = 0;
     }
 }
 
@@ -139,7 +137,6 @@ CO_fread_ODF(CO_ODF_arg_t *ODF_arg) {
                     return CO_SDO_AB_NO_DATA;
 
                 sprintf(filepath, "%s%s", fdata->dir, fdata->file);
-                fdata->bytes_transfered = 0;
 
                 if (stat(filepath, &st) == 0) {
                     ODF_arg->dataLengthTotal = st.st_size;
@@ -163,7 +160,7 @@ CO_fread_ODF(CO_ODF_arg_t *ODF_arg) {
             }
 
             // Check if there are more segements needed
-            uint32_t bytes_left = ODF_arg->dataLengthTotal - fdata->bytes_transfered;
+            uint32_t bytes_left = ODF_arg->dataLengthTotal - ODF_arg->offset;
             if (bytes_left > SDO_BLOCK_LEN) { // more segements needed
                 ODF_arg->dataLength = SDO_BLOCK_LEN;
                 ODF_arg->lastSegment = false;
@@ -190,8 +187,6 @@ CO_fread_ODF(CO_ODF_arg_t *ODF_arg) {
                 log_printf(LOG_INFO, "%s has been closed", fdata->file);
                 fclose(fdata->fptr);
                 fdata->fptr = NULL;
-            } else {
-                fdata->bytes_transfered += ODF_arg->dataLength;
             }
 
             break;
@@ -263,7 +258,6 @@ CO_fwrite_ODF(CO_ODF_arg_t *ODF_arg) {
                 char filepath[PATH_MAX];
 
                 sprintf(filepath, "%s%s", fdata->dir, fdata->file);
-                fdata->bytes_transfered = 0;
 
                 if ((fdata->fptr = fopen(filepath, "w")) != NULL) {
                     log_printf(LOG_INFO, "opened %s", filepath);
@@ -302,8 +296,6 @@ CO_fwrite_ODF(CO_ODF_arg_t *ODF_arg) {
                 } else {
                     log_printf(LOG_ERR, "%s failed to be added the fwrite cache", fdata->file);
                 }
-            } else {
-                fdata->bytes_transfered += len;
             }
 
             break;

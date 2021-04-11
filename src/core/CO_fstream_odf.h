@@ -29,7 +29,6 @@ typedef struct {
     /** Pointer to file being sent currently. */
     FILE *fptr;
     /** The progess of file transfer. */
-    uint32_t bytes_transfered;
 } CO_fstream_t;
 
 #define CO_FSTREAM_INITALIZER(_dir, _cache) { \
@@ -37,7 +36,6 @@ typedef struct {
     .cache = _cache, \
     .file = NULL, \
     .fptr = NULL, \
-    .bytes_transfered = 0, \
 }
 
 /**
