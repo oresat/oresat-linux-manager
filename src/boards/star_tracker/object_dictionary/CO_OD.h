@@ -240,9 +240,9 @@
                }              OD_updater_t;
 /*6001      */ typedef struct {
                UNSIGNED8      highestSubIndexSupported;
-               REAL32         rightAscension;
-               REAL32         declination;
-               REAL32         roll;
+               INTEGER16      rightAscension;
+               INTEGER16      declination;
+               INTEGER16      roll;
                UNSIGNED32     timestamp;
                }              OD_orienation_t;
 

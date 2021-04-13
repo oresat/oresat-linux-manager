@@ -8,8 +8,8 @@ Description=OreSat Star Tracker
 CreationTime=1:57PM
 CreationDate=03-09-2021
 CreatedBy=Ryan Medick
-ModificationTime=9:23PM
-ModificationDate=04-10-2021
+ModificationTime=7:26PM
+ModificationDate=04-12-2021
 ModifiedBy=Ryan Medick
 
 [DeviceInfo]
@@ -1547,7 +1547,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0005
 AccessType=rw
-DefaultValue=0x02
+DefaultValue=0x03
 PDOMapping=0
 
 [1A01sub1]
@@ -1556,7 +1556,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
 AccessType=rw
-DefaultValue=0x60010120
+DefaultValue=0x60010110
 PDOMapping=0
 
 [1A01sub2]
@@ -1565,7 +1565,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
 AccessType=rw
-DefaultValue=0x60010220
+DefaultValue=0x60010210
 PDOMapping=0
 
 [1A01sub3]
@@ -1574,7 +1574,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
 AccessType=rw
-DefaultValue=0x00000000
+DefaultValue=0x60010310
 PDOMapping=0
 
 [1A01sub4]
@@ -1634,7 +1634,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0005
 AccessType=rw
-DefaultValue=0x02
+DefaultValue=0x01
 PDOMapping=0
 
 [1A02sub1]
@@ -1643,7 +1643,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
 AccessType=rw
-DefaultValue=0x60010320
+DefaultValue=0x60010410
 PDOMapping=0
 
 [1A02sub2]
@@ -1652,7 +1652,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
 AccessType=rw
-DefaultValue=0x60010420
+DefaultValue=0x00000000
 PDOMapping=0
 
 [1A02sub3]
@@ -1833,7 +1833,7 @@ PDOMapping=0
 ParameterName=Right Ascension
 ObjectType=0x7
 ;StorageLocation=RAM
-DataType=0x0008
+DataType=0x0003
 AccessType=ro
 DefaultValue=0
 PDOMapping=1
@@ -1842,7 +1842,7 @@ PDOMapping=1
 ParameterName=Declination
 ObjectType=0x7
 ;StorageLocation=RAM
-DataType=0x0008
+DataType=0x0003
 AccessType=ro
 DefaultValue=0
 PDOMapping=1
@@ -1851,7 +1851,7 @@ PDOMapping=1
 ParameterName=Roll
 ObjectType=0x7
 ;StorageLocation=RAM
-DataType=0x0008
+DataType=0x0003
 AccessType=ro
 DefaultValue=0
 PDOMapping=1
