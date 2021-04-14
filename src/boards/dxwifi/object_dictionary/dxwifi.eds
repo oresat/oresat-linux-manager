@@ -8,7 +8,7 @@ Description=OreSat DxWifFi
 CreationTime=11:27PM
 CreationDate=03-09-2021
 CreatedBy=Ryan Medick
-ModificationTime=10:53AM
+ModificationTime=12:26PM
 ModificationDate=04-14-2021
 ModifiedBy=Ryan Medick
 
@@ -2770,7 +2770,7 @@ PDOMapping=0
 ParameterName=TPDO communication parameter
 ObjectType=0x9
 ;StorageLocation=PERSIST_COMM
-SubNumber=0x7
+SubNumber=0x6
 
 [1800sub0]
 ParameterName=Highest sub-index supported
@@ -2808,22 +2808,13 @@ AccessType=rw
 DefaultValue=0
 PDOMapping=0
 
-[1800sub4]
-ParameterName=compatibility entry
-ObjectType=0x7
-;StorageLocation=RAM
-DataType=0x0005
-AccessType=ro
-DefaultValue=0
-PDOMapping=0
-
 [1800sub5]
 ParameterName=Event timer
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0006
 AccessType=rw
-DefaultValue=5000
+DefaultValue=30000
 PDOMapping=0
 
 [1800sub6]
@@ -2839,7 +2830,7 @@ PDOMapping=0
 ParameterName=TPDO communication parameter
 ObjectType=0x9
 ;StorageLocation=PERSIST_COMM
-SubNumber=0x7
+SubNumber=0x6
 
 [1801sub0]
 ParameterName=Highest sub-index supported
@@ -2874,15 +2865,6 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0006
 AccessType=rw
-DefaultValue=0
-PDOMapping=0
-
-[1801sub4]
-ParameterName=compatibility entry
-ObjectType=0x7
-;StorageLocation=RAM
-DataType=0x0005
-AccessType=ro
 DefaultValue=0
 PDOMapping=0
 
@@ -3882,7 +3864,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0005
 AccessType=rw
-DefaultValue=0x08
+DefaultValue=0x06
 PDOMapping=0
 
 [1A00sub1]
@@ -3945,7 +3927,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
 AccessType=rw
-DefaultValue=0x31000108
+DefaultValue=0x00000000
 PDOMapping=0
 
 [1A00sub8]
@@ -3954,7 +3936,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
 AccessType=rw
-DefaultValue=0x31000208
+DefaultValue=0x00000000
 PDOMapping=0
 
 [1A01]
@@ -3969,7 +3951,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0005
 AccessType=rw
-DefaultValue=0x01
+DefaultValue=0x02
 PDOMapping=0
 
 [1A01sub1]
@@ -3978,7 +3960,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
 AccessType=rw
-DefaultValue=0x60000008
+DefaultValue=0x31000108
 PDOMapping=0
 
 [1A01sub2]
@@ -3987,7 +3969,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
 AccessType=rw
-DefaultValue=0x00000000
+DefaultValue=0x31000208
 PDOMapping=0
 
 [1A01sub3]
