@@ -21,6 +21,7 @@
 #include <systemd/sd-bus.h>
 
 #include "CANopen.h"
+#include "boards/generic/object_dictionary/CO_OD.h"
 #include "logging.h"
 #include "CO_error.h"
 #include "CO_epoll_interface.h"
@@ -301,6 +302,10 @@ main(int argc, char *argv[]) {
         log_printf(LOG_INFO, "daemonizing process");
         make_daemon(DEFAULT_PID_FILE);
     }
+
+    // change the TPDO COB-ID, no needed for lock as nothing else exist yet.
+    for (int i=0; i< CO_NO_TPDO; ++i)
+        OD_TPDOCommunicationParameter[i].COB_IDUsedByTPDO += configs.node_id;
 
     log_printf(LOG_INFO, DBG_CAN_OPEN_INFO, configs.node_id, "starting");
 

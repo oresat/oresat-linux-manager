@@ -24,7 +24,7 @@ typedef struct {
     uint16_t bit_rate;
 } olm_configs_t;
 
-#define NODE_ID_DEFAULT     0x7F
+#define NODE_ID_DEFAULT     0x7C
 #define BIT_RATE_DEFAULT    0
 
 #define OLM_CONFIGS_DEFAULT { \
