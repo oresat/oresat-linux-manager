@@ -243,7 +243,7 @@
                INTEGER16      rightAscension;
                INTEGER16      declination;
                INTEGER16      roll;
-               UNSIGNED32     timestamp;
+               UNSIGNED64     timestamp;
                }              OD_orienation_t;
 
 /*******************************************************************************

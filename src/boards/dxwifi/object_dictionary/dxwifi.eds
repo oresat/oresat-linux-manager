@@ -8,8 +8,8 @@ Description=OreSat DxWifFi
 CreationTime=11:27PM
 CreationDate=03-09-2021
 CreatedBy=Ryan Medick
-ModificationTime=12:26PM
-ModificationDate=04-14-2021
+ModificationTime=11:57AM
+ModificationDate=04-15-2021
 ModifiedBy=Ryan Medick
 
 [DeviceInfo]
@@ -2770,7 +2770,7 @@ PDOMapping=0
 ParameterName=TPDO communication parameter
 ObjectType=0x9
 ;StorageLocation=PERSIST_COMM
-SubNumber=0x6
+SubNumber=0x7
 
 [1800sub0]
 ParameterName=Highest sub-index supported
@@ -2808,6 +2808,15 @@ AccessType=rw
 DefaultValue=0
 PDOMapping=0
 
+[1800sub4]
+ParameterName=compatibility entry
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x0005
+AccessType=ro
+DefaultValue=0
+PDOMapping=0
+
 [1800sub5]
 ParameterName=Event timer
 ObjectType=0x7
@@ -2830,7 +2839,7 @@ PDOMapping=0
 ParameterName=TPDO communication parameter
 ObjectType=0x9
 ;StorageLocation=PERSIST_COMM
-SubNumber=0x6
+SubNumber=0x7
 
 [1801sub0]
 ParameterName=Highest sub-index supported
@@ -2865,6 +2874,15 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0006
 AccessType=rw
+DefaultValue=0
+PDOMapping=0
+
+[1801sub4]
+ParameterName=compatibility entry
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x0005
+AccessType=ro
 DefaultValue=0
 PDOMapping=0
 
@@ -2907,7 +2925,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
 AccessType=rw
-DefaultValue=0xC0000380+$NODEID
+DefaultValue=0x40000380+$NODEID
 PDOMapping=0
 
 [1802sub2]
@@ -2943,7 +2961,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0006
 AccessType=rw
-DefaultValue=0
+DefaultValue=1000
 PDOMapping=0
 
 [1802sub6]
@@ -4038,7 +4056,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0005
 AccessType=rw
-DefaultValue=0
+DefaultValue=0x01
 PDOMapping=0
 
 [1A02sub1]
@@ -4047,7 +4065,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
 AccessType=rw
-DefaultValue=0x00000000
+DefaultValue=0x60000008
 PDOMapping=0
 
 [1A02sub2]

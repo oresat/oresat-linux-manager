@@ -77,7 +77,7 @@
 /*******************************************************************************
    OBJECT DICTIONARY
 *******************************************************************************/
-   #define CO_OD_NoOfElements             101
+   #define CO_OD_NoOfElements             102
 
 
 /*******************************************************************************
@@ -240,14 +240,19 @@
                }              OD_updater_t;
 /*6002      */ typedef struct {
                UNSIGNED8      highestSubIndexSupported;
-               UNSIGNED32     timeStamp;
-               REAL32         positionX;
-               REAL32         positionY;
-               REAL32         positionZ;
-               UNSIGNED16     velocityX;
-               UNSIGNED16     velocityY;
-               UNSIGNED16     velocityZ;
+               UNSIGNED64     timeStamp;
+               INTEGER32      positionX;
+               INTEGER32      positionY;
+               INTEGER32      positionZ;
+               INTEGER32      velocityX;
+               INTEGER32      velocityY;
+               INTEGER32      velocityZ;
                }              OD_stateVector_t;
+/*6003      */ typedef struct {
+               UNSIGNED8      highestSubIndexSupported;
+               BOOLEAN        synchronized;
+               UNSIGNED64     SCET;
+               }              OD_timeProducer_t;
 
 /*******************************************************************************
    TYPE DEFINITIONS FOR OBJECT DICTIONARY INDEXES
@@ -1226,6 +1231,13 @@
         #define OD_6002_6_stateVector_velocityY                     6
         #define OD_6002_7_stateVector_velocityZ                     7
 
+/*6003 */
+        #define OD_6003_timeProducer                                0x6003
+
+        #define OD_6003_0_timeProducer_maxSubIndex                  0
+        #define OD_6003_1_timeProducer_synchronized                 1
+        #define OD_6003_2_timeProducer_SCET                         2
+
 /*******************************************************************************
    STRUCTURES FOR VARIABLES IN DIFFERENT MEMORY LOCATIONS
 *******************************************************************************/
@@ -1255,6 +1267,7 @@ struct sCO_OD_RAM{
 /*6000      */ UNSIGNED8      GPSStatus;
 /*6001      */ UNSIGNED8      satellitesLocked;
 /*6002      */ OD_stateVector_t stateVector;
+/*6003      */ OD_timeProducer_t timeProducer;
 
                UNSIGNED32     LastWord;
 };
@@ -1469,6 +1482,9 @@ extern struct sCO_OD_PERSIST_MFR CO_OD_PERSIST_MFR;
 
 /*6002, Data Type: stateVector_t */
         #define OD_stateVector                                      CO_OD_RAM.stateVector
+
+/*6003, Data Type: timeProducer_t */
+        #define OD_timeProducer                                     CO_OD_RAM.timeProducer
 
 #endif
 // clang-format on
