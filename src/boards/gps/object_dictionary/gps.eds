@@ -8,7 +8,7 @@ Description=OreSat GPS
 CreationTime=11:31PM
 CreationDate=03-09-2021
 CreatedBy=Ryan Medick
-ModificationTime=4:49PM
+ModificationTime=9:01PM
 ModificationDate=04-15-2021
 ModifiedBy=Ryan Medick
 
@@ -726,7 +726,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
 AccessType=rw
-DefaultValue=0x80000200+$NODEID
+DefaultValue=0x000004B3
 PDOMapping=0
 
 [1400sub2]
@@ -1389,7 +1389,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0005
 AccessType=rw
-DefaultValue=0
+DefaultValue=0x01
 PDOMapping=0
 
 [1600sub1]
@@ -1398,7 +1398,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
 AccessType=rw
-DefaultValue=0x00000000
+DefaultValue=0x20100040
 PDOMapping=0
 
 [1600sub2]

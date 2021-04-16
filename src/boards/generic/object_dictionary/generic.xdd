@@ -15,7 +15,7 @@
         <ProfileTechnology>CANopen</ProfileTechnology>
       </ISO15745Reference>
     </ProfileHeader>
-    <ProfileBody xmlns:q1="http://www.canopen.org/xml/1.1" xsi:type="q1:ProfileBody_Device_CANopen" formatName="CANopen" formatVersion="1.0" fileName="generic.xdd" fileCreator="Ryan Medick" fileCreationDate="2021-03-09" fileCreationTime="23:41:40.0000000-07:00" fileModifiedBy="Ryan Medick" fileModificationDate="2021-04-14" fileModificationTime="12:16:22.1905280-07:00" fileVersion="1" supportedLanguages="en" xmlns="">
+    <ProfileBody xmlns:q1="http://www.canopen.org/xml/1.1" xsi:type="q1:ProfileBody_Device_CANopen" formatName="CANopen" formatVersion="1.0" fileName="generic.xdd" fileCreator="Ryan Medick" fileCreationDate="2021-03-09" fileCreationTime="23:41:40.0000000-07:00" fileModifiedBy="Ryan Medick" fileModificationDate="2021-04-15" fileModificationTime="20:58:51.7971650-07:00" fileVersion="1" supportedLanguages="en" xmlns="">
       <q1:DeviceIdentity>
         <q1:vendorName>Portland State Aerospace Society</q1:vendorName>
         <q1:vendorID>0</q1:vendorID>
@@ -871,6 +871,9 @@
             <q1:varDeclaration name="Inhibit time" uniqueID="UID_RECSUB_180003">
               <UINT />
             </q1:varDeclaration>
+            <q1:varDeclaration name="compatibility entry" uniqueID="UID_RECSUB_180004">
+              <USINT />
+            </q1:varDeclaration>
             <q1:varDeclaration name="Event timer" uniqueID="UID_RECSUB_180005">
               <UINT />
             </q1:varDeclaration>
@@ -890,6 +893,9 @@
             </q1:varDeclaration>
             <q1:varDeclaration name="Inhibit time" uniqueID="UID_RECSUB_180103">
               <UINT />
+            </q1:varDeclaration>
+            <q1:varDeclaration name="compatibility entry" uniqueID="UID_RECSUB_180104">
+              <USINT />
             </q1:varDeclaration>
             <q1:varDeclaration name="Event timer" uniqueID="UID_RECSUB_180105">
               <UINT />
@@ -2514,16 +2520,7 @@
             <q1:defaultValue value="0x01" />
           </q1:parameter>
           <q1:parameter uniqueID="UID_OBJ_1400">
-            <description lang="en">* COB-ID used by RPDO:
-  * bit 31: If set, PDO does not exist / is not valid
-  * bit 11-30: set to 0
-  * bit 0-10: 11-bit CAN-ID
-* Transmission type:
-  * Value 0-240: synchronous, processed after next reception of SYNC object
-  * Value 241-253: not used
-  * Value 254: event-driven (manufacturer-specific)
-  * Value 255: event-driven (device profile and application profile specific)
-* Event timer in ms (0 = disabled) for deadline monitoring.</description>
+            <description lang="en">Time sync RPDO</description>
             <q1:dataTypeIDRef uniqueIDRef="UID_REC_1400" />
             <q1:property name="CO_countLabel" value="RPDO" />
             <q1:property name="CO_storageGroup" value="PERSIST_COMM" />
@@ -2536,7 +2533,7 @@
           <q1:parameter uniqueID="UID_SUB_140001" access="readWrite">
             <label lang="en">COB-ID used by RPDO</label>
             <UDINT />
-            <q1:defaultValue value="0x80000200+$NODEID" />
+            <q1:defaultValue value="0x000004B3" />
           </q1:parameter>
           <q1:parameter uniqueID="UID_SUB_140002" access="readWrite">
             <label lang="en">Transmission type</label>
@@ -3074,26 +3071,19 @@
             <q1:defaultValue value="0" />
           </q1:parameter>
           <q1:parameter uniqueID="UID_OBJ_1600">
-            <description lang="en">* Number of mapped application objects in PDO:
-  * Value 0: mapping is disabled.
-  * Value 1: sub-index 0x01 is valid.
-  * Value 2-8: sub-indexes 0x01 to (0x02 to 0x08) are valid.
-* Application object 1-8:
-  * bit 16-31: index
-  * bit 8-15: sub-index
-  * bit 0-7: data length in bits</description>
+            <description lang="en">Time sync RPDO</description>
             <q1:dataTypeIDRef uniqueIDRef="UID_REC_1600" />
             <q1:property name="CO_storageGroup" value="PERSIST_COMM" />
           </q1:parameter>
           <q1:parameter uniqueID="UID_SUB_160000" access="readWrite">
             <label lang="en">Number of mapped application objects in PDO</label>
             <USINT />
-            <q1:defaultValue value="0" />
+            <q1:defaultValue value="0x01" />
           </q1:parameter>
           <q1:parameter uniqueID="UID_SUB_160001" access="readWrite">
             <label lang="en">Mapping object 1</label>
             <UDINT />
-            <q1:defaultValue value="0x00000000" />
+            <q1:defaultValue value="0x20100040" />
           </q1:parameter>
           <q1:parameter uniqueID="UID_SUB_160002" access="readWrite">
             <label lang="en">Mapping object 2</label>
@@ -4026,6 +4016,11 @@
             <UINT />
             <q1:defaultValue value="0" />
           </q1:parameter>
+          <q1:parameter uniqueID="UID_SUB_180004">
+            <label lang="en">compatibility entry</label>
+            <USINT />
+            <q1:defaultValue value="0" />
+          </q1:parameter>
           <q1:parameter uniqueID="UID_SUB_180005" access="readWrite">
             <label lang="en">Event timer</label>
             <UINT />
@@ -4075,6 +4070,11 @@
           <q1:parameter uniqueID="UID_SUB_180103" access="readWrite">
             <label lang="en">Inhibit time</label>
             <UINT />
+            <q1:defaultValue value="0" />
+          </q1:parameter>
+          <q1:parameter uniqueID="UID_SUB_180104">
+            <label lang="en">compatibility entry</label>
+            <USINT />
             <q1:defaultValue value="0" />
           </q1:parameter>
           <q1:parameter uniqueID="UID_SUB_180105" access="readWrite">
@@ -6258,7 +6258,7 @@ Manufacturer may define its own constants up to index 0xFF. Of course, he must t
         <ProfileTechnology>CANopen</ProfileTechnology>
       </ISO15745Reference>
     </ProfileHeader>
-    <ProfileBody xmlns:q2="http://www.canopen.org/xml/1.1" xsi:type="q2:ProfileBody_CommunicationNetwork_CANopen" formatName="CANopen" formatVersion="1.0" fileName="generic.xdd" fileCreator="Ryan Medick" fileCreationDate="2021-03-09" fileCreationTime="23:41:40.0000000-07:00" fileModificationDate="2021-04-14" fileModificationTime="12:16:22.1905280-07:00" fileVersion="1" supportedLanguages="en" xmlns="">
+    <ProfileBody xmlns:q2="http://www.canopen.org/xml/1.1" xsi:type="q2:ProfileBody_CommunicationNetwork_CANopen" formatName="CANopen" formatVersion="1.0" fileName="generic.xdd" fileCreator="Ryan Medick" fileCreationDate="2021-03-09" fileCreationTime="23:41:40.0000000-07:00" fileModificationDate="2021-04-15" fileModificationTime="20:58:51.7971650-07:00" fileVersion="1" supportedLanguages="en" xmlns="">
       <ApplicationLayers>
         <q2:CANopenObjectList>
           <CANopenObject index="1000" name="Device type" objectType="7" PDOmapping="no" uniqueIDRef="UID_OBJ_1000" />
@@ -6653,19 +6653,21 @@ Manufacturer may define its own constants up to index 0xFF. Of course, he must t
             <CANopenSubObject subIndex="07" name="Mapping object 7" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_160F07" />
             <CANopenSubObject subIndex="08" name="Mapping object 8" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_160F08" />
           </CANopenObject>
-          <CANopenObject index="1800" name="TPDO communication parameter" objectType="9" uniqueIDRef="UID_OBJ_1800" subNumber="6">
+          <CANopenObject index="1800" name="TPDO communication parameter" objectType="9" uniqueIDRef="UID_OBJ_1800" subNumber="7">
             <CANopenSubObject subIndex="00" name="Highest sub-index supported" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_180000" />
             <CANopenSubObject subIndex="01" name="COB-ID used by TPDO" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_180001" />
             <CANopenSubObject subIndex="02" name="Transmission type" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_180002" />
             <CANopenSubObject subIndex="03" name="Inhibit time" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_180003" />
+            <CANopenSubObject subIndex="04" name="compatibility entry" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_180004" />
             <CANopenSubObject subIndex="05" name="Event timer" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_180005" />
             <CANopenSubObject subIndex="06" name="SYNC start value" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_180006" />
           </CANopenObject>
-          <CANopenObject index="1801" name="TPDO communication parameter" objectType="9" uniqueIDRef="UID_OBJ_1801" subNumber="6">
+          <CANopenObject index="1801" name="TPDO communication parameter" objectType="9" uniqueIDRef="UID_OBJ_1801" subNumber="7">
             <CANopenSubObject subIndex="00" name="Highest sub-index supported" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_180100" />
             <CANopenSubObject subIndex="01" name="COB-ID used by TPDO" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_180101" />
             <CANopenSubObject subIndex="02" name="Transmission type" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_180102" />
             <CANopenSubObject subIndex="03" name="Inhibit time" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_180103" />
+            <CANopenSubObject subIndex="04" name="compatibility entry" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_180104" />
             <CANopenSubObject subIndex="05" name="Event timer" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_180105" />
             <CANopenSubObject subIndex="06" name="SYNC start value" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_180106" />
           </CANopenObject>
