@@ -40,6 +40,12 @@
 #include "olm_file_cache.h"
 #include "CO_fstream_odf.h"
 #include "file_caches_odf.h"
+#include "ecss_time.h"
+#if TIME_PRODUCER
+#include "time_producer.h"
+#else
+#include "time_sync.h"
+#endif
 
 /* Interval of mainline and real-time thread in microseconds */
 #ifndef MAIN_THREAD_INTERVAL_US
@@ -424,6 +430,11 @@ main(int argc, char *argv[]) {
             CO_OD_configure(CO->SDO[0], OD_3003_fread, CO_fread_ODF, &CO_fread_data, 0, 0U);
             CO_OD_configure(CO->SDO[0], OD_3004_fwrite, CO_fwrite_ODF, &CO_fwrite_data, 0, 0U);
             CO_OD_configure(CO->SDO[0], OD_3005_appManager, app_manager_ODF, APPS, 0, 0U);
+#if TIME_PRODUCER
+            CO_OD_configure(CO->SDO[0], OD_2010_SCET, time_producer_ODF, NULL, 0, 0U);
+#else
+            CO_OD_configure(CO->SDO[0], OD_2010_SCET, SCET_ODF, NULL, 0, 0U);
+#endif
 
             log_printf(LOG_INFO, DBG_CAN_OPEN_INFO, CO_activeNodeId, "communication reset");
         }

@@ -52,7 +52,7 @@ struct sCO_OD_RAM CO_OD_RAM = {
 /*6000*/ 0xFFL,
 /*6001*/ 0x0L,
 /*6002*/ {0x7L, 0x00000000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L},
-/*6003*/ {0x2L, 0, 0x00000000L},
+/*6003*/ 0,
 
            CO_OD_FIRST_LAST_WORD,
 };
@@ -158,7 +158,7 @@ struct sCO_OD_PERSIST_COMM CO_OD_PERSIST_COMM = {
 /*1A0C*/ {0x0L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L},
 /*1A0D*/ {0x0L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L},
 /*1A0E*/ {0x0L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L},
-/*1A0F*/ {0x1L, 0x60030240L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L}},
+/*1A0F*/ {0x1L, 0x20100040L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L}},
 /*1F80*/ 0x0008L,
 
            CO_OD_FIRST_LAST_WORD,
@@ -966,12 +966,6 @@ struct sCO_OD_PERSIST_MFR CO_OD_PERSIST_MFR = {
            {(void*)&CO_OD_RAM.stateVector.velocityZ, 0xA6, 0x4 },
 };
 
-/*0x6003*/ const CO_OD_entryRecord_t OD_record6003[3] = {
-           {(void*)&CO_OD_RAM.timeProducer.highestSubIndexSupported, 0x06, 0x1 },
-           {(void*)&CO_OD_RAM.timeProducer.synchronized, 0x26, 0x1 },
-           {(void*)&CO_OD_RAM.timeProducer.SCET, 0xA6, 0x8 },
-};
-
 /*******************************************************************************
    OBJECT DICTIONARY
 *******************************************************************************/
@@ -1077,6 +1071,6 @@ const CO_OD_entry_t CO_OD[CO_OD_NoOfElements] = {
 {0x6000, 0x00, 0x26,  1, (void*)&CO_OD_RAM.GPSStatus},
 {0x6001, 0x00, 0x26,  1, (void*)&CO_OD_RAM.satellitesLocked},
 {0x6002, 0x07, 0x00,  0, (void*)&OD_record6002},
-{0x6003, 0x02, 0x00,  0, (void*)&OD_record6003},
+{0x6003, 0x00, 0x26,  1, (void*)&CO_OD_RAM.timeSynchronized},
 };
 // clang-format on

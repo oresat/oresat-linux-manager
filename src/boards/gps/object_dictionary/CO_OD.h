@@ -248,11 +248,6 @@
                INTEGER32      velocityY;
                INTEGER32      velocityZ;
                }              OD_stateVector_t;
-/*6003      */ typedef struct {
-               UNSIGNED8      highestSubIndexSupported;
-               BOOLEAN        synchronized;
-               UNSIGNED64     SCET;
-               }              OD_timeProducer_t;
 
 /*******************************************************************************
    TYPE DEFINITIONS FOR OBJECT DICTIONARY INDEXES
@@ -1232,11 +1227,7 @@
         #define OD_6002_7_stateVector_velocityZ                     7
 
 /*6003 */
-        #define OD_6003_timeProducer                                0x6003
-
-        #define OD_6003_0_timeProducer_maxSubIndex                  0
-        #define OD_6003_1_timeProducer_synchronized                 1
-        #define OD_6003_2_timeProducer_SCET                         2
+        #define OD_6003_timeSynchronized                            0x6003
 
 /*******************************************************************************
    STRUCTURES FOR VARIABLES IN DIFFERENT MEMORY LOCATIONS
@@ -1267,7 +1258,7 @@ struct sCO_OD_RAM{
 /*6000      */ UNSIGNED8      GPSStatus;
 /*6001      */ UNSIGNED8      satellitesLocked;
 /*6002      */ OD_stateVector_t stateVector;
-/*6003      */ OD_timeProducer_t timeProducer;
+/*6003      */ BOOLEAN        timeSynchronized;
 
                UNSIGNED32     LastWord;
 };
@@ -1483,8 +1474,8 @@ extern struct sCO_OD_PERSIST_MFR CO_OD_PERSIST_MFR;
 /*6002, Data Type: stateVector_t */
         #define OD_stateVector                                      CO_OD_RAM.stateVector
 
-/*6003, Data Type: timeProducer_t */
-        #define OD_timeProducer                                     CO_OD_RAM.timeProducer
+/*6003, Data Type: BOOLEAN */
+        #define OD_timeSynchronized                                 CO_OD_RAM.timeSynchronized
 
 #endif
 // clang-format on

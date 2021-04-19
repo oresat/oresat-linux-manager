@@ -4,7 +4,8 @@
 
 #define SECS_IN_DAY (24*60*60)
 
-void get_time_scet(time_scet_t *scet) {
+void
+get_time_scet(time_scet_t *scet) {
     struct timeval time;
 
     if (scet == NULL)
@@ -16,7 +17,8 @@ void get_time_scet(time_scet_t *scet) {
     scet->fine = time.tv_usec;
 }
 
-void set_time_scet(const time_scet_t *scet) {
+void
+set_time_scet(const time_scet_t *scet) {
     struct timeval time;
 
     if (scet == NULL)
@@ -28,7 +30,8 @@ void set_time_scet(const time_scet_t *scet) {
     settimeofday(&time, NULL);
 }
 
-void get_time_utc(time_utc_t *utc) {
+void
+get_time_utc(time_utc_t *utc) {
     struct timeval time;
 
     if (utc == NULL)
@@ -41,7 +44,8 @@ void get_time_utc(time_utc_t *utc) {
     utc->us = time.tv_usec % 1000;
 }
 
-void set_time_utc(const time_utc_t *utc) {
+void
+set_time_utc(const time_utc_t *utc) {
     struct timeval time;
 
     if (utc == NULL)

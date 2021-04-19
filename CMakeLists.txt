@@ -38,6 +38,7 @@ if(BOARD MATCHES "cirrus-flux-camera" OR BOARD MATCHES "cirrus_flux_camera" OR B
     set(BOARD_NAME "Cirrus Flux Camera")
     set(BOARD_DIR "cirrus_flux_camera")
 elseif(BOARD MATCHES "gps")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DTIME_PRODUCER")
     set(BOARD_NAME "GPS")
     set(BOARD_DIR "gps")
 elseif(BOARD MATCHES "dxwifi")
@@ -54,7 +55,6 @@ else()
 endif()
 
 message(STATUS "${BOARD_NAME} board selected")
-
 
 ##############################################################################
 # Check Linux distribution / verion / kernel version

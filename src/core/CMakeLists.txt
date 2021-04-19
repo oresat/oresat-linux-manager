@@ -9,6 +9,8 @@ set(CORE_SOURCES
     olm_control_odf.c
     os_command.c
     system_info.c
+    time_sync.c
+    time_producer.c
     )
 
 set(CORE_HEADERS
@@ -21,6 +23,8 @@ set(CORE_HEADERS
     olm_control_odf.h
     os_command.h
     system_info.h
+    time_sync.h
+    time_producer.h
     )
 
 add_library(core ${CORE_SOURCES} ${CORE_HEADERS})

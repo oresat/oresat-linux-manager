@@ -8,8 +8,8 @@ Description=OreSat GPS
 CreationTime=11:31PM
 CreationDate=03-09-2021
 CreatedBy=Ryan Medick
-ModificationTime=9:01PM
-ModificationDate=04-15-2021
+ModificationTime=7:44AM
+ModificationDate=04-19-2021
 ModifiedBy=Ryan Medick
 
 [DeviceInfo]
@@ -5199,7 +5199,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
 AccessType=rw
-DefaultValue=0x60030240
+DefaultValue=0x20100040
 PDOMapping=0
 
 [1A0Fsub2]
@@ -5371,34 +5371,10 @@ DefaultValue=0
 PDOMapping=1
 
 [6003]
-ParameterName=Time producer
-ObjectType=0x9
-;StorageLocation=RAM
-SubNumber=0x3
-
-[6003sub0]
-ParameterName=Highest sub-index supported
-ObjectType=0x7
-;StorageLocation=RAM
-DataType=0x0005
-AccessType=ro
-DefaultValue=0x02
-PDOMapping=0
-
-[6003sub1]
-ParameterName=Synchronized
+ParameterName=Time synchronized
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0001
-AccessType=ro
-DefaultValue=0
-PDOMapping=1
-
-[6003sub2]
-ParameterName=SCET
-ObjectType=0x7
-;StorageLocation=RAM
-DataType=0x001B
 AccessType=ro
 DefaultValue=0
 PDOMapping=1
