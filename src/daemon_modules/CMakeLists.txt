@@ -1,6 +1,7 @@
 # daemon_modules
 
 set(DAEMON_MODULES_SOURCES
+    gps.c
     logind.c
     star_tracker.c
     systemd.c
@@ -8,6 +9,7 @@ set(DAEMON_MODULES_SOURCES
     )
 
 set(DAEMON_MODULES_HEADERS
+    gps.h
     logind.h
     star_tracker.h
     systemd.h
