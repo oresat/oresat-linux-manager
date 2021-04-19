@@ -12,15 +12,24 @@
 #ifndef STAR_TRACKER_MODULE_H
 #define STAR_TRACKER_MODULE_H
 
+#include <sys/time.h>
+
 #define STAR_TRACKER_SERVICE_FILE    "oresat-star-trackerd.service"
 
 typedef struct {
     double declination;
     double right_ascension;
     double roll;
-    double timestamp; // TODO fix type
+    struct timeval timestamp;
 } st_coordinates_t;
 
+/**
+ * @breif gets the current orientation cordinates.
+ *
+ * @param coor The cordinates stuct to fill out.
+ *
+ * @returns negative number on error.
+ */
 int star_tracker_coordinates(st_coordinates_t *coor);
 
 #endif /* STAR_TRACKER_MODULE_H */
