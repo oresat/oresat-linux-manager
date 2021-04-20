@@ -24,10 +24,10 @@
 #define OBJECT_PATH     "/org/OreSat/StarTracker"
 
 /** System D-Bus connection. Defined in main.c */
-extern sd_bus *system_bus;
+extern sd_bus *apps_bus;
 
 // lazy way to deal with all the D-Bus arguments
-#define DBUS_INFO system_bus, DESTINATION, OBJECT_PATH, INTERFACE_NAME
+#define DBUS_INFO apps_bus, DESTINATION, OBJECT_PATH, INTERFACE_NAME
 
 int
 star_tracker_coordinates(st_coordinates_t *coor) {

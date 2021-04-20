@@ -19,10 +19,10 @@
 #define OBJECT_PATH         "/org/freedesktop/logind1"
 
 /** System D-Bus connection. Defined in main.c */
-extern sd_bus *system_bus;
+extern sd_bus *apps_bus;
 
 // lazy way to deal with all the dbus arguments
-#define DBUS_INFO system_bus, DESTINATION, OBJECT_PATH, INTERFACE_NAME
+#define DBUS_INFO apps_bus, DESTINATION, OBJECT_PATH, INTERFACE_NAME
 
 int
 logind_reboot(void) {

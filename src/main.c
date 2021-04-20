@@ -96,8 +96,8 @@ static olm_file_cache_t *fwrite_cache = NULL;
 static system_info_t system_info = SYSTEM_INFO_DEFAULT;
 
 // not static
-sd_bus *system_bus = NULL;
-sd_bus *session_bus = NULL;
+sd_bus *core_bus = NULL;
+sd_bus *apps_bus = NULL;
 
 /* Helper functions **********************************************************/
 /* Realtime thread */
@@ -315,14 +315,15 @@ main(int argc, char *argv[]) {
 
     log_printf(LOG_INFO, DBG_CAN_OPEN_INFO, configs.node_id, "starting");
 
-    if (sd_bus_open_system(&system_bus) < 0)
-        log_printf(LOG_CRIT, "open system bus failed");
-    if (sd_bus_open_user(&session_bus) < 0)
-        log_printf(LOG_CRIT, "open session bus failed");
+    if (sd_bus_open_system(&core_bus) < 0)
+        log_printf(LOG_CRIT, "open system bus for OLM core failed");
+    if (sd_bus_open_system(&apps_bus) < 0)
+        log_printf(LOG_CRIT, "open system bus for apps failed");
 
     // set method and therefor priorities to timeout after 1 second.
     // otherwise it defaults to 25 seconds
-    sd_bus_set_method_call_timeout(system_bus, 1000000);
+    sd_bus_set_method_call_timeout(core_bus, 1000000);
+    sd_bus_set_method_call_timeout(apps_bus, 1000000);
 
     /* Allocate memory for CANopen objects */
     err = CO_new(NULL);
@@ -530,10 +531,10 @@ main(int argc, char *argv[]) {
             log_printf(LOG_CRIT, DBG_ERRNO, "pthread_join()");
     }
 
-    if (system_bus != NULL)
-        sd_bus_unref(system_bus);
-    if (session_bus != NULL)
-        sd_bus_unref(session_bus);
+    if (core_bus != NULL)
+        sd_bus_unref(core_bus);
+    if (apps_bus != NULL)
+        sd_bus_unref(apps_bus);
 
     /* delete objects from memory */
     CO_epoll_close(&epRT);

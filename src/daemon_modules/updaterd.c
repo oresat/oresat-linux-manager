@@ -23,11 +23,11 @@
 #define INTERFACE_NAME      DESTINATION
 #define OBJECT_PATH         "/org/oresat/updater"
 
-// lazy way to deal with all the D-Bus arguments
-#define DBUS_INFO system_bus, DESTINATION, OBJECT_PATH, INTERFACE_NAME
-
 /** System D-Bus connection. Defined in main.c */
-extern sd_bus *system_bus;
+extern sd_bus *apps_bus;
+
+// lazy way to deal with all the D-Bus arguments
+#define DBUS_INFO apps_bus, DESTINATION, OBJECT_PATH, INTERFACE_NAME
 
 int
 updaterd_add_update_archive(const char *file) {
