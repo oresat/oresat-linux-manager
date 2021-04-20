@@ -32,12 +32,12 @@ parser.add_argument("bus", help="CAN bus to use")
 parser.add_argument("node", help="device node name in hex")
 parser.add_argument("-l", "--list", dest="list", action="store_true",
                     help="list all apps and their status")
-parser.add_argument("-w", "--start", dest="start", type=int,
-                    help="start the apps daemon")
-parser.add_argument("-s", "--stop", dest="stop", type=int,
-                    help="stop the apps daemon")
-parser.add_argument("-r", "--restart", dest="restart", type=int,
-                    help="restart the apps daemon")
+parser.add_argument("-w", "--start", type=int, dest="start",
+                    default=-1, help="start the apps daemon")
+parser.add_argument("-s", "--stop", type=int, dest="stop",
+                    default=-1, help="stop the apps daemon")
+parser.add_argument("-r", "--restart", type=int, dest="restart",
+                    default=-1, help="restart the apps daemon")
 
 args = parser.parse_args()
 network = canopen.Network()
@@ -57,13 +57,13 @@ if args.list:
             name = node.sdo[APP_MANAGER_INDEX][5].raw.decode("utf-8")
             state = node.sdo[APP_MANAGER_INDEX][6].phys
             print("{}: {} is {}".format(i, name, States(state).name))
-elif args.start:
+elif args.start != -1:
     node.sdo[APP_MANAGER_INDEX][4].phys = args.start
     node.sdo[APP_MANAGER_INDEX][6].phys = Commands.start.value
-elif args.stop:
+elif args.stop != -1:
     node.sdo[APP_MANAGER_INDEX][4].phys = args.stop
     node.sdo[APP_MANAGER_INDEX][6].phys = Commands.stop.value
-elif args.restart:
+elif args.restart != -1:
     node.sdo[APP_MANAGER_INDEX][4].phys = args.restart
     node.sdo[APP_MANAGER_INDEX][6].phys = Commands.restart.value
 
