@@ -108,8 +108,8 @@ start_unit(const char *unit) {
         return -EINVAL;
     
     if ((r = sd_bus_call_method(system_bus, DESTINATION, unit, \
-                UNIT_INTERFACE, "StartUnit", &err, &mess, "s", "fail")) < 0)
-        LOG_DBUS_CALL_METHOD_ERROR(LOG_ERR, MODULE_NAME, "StartUnit", err.name);
+                UNIT_INTERFACE, "Start", &err, &mess, "s", "fail")) < 0)
+        LOG_DBUS_CALL_METHOD_ERROR(LOG_ERR, MODULE_NAME, "Start", err.name);
 
     sd_bus_message_unref(mess);
     sd_bus_error_free(&err);
@@ -126,8 +126,8 @@ stop_unit(const char *unit) {
         return -EINVAL;
     
     if ((r = sd_bus_call_method(system_bus, DESTINATION, unit, \
-                UNIT_INTERFACE, "StopUnit", &err, &mess, "s", "fail")) < 0)
-        LOG_DBUS_CALL_METHOD_ERROR(LOG_ERR, MODULE_NAME, "StoptUnit", err.name);
+                UNIT_INTERFACE, "Stop", &err, &mess, "s", "fail")) < 0)
+        LOG_DBUS_CALL_METHOD_ERROR(LOG_ERR, MODULE_NAME, "Stop", err.name);
 
     sd_bus_message_unref(mess);
     sd_bus_error_free(&err);
@@ -144,8 +144,8 @@ restart_unit(const char *unit) {
         return -EINVAL;
     
     if ((r = sd_bus_call_method(system_bus, DESTINATION, unit, \
-                UNIT_INTERFACE, "RestartUnit", &err, &mess, "s", "fail")) < 0)
-        LOG_DBUS_CALL_METHOD_ERROR(LOG_ERR, MODULE_NAME, "RestartUnit", err.name);
+                UNIT_INTERFACE, "Restart", &err, &mess, "s", "fail")) < 0)
+        LOG_DBUS_CALL_METHOD_ERROR(LOG_ERR, MODULE_NAME, "Restart", err.name);
 
     sd_bus_message_unref(mess);
     sd_bus_error_free(&err);
