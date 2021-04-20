@@ -58,6 +58,8 @@ app_manager_init(olm_app_t **apps) {
         apps[i]->unit_systemd1_object_path = get_unit(apps[i]->unit_name);
         if (apps[i]->unit_systemd1_object_path == NULL)
             apps[i]->unit_systemd1_object_path = load_unit(apps[i]->unit_name);
+        log_printf(LOG_DEBUG, "app %s systemd1 object path %s", 
+               apps[i]->name, apps[i]->unit_systemd1_object_path); 
         apps[i]->unit_state = UNIT_INACTIVE;
         apps[i]->unit_command = UNIT_NO_CMD;
     }
@@ -112,7 +114,7 @@ app_manager_async(olm_app_t **apps, olm_file_cache_t *fwrite_cache) {
         
         // update state
         last_state = apps[i]->unit_state;
-        apps[i]->unit_state = get_active_state_unit(apps[i]->unit_systemd1_object_path);
+        apps[i]->unit_state = get_unit_active_state(apps[i]->unit_systemd1_object_path);
 
         // call daemon_end_cb if daemon has stopped / failed
         if (apps[i]->daemon_end_cb != NULL && last_state == UNIT_ACTIVE 

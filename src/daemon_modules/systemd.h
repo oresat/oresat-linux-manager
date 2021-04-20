@@ -68,6 +68,6 @@ int restart_unit(const char *unit);
  *
  * @return A @ref active_states value.
  */
-unit_active_states_t get_active_state_unit(const char *unit);
+unit_active_states_t get_unit_active_state(const char *unit);
 
 #endif /* SYSTEMD_MODULE_H */

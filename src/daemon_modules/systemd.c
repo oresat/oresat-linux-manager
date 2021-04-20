@@ -13,6 +13,7 @@
 #include "utility.h"
 #include "olm_app.h"
 #include "systemd.h"
+#include <asm-generic/errno-base.h>
 #include <errno.h>
 #include <stdlib.h>
 #include <string.h>
@@ -46,13 +47,21 @@ get_unit(const char *name) {
         return r;
     
     if (sd_bus_call_method(system_bus, DESTINATION, OBJECT_PATH, \
-                MANAGER_INTERFACE, "GetUnit", &err, &mess, "s", name) < 0)
+                MANAGER_INTERFACE, "GetUnit", &err, &mess, "s", name) < 0) {
         LOG_DBUS_CALL_METHOD_ERROR(LOG_ERR, MODULE_NAME, "GetUnit", err.name);
-    else if (sd_bus_message_read(mess, "o", &unit) < 0)
+        goto get_unit_end;
+    }
+
+    if (sd_bus_message_read(mess, "o", &unit) < 0) {
         LOG_DBUS_METHOD_READ_ERROR(LOG_ERR, MODULE_NAME, "GetUnit", err.name);
-    else
-        if ((r = malloc(strlen(unit)+1)) != NULL)  // must copy strings
-            strncpy(r, unit, strlen(unit)+1);
+        goto get_unit_end;
+    }
+
+
+    if ((r = malloc(strlen(unit)+1)) != NULL)  // must copy strings
+        strncpy(r, unit, strlen(unit)+1);
+
+get_unit_end:
 
     sd_bus_message_unref(mess);
     sd_bus_error_free(&err);
@@ -69,13 +78,20 @@ load_unit(const char *name) {
         return r;
     
     if (sd_bus_call_method(system_bus, DESTINATION, OBJECT_PATH, \
-                MANAGER_INTERFACE, "LoadUnit", &err, &mess, "s", name) < 0)
+                MANAGER_INTERFACE, "LoadUnit", &err, &mess, "s", name) < 0) {
         LOG_DBUS_CALL_METHOD_ERROR(LOG_ERR, MODULE_NAME, "LoadUnit", err.name);
-    else if (sd_bus_message_read(mess, "o", &unit) < 0)
+        goto load_unit_end;
+    }
+
+    if (sd_bus_message_read(mess, "o", &unit) < 0) {
         LOG_DBUS_METHOD_READ_ERROR(LOG_ERR, MODULE_NAME, "LoadUnit", err.name);
-    else
-        if ((r = malloc(strlen(unit)+1)) != NULL)  // must copy strings
-            strncpy(r, unit, strlen(unit)+1);
+        goto load_unit_end;
+    }
+
+    if ((r = malloc(strlen(unit)+1)) != NULL)  // must copy strings
+        strncpy(r, unit, strlen(unit)+1);
+
+load_unit_end:
 
     sd_bus_message_unref(mess);
     sd_bus_error_free(&err);
@@ -99,7 +115,6 @@ start_unit(const char *unit) {
     sd_bus_error_free(&err);
     return r;
 }
-
 
 int
 stop_unit(const char *unit) {
@@ -138,21 +153,27 @@ restart_unit(const char *unit) {
 }
 
 unit_active_states_t
-get_active_state_unit(const char *unit) {
+get_unit_active_state(const char *unit) {
     sd_bus_error err = SD_BUS_ERROR_NULL;
     sd_bus_message *mess = NULL;
-    char *state;
+    char *state = NULL;
     int r = UNIT_UNKNOWN;
 
     if (unit == NULL)
-        return r;
+        return -EINVAL;
 
     if (sd_bus_get_property(system_bus, DESTINATION, unit, UNIT_INTERFACE, \
-                "ActiveState", &err, &mess, "d") < 0) {
+                "ActiveState", &err, &mess, "s") < 0) {
         LOG_DBUS_GET_PROPERTY_ERROR(LOG_ERR, MODULE_NAME, "ActiveState", err.name);
-    } else if (sd_bus_message_read(mess, "s", &state) < 0) {
+        goto get_unit_active_state_end;
+    }
+    
+    if (sd_bus_message_read(mess, "s", &state) < 0) {
         LOG_DBUS_METHOD_READ_ERROR(LOG_ERR, MODULE_NAME, "ActiveState", err.name);
-    } else  {
+        goto get_unit_active_state_end;
+    }
+
+    if (state != NULL) {
         for (size_t i=0; i<sizeof(active_state_str); ++i) {
             if (strncmp(state, active_state_str[i], strlen(state)+1) == 0) {
                 r = i;
@@ -160,6 +181,8 @@ get_active_state_unit(const char *unit) {
             }
         }
     }
+
+get_unit_active_state_end:
 
     sd_bus_message_unref(mess);
     sd_bus_error_free(&err);
