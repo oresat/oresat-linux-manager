@@ -25,6 +25,16 @@
 char *get_unit(const char *name);
 
 /**
+ * @brief Get the systemd unit object path for a unit if not loaded.
+ *
+ * @param name The name of the unit.
+ *
+ * @return The unit object path that must be freed with free() or NULL on
+ * error.
+ */
+char *load_unit(const char *name);
+
+/**
  * @brief Start a systemd unit.
  *
  * @param unit The object path for unit to be started.

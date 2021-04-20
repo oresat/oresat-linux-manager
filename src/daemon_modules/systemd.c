@@ -42,7 +42,7 @@ get_unit(const char *name) {
     sd_bus_message *mess = NULL;
     char *r = NULL, *unit = NULL;
 
-    if (unit == NULL)
+    if (name == NULL)
         return r;
     
     if (sd_bus_call_method(system_bus, DESTINATION, OBJECT_PATH, \
@@ -50,6 +50,29 @@ get_unit(const char *name) {
         LOG_DBUS_CALL_METHOD_ERROR(LOG_ERR, MODULE_NAME, "GetUnit", err.name);
     else if (sd_bus_message_read(mess, "o", &unit) < 0)
         LOG_DBUS_METHOD_READ_ERROR(LOG_ERR, MODULE_NAME, "GetUnit", err.name);
+    else
+        if ((r = malloc(strlen(unit)+1)) != NULL)  // must copy strings
+            strncpy(r, unit, strlen(unit)+1);
+
+    sd_bus_message_unref(mess);
+    sd_bus_error_free(&err);
+    return r;
+}
+
+char *
+load_unit(const char *name) {
+    sd_bus_error err = SD_BUS_ERROR_NULL;
+    sd_bus_message *mess = NULL;
+    char *r = NULL, *unit = NULL;
+
+    if (name == NULL)
+        return r;
+    
+    if (sd_bus_call_method(system_bus, DESTINATION, OBJECT_PATH, \
+                MANAGER_INTERFACE, "LoadUnit", &err, &mess, "s", name) < 0)
+        LOG_DBUS_CALL_METHOD_ERROR(LOG_ERR, MODULE_NAME, "LoadUnit", err.name);
+    else if (sd_bus_message_read(mess, "o", &unit) < 0)
+        LOG_DBUS_METHOD_READ_ERROR(LOG_ERR, MODULE_NAME, "LoadUnit", err.name);
     else
         if ((r = malloc(strlen(unit)+1)) != NULL)  // must copy strings
             strncpy(r, unit, strlen(unit)+1);

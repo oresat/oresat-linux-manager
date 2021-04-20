@@ -56,6 +56,8 @@ app_manager_init(olm_app_t **apps) {
     // find systemd1 object paths
     for (i=0; apps[i] != NULL; ++i) {
         apps[i]->unit_systemd1_object_path = get_unit(apps[i]->unit_name);
+        if (apps[i]->unit_systemd1_object_path == NULL)
+            apps[i]->unit_systemd1_object_path = load_unit(apps[i]->unit_name);
         apps[i]->unit_state = UNIT_INACTIVE;
         apps[i]->unit_command = UNIT_NO_CMD;
     }
