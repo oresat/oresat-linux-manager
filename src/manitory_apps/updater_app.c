@@ -28,13 +28,13 @@ updater_async(void *data, olm_file_cache_t *fread_cache) {
     char *temp_str;
     (void)data;
 
-    if (updaterd_status(&temp_uint8) < 0) {
+    if (updaterd_status(&temp_uint8) >= 0) {
         CO_LOCK_OD();
         OD_updater.status = temp_uint8;
         CO_UNLOCK_OD();
     }
 
-    if (updaterd_updates_available(&temp_uint32) < 0) {
+    if (updaterd_updates_available(&temp_uint32) >= 0) {
         CO_LOCK_OD();
         if (temp_uint32 > UINT8_MAX)
             OD_updater.updatesAvailable = UINT8_MAX;
