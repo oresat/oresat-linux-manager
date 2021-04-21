@@ -13,6 +13,8 @@
 #include "updaterd.h"
 #include "updater_app.h"
 #include "olm_app.h"
+#include "gps.h"
+#include "gps_app.h"
 #include "board_main.h"
 #include <errno.h>
 #include <stddef.h>
@@ -29,8 +31,20 @@ static olm_app_t updater_app = {
     .data = NULL,
 };
 
+static olm_app_t gps_app = {
+    .name = "GPS",
+    .unit_name = GPS_SERVICE_FILE,
+    .fwrite_keyword = NULL,
+    .fwrite_cb = NULL,
+    .async_cb = gps_app_async,
+    .daemon_end_cb = gps_app_end,
+    .data = NULL,
+};
+
+
 static olm_app_t *apps[] = {
     &updater_app, // updater app is always index 0
+    &gps_app,
     NULL, // always end with null
 };
 
