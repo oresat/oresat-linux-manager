@@ -41,7 +41,7 @@ def connect_bus():
     """quick function to connect to can bus"""
 
     network = canopen.Network()
-    node = canopen.RemoteNode(0x7F, EDS_FILE)
+    node = canopen.RemoteNode(0x7C, EDS_FILE)
     network.add_node(node)
     network.connect(bustype="socketcan", channel="vcan0")
     # network.nmt.state = "OPERATIONAL"
