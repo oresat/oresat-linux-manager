@@ -12,6 +12,7 @@
 #include "logging.h"
 #include "utility.h"
 #include <errno.h>
+#include <stdbool.h>
 #include <stddef.h>
 #include <stdlib.h>
 #include <stdint.h>
@@ -39,12 +40,11 @@ updaterd_add_update_archive(const char *file) {
     if (file == NULL)
         return -EINVAL;
 
-    if ((r = sd_bus_call_method(DBUS_INFO, "AddUpdateFile", &err, &mess, "s", file)) < 0)
-        LOG_DBUS_CALL_METHOD_ERROR(LOG_ERR, MODULE_NAME, "AddUpdateFile", err.name);
+    if ((r = sd_bus_call_method(DBUS_INFO, "AddUpdateArchive", &err, &mess, "s", file)) < 0)
+        LOG_DBUS_CALL_METHOD_ERROR(LOG_ERR, MODULE_NAME, "AddUpdateArchive", err.name);
     else if ((r = sd_bus_message_read(mess, "b", &value)) < 0)
-        LOG_DBUS_METHOD_READ_ERROR(LOG_ERR, MODULE_NAME, "AddUpdateFile", err.name);
-
-    if (r == 0 && value == true)
+        LOG_DBUS_METHOD_READ_ERROR(LOG_ERR, MODULE_NAME, "AddUpdateArchive", err.name);
+    else if (value)
         r = 1;
 
     sd_bus_message_unref(mess);
@@ -85,7 +85,6 @@ updaterd_make_status_archive(char **out) {
             r = -ENOMEM;
         }
     }
-
 
     sd_bus_message_unref(mess);
     sd_bus_error_free(&err);
