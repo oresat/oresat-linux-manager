@@ -79,8 +79,8 @@ app_manager_async(olm_app_t **apps, olm_file_cache_t *fwrite_cache) {
     uint8_t last_state;
     int files, r;
 
-    if (apps == NULL) {
-        log_printf(LOG_DEBUG, "missing apps input");
+    if (apps == NULL || fwrite_cache == NULL) {
+        log_printf(LOG_DEBUG, "app_manager_async() missing inputs");
         return;
     }
 
@@ -127,9 +127,12 @@ app_manager_async(olm_app_t **apps, olm_file_cache_t *fwrite_cache) {
         else if (apps[i]->unit_state == UNIT_FAILED)
             ++failed_apps; 
 
-        if (fwrite_cache == NULL || apps[i]->fwrite_keyword == NULL ||
-                apps[i]->fwrite_cb || apps[i]->unit_state != UNIT_ACTIVE)
+        if (apps[i]->unit_state != UNIT_ACTIVE) {
+            continue; // app is not running
+        } else if (apps[i]->fwrite_keyword == NULL || apps[i]->fwrite_cb == NULL) {
+            log_printf(LOG_DEBUG, "app %s is misconfigured", apps[i]->name);
             continue;
+        }
 
         // send file(s) from fwrite cache to daemon
         files = olm_file_cache_len(fwrite_cache, apps[i]->fwrite_keyword);
