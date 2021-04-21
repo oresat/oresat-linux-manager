@@ -1,6 +1,7 @@
 # common
 
 set(COMMON_SOURCES
+    cpufreq.c
     ecss_time.c
     logging.c
     olm_file.c
@@ -10,6 +11,7 @@ set(COMMON_SOURCES
 
 
 set(COMMON_HEADERS
+    cpufreq.h
     ecss_time.h
     logging.h
     olm_app.h
