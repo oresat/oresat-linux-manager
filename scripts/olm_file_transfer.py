@@ -46,7 +46,7 @@ if args.cache is not None:
 elif args.read_file is not None:
     node.sdo[0x3003][1].raw = args.read_file.encode("utf-8")
     infile = node.sdo[0x3003][2].open("rb", encoding="ascii")
-    outfile = open(args.read_file, "w", encoding="ascii")
+    outfile = open(args.read_file, "wb")
     outfile.writelines(infile)
 
     infile.close()
