@@ -48,12 +48,12 @@ get_unit(const char *name) {
     
     if (sd_bus_call_method(system_bus, DESTINATION, OBJECT_PATH, \
                 MANAGER_INTERFACE, "GetUnit", &err, &mess, "s", name) < 0) {
-        LOG_DBUS_CALL_METHOD_ERROR(LOG_ERR, MODULE_NAME, "GetUnit", err.name);
+        LOG_DBUS_CALL_METHOD_ERROR(LOG_DEBUG, MODULE_NAME, "GetUnit", err.name);
         goto get_unit_end;
     }
 
     if (sd_bus_message_read(mess, "o", &unit) < 0) {
-        LOG_DBUS_METHOD_READ_ERROR(LOG_ERR, MODULE_NAME, "GetUnit", err.name);
+        LOG_DBUS_METHOD_READ_ERROR(LOG_DEBUG, MODULE_NAME, "GetUnit", err.name);
         goto get_unit_end;
     }
 
@@ -79,12 +79,12 @@ load_unit(const char *name) {
     
     if (sd_bus_call_method(system_bus, DESTINATION, OBJECT_PATH, \
                 MANAGER_INTERFACE, "LoadUnit", &err, &mess, "s", name) < 0) {
-        LOG_DBUS_CALL_METHOD_ERROR(LOG_ERR, MODULE_NAME, "LoadUnit", err.name);
+        LOG_DBUS_CALL_METHOD_ERROR(LOG_DEBUG, MODULE_NAME, "LoadUnit", err.name);
         goto load_unit_end;
     }
 
     if (sd_bus_message_read(mess, "o", &unit) < 0) {
-        LOG_DBUS_METHOD_READ_ERROR(LOG_ERR, MODULE_NAME, "LoadUnit", err.name);
+        LOG_DBUS_METHOD_READ_ERROR(LOG_DEBUG, MODULE_NAME, "LoadUnit", err.name);
         goto load_unit_end;
     }
 
@@ -109,7 +109,7 @@ start_unit(const char *unit) {
     
     if ((r = sd_bus_call_method(system_bus, DESTINATION, unit, \
                 UNIT_INTERFACE, "Start", &err, &mess, "s", "fail")) < 0)
-        LOG_DBUS_CALL_METHOD_ERROR(LOG_ERR, MODULE_NAME, "Start", err.name);
+        LOG_DBUS_CALL_METHOD_ERROR(LOG_DEBUG, MODULE_NAME, "Start", err.name);
 
     sd_bus_message_unref(mess);
     sd_bus_error_free(&err);
@@ -127,7 +127,7 @@ stop_unit(const char *unit) {
     
     if ((r = sd_bus_call_method(system_bus, DESTINATION, unit, \
                 UNIT_INTERFACE, "Stop", &err, &mess, "s", "fail")) < 0)
-        LOG_DBUS_CALL_METHOD_ERROR(LOG_ERR, MODULE_NAME, "Stop", err.name);
+        LOG_DBUS_CALL_METHOD_ERROR(LOG_DEBUG, MODULE_NAME, "Stop", err.name);
 
     sd_bus_message_unref(mess);
     sd_bus_error_free(&err);
@@ -145,7 +145,7 @@ restart_unit(const char *unit) {
     
     if ((r = sd_bus_call_method(system_bus, DESTINATION, unit, \
                 UNIT_INTERFACE, "Restart", &err, &mess, "s", "fail")) < 0)
-        LOG_DBUS_CALL_METHOD_ERROR(LOG_ERR, MODULE_NAME, "Restart", err.name);
+        LOG_DBUS_CALL_METHOD_ERROR(LOG_DEBUG, MODULE_NAME, "Restart", err.name);
 
     sd_bus_message_unref(mess);
     sd_bus_error_free(&err);
@@ -164,12 +164,12 @@ get_unit_active_state(const char *unit) {
 
     if (sd_bus_get_property(system_bus, DESTINATION, unit, UNIT_INTERFACE, \
                 "ActiveState", &err, &mess, "s") < 0) {
-        LOG_DBUS_GET_PROPERTY_ERROR(LOG_ERR, MODULE_NAME, "ActiveState", err.name);
+        LOG_DBUS_GET_PROPERTY_ERROR(LOG_DEBUG, MODULE_NAME, "ActiveState", err.name);
         goto get_unit_active_state_end;
     }
     
     if (sd_bus_message_read(mess, "s", &state) < 0) {
-        LOG_DBUS_METHOD_READ_ERROR(LOG_ERR, MODULE_NAME, "ActiveState", err.name);
+        LOG_DBUS_METHOD_READ_ERROR(LOG_DEBUG, MODULE_NAME, "ActiveState", err.name);
         goto get_unit_active_state_end;
     }
 

@@ -41,9 +41,9 @@ updaterd_add_update_archive(const char *file) {
         return -EINVAL;
 
     if ((r = sd_bus_call_method(DBUS_INFO, "AddUpdateArchive", &err, &mess, "s", file)) < 0)
-        LOG_DBUS_CALL_METHOD_ERROR(LOG_ERR, MODULE_NAME, "AddUpdateArchive", err.name);
+        LOG_DBUS_CALL_METHOD_ERROR(LOG_DEBUG, MODULE_NAME, "AddUpdateArchive", err.name);
     else if ((r = sd_bus_message_read(mess, "b", &value)) < 0)
-        LOG_DBUS_METHOD_READ_ERROR(LOG_ERR, MODULE_NAME, "AddUpdateArchive", err.name);
+        LOG_DBUS_METHOD_READ_ERROR(LOG_DEBUG, MODULE_NAME, "AddUpdateArchive", err.name);
     else if (value)
         r = 1;
 
@@ -59,7 +59,7 @@ updaterd_update(void) {
     int r;
 
     if ((r = sd_bus_call_method(DBUS_INFO, "Update", &err, &mess, NULL)) < 0)
-        LOG_DBUS_METHOD_READ_ERROR(LOG_ERR, MODULE_NAME, "Update", err.name);
+        LOG_DBUS_METHOD_READ_ERROR(LOG_DEBUG, MODULE_NAME, "Update", err.name);
 
     sd_bus_message_unref(mess);
     sd_bus_error_free(&err);
@@ -74,9 +74,9 @@ updaterd_make_status_archive(char **out) {
     int r;
 
     if ((r = sd_bus_call_method(DBUS_INFO, "MakeStatusArchive", &err, &mess, NULL)) < 0) {
-        LOG_DBUS_CALL_METHOD_ERROR(LOG_ERR, MODULE_NAME, "MakeStatusArchive", err.name);
+        LOG_DBUS_CALL_METHOD_ERROR(LOG_DEBUG, MODULE_NAME, "MakeStatusArchive", err.name);
     } else if ((r = sd_bus_message_read(mess, "s", &temp)) < 0) {
-        LOG_DBUS_METHOD_READ_ERROR(LOG_ERR, MODULE_NAME, "MakeStatusArchive", err.name);
+        LOG_DBUS_METHOD_READ_ERROR(LOG_DEBUG, MODULE_NAME, "MakeStatusArchive", err.name);
     } else {
         if ((filepath = malloc(strlen(temp)+1)) != NULL) {
             strncpy(filepath, temp, strlen(temp)+1);
@@ -98,9 +98,9 @@ updaterd_status(uint8_t *state) {
     int r;
 
     if ((r = sd_bus_get_property(DBUS_INFO, "StatusValue", &err, &mess, "y")) < 0)
-        LOG_DBUS_GET_PROPERTY_ERROR(LOG_ERR, MODULE_NAME, "StatusValue", err.name);
+        LOG_DBUS_GET_PROPERTY_ERROR(LOG_DEBUG, MODULE_NAME, "StatusValue", err.name);
     else if ((r = sd_bus_message_read(mess, "y", state)) < 0)
-        LOG_DBUS_PROPERTY_READ_ERROR(LOG_ERR, MODULE_NAME, "StatusValue", err.name);
+        LOG_DBUS_PROPERTY_READ_ERROR(LOG_DEBUG, MODULE_NAME, "StatusValue", err.name);
 
     sd_bus_message_unref(mess);
     sd_bus_error_free(&err);
@@ -114,9 +114,9 @@ updaterd_updates_available(uint32_t *count) {
     int r;
 
     if ((r = sd_bus_get_property(DBUS_INFO, "AvailableUpdateArchives", &err, &mess, "u")) < 0)
-        LOG_DBUS_GET_PROPERTY_ERROR(LOG_ERR, MODULE_NAME, "AvailableUpdateArchives", err.name);
+        LOG_DBUS_GET_PROPERTY_ERROR(LOG_DEBUG, MODULE_NAME, "AvailableUpdateArchives", err.name);
     else if ((r = sd_bus_message_read(mess, "u", count)) < 0)
-        LOG_DBUS_PROPERTY_READ_ERROR(LOG_ERR, MODULE_NAME, "AvailableUpdateArchives", err.name);
+        LOG_DBUS_PROPERTY_READ_ERROR(LOG_DEBUG, MODULE_NAME, "AvailableUpdateArchives", err.name);
 
     sd_bus_message_unref(mess);
     sd_bus_error_free(&err);
@@ -131,9 +131,9 @@ updaterd_list_updates(char **out) {
     int r;
 
     if ((r = sd_bus_get_property(DBUS_INFO, "ListUpdates",  &err, &mess, "s")) < 0) {
-        LOG_DBUS_GET_PROPERTY_ERROR(LOG_ERR, MODULE_NAME, "ListUpdates", err.name);
+        LOG_DBUS_GET_PROPERTY_ERROR(LOG_DEBUG, MODULE_NAME, "ListUpdates", err.name);
     } else if ((r = sd_bus_message_read(mess, "s", &temp)) < 0) {
-        LOG_DBUS_PROPERTY_READ_ERROR(LOG_ERR, MODULE_NAME, "ListUpdates", err.name);
+        LOG_DBUS_PROPERTY_READ_ERROR(LOG_DEBUG, MODULE_NAME, "ListUpdates", err.name);
     } else {
         if ((update_list = malloc(strlen(temp))) == NULL)
             return -ENOMEM;

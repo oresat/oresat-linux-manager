@@ -40,13 +40,13 @@ star_tracker_coordinates(st_coordinates_t *coor) {
         return -EINVAL;
 
     if ((r = sd_bus_get_property(DBUS_INFO, "Coor", &err, &mess, "(dddd)")) < 0)
-        LOG_DBUS_CALL_METHOD_ERROR(LOG_ERR, MODULE_NAME, "Coor", err.name);
+        LOG_DBUS_CALL_METHOD_ERROR(LOG_DEBUG, MODULE_NAME, "Coor", err.name);
     else if ((r = sd_bus_message_read(mess, "(dddd)",
             &coor->declination,
             &coor->right_ascension,
             &coor->roll,
             &time_raw)) < 0)
-        LOG_DBUS_METHOD_READ_ERROR(LOG_ERR, MODULE_NAME, "Coor", err.name);
+        LOG_DBUS_METHOD_READ_ERROR(LOG_DEBUG, MODULE_NAME, "Coor", err.name);
 
     time_fine = modf(time_raw, &time_coarse);
 

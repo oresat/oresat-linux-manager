@@ -30,7 +30,7 @@ logind_reboot(void) {
     int r;
 
     if ((r = sd_bus_call_method(DBUS_INFO, "Reboot", &err, NULL, NULL)) < 0)
-        LOG_DBUS_CALL_METHOD_ERROR(LOG_ERR, MODULE_NAME, "Reboot", err.name);
+        LOG_DBUS_CALL_METHOD_ERROR(LOG_DEBUG, MODULE_NAME, "Reboot", err.name);
 
     sd_bus_error_free(&err);
     return r;
@@ -42,7 +42,7 @@ logind_poweroff(void) {
     int r;
 
     if ((r = sd_bus_call_method(DBUS_INFO, "PowerOff", &err, NULL, NULL)) < 0)
-        LOG_DBUS_CALL_METHOD_ERROR(LOG_ERR, MODULE_NAME, "PowerOff", err.name);
+        LOG_DBUS_CALL_METHOD_ERROR(LOG_DEBUG, MODULE_NAME, "PowerOff", err.name);
 
     sd_bus_error_free(&err);
     return r;

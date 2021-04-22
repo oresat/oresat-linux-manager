@@ -41,12 +41,12 @@ gps_state_vector(state_vector_t *st) {
         return -EINVAL;
 
     if ((r = sd_bus_get_property(DBUS_INFO, "StateVector", &err, &mess, "(iiiiiiuu)")) < 0)
-        LOG_DBUS_CALL_METHOD_ERROR(LOG_ERR, MODULE_NAME, "StateVector", err.name);
+        LOG_DBUS_CALL_METHOD_ERROR(LOG_DEBUG, MODULE_NAME, "StateVector", err.name);
     else if ((r = sd_bus_message_read(mess, "(iiiiiiuu)",
                     &st->position.x, &st->position.y, &st->position.z,
                     &st->velocity.x, &st->velocity.y, &st->velocity.z,
                     &time_coarse, &time_fine)) < 0)
-        LOG_DBUS_METHOD_READ_ERROR(LOG_ERR, MODULE_NAME, "StateVector", err.name);
+        LOG_DBUS_METHOD_READ_ERROR(LOG_DEBUG, MODULE_NAME, "StateVector", err.name);
 
     st->timestamp.tv_sec = (time_t)time_coarse;
     st->timestamp.tv_usec = (long)time_fine;
@@ -63,9 +63,9 @@ gps_status(void) {
     uint8_t status;
 
     if (sd_bus_get_property(DBUS_INFO, "Status", &err, &mess, "y") < 0)
-        LOG_DBUS_CALL_METHOD_ERROR(LOG_ERR, MODULE_NAME, "Status", err.name);
+        LOG_DBUS_CALL_METHOD_ERROR(LOG_DEBUG, MODULE_NAME, "Status", err.name);
     else if (sd_bus_message_read(mess, "y", &status) < 0)
-        LOG_DBUS_METHOD_READ_ERROR(LOG_ERR, MODULE_NAME, "Status", err.name);
+        LOG_DBUS_METHOD_READ_ERROR(LOG_DEBUG, MODULE_NAME, "Status", err.name);
 
     sd_bus_message_unref(mess);
     sd_bus_error_free(&err);
@@ -79,9 +79,9 @@ gps_time_synchronized(void) {
     bool sync = false;
 
     if (sd_bus_get_property(DBUS_INFO, "Sync", &err, &mess, "b") < 0)
-        LOG_DBUS_CALL_METHOD_ERROR(LOG_ERR, MODULE_NAME, "Sync", err.name);
+        LOG_DBUS_CALL_METHOD_ERROR(LOG_DEBUG, MODULE_NAME, "Sync", err.name);
     else if (sd_bus_message_read(mess, "b", &sync) < 0)
-        LOG_DBUS_METHOD_READ_ERROR(LOG_ERR, MODULE_NAME, "Sync", err.name);
+        LOG_DBUS_METHOD_READ_ERROR(LOG_DEBUG, MODULE_NAME, "Sync", err.name);
     
     sd_bus_message_unref(mess);
     sd_bus_error_free(&err);
@@ -95,9 +95,9 @@ gps_satellite_number(void) {
     uint8_t sats = 0;
 
     if (sd_bus_get_property(DBUS_INFO, "Satellites", &err, &mess, "y") < 0)
-        LOG_DBUS_CALL_METHOD_ERROR(LOG_ERR, MODULE_NAME, "Satellites", err.name);
+        LOG_DBUS_CALL_METHOD_ERROR(LOG_DEBUG, MODULE_NAME, "Satellites", err.name);
     else if (sd_bus_message_read(mess, "y", &sats) < 0)
-        LOG_DBUS_METHOD_READ_ERROR(LOG_ERR, MODULE_NAME, "Satellites", err.name);
+        LOG_DBUS_METHOD_READ_ERROR(LOG_DEBUG, MODULE_NAME, "Satellites", err.name);
 
     sd_bus_message_unref(mess);
     sd_bus_error_free(&err);
