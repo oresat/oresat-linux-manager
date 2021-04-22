@@ -133,15 +133,13 @@ updaterd_list_updates(char **out) {
         LOG_DBUS_GET_PROPERTY_ERROR(LOG_DEBUG, MODULE_NAME, "ListUpdates", err.name);
     } else if ((r = sd_bus_message_read(mess, "s", &temp)) < 0) {
         LOG_DBUS_PROPERTY_READ_ERROR(LOG_DEBUG, MODULE_NAME, "ListUpdates", err.name);
-    } else if(is_file(temp)) {
+    } else if(temp != NULL) {
         if ((update_list = malloc(strlen(temp))) == NULL) {
             r = -ENOMEM;
         } else {
             strncpy(update_list, temp, strlen(temp));
             *out = update_list;
         }
-    } else {
-        r = -ESRCH;
     }
 
     sd_bus_message_unref(mess);
