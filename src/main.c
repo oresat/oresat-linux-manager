@@ -419,6 +419,12 @@ main(int argc, char *argv[]) {
             CO_time_init(&CO_time, CO->SDO[0], &OD_time.epochTimeBaseMs, &OD_time.epochTimeOffsetMs, 0x2130);
 #endif
 
+            for (int i=1; i< CO_NO_TPDO; ++i)
+                CO->TPDO[i]->valid = false;
+#ifdef TIME_PRODUCER
+            CO->TPDO[CO_NO_TPDO-1]->valid = true; // gps last tpdo is the time sync TPDO
+#endif
+
             if (app_manager_init(APPS) < 0)
                 log_printf(LOG_ERR, "app_manager_init() failed");
             

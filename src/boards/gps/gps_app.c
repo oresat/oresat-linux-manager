@@ -19,11 +19,23 @@
 #include <stdint.h>
 #include <sys/time.h>
 
+#define TPDO_GPS_SV_TIME    2
+#define TPDO_GPS_SV_X_Y     3
+#define TPDO_GPS_SV_Z_VX    4
+#define TPDO_GPS_SV_VY_VZ   5
+#define TPDO_GPS_GENERAL    6
+
 void
 gps_app_async(void *data, olm_file_cache_t *fread_cache) {
     state_vector_t sv;
     time_scet_t time;
     uint8_t state, sats;
+
+    if (!CO->TPDO[TPDO_GPS_GENERAL]->valid) {
+        CO_LOCK_OD();
+        CO->TPDO[TPDO_GPS_GENERAL]->valid = true;
+        CO_UNLOCK_OD();
+    }
 
     if (gps_time_synchronized() && !OD_timeSynchronized) {
         CO_LOCK_OD();
@@ -38,9 +50,20 @@ gps_app_async(void *data, olm_file_cache_t *fread_cache) {
         CO_LOCK_OD();
         OD_GPSStatus = state;
         OD_satellitesLocked = sats;
+        CO->TPDO[TPDO_GPS_SV_TIME]->valid = true;
+        CO->TPDO[TPDO_GPS_SV_X_Y]->valid = true;
+        CO->TPDO[TPDO_GPS_SV_Z_VX]->valid = true;
+        CO->TPDO[TPDO_GPS_SV_VY_VZ]->valid = true;
         CO_UNLOCK_OD();
     } else {
-        gps_app_end(NULL);
+        CO_LOCK_OD();
+        OD_GPSStatus = state;
+        OD_satellitesLocked = sats;
+        CO->TPDO[TPDO_GPS_SV_TIME]->valid = false;
+        CO->TPDO[TPDO_GPS_SV_X_Y]->valid = false;
+        CO->TPDO[TPDO_GPS_SV_Z_VX]->valid = false;
+        CO->TPDO[TPDO_GPS_SV_VY_VZ]->valid = false;
+        CO_UNLOCK_OD();
         return; // state vector is invalid
     }
 
@@ -63,6 +86,11 @@ gps_app_async(void *data, olm_file_cache_t *fread_cache) {
 void
 gps_app_end(void *data) {
     CO_LOCK_OD();
+    CO->TPDO[TPDO_GPS_SV_TIME]->valid = false;
+    CO->TPDO[TPDO_GPS_SV_X_Y]->valid = false;
+    CO->TPDO[TPDO_GPS_SV_Z_VX]->valid = false;
+    CO->TPDO[TPDO_GPS_SV_VY_VZ]->valid = false;
+    CO->TPDO[TPDO_GPS_GENERAL]->valid = false;
     OD_GPSStatus = 0xFF;
     OD_satellitesLocked = 0;
     CO_UNLOCK_OD();

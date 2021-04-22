@@ -1,3 +1,14 @@
+/**
+ * OreSat Star Tracker app.
+ *
+ * @file        star_tracker_app.h
+ * @ingroup     apps
+ *
+ * This file is part of OreSat Linux Manager, a common CAN to Dbus interface
+ * for daemons running on OreSat Linux boards.
+ * Project home page is <https://github.com/oresat/oresat-linux-manager>.
+ */
+
 #ifndef STAR_TRACKER_APP_H
 #define STAR_TRACKER_APP_H
 

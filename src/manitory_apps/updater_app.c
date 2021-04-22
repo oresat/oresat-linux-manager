@@ -21,12 +21,20 @@
 #include <stdlib.h>
 #include <string.h>
 
+#define TPDO_UPDATER 1
+
 void
 updater_async(void *data, olm_file_cache_t *fread_cache) {
     uint32_t temp_uint32;
     uint8_t temp_uint8;
     char *temp_str;
     (void)data;
+    
+    if (!CO->TPDO[TPDO_UPDATER]->valid) {
+        CO_LOCK_OD();
+        CO->TPDO[TPDO_UPDATER]->valid = true;
+        CO_UNLOCK_OD();
+    }
 
     if (updaterd_status(&temp_uint8) >= 0) {
         CO_LOCK_OD();
@@ -66,6 +74,7 @@ void
 updater_end(void *data) {
     CO_LOCK_OD();
     OD_updater.status = 0xFF;
+    CO->TPDO[TPDO_UPDATER]->valid = false;
     CO_UNLOCK_OD();
 }
 
