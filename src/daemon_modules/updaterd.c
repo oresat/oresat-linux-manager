@@ -20,9 +20,9 @@
 #include <systemd/sd-bus.h>
 
 #define MODULE_NAME         "Updater"
-#define DESTINATION         "org.oresat.updater"
+#define DESTINATION         "org.OreSat.Updater"
 #define INTERFACE_NAME      DESTINATION
-#define OBJECT_PATH         "/org/oresat/updater"
+#define OBJECT_PATH         "/org/OreSat/Updater"
 
 /** System D-Bus connection. Defined in main.c */
 extern sd_bus *system_bus;
