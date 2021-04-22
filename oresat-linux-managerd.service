@@ -6,10 +6,11 @@ After=network-online.target
 [Service]
 Type=forking
 PIDFile=/run/oresat-linux-managerd.pid
-ExecStart=/usr/bin/oresat-linux-manager can1 -d -c
+ExecStart=/usr/bin/oresat-linux-manager -d -c -p 10
 Restart=on-failure
 User=root
 Group=root
 
 [Install]
 WantedBy=multi-user.target
+Alias=olmd.service
