@@ -77,11 +77,15 @@ gps_time_synchronized(void) {
     sd_bus_error err = SD_BUS_ERROR_NULL;
     sd_bus_message *mess = NULL;
     bool sync = false;
+    int sync_raw = 0;
 
     if (sd_bus_get_property(DBUS_INFO, "Sync", &err, &mess, "b") < 0)
         LOG_DBUS_CALL_METHOD_ERROR(LOG_DEBUG, MODULE_NAME, "Sync", err.name);
-    else if (sd_bus_message_read(mess, "b", &sync) < 0)
+    else if (sd_bus_message_read(mess, "b", &sync_raw) < 0)
         LOG_DBUS_METHOD_READ_ERROR(LOG_DEBUG, MODULE_NAME, "Sync", err.name);
+
+    if (sync_raw == 1)
+        sync = true;
     
     sd_bus_message_unref(mess);
     sd_bus_error_free(&err);

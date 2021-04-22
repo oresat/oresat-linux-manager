@@ -34,8 +34,7 @@ int
 updaterd_add_update_archive(const char *file) {
     sd_bus_error err = SD_BUS_ERROR_NULL;
     sd_bus_message *mess = NULL;
-    bool value = false;
-    int r;
+    int r, value = 0;
 
     if (file == NULL)
         return -EINVAL;
@@ -44,8 +43,8 @@ updaterd_add_update_archive(const char *file) {
         LOG_DBUS_CALL_METHOD_ERROR(LOG_DEBUG, MODULE_NAME, "AddUpdateArchive", err.name);
     else if ((r = sd_bus_message_read(mess, "b", &value)) < 0)
         LOG_DBUS_METHOD_READ_ERROR(LOG_DEBUG, MODULE_NAME, "AddUpdateArchive", err.name);
-    else if (value)
-        r = 1;
+    else
+        r = value;
 
     sd_bus_message_unref(mess);
     sd_bus_error_free(&err);
