@@ -6,7 +6,7 @@ After=network-online.target
 [Service]
 Type=forking
 PIDFile=/run/oresat-linux-managerd.pid
-ExecStart=/usr/bin/oresat-linux-manager can1 -d
+ExecStart=/usr/bin/oresat-linux-manager can1 -d -c
 Restart=on-failure
 User=root
 Group=root

@@ -49,7 +49,7 @@ get_cpufreq_gov(void) {
     char buf[buf_len];
     int r = 0;
 
-    if((fptr = fopen(CURFREQ_FILE, "r")) != NULL) {
+    if((fptr = fopen(GOV_FILE, "r")) != NULL) {
         fgets(buf, buf_len, fptr);
         fclose(fptr);
     }
@@ -59,7 +59,7 @@ get_cpufreq_gov(void) {
     else if(strncmp(buf, "performance", strlen("performance")) == 0)
         r = performance;
     else
-        r = -1;
+        r = unknown;
 
     return r;
 }
@@ -70,7 +70,7 @@ set_cpufreq_gov(int governor) {
     FILE* fptr = NULL;
     int r = 0;
 
-    if((fptr = fopen(CURFREQ_FILE, "w")) == NULL)
+    if((fptr = fopen(GOV_FILE, "w")) == NULL)
         return -EIO;
 
     switch(governor){

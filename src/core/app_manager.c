@@ -9,7 +9,7 @@
  * Project home page is <https://github.com/oresat/oresat-linux-manager>.
  */
 
-//#include "cpufreq.h"
+#include "cpufreq.h"
 #include "logging.h"
 #include "systemd.h"
 #include "board_main.h"
@@ -22,29 +22,6 @@
 #include <stdio.h>
 #include <string.h>
 #include <sys/syslog.h>
-
-/**
- * @breif Save power when no other OreSat daaemons are running.
- *
- * If all the app are stopped sets the cpufreq governor to powersave mode
- * or if any OreSat app is running sets the cpufreq governor to performance
- * mode.
- */
-/*
-static void
-save_power(void) {
-    int cur_stop = 0;
-
-    for(unsigned int i=0; i<app_count; ++i) {
-        if (app_list[i].status ==  STOPPED)
-            ++cur_stop;
-    }
-
-    if (cur_stop == 0)
-        set_cpufreq_gov(powersave);
-    else
-        set_cpufreq_gov(performance);
-}*/
 
 int
 app_manager_init(olm_app_t **apps) { 
@@ -152,6 +129,22 @@ app_manager_async(olm_app_t **apps, olm_file_cache_t *fwrite_cache) {
             }
 
             olm_file_free(file);
+        }
+    }
+
+    if (OD_OLMControl.CPUFrequency) {
+        if (active_apps == 0 && OD_systemInfo.CPUGovernor == performance) {
+            set_cpufreq_gov(powersave);
+            CO_LOCK_OD();
+            OD_systemInfo.CPUGovernor = get_cpufreq_gov();
+            OD_systemInfo.CPUFrequency = get_cpufreq();
+            CO_UNLOCK_OD();
+        } else if (active_apps > 0 && OD_systemInfo.CPUGovernor == powersave) {
+            set_cpufreq_gov(performance);
+            CO_LOCK_OD();
+            OD_systemInfo.CPUGovernor = get_cpufreq_gov();
+            OD_systemInfo.CPUFrequency = get_cpufreq();
+            CO_UNLOCK_OD();
         }
     }
 
