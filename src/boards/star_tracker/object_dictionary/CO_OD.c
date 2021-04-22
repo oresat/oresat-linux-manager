@@ -52,7 +52,7 @@ struct sCO_OD_RAM CO_OD_RAM = {
 /*6000*/ 0xFFL,
 /*6001*/ {0x4L, 0x00, 0x00, 0x00, 0x00000000L},
 /*6002*/ 0,
-/*6003*/ 0xFF,
+/*6003*/ 0xFFL,
 /*6004*/ 0,
 
            CO_OD_FIRST_LAST_WORD,

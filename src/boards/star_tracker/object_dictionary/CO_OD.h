@@ -1255,7 +1255,7 @@ struct sCO_OD_RAM{
 /*6000      */ UNSIGNED8      starTrackerStatus;
 /*6001      */ OD_orienation_t orienation;
 /*6002      */ BOOLEAN        capture;
-/*6003      */ BOOLEAN        changeState;
+/*6003      */ UNSIGNED8      changeState;
 /*6004      */ BOOLEAN        getLastSolveImage;
 
                UNSIGNED32     LastWord;
@@ -1472,7 +1472,7 @@ extern struct sCO_OD_PERSIST_MFR CO_OD_PERSIST_MFR;
 /*6002, Data Type: BOOLEAN */
         #define OD_capture                                          CO_OD_RAM.capture
 
-/*6003, Data Type: BOOLEAN */
+/*6003, Data Type: UNSIGNED8 */
         #define OD_changeState                                      CO_OD_RAM.changeState
 
 /*6004, Data Type: BOOLEAN */

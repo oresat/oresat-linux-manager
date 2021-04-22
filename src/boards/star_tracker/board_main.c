@@ -53,5 +53,5 @@ olm_app_t **APPS = apps;
 void
 board_init(void) {
     CO_OD_configure(CO->SDO[0], OD_3100_updater, updater_ODF, NULL, 0, 0U);
-    CO_OD_configure(CO->SDO[0], OD_6000_starTrackerStatus, star_tracker_ODF, NULL, 0, 0U);
+    CO_OD_configure(CO->SDO[0], OD_6003_changeState, star_tracker_ODF, NULL, 0, 0U);
 }

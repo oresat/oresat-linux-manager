@@ -8,7 +8,7 @@ Description=OreSat Star Tracker
 CreationTime=1:57PM
 CreationDate=03-09-2021
 CreatedBy=Ryan Medick
-ModificationTime=1:56PM
+ModificationTime=4:56PM
 ModificationDate=04-22-2021
 ModifiedBy=Ryan Medick
 
@@ -5348,7 +5348,7 @@ PDOMapping=0
 ParameterName=Change state
 ObjectType=0x7
 ;StorageLocation=RAM
-DataType=0x0001
+DataType=0x0005
 AccessType=wo
 DefaultValue=0xFF
 PDOMapping=0

@@ -62,33 +62,45 @@ star_tracker_app_async(void *data, olm_file_cache_t *fread_cache) {
         CO->TPDO[TPDO_ST_COOR]->valid = false;
     }
 
-    if (OD_capture) {
-        star_tracker_capture();
-        if (star_tracker_get_capture(&path) >= 0) {
-            mytime = time(NULL);
-            sprintf(temp_path, "star-tracker_capture_%ld.png", mytime);
-
-            copyfile(path, temp_path);
-            free(path);
-
-            if (olm_file_cache_add(fread_cache, temp_path) < 0)
-                log_printf(LOG_ERR, "failed to add %s to fread cache", temp_path);
-        }
-        OD_capture = false;
-    }
-
     if (OD_getLastSolveImage) {
         if (star_tracker_get_solve(&path) >= 0) {
             mytime = time(NULL);
-            sprintf(temp_path, "star-tracker_solve_%ld.png", mytime);
+            sprintf(temp_path, "/tmp/star-tracker_solve_%ld.png", mytime);
 
-            copyfile(path, temp_path);
+            if(copyfile(path, temp_path) >= 0) {
+                if (olm_file_cache_add(fread_cache, temp_path) < 0)
+                    log_printf(LOG_ERR, "failed to add %s to fread cache", temp_path);
+            } else {
+                    log_printf(LOG_ERR, "get solve copyfile failed", temp_path);
+            }
             free(path);
-
-            if (olm_file_cache_add(fread_cache, temp_path) < 0)
-                log_printf(LOG_ERR, "failed to add %s to fread cache", temp_path);
+        } else {
+            log_printf(LOG_DEBUG, "get solve failed");
         }
         OD_getLastSolveImage = false;
+    }
+
+    if (OD_capture) {
+        if(star_tracker_capture() < 0) {
+            log_printf(LOG_ERR, "capture failed");
+            return;
+        }
+
+        if (star_tracker_get_capture(&path) >= 0) {
+            mytime = time(NULL);
+            sprintf(temp_path, "/tmp/star-tracker_capture_%ld.png", mytime);
+
+            if(copyfile(path, temp_path) >= 0) {
+                if (olm_file_cache_add(fread_cache, temp_path) < 0)
+                    log_printf(LOG_ERR, "failed to add %s to fread cache", temp_path);
+            } else {
+                log_printf(LOG_ERR, "get capture copyfile failed", temp_path);
+            }
+            free(path);
+        } else {
+            log_printf(LOG_DEBUG, "get capture failed");
+        }
+        OD_capture = false;
     }
 }
 
