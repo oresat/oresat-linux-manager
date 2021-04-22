@@ -40,13 +40,13 @@ star_tracker_coordinates(st_coordinates_t *coor) {
         return -EINVAL;
 
     if ((r = sd_bus_get_property(DBUS_INFO, "Coor", &err, &mess, "(dddd)")) < 0)
-        LOG_DBUS_CALL_METHOD_ERROR(LOG_DEBUG, MODULE_NAME, "Coor", err.name);
+        LOG_DBUS_GET_PROPERTY_ERROR(LOG_DEBUG, MODULE_NAME, "Coor", err.name);
     else if ((r = sd_bus_message_read(mess, "(dddd)",
             &coor->declination,
             &coor->right_ascension,
             &coor->roll,
             &time_raw)) < 0)
-        LOG_DBUS_METHOD_READ_ERROR(LOG_DEBUG, MODULE_NAME, "Coor", err.name);
+        LOG_DBUS_PROPERTY_READ_ERROR(LOG_DEBUG, MODULE_NAME, "Coor", err.name);
 
     time_fine = modf(time_raw, &time_coarse);
 
@@ -55,5 +55,100 @@ star_tracker_coordinates(st_coordinates_t *coor) {
 
     sd_bus_error_free(&err);
     sd_bus_message_unref(mess);
+    return r;
+}
+
+
+int32_t
+star_tracker_state(void) {
+    sd_bus_error err = SD_BUS_ERROR_NULL;
+    sd_bus_message *mess = NULL;
+    int32_t state = -1;
+
+    if (sd_bus_get_property(DBUS_INFO, "CurrentState", &err, &mess, "i") < 0)
+        LOG_DBUS_GET_PROPERTY_ERROR(LOG_DEBUG, MODULE_NAME, "CurrentState", err.name);
+    else if (sd_bus_message_read(mess, "CurrentState", &state) < 0)
+        LOG_DBUS_PROPERTY_READ_ERROR(LOG_DEBUG, MODULE_NAME, "CurrentState", err.name);
+
+    sd_bus_error_free(&err);
+    sd_bus_message_unref(mess);
+    return state;
+}
+
+int
+star_tracker_change_state(int32_t new_state) {
+    sd_bus_error err = SD_BUS_ERROR_NULL;
+    int r;
+
+    if ((r = sd_bus_call_method(DBUS_INFO, "ChangeState", &err, NULL, "i", new_state)) < 0)
+        LOG_DBUS_CALL_METHOD_ERROR(LOG_DEBUG, MODULE_NAME, "ChangeState", err.name);
+
+    sd_bus_error_free(&err);
+    return r;
+}
+
+int
+star_tracker_capture(void) {
+    sd_bus_error err = SD_BUS_ERROR_NULL;
+    int r;
+
+    if ((r = sd_bus_call_method(DBUS_INFO, "Capture", &err, NULL, NULL)) < 0)
+        LOG_DBUS_CALL_METHOD_ERROR(LOG_DEBUG, MODULE_NAME, "Capture", err.name);
+
+    sd_bus_error_free(&err);
+    return r;
+}
+
+int
+star_tracker_get_capture(char **out) {
+    sd_bus_error err = SD_BUS_ERROR_NULL;
+    sd_bus_message *mess = NULL;
+    char *temp = NULL, *update_list = NULL;
+    int r;
+
+    if ((r = sd_bus_get_property(DBUS_INFO, "CapturePath",  &err, &mess, "s")) < 0) {
+        LOG_DBUS_GET_PROPERTY_ERROR(LOG_DEBUG, MODULE_NAME, "CapturePath", err.name);
+    } else if ((r = sd_bus_message_read(mess, "s", &temp)) < 0) {
+        LOG_DBUS_PROPERTY_READ_ERROR(LOG_DEBUG, MODULE_NAME, "CapturePath", err.name);
+    } else if(is_file(temp)) {
+        if ((update_list = malloc(strlen(temp))) == NULL) {
+            r = -ENOMEM;
+        } else {
+            strncpy(update_list, temp, strlen(temp));
+            *out = update_list;
+        }
+    } else {
+        r = -ESRCH;
+    }
+
+    sd_bus_message_unref(mess);
+    sd_bus_error_free(&err);
+    return r;
+}
+
+int
+star_tracker_get_solve(char **out) {
+    sd_bus_error err = SD_BUS_ERROR_NULL;
+    sd_bus_message *mess = NULL;
+    char *temp = NULL, *update_list = NULL;
+    int r;
+
+    if ((r = sd_bus_get_property(DBUS_INFO, "SolvePath",  &err, &mess, "s")) < 0) {
+        LOG_DBUS_GET_PROPERTY_ERROR(LOG_DEBUG, MODULE_NAME, "SourcePath", err.name);
+    } else if ((r = sd_bus_message_read(mess, "s", &temp)) < 0) {
+        LOG_DBUS_PROPERTY_READ_ERROR(LOG_DEBUG, MODULE_NAME, "SolvePath", err.name);
+    } else if(is_file(temp)) {
+        if ((update_list = malloc(strlen(temp))) == NULL) {
+            r = -ENOMEM;
+        } else {
+            strncpy(update_list, temp, strlen(temp));
+            *out = update_list;
+        }
+    } else {
+        r = -ESRCH;
+    }
+
+    sd_bus_message_unref(mess);
+    sd_bus_error_free(&err);
     return r;
 }

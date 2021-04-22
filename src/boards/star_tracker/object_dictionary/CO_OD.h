@@ -77,7 +77,7 @@
 /*******************************************************************************
    OBJECT DICTIONARY
 *******************************************************************************/
-   #define CO_OD_NoOfElements             101
+   #define CO_OD_NoOfElements             102
 
 
 /*******************************************************************************
@@ -1220,6 +1220,9 @@
 /*6002 */
         #define OD_6002_capture                                     0x6002
 
+/*6003 */
+        #define OD_6003_getLastSolveImage                           0x6003
+
 /*******************************************************************************
    STRUCTURES FOR VARIABLES IN DIFFERENT MEMORY LOCATIONS
 *******************************************************************************/
@@ -1248,7 +1251,8 @@ struct sCO_OD_RAM{
 /*3100      */ OD_updater_t    updater;
 /*6000      */ UNSIGNED8      starTrackerStatus;
 /*6001      */ OD_orienation_t orienation;
-/*6002      */ UNSIGNED8      capture;
+/*6002      */ BOOLEAN        capture;
+/*6003      */ BOOLEAN        getLastSolveImage;
 
                UNSIGNED32     LastWord;
 };
@@ -1461,8 +1465,11 @@ extern struct sCO_OD_PERSIST_MFR CO_OD_PERSIST_MFR;
 /*6001, Data Type: orienation_t */
         #define OD_orienation                                       CO_OD_RAM.orienation
 
-/*6002, Data Type: UNSIGNED8 */
+/*6002, Data Type: BOOLEAN */
         #define OD_capture                                          CO_OD_RAM.capture
+
+/*6003, Data Type: BOOLEAN */
+        #define OD_getLastSolveImage                                CO_OD_RAM.getLastSolveImage
 
 #endif
 // clang-format on

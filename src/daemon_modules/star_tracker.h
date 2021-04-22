@@ -12,6 +12,7 @@
 #ifndef STAR_TRACKER_MODULE_H
 #define STAR_TRACKER_MODULE_H
 
+#include <stdint.h>
 #include <sys/time.h>
 
 #define STAR_TRACKER_SERVICE_FILE    "oresat-star-trackerd.service"
@@ -28,8 +29,49 @@ typedef struct {
  *
  * @param coor The cordinates stuct to fill out.
  *
- * @returns negative number on error.
+ * @return non negative number on sucess or negativer errno on error.
  */
 int star_tracker_coordinates(st_coordinates_t *coor);
+
+/**
+ * @brief Gets the curret state.
+ *
+ * @return non negative number on sucess or negativer errno on error.
+ */
+int32_t star_tracker_state(void);
+
+/**
+ * @breif Tells the star tracker to change states.
+ *
+ * @return non negative number on sucess or negativer errno on error.
+ */
+int star_tracker_change_state(int32_t new_state);
+
+/**
+ * @breif Tells star tracker to capture an image.
+ *
+ * @return non negative number on sucess or negativer errno on error.
+ */
+int star_tracker_capture(void);
+
+/**
+ * @breif Gets path to last capture image.
+ *
+ * @param out The filepath to image. String musta
+ * be freed with free() when no longer needed.
+ *
+ * @return non negative number on sucess or negativer errno on error.
+ */
+int star_tracker_get_capture(char **out);
+
+/**
+ * @breif Gets path to last solve image.
+ *
+ * @param out The filepath to image. String musta
+ * be freed with free() when no longer needed.
+ *
+ * @return non negative number on sucess or negativer errno on error.
+ */
+int star_tracker_get_solve(char **out);
 
 #endif /* STAR_TRACKER_MODULE_H */

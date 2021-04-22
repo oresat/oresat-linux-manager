@@ -51,7 +51,8 @@ struct sCO_OD_RAM CO_OD_RAM = {
 /*3100*/ {0x5L, 0xFFL, 0x0L, 0, 0, 0},
 /*6000*/ 0xFFL,
 /*6001*/ {0x4L, 0x00, 0x00, 0x00, 0x00000000L},
-/*6002*/ 0x0L,
+/*6002*/ 0,
+/*6003*/ 0,
 
            CO_OD_FIRST_LAST_WORD,
 };
@@ -1066,6 +1067,7 @@ const CO_OD_entry_t CO_OD[CO_OD_NoOfElements] = {
 {0x3100, 0x05, 0x00,  0, (void*)&OD_record3100},
 {0x6000, 0x00, 0x26,  1, (void*)&CO_OD_RAM.starTrackerStatus},
 {0x6001, 0x04, 0x00,  0, (void*)&OD_record6001},
-{0x6002, 0x00, 0x0E,  1, (void*)&CO_OD_RAM.capture},
+{0x6002, 0x00, 0x0A,  1, (void*)&CO_OD_RAM.capture},
+{0x6003, 0x00, 0x0A,  1, (void*)&CO_OD_RAM.getLastSolveImage},
 };
 // clang-format on
