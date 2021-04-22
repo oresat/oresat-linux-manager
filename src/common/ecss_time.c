@@ -1,4 +1,5 @@
 #include "ecss_time.h"
+#include "logging.h"
 #include <stddef.h>
 #include <sys/time.h>
 
@@ -27,6 +28,7 @@ set_time_scet(const time_scet_t *scet) {
     time.tv_sec = scet->coarse;
     time.tv_usec = scet->fine;
 
+    log_printf(LOG_INFO, "SCET setting time to %d.%d", time.tv_sec, time.tv_usec);
     settimeofday(&time, NULL);
 }
 
@@ -54,5 +56,6 @@ set_time_utc(const time_utc_t *utc) {
     time.tv_sec = utc->day * SECS_IN_DAY;
     time.tv_usec = utc->ms * 1000 + utc->us;
 
+    log_printf(LOG_INFO, "UTC setting time to %d.%d", time.tv_sec, time.tv_usec);
     settimeofday(&time, NULL);
 }

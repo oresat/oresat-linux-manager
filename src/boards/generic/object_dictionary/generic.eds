@@ -2,14 +2,14 @@
 FileName=generic.eds
 FileVersion=1
 FileRevision=1
-LastEDS=/home/ryan/PSAS/repos-github/oresat-linux-manager/src/boards/generic/object_dictionary/generic.eds
+LastEDS=
 EDSVersion=4.0
 Description=OreSat Generic
 CreationTime=11:41PM
 CreationDate=03-09-2021
 CreatedBy=Ryan Medick
-ModificationTime=8:58PM
-ModificationDate=04-15-2021
+ModificationTime=1:57PM
+ModificationDate=04-22-2021
 ModifiedBy=Ryan Medick
 
 [DeviceInfo]
@@ -722,7 +722,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
 AccessType=rw
-DefaultValue=0x000004B3
+DefaultValue=0x000004B7
 PDOMapping=0
 
 [1400sub2]

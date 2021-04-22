@@ -8,8 +8,8 @@ Description=OreSat DxWifFi
 CreationTime=11:27PM
 CreationDate=03-09-2021
 CreatedBy=Ryan Medick
-ModificationTime=8:59PM
-ModificationDate=04-15-2021
+ModificationTime=1:57PM
+ModificationDate=04-22-2021
 ModifiedBy=Ryan Medick
 
 [DeviceInfo]
@@ -723,7 +723,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
 AccessType=rw
-DefaultValue=0x000004B3
+DefaultValue=0x000004B7
 PDOMapping=0
 
 [1400sub2]
