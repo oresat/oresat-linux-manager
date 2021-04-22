@@ -104,10 +104,9 @@ app_manager_async(olm_app_t **apps, olm_file_cache_t *fwrite_cache) {
         else if (apps[i]->unit_state == UNIT_FAILED)
             ++failed_apps; 
 
-        if (apps[i]->unit_state != UNIT_ACTIVE) {
-            continue; // app is not running
-        } else if (apps[i]->fwrite_keyword == NULL || apps[i]->fwrite_cb == NULL) {
-            log_printf(LOG_DEBUG, "app %s is misconfigured", apps[i]->name);
+        // if app is not running or does not require fwrite
+        if (apps[i]->unit_state != UNIT_ACTIVE ||
+                apps[i]->fwrite_keyword == NULL || apps[i]->fwrite_cb == NULL) {
             continue;
         }
 

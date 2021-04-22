@@ -67,7 +67,7 @@ star_tracker_state(void) {
 
     if (sd_bus_get_property(DBUS_INFO, "CurrentState", &err, &mess, "i") < 0)
         LOG_DBUS_GET_PROPERTY_ERROR(LOG_DEBUG, MODULE_NAME, "CurrentState", err.name);
-    else if (sd_bus_message_read(mess, "CurrentState", &state) < 0)
+    else if (sd_bus_message_read(mess, "i", &state) < 0)
         LOG_DBUS_PROPERTY_READ_ERROR(LOG_DEBUG, MODULE_NAME, "CurrentState", err.name);
 
     sd_bus_error_free(&err);

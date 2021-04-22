@@ -8,7 +8,7 @@ Description=OreSat Star Tracker
 CreationTime=1:57PM
 CreationDate=03-09-2021
 CreatedBy=Ryan Medick
-ModificationTime=9:13AM
+ModificationTime=10:47AM
 ModificationDate=04-22-2021
 ModifiedBy=Ryan Medick
 
@@ -124,7 +124,7 @@ DefaultValue=0x00000000
 PDOMapping=0
 
 [OptionalObjects]
-SupportedObjects=87
+SupportedObjects=88
 1=0x1002
 2=0x1003
 3=0x1005
@@ -212,6 +212,7 @@ SupportedObjects=87
 85=0x6001
 86=0x6002
 87=0x6003
+88=0x6004
 
 [1002]
 ParameterName=Manufacturer status register
@@ -4233,7 +4234,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0005
 AccessType=rw
-DefaultValue=0x01
+DefaultValue=0
 PDOMapping=0
 
 [1A04sub1]
@@ -4242,7 +4243,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
 AccessType=rw
-DefaultValue=0x60000008
+DefaultValue=0x00000000
 PDOMapping=0
 
 [1A04sub2]
@@ -5344,6 +5345,15 @@ DefaultValue=0
 PDOMapping=0
 
 [6003]
+ParameterName=Change state
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x0001
+AccessType=wo
+DefaultValue=0xFF
+PDOMapping=0
+
+[6004]
 ParameterName=Get last solve image
 ObjectType=0x7
 ;StorageLocation=RAM

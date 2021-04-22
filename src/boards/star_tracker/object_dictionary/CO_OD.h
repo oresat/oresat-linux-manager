@@ -77,7 +77,7 @@
 /*******************************************************************************
    OBJECT DICTIONARY
 *******************************************************************************/
-   #define CO_OD_NoOfElements             102
+   #define CO_OD_NoOfElements             103
 
 
 /*******************************************************************************
@@ -1221,7 +1221,10 @@
         #define OD_6002_capture                                     0x6002
 
 /*6003 */
-        #define OD_6003_getLastSolveImage                           0x6003
+        #define OD_6003_changeState                                 0x6003
+
+/*6004 */
+        #define OD_6004_getLastSolveImage                           0x6004
 
 /*******************************************************************************
    STRUCTURES FOR VARIABLES IN DIFFERENT MEMORY LOCATIONS
@@ -1252,7 +1255,8 @@ struct sCO_OD_RAM{
 /*6000      */ UNSIGNED8      starTrackerStatus;
 /*6001      */ OD_orienation_t orienation;
 /*6002      */ BOOLEAN        capture;
-/*6003      */ BOOLEAN        getLastSolveImage;
+/*6003      */ BOOLEAN        changeState;
+/*6004      */ BOOLEAN        getLastSolveImage;
 
                UNSIGNED32     LastWord;
 };
@@ -1469,6 +1473,9 @@ extern struct sCO_OD_PERSIST_MFR CO_OD_PERSIST_MFR;
         #define OD_capture                                          CO_OD_RAM.capture
 
 /*6003, Data Type: BOOLEAN */
+        #define OD_changeState                                      CO_OD_RAM.changeState
+
+/*6004, Data Type: BOOLEAN */
         #define OD_getLastSolveImage                                CO_OD_RAM.getLastSolveImage
 
 #endif

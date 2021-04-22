@@ -15,7 +15,7 @@
         <ProfileTechnology>CANopen</ProfileTechnology>
       </ISO15745Reference>
     </ProfileHeader>
-    <ProfileBody xmlns:q1="http://www.canopen.org/xml/1.1" xsi:type="q1:ProfileBody_Device_CANopen" formatName="CANopen" formatVersion="1.0" fileName="star_tracker.xdd" fileCreator="Ryan Medick" fileCreationDate="2021-03-09" fileCreationTime="13:57:28.0000000-07:00" fileModifiedBy="Ryan Medick" fileModificationDate="2021-04-22" fileModificationTime="09:13:25.5187430-07:00" fileVersion="1" supportedLanguages="en" xmlns="">
+    <ProfileBody xmlns:q1="http://www.canopen.org/xml/1.1" xsi:type="q1:ProfileBody_Device_CANopen" formatName="CANopen" formatVersion="1.0" fileName="star_tracker.xdd" fileCreator="Ryan Medick" fileCreationDate="2021-03-09" fileCreationTime="13:57:28.0000000-07:00" fileModifiedBy="Ryan Medick" fileModificationDate="2021-04-22" fileModificationTime="10:47:57.3296700-07:00" fileVersion="1" supportedLanguages="en" xmlns="">
       <q1:DeviceIdentity>
         <q1:vendorName>Portland State Aerospace Society</q1:vendorName>
         <q1:vendorID>0</q1:vendorID>
@@ -5131,12 +5131,12 @@
           <q1:parameter uniqueID="UID_SUB_1A0400" access="readWrite">
             <label lang="en">Number of mapped application objects in PDO</label>
             <USINT />
-            <q1:defaultValue value="0x01" />
+            <q1:defaultValue value="0" />
           </q1:parameter>
           <q1:parameter uniqueID="UID_SUB_1A0401" access="readWrite">
             <label lang="en">Mapping object 1</label>
             <UDINT />
-            <q1:defaultValue value="0x60000008" />
+            <q1:defaultValue value="0x00000000" />
           </q1:parameter>
           <q1:parameter uniqueID="UID_SUB_1A0402" access="readWrite">
             <label lang="en">Mapping object 2</label>
@@ -6298,6 +6298,11 @@ Manufacturer may define its own constants up to index 0xFF. Of course, he must t
             <q1:defaultValue value="0" />
           </q1:parameter>
           <q1:parameter uniqueID="UID_OBJ_6003" access="write">
+            <label lang="en">Change state</label>
+            <BOOL />
+            <q1:defaultValue value="0xFF" />
+          </q1:parameter>
+          <q1:parameter uniqueID="UID_OBJ_6004" access="write">
             <label lang="en">Get last solve image</label>
             <BOOL />
             <q1:defaultValue value="0" />
@@ -6319,7 +6324,7 @@ Manufacturer may define its own constants up to index 0xFF. Of course, he must t
         <ProfileTechnology>CANopen</ProfileTechnology>
       </ISO15745Reference>
     </ProfileHeader>
-    <ProfileBody xmlns:q2="http://www.canopen.org/xml/1.1" xsi:type="q2:ProfileBody_CommunicationNetwork_CANopen" formatName="CANopen" formatVersion="1.0" fileName="star_tracker.xdd" fileCreator="Ryan Medick" fileCreationDate="2021-03-09" fileCreationTime="13:57:28.0000000-07:00" fileModificationDate="2021-04-22" fileModificationTime="09:13:25.5187430-07:00" fileVersion="1" supportedLanguages="en" xmlns="">
+    <ProfileBody xmlns:q2="http://www.canopen.org/xml/1.1" xsi:type="q2:ProfileBody_CommunicationNetwork_CANopen" formatName="CANopen" formatVersion="1.0" fileName="star_tracker.xdd" fileCreator="Ryan Medick" fileCreationDate="2021-03-09" fileCreationTime="13:57:28.0000000-07:00" fileModificationDate="2021-04-22" fileModificationTime="10:47:57.3296700-07:00" fileVersion="1" supportedLanguages="en" xmlns="">
       <ApplicationLayers>
         <q2:CANopenObjectList>
           <CANopenObject index="1000" name="Device type" objectType="7" PDOmapping="no" uniqueIDRef="UID_OBJ_1000" />
@@ -7135,7 +7140,8 @@ Manufacturer may define its own constants up to index 0xFF. Of course, he must t
             <CANopenSubObject subIndex="04" name="Timestamp" objectType="7" PDOmapping="TPDO" uniqueIDRef="UID_SUB_600104" />
           </CANopenObject>
           <CANopenObject index="6002" name="Capture" objectType="7" PDOmapping="no" uniqueIDRef="UID_OBJ_6002" />
-          <CANopenObject index="6003" name="Get last solve image" objectType="7" PDOmapping="no" uniqueIDRef="UID_OBJ_6003" />
+          <CANopenObject index="6003" name="Change state" objectType="7" PDOmapping="no" uniqueIDRef="UID_OBJ_6003" />
+          <CANopenObject index="6004" name="Get last solve image" objectType="7" PDOmapping="no" uniqueIDRef="UID_OBJ_6004" />
         </q2:CANopenObjectList>
         <dummyUsage>
           <dummy entry="Dummy0001=0" />
