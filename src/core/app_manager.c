@@ -136,30 +136,22 @@ app_manager_async(olm_app_t **apps, olm_file_cache_t *fwrite_cache) {
 
         // send file(s) from fwrite cache to daemon
         files = olm_file_cache_len(fwrite_cache, apps[i]->fwrite_keyword);
-        for (int j=0; j<files; ++j) { // iterate thru file with app's keyword
-            olm_file_cache_index(fwrite_cache, j, apps[i]->fwrite_keyword, &file);
+        if(files > 0) { // iterate thru file with app's keyword
+            olm_file_cache_index(fwrite_cache, 0, apps[i]->fwrite_keyword, &file);
             sprintf(path, "%s%s", fwrite_cache->dir, file->name);
             log_printf(LOG_DEBUG, "send file %s to app", path);
 
             r = apps[i]->fwrite_cb(path);
-            if ((r = apps[i]->fwrite_cb(path)) == 0) { // not now
+            if (r == 0) { // not now
                 log_printf(LOG_DEBUG, "%s cannot recieve %s right now", apps[i]->unit_name, file->name);
-                olm_file_free(file);
-		break;
             } else if (r > 0) { // was successful
                 log_printf(LOG_INFO, "deleting %s from fwrite cache", file->name);
-                if (olm_file_cache_remove(fwrite_cache, file->name) >= 0) {
-		    // adjust for the removed file
-                    --j;
-		    --files;
-                    olm_file_free(file);
-		    continue;
-		}
+                olm_file_cache_remove(fwrite_cache, file->name);
             } else { // error
                 log_printf(LOG_CRIT, "%s cannot recieve %s", apps[i]->unit_name, file->name);
-                olm_file_free(file);
-		break;
             }
+
+            olm_file_free(file);
         }
     }
 
