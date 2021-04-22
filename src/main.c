@@ -96,8 +96,7 @@ static olm_file_cache_t *fwrite_cache = NULL;
 static system_info_t system_info = SYSTEM_INFO_DEFAULT;
 
 // not static
-sd_bus *core_bus = NULL;
-sd_bus *apps_bus = NULL;
+sd_bus *system_bus = NULL;
 
 /* Helper functions **********************************************************/
 /* Realtime thread */
@@ -315,15 +314,12 @@ main(int argc, char *argv[]) {
 
     log_printf(LOG_INFO, DBG_CAN_OPEN_INFO, configs.node_id, "starting");
 
-    if (sd_bus_open_system(&core_bus) < 0)
-        log_printf(LOG_CRIT, "open system bus for OLM core failed");
-    if (sd_bus_open_system(&apps_bus) < 0)
-        log_printf(LOG_CRIT, "open system bus for apps failed");
+    if (sd_bus_open_system(&system_bus) < 0)
+        log_printf(LOG_CRIT, "open system bus failed");
 
     // set method and therefor priorities to timeout after 1 second.
     // otherwise it defaults to 25 seconds
-    sd_bus_set_method_call_timeout(core_bus, 1000000);
-    sd_bus_set_method_call_timeout(apps_bus, 1000000);
+    sd_bus_set_method_call_timeout(system_bus, 1000000);
 
     /* Allocate memory for CANopen objects */
     err = CO_new(NULL);
@@ -531,10 +527,8 @@ main(int argc, char *argv[]) {
             log_printf(LOG_CRIT, DBG_ERRNO, "pthread_join()");
     }
 
-    if (core_bus != NULL)
-        sd_bus_unref(core_bus);
-    if (apps_bus != NULL)
-        sd_bus_unref(apps_bus);
+    if (system_bus != NULL)
+        sd_bus_unref(system_bus);
 
     /* delete objects from memory */
     CO_epoll_close(&epRT);
@@ -593,6 +587,8 @@ app_thread(void* arg) {
 
     /* Endless loop */
     while (CO_endProgram == 0) {
+        app_manager_async(APPS, fwrite_cache);
+
         for (int i=0; APPS[i] != NULL; ++i) {
             if (APPS[i]->async_cb != NULL && APPS[i]->unit_state == UNIT_ACTIVE)
                 APPS[i]->async_cb(APPS[i]->data, fread_cache);
@@ -614,7 +610,6 @@ async_thread(void* arg) {
     while (CO_endProgram == 0) {
         system_info_async(&system_info);
         co_command_async(&os_command_data);
-        app_manager_async(APPS, fwrite_cache);
         usleep(ASYNC_DELAY);
     }
 

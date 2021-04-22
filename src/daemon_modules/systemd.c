@@ -26,7 +26,7 @@
 #define OBJECT_PATH         "/org/freedesktop/systemd1"
 
 /** System D-Bus connection. Defined in main.c */
-extern sd_bus *core_bus;
+extern sd_bus *system_bus;
 
 static const char *active_state_str[] = {
     "inactive",
@@ -46,7 +46,7 @@ get_unit(const char *name) {
     if (name == NULL)
         return r;
     
-    if (sd_bus_call_method(core_bus, DESTINATION, OBJECT_PATH, \
+    if (sd_bus_call_method(system_bus, DESTINATION, OBJECT_PATH, \
                 MANAGER_INTERFACE, "GetUnit", &err, &mess, "s", name) < 0) {
         LOG_DBUS_CALL_METHOD_ERROR(LOG_ERR, MODULE_NAME, "GetUnit", err.name);
         goto get_unit_end;
@@ -77,7 +77,7 @@ load_unit(const char *name) {
     if (name == NULL)
         return r;
     
-    if (sd_bus_call_method(core_bus, DESTINATION, OBJECT_PATH, \
+    if (sd_bus_call_method(system_bus, DESTINATION, OBJECT_PATH, \
                 MANAGER_INTERFACE, "LoadUnit", &err, &mess, "s", name) < 0) {
         LOG_DBUS_CALL_METHOD_ERROR(LOG_ERR, MODULE_NAME, "LoadUnit", err.name);
         goto load_unit_end;
@@ -107,7 +107,7 @@ start_unit(const char *unit) {
     if (unit == NULL)
         return -EINVAL;
     
-    if ((r = sd_bus_call_method(core_bus, DESTINATION, unit, \
+    if ((r = sd_bus_call_method(system_bus, DESTINATION, unit, \
                 UNIT_INTERFACE, "Start", &err, &mess, "s", "fail")) < 0)
         LOG_DBUS_CALL_METHOD_ERROR(LOG_ERR, MODULE_NAME, "Start", err.name);
 
@@ -125,7 +125,7 @@ stop_unit(const char *unit) {
     if (unit == NULL)
         return -EINVAL;
     
-    if ((r = sd_bus_call_method(core_bus, DESTINATION, unit, \
+    if ((r = sd_bus_call_method(system_bus, DESTINATION, unit, \
                 UNIT_INTERFACE, "Stop", &err, &mess, "s", "fail")) < 0)
         LOG_DBUS_CALL_METHOD_ERROR(LOG_ERR, MODULE_NAME, "Stop", err.name);
 
@@ -143,7 +143,7 @@ restart_unit(const char *unit) {
     if (unit == NULL)
         return -EINVAL;
     
-    if ((r = sd_bus_call_method(core_bus, DESTINATION, unit, \
+    if ((r = sd_bus_call_method(system_bus, DESTINATION, unit, \
                 UNIT_INTERFACE, "Restart", &err, &mess, "s", "fail")) < 0)
         LOG_DBUS_CALL_METHOD_ERROR(LOG_ERR, MODULE_NAME, "Restart", err.name);
 
@@ -162,7 +162,7 @@ get_unit_active_state(const char *unit) {
     if (unit == NULL)
         return -EINVAL;
 
-    if (sd_bus_get_property(core_bus, DESTINATION, unit, UNIT_INTERFACE, \
+    if (sd_bus_get_property(system_bus, DESTINATION, unit, UNIT_INTERFACE, \
                 "ActiveState", &err, &mess, "s") < 0) {
         LOG_DBUS_GET_PROPERTY_ERROR(LOG_ERR, MODULE_NAME, "ActiveState", err.name);
         goto get_unit_active_state_end;
