@@ -31,7 +31,7 @@ add_subdirectory(object_dictionary)
 set(CPACK_DEBIAN_PACKAGE_NAME "olm-star-tracker")
 set(CPACK_DEBIAN_PACKAGE_VERSION "1.0.0-0")
 set(CPACK_DEBIAN_PACKAGE_DESCRIPTION "CANopen frontend to the Oresat Star Tracker board")
-set(CPACK_DEBIAN_PACKAGE_CONFLICTS "olm-generic olm-cfc olm-gps olm-dxwifi")
+set(CPACK_DEBIAN_PACKAGE_CONFLICTS "olm-generic, olm-cfc, olm-gps, olm-dxwifi")
 
 # If this version of OLM need extra packages add_dependencies do:
 # set(CPACK_DEBIAN_PACKAGE_DEPENDS "${CPACK_DEBIAN_PACKAGE_DEPENDS} extra-package)"

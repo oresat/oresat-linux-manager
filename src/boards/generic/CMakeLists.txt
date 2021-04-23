@@ -30,7 +30,7 @@ add_subdirectory(object_dictionary)
 set(CPACK_DEBIAN_PACKAGE_NAME "olm-generic")
 set(CPACK_DEBIAN_PACKAGE_VERSION "1.0.0-0")
 set(CPACK_DEBIAN_PACKAGE_DESCRIPTION "CANopen frontend to generic Oresat Linux boards")
-set(CPACK_DEBIAN_PACKAGE_CONFLICTS "olm-cfc olm-gps olm-dxwifi olm-star-tracker")
+set(CPACK_DEBIAN_PACKAGE_CONFLICTS "olm-cfc, olm-gps, olm-dxwifi, olm-star-tracker")
 
 # If this version of OLM need extra packages add_dependencies do:
 # set(CPACK_DEBIAN_PACKAGE_DEPENDS "${CPACK_DEBIAN_PACKAGE_DEPENDS} extra-package)"
