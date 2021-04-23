@@ -103,7 +103,7 @@ int
 star_tracker_get_capture(char **out) {
     sd_bus_error err = SD_BUS_ERROR_NULL;
     sd_bus_message *mess = NULL;
-    char *temp = NULL, *update_list = NULL;
+    char *temp = NULL, *path = NULL;
     int r;
 
     if ((r = sd_bus_get_property(DBUS_INFO, "CapturePath",  &err, &mess, "s")) < 0) {
@@ -111,11 +111,11 @@ star_tracker_get_capture(char **out) {
     } else if ((r = sd_bus_message_read(mess, "s", &temp)) < 0) {
         LOG_DBUS_PROPERTY_READ_ERROR(LOG_DEBUG, MODULE_NAME, "CapturePath", err.name);
     } else if(is_file(temp)) {
-        if ((update_list = malloc(strlen(temp)+1)) == NULL) {
+        if ((path = malloc(strlen(temp)+1)) == NULL) {
             r = -ENOMEM;
         } else {
-            strncpy(update_list, temp, strlen(temp)+1);
-            *out = update_list;
+            strncpy(path, temp, strlen(temp)+1);
+            *out = path;
         }
     } else {
         r = -ESRCH;
@@ -130,7 +130,7 @@ int
 star_tracker_get_solve(char **out) {
     sd_bus_error err = SD_BUS_ERROR_NULL;
     sd_bus_message *mess = NULL;
-    char *temp = NULL, *update_list = NULL;
+    char *temp = NULL, *path = NULL;
     int r;
 
     if ((r = sd_bus_get_property(DBUS_INFO, "SolvePath",  &err, &mess, "s")) < 0) {
@@ -138,11 +138,11 @@ star_tracker_get_solve(char **out) {
     } else if ((r = sd_bus_message_read(mess, "s", &temp)) < 0) {
         LOG_DBUS_PROPERTY_READ_ERROR(LOG_DEBUG, MODULE_NAME, "SolvePath", err.name);
     } else if(is_file(temp)) {
-        if ((update_list = malloc(strlen(temp)+1)) == NULL) {
+        if ((path = malloc(strlen(temp)+1)) == NULL) {
             r = -ENOMEM;
         } else {
-            strncpy(update_list, temp, strlen(temp)+1);
-            *out = update_list;
+            strncpy(path, temp, strlen(temp)+1);
+            *out = path;
         }
     } else {
         r = -ESRCH;

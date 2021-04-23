@@ -71,7 +71,7 @@ star_tracker_app_async(void *data, olm_file_cache_t *fread_cache) {
                 if (olm_file_cache_add(fread_cache, temp_path) < 0)
                     log_printf(LOG_ERR, "failed to add %s to fread cache", temp_path);
             } else {
-                    log_printf(LOG_ERR, "get solve copyfile failed", temp_path);
+                log_printf(LOG_ERR, "get solve copyfile failed");
             }
             free(path);
         } else {
@@ -94,7 +94,7 @@ star_tracker_app_async(void *data, olm_file_cache_t *fread_cache) {
                 if (olm_file_cache_add(fread_cache, temp_path) < 0)
                     log_printf(LOG_ERR, "failed to add %s to fread cache", temp_path);
             } else {
-                log_printf(LOG_ERR, "get capture copyfile failed", temp_path);
+                log_printf(LOG_ERR, "get capture copyfile failed");
             }
             free(path);
         } else {
