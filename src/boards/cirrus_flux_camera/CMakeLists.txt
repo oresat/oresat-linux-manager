@@ -28,7 +28,7 @@ add_subdirectory(object_dictionary)
 # NOTE: general CPACK info is in ../CMakeLists.txt
 
 set(CPACK_DEBIAN_PACKAGE_NAME "olm-cfc")
-set(CPACK_DEBIAN_PACKAGE_VERSION "0.1.1-0")
+set(CPACK_DEBIAN_PACKAGE_VERSION "1.0.0-0")
 set(CPACK_DEBIAN_PACKAGE_DESCRIPTION "CANopen frontend to the Oresat CFC board")
 set(CPACK_DEBIAN_PACKAGE_CONFLICTS "olm-generic olm-gps olm-dxwifi olm-star-tracker")
 
