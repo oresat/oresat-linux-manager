@@ -308,9 +308,15 @@ main(int argc, char *argv[]) {
         make_daemon(DEFAULT_PID_FILE);
     }
 
-    // change the TPDO COB-ID, no needed for lock as nothing else exist yet.
-    for (int i=0; i< CO_NO_TPDO; ++i)
-        OD_TPDOCommunicationParameter[i].COB_IDUsedByTPDO += configs.node_id;
+    // change the PDO COB-ID, no needed for lock as nothing else exist yet.
+    for (unsigned int i = 0; i < CO_NO_TPDO; i++) {
+        if ((OD_TPDOCommunicationParameter[i].COB_IDUsedByTPDO & 0xFFF) == 0x180 + (0x100 * (i % 4)))
+            OD_TPDOCommunicationParameter[i].COB_IDUsedByTPDO += configs.node_id + i / 4;
+    }
+    for (unsigned int i = 0; i < CO_NO_RPDO; i++) {
+        if ((OD_RPDOCommunicationParameter[i].COB_IDUsedByRPDO & 0xFFF) == 0x200 + (0x100 * (i % 4)))
+            OD_RPDOCommunicationParameter[i].COB_IDUsedByRPDO += configs.node_id + i / 4;
+    }
 
     log_printf(LOG_INFO, DBG_CAN_OPEN_INFO, configs.node_id, "starting");
 

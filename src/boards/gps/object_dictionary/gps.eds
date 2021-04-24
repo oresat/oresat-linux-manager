@@ -8,8 +8,8 @@ Description=OreSat GPS
 CreationTime=11:31PM
 CreationDate=03-09-2021
 CreatedBy=Ryan Medick
-ModificationTime=1:56PM
-ModificationDate=04-22-2021
+ModificationTime=4:47PM
+ModificationDate=04-24-2021
 ModifiedBy=Ryan Medick
 
 [DeviceInfo]
@@ -726,7 +726,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
 AccessType=rw
-DefaultValue=0x80000200+$NODEID
+DefaultValue=0x00000181
 PDOMapping=0
 
 [1400sub2]
@@ -894,7 +894,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
 AccessType=rw
-DefaultValue=0x80000201+$NODEID
+DefaultValue=0x80000200+$NODEID
 PDOMapping=0
 
 [1404sub2]
@@ -936,7 +936,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
 AccessType=rw
-DefaultValue=0x80000301+$NODEID
+DefaultValue=0x80000300+$NODEID
 PDOMapping=0
 
 [1405sub2]
@@ -978,7 +978,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
 AccessType=rw
-DefaultValue=0x80000401+$NODEID
+DefaultValue=0x80000400+$NODEID
 PDOMapping=0
 
 [1406sub2]
@@ -1020,7 +1020,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
 AccessType=rw
-DefaultValue=0x80000501+$NODEID
+DefaultValue=0x80000500+$NODEID
 PDOMapping=0
 
 [1407sub2]
@@ -1062,7 +1062,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
 AccessType=rw
-DefaultValue=0x80000202+$NODEID
+DefaultValue=0x80000200+$NODEID
 PDOMapping=0
 
 [1408sub2]
@@ -1104,7 +1104,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
 AccessType=rw
-DefaultValue=0x80000302+$NODEID
+DefaultValue=0x80000300+$NODEID
 PDOMapping=0
 
 [1409sub2]
@@ -1146,7 +1146,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
 AccessType=rw
-DefaultValue=0x80000402+$NODEID
+DefaultValue=0x80000400+$NODEID
 PDOMapping=0
 
 [140Asub2]
@@ -1188,7 +1188,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
 AccessType=rw
-DefaultValue=0x80000502+$NODEID
+DefaultValue=0x80000500+$NODEID
 PDOMapping=0
 
 [140Bsub2]
@@ -1230,7 +1230,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
 AccessType=rw
-DefaultValue=0x80000203+$NODEID
+DefaultValue=0x80000200+$NODEID
 PDOMapping=0
 
 [140Csub2]
@@ -1272,7 +1272,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
 AccessType=rw
-DefaultValue=0x80000303+$NODEID
+DefaultValue=0x80000300+$NODEID
 PDOMapping=0
 
 [140Dsub2]
@@ -1314,7 +1314,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
 AccessType=rw
-DefaultValue=0x80000403+$NODEID
+DefaultValue=0x80000400+$NODEID
 PDOMapping=0
 
 [140Esub2]
@@ -1356,7 +1356,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
 AccessType=rw
-DefaultValue=0x80000503+$NODEID
+DefaultValue=0x80000500+$NODEID
 PDOMapping=0
 
 [140Fsub2]
@@ -1389,7 +1389,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0005
 AccessType=rw
-DefaultValue=0
+DefaultValue=0x01
 PDOMapping=0
 
 [1600sub1]
@@ -1398,7 +1398,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
 AccessType=rw
-DefaultValue=0x00000000
+DefaultValue=0x20100040
 PDOMapping=0
 
 [1600sub2]
@@ -3066,7 +3066,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
 AccessType=rw
-DefaultValue=0x40000181+$NODEID
+DefaultValue=0x40000180+$NODEID
 PDOMapping=0
 
 [1804sub2]
@@ -3135,7 +3135,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
 AccessType=rw
-DefaultValue=0x40000281+$NODEID
+DefaultValue=0x40000280+$NODEID
 PDOMapping=0
 
 [1805sub2]
@@ -3204,7 +3204,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
 AccessType=rw
-DefaultValue=0xC0000381+$NODEID
+DefaultValue=0xC0000380+$NODEID
 PDOMapping=0
 
 [1806sub2]
@@ -3273,7 +3273,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
 AccessType=rw
-DefaultValue=0xC0000481+$NODEID
+DefaultValue=0xC0000480+$NODEID
 PDOMapping=0
 
 [1807sub2]
@@ -3342,7 +3342,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
 AccessType=rw
-DefaultValue=0xC0000182+$NODEID
+DefaultValue=0xC0000180+$NODEID
 PDOMapping=0
 
 [1808sub2]
@@ -3411,7 +3411,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
 AccessType=rw
-DefaultValue=0xC0000282+$NODEID
+DefaultValue=0xC0000280+$NODEID
 PDOMapping=0
 
 [1809sub2]
@@ -3480,7 +3480,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
 AccessType=rw
-DefaultValue=0xC0000382+$NODEID
+DefaultValue=0xC0000380+$NODEID
 PDOMapping=0
 
 [180Asub2]
@@ -3549,7 +3549,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
 AccessType=rw
-DefaultValue=0xC0000482+$NODEID
+DefaultValue=0xC0000480+$NODEID
 PDOMapping=0
 
 [180Bsub2]
@@ -3618,7 +3618,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
 AccessType=rw
-DefaultValue=0xC0000183+$NODEID
+DefaultValue=0xC0000180+$NODEID
 PDOMapping=0
 
 [180Csub2]
@@ -3687,7 +3687,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
 AccessType=rw
-DefaultValue=0xC0000283+$NODEID
+DefaultValue=0xC0000280+$NODEID
 PDOMapping=0
 
 [180Dsub2]
@@ -3756,7 +3756,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
 AccessType=rw
-DefaultValue=0xC0000383+$NODEID
+DefaultValue=0xC0000380+$NODEID
 PDOMapping=0
 
 [180Esub2]
@@ -3825,7 +3825,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
 AccessType=rw
-DefaultValue=0x40000483+$NODEID
+DefaultValue=0x40000181
 PDOMapping=0
 
 [180Fsub2]
@@ -3861,7 +3861,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0006
 AccessType=rw
-DefaultValue=5000
+DefaultValue=0
 PDOMapping=0
 
 [180Fsub6]

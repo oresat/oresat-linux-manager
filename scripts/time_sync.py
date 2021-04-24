@@ -20,7 +20,7 @@ if args.mock:
     ts = time()
     ts_us = int(modf(ts)[0] * 1000000)
     data = struct.pack("=2I", int(ts), ts_us)
-    network.send_message(0x4B7, b'\x9F\xD9\x81\x60\xE9\x29\x0A\x00')
+    network.send_message(0x181, b'\x9F\xD9\x81\x60\xE9\x29\x0A\x00')
 else:
     network.sync.start(10)
 

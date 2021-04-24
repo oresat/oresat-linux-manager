@@ -15,7 +15,7 @@
         <ProfileTechnology>CANopen</ProfileTechnology>
       </ISO15745Reference>
     </ProfileHeader>
-    <ProfileBody xmlns:q1="http://www.canopen.org/xml/1.1" xsi:type="q1:ProfileBody_Device_CANopen" formatName="CANopen" formatVersion="1.0" fileName="dxwifi.xdd" fileCreator="Ryan Medick" fileCreationDate="2021-03-09" fileCreationTime="23:27:16.0000000-07:00" fileModifiedBy="Ryan Medick" fileModificationDate="2021-04-22" fileModificationTime="13:57:22.1913790-07:00" fileVersion="1" supportedLanguages="en" xmlns="">
+    <ProfileBody xmlns:q1="http://www.canopen.org/xml/1.1" xsi:type="q1:ProfileBody_Device_CANopen" formatName="CANopen" formatVersion="1.0" fileName="dxwifi.xdd" fileCreator="Ryan Medick" fileCreationDate="2021-03-09" fileCreationTime="23:27:16.0000000-07:00" fileModifiedBy="Ryan Medick" fileModificationDate="2021-04-24" fileModificationTime="16:28:48.2249740-07:00" fileVersion="1" supportedLanguages="en" xmlns="">
       <q1:DeviceIdentity>
         <q1:vendorName>Portland State Aerospace Society</q1:vendorName>
         <q1:vendorID>0</q1:vendorID>
@@ -2533,7 +2533,7 @@
           <q1:parameter uniqueID="UID_SUB_140001" access="readWrite">
             <label lang="en">COB-ID used by RPDO</label>
             <UDINT />
-            <q1:defaultValue value="0x000004B7" />
+            <q1:defaultValue value="0x00000181" />
           </q1:parameter>
           <q1:parameter uniqueID="UID_SUB_140002" access="readWrite">
             <label lang="en">Transmission type</label>
@@ -2673,7 +2673,7 @@
           <q1:parameter uniqueID="UID_SUB_140401" access="readWrite">
             <label lang="en">COB-ID used by RPDO</label>
             <UDINT />
-            <q1:defaultValue value="0x80000201+$NODEID" />
+            <q1:defaultValue value="0x80000200+$NODEID" />
           </q1:parameter>
           <q1:parameter uniqueID="UID_SUB_140402" access="readWrite">
             <label lang="en">Transmission type</label>
@@ -2708,7 +2708,7 @@
           <q1:parameter uniqueID="UID_SUB_140501" access="readWrite">
             <label lang="en">COB-ID used by RPDO</label>
             <UDINT />
-            <q1:defaultValue value="0x80000301+$NODEID" />
+            <q1:defaultValue value="0x80000300+$NODEID" />
           </q1:parameter>
           <q1:parameter uniqueID="UID_SUB_140502" access="readWrite">
             <label lang="en">Transmission type</label>
@@ -2743,7 +2743,7 @@
           <q1:parameter uniqueID="UID_SUB_140601" access="readWrite">
             <label lang="en">COB-ID used by RPDO</label>
             <UDINT />
-            <q1:defaultValue value="0x80000401+$NODEID" />
+            <q1:defaultValue value="0x80000400+$NODEID" />
           </q1:parameter>
           <q1:parameter uniqueID="UID_SUB_140602" access="readWrite">
             <label lang="en">Transmission type</label>
@@ -2778,7 +2778,7 @@
           <q1:parameter uniqueID="UID_SUB_140701" access="readWrite">
             <label lang="en">COB-ID used by RPDO</label>
             <UDINT />
-            <q1:defaultValue value="0x80000501+$NODEID" />
+            <q1:defaultValue value="0x80000500+$NODEID" />
           </q1:parameter>
           <q1:parameter uniqueID="UID_SUB_140702" access="readWrite">
             <label lang="en">Transmission type</label>
@@ -2813,7 +2813,7 @@
           <q1:parameter uniqueID="UID_SUB_140801" access="readWrite">
             <label lang="en">COB-ID used by RPDO</label>
             <UDINT />
-            <q1:defaultValue value="0x80000202+$NODEID" />
+            <q1:defaultValue value="0x80000200+$NODEID" />
           </q1:parameter>
           <q1:parameter uniqueID="UID_SUB_140802" access="readWrite">
             <label lang="en">Transmission type</label>
@@ -2848,7 +2848,7 @@
           <q1:parameter uniqueID="UID_SUB_140901" access="readWrite">
             <label lang="en">COB-ID used by RPDO</label>
             <UDINT />
-            <q1:defaultValue value="0x80000302+$NODEID" />
+            <q1:defaultValue value="0x80000300+$NODEID" />
           </q1:parameter>
           <q1:parameter uniqueID="UID_SUB_140902" access="readWrite">
             <label lang="en">Transmission type</label>
@@ -2883,7 +2883,7 @@
           <q1:parameter uniqueID="UID_SUB_140A01" access="readWrite">
             <label lang="en">COB-ID used by RPDO</label>
             <UDINT />
-            <q1:defaultValue value="0x80000402+$NODEID" />
+            <q1:defaultValue value="0x80000400+$NODEID" />
           </q1:parameter>
           <q1:parameter uniqueID="UID_SUB_140A02" access="readWrite">
             <label lang="en">Transmission type</label>
@@ -2918,7 +2918,7 @@
           <q1:parameter uniqueID="UID_SUB_140B01" access="readWrite">
             <label lang="en">COB-ID used by RPDO</label>
             <UDINT />
-            <q1:defaultValue value="0x80000502+$NODEID" />
+            <q1:defaultValue value="0x80000500+$NODEID" />
           </q1:parameter>
           <q1:parameter uniqueID="UID_SUB_140B02" access="readWrite">
             <label lang="en">Transmission type</label>
@@ -2953,7 +2953,7 @@
           <q1:parameter uniqueID="UID_SUB_140C01" access="readWrite">
             <label lang="en">COB-ID used by RPDO</label>
             <UDINT />
-            <q1:defaultValue value="0x80000203+$NODEID" />
+            <q1:defaultValue value="0x80000200+$NODEID" />
           </q1:parameter>
           <q1:parameter uniqueID="UID_SUB_140C02" access="readWrite">
             <label lang="en">Transmission type</label>
@@ -2988,7 +2988,7 @@
           <q1:parameter uniqueID="UID_SUB_140D01" access="readWrite">
             <label lang="en">COB-ID used by RPDO</label>
             <UDINT />
-            <q1:defaultValue value="0x80000303+$NODEID" />
+            <q1:defaultValue value="0x80000300+$NODEID" />
           </q1:parameter>
           <q1:parameter uniqueID="UID_SUB_140D02" access="readWrite">
             <label lang="en">Transmission type</label>
@@ -3023,7 +3023,7 @@
           <q1:parameter uniqueID="UID_SUB_140E01" access="readWrite">
             <label lang="en">COB-ID used by RPDO</label>
             <UDINT />
-            <q1:defaultValue value="0x80000403+$NODEID" />
+            <q1:defaultValue value="0x80000400+$NODEID" />
           </q1:parameter>
           <q1:parameter uniqueID="UID_SUB_140E02" access="readWrite">
             <label lang="en">Transmission type</label>
@@ -3058,7 +3058,7 @@
           <q1:parameter uniqueID="UID_SUB_140F01" access="readWrite">
             <label lang="en">COB-ID used by RPDO</label>
             <UDINT />
-            <q1:defaultValue value="0x80000503+$NODEID" />
+            <q1:defaultValue value="0x80000500+$NODEID" />
           </q1:parameter>
           <q1:parameter uniqueID="UID_SUB_140F02" access="readWrite">
             <label lang="en">Transmission type</label>
@@ -4228,7 +4228,7 @@
           <q1:parameter uniqueID="UID_SUB_180401" access="readWrite">
             <label lang="en">COB-ID used by TPDO</label>
             <UDINT />
-            <q1:defaultValue value="0xC0000181+$NODEID" />
+            <q1:defaultValue value="0xC0000180+$NODEID" />
           </q1:parameter>
           <q1:parameter uniqueID="UID_SUB_180402" access="readWrite">
             <label lang="en">Transmission type</label>
@@ -4284,7 +4284,7 @@
           <q1:parameter uniqueID="UID_SUB_180501" access="readWrite">
             <label lang="en">COB-ID used by TPDO</label>
             <UDINT />
-            <q1:defaultValue value="0xC0000281+$NODEID" />
+            <q1:defaultValue value="0xC0000280+$NODEID" />
           </q1:parameter>
           <q1:parameter uniqueID="UID_SUB_180502" access="readWrite">
             <label lang="en">Transmission type</label>
@@ -4340,7 +4340,7 @@
           <q1:parameter uniqueID="UID_SUB_180601" access="readWrite">
             <label lang="en">COB-ID used by TPDO</label>
             <UDINT />
-            <q1:defaultValue value="0xC0000381+$NODEID" />
+            <q1:defaultValue value="0xC0000380+$NODEID" />
           </q1:parameter>
           <q1:parameter uniqueID="UID_SUB_180602" access="readWrite">
             <label lang="en">Transmission type</label>
@@ -4396,7 +4396,7 @@
           <q1:parameter uniqueID="UID_SUB_180701" access="readWrite">
             <label lang="en">COB-ID used by TPDO</label>
             <UDINT />
-            <q1:defaultValue value="0xC0000481+$NODEID" />
+            <q1:defaultValue value="0xC0000480+$NODEID" />
           </q1:parameter>
           <q1:parameter uniqueID="UID_SUB_180702" access="readWrite">
             <label lang="en">Transmission type</label>
@@ -4452,7 +4452,7 @@
           <q1:parameter uniqueID="UID_SUB_180801" access="readWrite">
             <label lang="en">COB-ID used by TPDO</label>
             <UDINT />
-            <q1:defaultValue value="0xC0000182+$NODEID" />
+            <q1:defaultValue value="0xC0000180+$NODEID" />
           </q1:parameter>
           <q1:parameter uniqueID="UID_SUB_180802" access="readWrite">
             <label lang="en">Transmission type</label>
@@ -4508,7 +4508,7 @@
           <q1:parameter uniqueID="UID_SUB_180901" access="readWrite">
             <label lang="en">COB-ID used by TPDO</label>
             <UDINT />
-            <q1:defaultValue value="0xC0000282+$NODEID" />
+            <q1:defaultValue value="0xC0000280+$NODEID" />
           </q1:parameter>
           <q1:parameter uniqueID="UID_SUB_180902" access="readWrite">
             <label lang="en">Transmission type</label>
@@ -4564,7 +4564,7 @@
           <q1:parameter uniqueID="UID_SUB_180A01" access="readWrite">
             <label lang="en">COB-ID used by TPDO</label>
             <UDINT />
-            <q1:defaultValue value="0xC0000382+$NODEID" />
+            <q1:defaultValue value="0xC0000380+$NODEID" />
           </q1:parameter>
           <q1:parameter uniqueID="UID_SUB_180A02" access="readWrite">
             <label lang="en">Transmission type</label>
@@ -4620,7 +4620,7 @@
           <q1:parameter uniqueID="UID_SUB_180B01" access="readWrite">
             <label lang="en">COB-ID used by TPDO</label>
             <UDINT />
-            <q1:defaultValue value="0xC0000482+$NODEID" />
+            <q1:defaultValue value="0xC0000480+$NODEID" />
           </q1:parameter>
           <q1:parameter uniqueID="UID_SUB_180B02" access="readWrite">
             <label lang="en">Transmission type</label>
@@ -4676,7 +4676,7 @@
           <q1:parameter uniqueID="UID_SUB_180C01" access="readWrite">
             <label lang="en">COB-ID used by TPDO</label>
             <UDINT />
-            <q1:defaultValue value="0xC0000183+$NODEID" />
+            <q1:defaultValue value="0xC0000180+$NODEID" />
           </q1:parameter>
           <q1:parameter uniqueID="UID_SUB_180C02" access="readWrite">
             <label lang="en">Transmission type</label>
@@ -4732,7 +4732,7 @@
           <q1:parameter uniqueID="UID_SUB_180D01" access="readWrite">
             <label lang="en">COB-ID used by TPDO</label>
             <UDINT />
-            <q1:defaultValue value="0xC0000283+$NODEID" />
+            <q1:defaultValue value="0xC0000280+$NODEID" />
           </q1:parameter>
           <q1:parameter uniqueID="UID_SUB_180D02" access="readWrite">
             <label lang="en">Transmission type</label>
@@ -4788,7 +4788,7 @@
           <q1:parameter uniqueID="UID_SUB_180E01" access="readWrite">
             <label lang="en">COB-ID used by TPDO</label>
             <UDINT />
-            <q1:defaultValue value="0xC0000383+$NODEID" />
+            <q1:defaultValue value="0xC0000380+$NODEID" />
           </q1:parameter>
           <q1:parameter uniqueID="UID_SUB_180E02" access="readWrite">
             <label lang="en">Transmission type</label>
@@ -4844,7 +4844,7 @@
           <q1:parameter uniqueID="UID_SUB_180F01" access="readWrite">
             <label lang="en">COB-ID used by TPDO</label>
             <UDINT />
-            <q1:defaultValue value="0xC0000483+$NODEID" />
+            <q1:defaultValue value="0xC0000480+$NODEID" />
           </q1:parameter>
           <q1:parameter uniqueID="UID_SUB_180F02" access="readWrite">
             <label lang="en">Transmission type</label>
@@ -6263,7 +6263,7 @@ Manufacturer may define its own constants up to index 0xFF. Of course, he must t
         <ProfileTechnology>CANopen</ProfileTechnology>
       </ISO15745Reference>
     </ProfileHeader>
-    <ProfileBody xmlns:q2="http://www.canopen.org/xml/1.1" xsi:type="q2:ProfileBody_CommunicationNetwork_CANopen" formatName="CANopen" formatVersion="1.0" fileName="dxwifi.xdd" fileCreator="Ryan Medick" fileCreationDate="2021-03-09" fileCreationTime="23:27:16.0000000-07:00" fileModificationDate="2021-04-22" fileModificationTime="13:57:22.1913790-07:00" fileVersion="1" supportedLanguages="en" xmlns="">
+    <ProfileBody xmlns:q2="http://www.canopen.org/xml/1.1" xsi:type="q2:ProfileBody_CommunicationNetwork_CANopen" formatName="CANopen" formatVersion="1.0" fileName="dxwifi.xdd" fileCreator="Ryan Medick" fileCreationDate="2021-03-09" fileCreationTime="23:27:16.0000000-07:00" fileModificationDate="2021-04-24" fileModificationTime="16:28:48.2249740-07:00" fileVersion="1" supportedLanguages="en" xmlns="">
       <ApplicationLayers>
         <q2:CANopenObjectList>
           <CANopenObject index="1000" name="Device type" objectType="7" PDOmapping="no" uniqueIDRef="UID_OBJ_1000" />
