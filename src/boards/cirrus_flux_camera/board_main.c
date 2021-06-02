@@ -9,11 +9,11 @@
  * Project home page is <https://github.com/oresat/oresat-linux-manager>.
  */
 
-#include "CANopen.h"
-#include "updaterd.h"
-#include "updater_app.h"
-#include "olm_app.h"
 #include "board_main.h"
+#include "CANopen.h"
+#include "olm_app.h"
+#include "updater_app.h"
+#include "updaterd.h"
 #include <errno.h>
 #include <stddef.h>
 #include <stdlib.h>
@@ -31,7 +31,7 @@ static olm_app_t updater_app = {
 
 static olm_app_t *apps[] = {
     &updater_app, // updater app is always index 0
-    NULL, // always end with null
+    NULL,         // always end with null
 };
 
 // global shared with main.c

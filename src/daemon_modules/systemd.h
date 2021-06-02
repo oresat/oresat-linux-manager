@@ -22,7 +22,8 @@
  * @return The unit object path that must be freed with free() or NULL on
  * error.
  */
-char *get_unit(const char *name);
+char *
+get_unit(const char *name);
 
 /**
  * @brief Get the systemd unit object path for a unit if not loaded.
@@ -32,7 +33,8 @@ char *get_unit(const char *name);
  * @return The unit object path that must be freed with free() or NULL on
  * error.
  */
-char *load_unit(const char *name);
+char *
+load_unit(const char *name);
 
 /**
  * @brief Start a systemd unit.
@@ -41,7 +43,8 @@ char *load_unit(const char *name);
  *
  * @return A postive interger on success or negative errno value on error.
  */
-int start_unit(const char *unit);
+int
+start_unit(const char *unit);
 
 /**
  * @brief Stop a systemd unit.
@@ -50,7 +53,8 @@ int start_unit(const char *unit);
  *
  * @return A postive interger on success or negative errno value on error.
  */
-int stop_unit(const char *unit);
+int
+stop_unit(const char *unit);
 
 /**
  * @brief Restart a systemd unit.
@@ -59,7 +63,8 @@ int stop_unit(const char *unit);
  *
  * @return A postive interger on success or negative errno value on error.
  */
-int restart_unit(const char *unit);
+int
+restart_unit(const char *unit);
 
 /**
  * @brief Gets the active state of a systemd unit.
@@ -68,6 +73,7 @@ int restart_unit(const char *unit);
  *
  * @return A @ref active_states value.
  */
-unit_active_states_t get_unit_active_state(const char *unit);
+unit_active_states_t
+get_unit_active_state(const char *unit);
 
 #endif /* SYSTEMD_MODULE_H */

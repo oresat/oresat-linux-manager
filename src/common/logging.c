@@ -10,9 +10,9 @@
  */
 
 #include "logging.h"
+#include <stdarg.h>
 #include <stdio.h>
 #include <syslog.h>
-#include <stdarg.h>
 
 void
 log_printf(int priority, const char *fmt, ...) {

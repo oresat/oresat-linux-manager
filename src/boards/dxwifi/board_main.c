@@ -9,12 +9,12 @@
  * Project home page is <https://github.com/oresat/oresat-linux-manager>.
  */
 
+#include "board_main.h"
 #include "CANopen.h"
-#include "updaterd.h"
-#include "updater_app.h"
 #include "dxwifi_app.h"
 #include "olm_app.h"
-#include "board_main.h"
+#include "updater_app.h"
+#include "updaterd.h"
 #include <errno.h>
 #include <stddef.h>
 #include <stdlib.h>

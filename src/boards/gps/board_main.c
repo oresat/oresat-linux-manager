@@ -9,13 +9,13 @@
  * Project home page is <https://github.com/oresat/oresat-linux-manager>.
  */
 
+#include "board_main.h"
 #include "CANopen.h"
-#include "updaterd.h"
-#include "updater_app.h"
-#include "olm_app.h"
 #include "gps.h"
 #include "gps_app.h"
-#include "board_main.h"
+#include "olm_app.h"
+#include "updater_app.h"
+#include "updaterd.h"
 #include <errno.h>
 #include <stddef.h>
 #include <stdlib.h>
@@ -40,7 +40,6 @@ static olm_app_t gps_app = {
     .daemon_end_cb = gps_app_end,
     .data = NULL,
 };
-
 
 static olm_app_t *apps[] = {
     &updater_app, // updater app is always index 0

@@ -9,16 +9,16 @@
  * Project home page is <https://github.com/oresat/oresat-linux-manager>.
  */
 
+#include "board_main.h"
 #include "CANopen.h"
-#include "updaterd.h"
+#include "olm_app.h"
 #include "star_tracker_app.h"
 #include "updater_app.h"
-#include "olm_app.h"
-#include "board_main.h"
+#include "updaterd.h"
 #include <errno.h>
 #include <stddef.h>
-#include <stdlib.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <unistd.h>
 
 static olm_app_t updater_app = {
@@ -53,5 +53,6 @@ olm_app_t **APPS = apps;
 void
 board_init(void) {
     CO_OD_configure(CO->SDO[0], OD_3100_updater, updater_ODF, NULL, 0, 0U);
-    CO_OD_configure(CO->SDO[0], OD_6003_changeState, star_tracker_ODF, NULL, 0, 0U);
+    CO_OD_configure(CO->SDO[0], OD_6003_changeState, star_tracker_ODF, NULL, 0,
+                    0U);
 }

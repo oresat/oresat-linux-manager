@@ -31,40 +31,39 @@ typedef struct {
     /** The progess of file transfer. */
 } CO_fstream_t;
 
-#define CO_FSTREAM_INITALIZER(_dir, _cache) { \
-    .dir = _dir, \
-    .cache = _cache, \
-    .file = NULL, \
-    .fptr = NULL, \
-}
+#define CO_FSTREAM_INITALIZER(_dir, _cache)                                    \
+    { .dir = _dir, .cache = _cache, .file = NULL, .fptr = NULL, }
 
 /**
  * @brief Reset all CO_fstream data, including closing any opened files.
  *
  * @param data The data to cleanup.
  */
-void CO_fstream_reset(CO_fstream_t *data);
+void
+CO_fstream_reset(CO_fstream_t *data);
 
 /**
  * @brief Callback for using inside CO_OD_configure() function for reading
- * files from object dictionary. When add with @ref CO_OD_configure, a 
+ * files from object dictionary. When add with @ref CO_OD_configure, a
  * CO_fstream_t object must be pass into the object arguemnt.
  *
  * @param ODF_arg Current ODF arguemnt for SDO
  *
  * @return SDO abort code
  */
-CO_SDO_abortCode_t CO_fread_ODF(CO_ODF_arg_t *ODF_arg);
+CO_SDO_abortCode_t
+CO_fread_ODF(CO_ODF_arg_t *ODF_arg);
 
 /**
  * @brief Callback for using inside CO_OD_configure() function for writing
- * files from object dictionary. When add with @ref CO_OD_configure, a 
+ * files from object dictionary. When add with @ref CO_OD_configure, a
  * CO_fstream_t object must be pass into the object arguemnt.
  *
  * @param ODF_arg Current ODF arguemnt for SDO
  *
  * @return SDO abort code
  */
-CO_SDO_abortCode_t CO_fwrite_ODF(CO_ODF_arg_t *ODF_arg);
+CO_SDO_abortCode_t
+CO_fwrite_ODF(CO_ODF_arg_t *ODF_arg);
 
 #endif /* _CO_FILE_TRANSFER_H_ */

@@ -15,26 +15,26 @@
 CO_SDO_abortCode_t
 olm_control_ODF(CO_ODF_arg_t *ODF_arg) {
     CO_SDO_abortCode_t ret = CO_SDO_AB_NONE;
-    int r = 0;
+    int                r   = 0;
 
-    switch(ODF_arg->subIndex) {
-        case OD_3000_1_OLMControl_rebootBoard: // bash command, domain, readwrite
+    switch (ODF_arg->subIndex) {
+    case OD_3000_1_OLMControl_rebootBoard: // bash command, domain, readwrite
 
-            if (ODF_arg->reading)
-                return CO_SDO_AB_WRITEONLY;
-            else
-                r = logind_poweroff();
+        if (ODF_arg->reading)
+            return CO_SDO_AB_WRITEONLY;
+        else
+            r = logind_poweroff();
 
-            break;
+        break;
 
-        case OD_3000_2_OLMControl_poweroffBoard: // poweroff, domain, writeonly
+    case OD_3000_2_OLMControl_poweroffBoard: // poweroff, domain, writeonly
 
-            if (ODF_arg->reading)
-                return CO_SDO_AB_WRITEONLY;
-            else
-                r = logind_reboot();
+        if (ODF_arg->reading)
+            return CO_SDO_AB_WRITEONLY;
+        else
+            r = logind_reboot();
 
-            break;
+        break;
     }
 
     if (r < 0)

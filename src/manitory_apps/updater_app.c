@@ -9,12 +9,12 @@
  * Project home page is <https://github.com/oresat/oresat-linux-manager>.
  */
 
+#include "updater_app.h"
 #include "CANopen.h"
 #include "logging.h"
-#include "utility.h"
 #include "olm_file_cache.h"
 #include "updaterd.h"
-#include "updater_app.h"
+#include "utility.h"
 #include <linux/limits.h>
 #include <stdbool.h>
 #include <stdint.h>
@@ -29,7 +29,7 @@ updater_async(void *data, olm_file_cache_t *fread_cache) {
     uint8_t temp_uint8;
     char *temp_str;
     (void)data;
-    
+
     if (!CO->TPDO[TPDO_UPDATER]->valid) {
         CO_LOCK_OD();
         CO->TPDO[TPDO_UPDATER]->valid = true;
@@ -54,7 +54,8 @@ updater_async(void *data, olm_file_cache_t *fread_cache) {
     if (OD_updater.makeStatusFile) {
         if (updaterd_make_status_archive(&temp_str) >= 0)
             if (olm_file_cache_add(fread_cache, temp_str) < 0)
-                log_printf(LOG_ERR, "failed to add %s to fread cache", temp_str);
+                log_printf(LOG_ERR, "failed to add %s to fread cache",
+                           temp_str);
 
         CO_LOCK_OD();
         OD_updater.makeStatusFile = false;
@@ -84,7 +85,8 @@ updater_ODF(CO_ODF_arg_t *ODF_arg) {
     char *temp_str = (char *)ODF_arg->object;
     size_t len;
 
-    if (ODF_arg->subIndex != OD_3100_3_updater_listUpdates) // list updates, domain, readonly
+    if (ODF_arg->subIndex
+        != OD_3100_3_updater_listUpdates) // list updates, domain, readonly
         return ret;
 
     if (!ODF_arg->reading)
@@ -96,7 +98,7 @@ updater_ODF(CO_ODF_arg_t *ODF_arg) {
         if (updaterd_list_updates(&temp_str) < 0)
             return CO_SDO_AB_NO_DATA;
 
-        ODF_arg->dataLengthTotal = strlen(temp_str)+1;
+        ODF_arg->dataLengthTotal = strlen(temp_str) + 1;
         ODF_arg->offset = 0;
     }
 
@@ -109,7 +111,7 @@ updater_ODF(CO_ODF_arg_t *ODF_arg) {
         ODF_arg->dataLength = 899;
         ODF_arg->lastSegment = false;
     }
-    
+
     ODF_arg->offset += ODF_arg->dataLength;
     memcpy(ODF_arg->data, temp_str, ODF_arg->dataLength);
 

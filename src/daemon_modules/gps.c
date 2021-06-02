@@ -9,20 +9,19 @@
  * Project home page is <https://github.com/oresat/oresat-linux-manager>.
  */
 
+#include "gps.h"
 #include "logging.h"
 #include "utility.h"
-#include "gps.h"
 #include <errno.h>
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdlib.h>
-#include <stdint.h>
 #include <systemd/sd-bus.h>
 
-#define MODULE_NAME     "GPS"
-#define DESTINATION     "org.OreSat.GPS"
-#define INTERFACE_NAME  "org.OreSat.GPS"
-#define OBJECT_PATH     "/org/OreSat/GPS"
+#define MODULE_NAME    "GPS"
+#define DESTINATION    "org.OreSat.GPS"
+#define INTERFACE_NAME "org.OreSat.GPS"
+#define OBJECT_PATH    "/org/OreSat/GPS"
 
 /** System D-Bus connection. Defined in main.c */
 extern sd_bus *system_bus;
@@ -40,13 +39,18 @@ gps_state_vector(state_vector_t *st) {
     if (st == NULL)
         return -EINVAL;
 
-    if ((r = sd_bus_get_property(DBUS_INFO, "StateVector", &err, &mess, "(iiiiiiuu)")) < 0)
-        LOG_DBUS_GET_PROPERTY_ERROR(LOG_DEBUG, MODULE_NAME, "StateVector", err.name);
-    else if ((r = sd_bus_message_read(mess, "(iiiiiiuu)",
-                    &st->position.x, &st->position.y, &st->position.z,
-                    &st->velocity.x, &st->velocity.y, &st->velocity.z,
-                    &time_coarse, &time_fine)) < 0)
-        LOG_DBUS_PROPERTY_READ_ERROR(LOG_DEBUG, MODULE_NAME, "StateVector", err.name);
+    if ((r = sd_bus_get_property(DBUS_INFO, "StateVector", &err, &mess,
+                                 "(iiiiiiuu)"))
+        < 0)
+        LOG_DBUS_GET_PROPERTY_ERROR(LOG_DEBUG, MODULE_NAME, "StateVector",
+                                    err.name);
+    else if ((r = sd_bus_message_read(
+                  mess, "(iiiiiiuu)", &st->position.x, &st->position.y,
+                  &st->position.z, &st->velocity.x, &st->velocity.y,
+                  &st->velocity.z, &time_coarse, &time_fine))
+             < 0)
+        LOG_DBUS_PROPERTY_READ_ERROR(LOG_DEBUG, MODULE_NAME, "StateVector",
+                                     err.name);
 
     st->timestamp.tv_sec = (time_t)time_coarse;
     st->timestamp.tv_usec = (long)time_fine;
@@ -65,7 +69,8 @@ gps_status(void) {
     if (sd_bus_get_property(DBUS_INFO, "Status", &err, &mess, "y") < 0)
         LOG_DBUS_GET_PROPERTY_ERROR(LOG_DEBUG, MODULE_NAME, "Status", err.name);
     else if (sd_bus_message_read(mess, "y", &status) < 0)
-        LOG_DBUS_PROPERTY_READ_ERROR(LOG_DEBUG, MODULE_NAME, "Status", err.name);
+        LOG_DBUS_PROPERTY_READ_ERROR(LOG_DEBUG, MODULE_NAME, "Status",
+                                     err.name);
 
     sd_bus_message_unref(mess);
     sd_bus_error_free(&err);
@@ -86,7 +91,7 @@ gps_time_synchronized(void) {
 
     if (sync_raw == 1)
         sync = true;
-    
+
     sd_bus_message_unref(mess);
     sd_bus_error_free(&err);
     return sync;
@@ -99,9 +104,11 @@ gps_satellite_number(void) {
     uint8_t sats = 0;
 
     if (sd_bus_get_property(DBUS_INFO, "Satellites", &err, &mess, "y") < 0)
-        LOG_DBUS_GET_PROPERTY_ERROR(LOG_DEBUG, MODULE_NAME, "Satellites", err.name);
+        LOG_DBUS_GET_PROPERTY_ERROR(LOG_DEBUG, MODULE_NAME, "Satellites",
+                                    err.name);
     else if (sd_bus_message_read(mess, "y", &sats) < 0)
-        LOG_DBUS_PROPERTY_READ_ERROR(LOG_DEBUG, MODULE_NAME, "Satellites", err.name);
+        LOG_DBUS_PROPERTY_READ_ERROR(LOG_DEBUG, MODULE_NAME, "Satellites",
+                                     err.name);
 
     sd_bus_message_unref(mess);
     sd_bus_error_free(&err);

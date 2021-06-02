@@ -37,14 +37,16 @@ typedef struct {
  *
  * @return 0 on success or negative errno on failure.
  */
-int olm_file_cache_new(char *dir_path, olm_file_cache_t **out);
+int
+olm_file_cache_new(char *dir_path, olm_file_cache_t **out);
 
 /**
  * @brief Clean up olm_file_cache_t struct.
  *
  * @param in The file cache.
  */
-void olm_file_cache_free(olm_file_cache_t *in);
+void
+olm_file_cache_free(olm_file_cache_t *in);
 
 /**
  * @brief Add new file to olm file cache.
@@ -54,7 +56,8 @@ void olm_file_cache_free(olm_file_cache_t *in);
  *
  * @return 0 on success or negative errno on failure.
  */
-int olm_file_cache_add(olm_file_cache_t *in, char *filename);
+int
+olm_file_cache_add(olm_file_cache_t *in, char *filename);
 
 /**
  * @brief Removes a file from olm file cache.
@@ -64,7 +67,8 @@ int olm_file_cache_add(olm_file_cache_t *in, char *filename);
  *
  * @return 0 on success or negative errno on failure.
  */
-int olm_file_cache_remove(olm_file_cache_t *in, char *filename);
+int
+olm_file_cache_remove(olm_file_cache_t *in, char *filename);
 
 /**
  * @brief Get a copy of the olm_file_t at a index. Can be used for sepecific
@@ -81,7 +85,7 @@ int olm_file_cache_remove(olm_file_cache_t *in, char *filename);
  */
 int
 olm_file_cache_index(olm_file_cache_t *in, int index, const char *keyword,
-        olm_file_t **out);
+                     olm_file_t **out);
 
 /**
  * @brief Get the length of the file cahe. Can be used for sepecific keywords
@@ -93,13 +97,15 @@ olm_file_cache_index(olm_file_cache_t *in, int index, const char *keyword,
  *
  * @return The length of the cache.
  */
-uint32_t olm_file_cache_len(olm_file_cache_t *in, const char *keyword);
+uint32_t
+olm_file_cache_len(olm_file_cache_t *in, const char *keyword);
 
 /**
  * @brief check if file exist in cache
  *
  * @return true if the file is the cache or false if not
  */
-bool olm_file_cache_file_exist(olm_file_cache_t *in, const char *filename);
+bool
+olm_file_cache_file_exist(olm_file_cache_t *in, const char *filename);
 
 #endif /* OLM_FILE_CACHE_H */

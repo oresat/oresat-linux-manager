@@ -13,9 +13,11 @@
 #define LOGIND_MODULE_H
 
 /** Call reboot thru logind. */
-int logind_reboot(void);
+int
+logind_reboot(void);
 
 /** Call poweroff thru logind. */
-int logind_poweroff(void);
+int
+logind_poweroff(void);
 
 #endif /* LOGIND_MODULE_H */

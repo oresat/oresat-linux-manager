@@ -13,26 +13,26 @@
 #include <dirent.h>
 #include <errno.h>
 #include <linux/limits.h>
+#include <stdbool.h>
 #include <stddef.h>
 #include <stdio.h>
 #include <string.h>
 #include <sys/stat.h>
 #include <sys/types.h>
-#include <stdbool.h>
 
 #define COPY_BUFF_LEN 1024
 
 int
 copyfile(const char *src, const char *dest) {
-    char buf[COPY_BUFF_LEN];
-    FILE *r_fptr = NULL;
-    FILE *w_fptr = NULL;
+    char   buf[COPY_BUFF_LEN];
+    FILE * r_fptr = NULL;
+    FILE * w_fptr = NULL;
     size_t bytes;
-    int r = 0;
+    int    r = 0;
 
     if (dest == NULL || src == NULL)
         return -EINVAL;
-    
+
     errno = 0;
     if ((r_fptr = fopen(src, "r")) == NULL) {
         r = -errno;
@@ -65,13 +65,13 @@ copy_error:
 int
 mkdir_path(const char *path, mode_t mode) {
     char temp_path[PATH_MAX];
-    int r = 0;
+    int  r = 0;
 
     if (path == NULL)
         return -EINVAL;
 
     // start on 1 to skip 1st '/' in absolut path
-    for (size_t i=1; i<=strlen(path) && i<PATH_MAX-1; ++i) {
+    for (size_t i = 1; i <= strlen(path) && i < PATH_MAX - 1; ++i) {
         if (path[i] == '/' || i == strlen(path)) {
             strncpy(temp_path, path, i);
             temp_path[i] = '\0';
@@ -90,7 +90,7 @@ mkdir_path(const char *path, mode_t mode) {
 bool
 is_file(const char *path) {
     FILE *fptr;
-    bool r = false;
+    bool  r = false;
 
     if ((fptr = fopen(path, "r")) != NULL) {
         fclose(fptr);
@@ -101,11 +101,11 @@ is_file(const char *path) {
 }
 
 bool
-is_dir(const char* path) {
-    DIR* dir = NULL;
-    bool r = false;
+is_dir(const char *path) {
+    DIR *dir = NULL;
+    bool r   = false;
 
-   if ((dir = opendir(path)) != NULL) {
+    if ((dir = opendir(path)) != NULL) {
         closedir(dir);
         r = true;
     }
@@ -115,18 +115,18 @@ is_dir(const char* path) {
 
 int
 clear_dir(const char *path) {
-    char filepath[PATH_MAX];
+    char           filepath[PATH_MAX];
     struct dirent *dir;
-    DIR *d;
-    int r = 0;
+    DIR *          d;
+    int            r = 0;
 
-    if ((d = opendir(path)) != NULL) { // add all existing file to list
-        while((dir = readdir(d)) != NULL) { // directory found
-            if (strncmp(dir->d_name, ".", sizeof(dir->d_name)) == 0 ||
-                    strncmp(dir->d_name, "..", sizeof(dir->d_name)) == 0)
+    if ((d = opendir(path)) != NULL) {       // add all existing file to list
+        while ((dir = readdir(d)) != NULL) { // directory found
+            if (strncmp(dir->d_name, ".", sizeof(dir->d_name)) == 0
+                || strncmp(dir->d_name, "..", sizeof(dir->d_name)) == 0)
                 continue; // skip . and ..
 
-            if (path[strlen(path)-1] == '/') // path ends with a '/'
+            if (path[strlen(path) - 1] == '/') // path ends with a '/'
                 sprintf(filepath, "%s%s", path, dir->d_name);
             else // need a '/' at end of path
                 sprintf(filepath, "%s/%s", path, dir->d_name);

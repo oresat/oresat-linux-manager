@@ -14,6 +14,7 @@
 
 #include "CANopen.h"
 
-CO_SDO_abortCode_t olm_control_ODF(CO_ODF_arg_t *ODF_arg);
+CO_SDO_abortCode_t
+olm_control_ODF(CO_ODF_arg_t *ODF_arg);
 
 #endif /* OLM_CONTROL_ODF_H */

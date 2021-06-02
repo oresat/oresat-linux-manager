@@ -9,9 +9,9 @@
  * Project home page is <https://github.com/oresat/oresat-linux-manager>.
  */
 
+#include "dxwifi_app.h"
 #include "CANopen.h"
 #include "olm_file_cache.h"
-#include "dxwifi_app.h"
 #include <stdbool.h>
 
 #define TPDO_DXWIFI 2

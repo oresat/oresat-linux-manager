@@ -6,9 +6,8 @@
 #include <linux/limits.h>
 #include <stdbool.h>
 #include <stdint.h>
-#include <stdlib.h>
-#include <stdint.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <sys/stat.h>
 
@@ -34,11 +33,11 @@ olm_file_free(olm_file_t *out) {
 
 int
 olm_file_new(char *filepath, olm_file_t **out) {
-    char *unix_time_str, *end;
-    char filename[PATH_MAX];
-    olm_file_t *new_file = NULL;
-    int keyword_loc = 0, date_loc = 0, ext_loc = 0;
-    int len, r = 0;
+    char *      unix_time_str, *end;
+    char        filename[PATH_MAX];
+    olm_file_t *new_file    = NULL;
+    int         keyword_loc = 0, date_loc = 0, ext_loc = 0;
+    int         len, r = 0;
     struct stat st;
 
     if (filepath == NULL)
@@ -48,22 +47,22 @@ olm_file_new(char *filepath, olm_file_t **out) {
     if ((r = stat(filepath, &st)) != 0)
         return r;
 
-    strncpy(filename, basename(filepath), strlen(basename(filepath))+1);
+    strncpy(filename, basename(filepath), strlen(basename(filepath)) + 1);
 
     if (filename[0] == '_')
         return -EINVAL; // no board field
 
     // find all '_' locations and the start of the extension (the 1st '.')
-    for (size_t i=0; i<strlen(filename); ++i) {
+    for (size_t i = 0; i < strlen(filename); ++i) {
         if (filename[i] == '_') { // find keyword and data locs
             if (keyword_loc == 0) {
-                keyword_loc = i+1; // add 1 to not include '_'
+                keyword_loc = i + 1; // add 1 to not include '_'
             } else if (date_loc == 0) {
-                date_loc = i+1; // add 1 to not include '_'
+                date_loc = i + 1; // add 1 to not include '_'
             } else {
                 // both keyword and date have been found, there are extra '_'
                 r = -EINVAL;
-                break; 
+                break;
             }
         } else if (filename[i] == '.') { // find optional extension loc
             ext_loc = i;
@@ -72,43 +71,44 @@ olm_file_new(char *filepath, olm_file_t **out) {
     }
 
     if (keyword_loc == 0 || date_loc == 0 || r != 0)
-        return -EINVAL; // not all manitory '_' locs were found or invalid filename
+        return -EINVAL; // not all manitory '_' locs were found or invalid
+                        // filename
 
     if ((new_file = malloc(sizeof(olm_file_t))) == NULL)
         goto olm_file_mem_error;
 
-    new_file->size = st.st_size;
-    new_file->name = NULL;
-    new_file->board = NULL;
-    new_file->keyword = NULL;
+    new_file->size      = st.st_size;
+    new_file->name      = NULL;
+    new_file->board     = NULL;
+    new_file->keyword   = NULL;
     new_file->extension = NULL;
 
     // copy filename
-    if ((new_file->name = malloc(strlen(filename)+1)) == NULL)
+    if ((new_file->name = malloc(strlen(filename) + 1)) == NULL)
         goto olm_file_mem_error;
-    strncpy(new_file->name, filename, strlen(filename)+1);
+    strncpy(new_file->name, filename, strlen(filename) + 1);
 
     // copy board name
     len = keyword_loc;
     if ((new_file->board = malloc(len)) == NULL)
         goto olm_file_mem_error;
     strncpy(new_file->board, filename, len);
-    new_file->board[len-1] = '\0';
+    new_file->board[len - 1] = '\0';
 
-    // copy get keyword 
+    // copy get keyword
     len = date_loc - keyword_loc;
     if ((new_file->keyword = malloc(len)) == NULL)
         goto olm_file_mem_error;
     strncpy(new_file->keyword, &filename[keyword_loc], len);
-    new_file->keyword[len-1] = '\0';
+    new_file->keyword[len - 1] = '\0';
 
     // copy unix time
     len = (ext_loc == 0 ? (int)strlen(filename) + 1 : ext_loc) - date_loc + 1;
     if ((unix_time_str = malloc(len)) == NULL)
         goto olm_file_mem_error;
     strncpy(unix_time_str, &filename[date_loc], len);
-    unix_time_str[len-1] = '\0';
-    new_file->unix_time = (uint32_t)strtol(unix_time_str, &end, 10);
+    unix_time_str[len - 1] = '\0';
+    new_file->unix_time    = (uint32_t)strtol(unix_time_str, &end, 10);
     free(unix_time_str);
 
     // copy extension (if there is one)
@@ -117,13 +117,13 @@ olm_file_new(char *filepath, olm_file_t **out) {
         if ((new_file->extension = malloc(len)) == NULL)
             goto olm_file_mem_error;
         strncpy(new_file->extension, &filename[ext_loc], len);
-        new_file->extension[len-1] = '\0';
+        new_file->extension[len - 1] = '\0';
     }
 
     *out = new_file;
     return r;
 
-    olm_file_mem_error:
+olm_file_mem_error:
     r = -ENOMEM;
     olm_file_free(new_file);
     return r;
@@ -131,9 +131,9 @@ olm_file_new(char *filepath, olm_file_t **out) {
 
 bool
 is_olm_file(char *filepath) {
-    int keyword_loc = 0, date_loc = 0;
+    int   keyword_loc = 0, date_loc = 0;
     char *filename;
-    bool r = true;
+    bool  r = true;
 
     if (filepath == NULL)
         return false;
@@ -141,18 +141,18 @@ is_olm_file(char *filepath) {
     filename = basename(filepath);
 
     // find all '_' locations and the start of the extension (the 1st '.')
-    for (size_t i=0; i<strlen(filename); ++i) {
+    for (size_t i = 0; i < strlen(filename); ++i) {
         if (filename[i] == '_') { // find keyword and data locs
             if (keyword_loc == 0) {
-                keyword_loc = i+1; // add 1 to not include '_'
+                keyword_loc = i + 1; // add 1 to not include '_'
             } else if (date_loc == 0) {
-                date_loc = i+1; // add 1 to not include '_'
+                date_loc = i + 1; // add 1 to not include '_'
             } else {
                 // both keyword and date have been found, there are extra '_'
                 r = false;
-                break; 
+                break;
             }
-        } 
+        }
     }
 
     if (keyword_loc == 0 || date_loc == 0)

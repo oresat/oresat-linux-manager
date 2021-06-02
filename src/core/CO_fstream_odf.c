@@ -9,29 +9,28 @@
  * Project home page is <https://github.com/oresat/oresat-linux-manager>.
  */
 
+#include "CO_fstream_odf.h"
 #include "CANopen.h"
+#include "logging.h"
 #include "olm_file.h"
 #include "olm_file_cache.h"
 #include "utility.h"
-#include "logging.h"
-#include "CO_fstream_odf.h"
 #include <dirent.h>
 #include <errno.h>
 #include <libgen.h>
 #include <linux/limits.h>
-#include <string.h>
 #include <stdbool.h>
 #include <stddef.h>
-#include <stdlib.h>
 #include <stdint.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include <sys/sendfile.h>
+#include <sys/stat.h>
 #include <sys/syslog.h>
 #include <sys/types.h>
-#include <sys/stat.h>
 
-
-#define SDO_BLOCK_LEN (127*7)
+#define SDO_BLOCK_LEN (127 * 7)
 
 void
 CO_fstream_reset(CO_fstream_t *data) {
@@ -56,8 +55,8 @@ CO_fstream_filename(CO_ODF_arg_t *ODF_arg, CO_fstream_t *fdata) {
         if (fdata->file == NULL) {
             ret = CO_SDO_AB_NO_DATA;
         } else {
-            ODF_arg->dataLengthTotal = strlen(fdata->file)+1;
-            ODF_arg->dataLength = ODF_arg->dataLengthTotal;
+            ODF_arg->dataLengthTotal = strlen(fdata->file) + 1;
+            ODF_arg->dataLength      = ODF_arg->dataLengthTotal;
             memcpy(ODF_arg->data, fdata->file, ODF_arg->dataLength);
             log_printf(LOG_DEBUG, "read fstream filename %s", fdata->file);
             ODF_arg->lastSegment = true;
@@ -73,18 +72,21 @@ CO_fstream_filename(CO_ODF_arg_t *ODF_arg, CO_fstream_t *fdata) {
         memcpy(filename, ODF_arg->data, ODF_arg->dataLengthTotal);
 
         // make sure string ends with '\0'
-        if (filename[ODF_arg->dataLengthTotal-1] != '\0')
+        if (filename[ODF_arg->dataLengthTotal - 1] != '\0')
             filename[ODF_arg->dataLengthTotal] = '\0';
 
         log_printf(LOG_DEBUG, "new fstream filename %s", filename);
 
         if (!is_olm_file(filename)) {
-            log_printf(LOG_DEBUG, "fstream filename %s does not follow olm file format, ingoring", filename);
+            log_printf(
+                LOG_DEBUG,
+                "fstream filename %s does not follow olm file format, ingoring",
+                filename);
             return CO_SDO_AB_DATA_LOC_CTRL;
         }
 
         // update filename
-        size_t len = strlen(filename)+1;
+        size_t len = strlen(filename) + 1;
         if ((fdata->file = malloc(len)) == NULL)
             return CO_SDO_AB_OUT_OF_MEM;
         strncpy(fdata->file, filename, len);
@@ -95,126 +97,126 @@ CO_fstream_filename(CO_ODF_arg_t *ODF_arg, CO_fstream_t *fdata) {
 
 CO_SDO_abortCode_t
 CO_fread_ODF(CO_ODF_arg_t *ODF_arg) {
-    CO_fstream_t *fdata = (CO_fstream_t *)ODF_arg->object;
-    CO_SDO_abortCode_t ret = CO_SDO_AB_NONE;
+    CO_fstream_t *     fdata = (CO_fstream_t *)ODF_arg->object;
+    CO_SDO_abortCode_t ret   = CO_SDO_AB_NONE;
 
     if (fdata == NULL)
         return CO_SDO_AB_DATA_LOC_CTRL;
 
-    switch(ODF_arg->subIndex) {
+    switch (ODF_arg->subIndex) {
 
-        case OD_3003_1_fread_fileName: // file name, domain, readwrite
+    case OD_3003_1_fread_fileName: // file name, domain, readwrite
 
-            ret = CO_fstream_filename(ODF_arg, fdata);
+        ret = CO_fstream_filename(ODF_arg, fdata);
 
-            // copy file from cache to tmp dir
-            if (!ODF_arg->reading && ret == CO_SDO_AB_NONE) { 
-                char temp_filepath[PATH_MAX];
-                char cache_filepath[PATH_MAX];
+        // copy file from cache to tmp dir
+        if (!ODF_arg->reading && ret == CO_SDO_AB_NONE) {
+            char temp_filepath[PATH_MAX];
+            char cache_filepath[PATH_MAX];
 
-                sprintf(temp_filepath, "%s%s", fdata->dir, fdata->file);
-                sprintf(cache_filepath, "%s%s", fdata->cache->dir, fdata->file);
-                log_printf(LOG_DEBUG, "fread %s -> %s\n", cache_filepath, temp_filepath);
+            sprintf(temp_filepath, "%s%s", fdata->dir, fdata->file);
+            sprintf(cache_filepath, "%s%s", fdata->cache->dir, fdata->file);
+            log_printf(LOG_DEBUG, "fread %s -> %s\n", cache_filepath,
+                       temp_filepath);
 
-                if (copyfile(cache_filepath, temp_filepath) != 0) {
-                    CO_fstream_reset(fdata);
-                    ret = CO_SDO_AB_DATA_LOC_CTRL;
-                }
+            if (copyfile(cache_filepath, temp_filepath) != 0) {
+                CO_fstream_reset(fdata);
+                ret = CO_SDO_AB_DATA_LOC_CTRL;
+            }
+        }
+
+        break;
+
+    case OD_3003_2_fread_fileData: // file data, domain, readonly
+
+        if (ODF_arg->reading == false)
+            return CO_SDO_AB_READONLY;
+
+        if (ODF_arg->firstSegment == true) { // 1st segment only
+            char        filepath[PATH_MAX] = "\0";
+            struct stat st;
+
+            if (fdata->file == NULL)
+                return CO_SDO_AB_NO_DATA;
+
+            sprintf(filepath, "%s%s", fdata->dir, fdata->file);
+
+            if (stat(filepath, &st) == 0) {
+                ODF_arg->dataLengthTotal = st.st_size;
+            } else {
+                log_printf(LOG_ERR, "%s does not exist", filepath);
+                ret = CO_SDO_AB_DATA_LOC_CTRL;
+                break;
             }
 
-            break;
+            log_printf(LOG_DEBUG, "fread file size %d", ODF_arg->dataLength);
 
-        case OD_3003_2_fread_fileData: // file data, domain, readonly
-
-            if (ODF_arg->reading == false)
-                return CO_SDO_AB_READONLY;
-
-            if (ODF_arg->firstSegment == true) { // 1st segment only
-                char filepath[PATH_MAX] = "\0";
-                struct stat st;
-
-                if (fdata->file == NULL)
-                    return CO_SDO_AB_NO_DATA;
-
-                sprintf(filepath, "%s%s", fdata->dir, fdata->file);
-
-                if (stat(filepath, &st) == 0) {
-                    ODF_arg->dataLengthTotal = st.st_size;
-                } else {
-                    log_printf(LOG_ERR, "%s does not exist", filepath);
-                    ret = CO_SDO_AB_DATA_LOC_CTRL;
-                    break;
-                }
-
-                log_printf(LOG_DEBUG, "fread file size %d", ODF_arg->dataLength);
-
-
-                if ((fdata->fptr = fopen(filepath, "r")) != NULL) {
-                    log_printf(LOG_INFO, "opened %s", filepath);
-                } else {
-                    log_printf(LOG_ERR, "failed to open %s", filepath);
-                    CO_fstream_reset(fdata);
-                    ret = CO_SDO_AB_DATA_LOC_CTRL;
-                    break;
-                }
-            }
-
-            // Check if there are more segements needed
-            uint32_t bytes_left = ODF_arg->dataLengthTotal - ODF_arg->offset;
-            if (bytes_left > SDO_BLOCK_LEN) { // more segements needed
-                ODF_arg->dataLength = SDO_BLOCK_LEN;
-                ODF_arg->lastSegment = false;
-            } else { // last segement
-                ODF_arg->dataLength = bytes_left;
-                ODF_arg->lastSegment = true;
-            }
-
-            log_printf(LOG_DEBUG, "fread data buffer len %d", ODF_arg->dataLength);
-
-            // read file data
-            if (fread(ODF_arg->data, 1, ODF_arg->dataLength, fdata->fptr) == 0) {
-                log_printf(LOG_ERR, "Failed to read to file %s", fdata->file);
+            if ((fdata->fptr = fopen(filepath, "r")) != NULL) {
+                log_printf(LOG_INFO, "opened %s", filepath);
+            } else {
+                log_printf(LOG_ERR, "failed to open %s", filepath);
                 CO_fstream_reset(fdata);
                 ret = CO_SDO_AB_DATA_LOC_CTRL;
                 break;
             }
-        
-            if (ODF_arg->lastSegment) {
-                /* Do not call CO_fstream_reset() here as the CANopen Network
-                 * Manager may want to use the OD_3003_4_fread_deleteFile sub
-                 * index.
-                 */
-                log_printf(LOG_INFO, "%s has been closed", fdata->file);
-                fclose(fdata->fptr);
-                fdata->fptr = NULL;
-            }
+        }
 
+        // Check if there are more segements needed
+        uint32_t bytes_left = ODF_arg->dataLengthTotal - ODF_arg->offset;
+        if (bytes_left > SDO_BLOCK_LEN) { // more segements needed
+            ODF_arg->dataLength  = SDO_BLOCK_LEN;
+            ODF_arg->lastSegment = false;
+        } else { // last segement
+            ODF_arg->dataLength  = bytes_left;
+            ODF_arg->lastSegment = true;
+        }
+
+        log_printf(LOG_DEBUG, "fread data buffer len %d", ODF_arg->dataLength);
+
+        // read file data
+        if (fread(ODF_arg->data, 1, ODF_arg->dataLength, fdata->fptr) == 0) {
+            log_printf(LOG_ERR, "Failed to read to file %s", fdata->file);
+            CO_fstream_reset(fdata);
+            ret = CO_SDO_AB_DATA_LOC_CTRL;
             break;
+        }
 
-        case OD_3003_3_fread_reset: // reset fread, domain, writeonly
-            
-            if (ODF_arg->reading)
-                ret = CO_SDO_AB_WRITEONLY;
-            else
-                CO_fstream_reset(fdata);
+        if (ODF_arg->lastSegment) {
+            /* Do not call CO_fstream_reset() here as the CANopen Network
+             * Manager may want to use the OD_3003_4_fread_deleteFile sub
+             * index.
+             */
+            log_printf(LOG_INFO, "%s has been closed", fdata->file);
+            fclose(fdata->fptr);
+            fdata->fptr = NULL;
+        }
 
-            break;
+        break;
 
-        case OD_3003_4_fread_deleteFile: // delete file from cache, domain, readonly
+    case OD_3003_3_fread_reset: // reset fread, domain, writeonly
 
-            if (ODF_arg->reading) {
-                ret = CO_SDO_AB_WRITEONLY;
-            } else {
-                if (fdata->file == NULL)
-                    return CO_SDO_AB_NO_DATA;
+        if (ODF_arg->reading)
+            ret = CO_SDO_AB_WRITEONLY;
+        else
+            CO_fstream_reset(fdata);
 
-                if (olm_file_cache_remove(fdata->cache, fdata->file) != 0)
-                    ret = CO_SDO_AB_DATA_LOC_CTRL;
+        break;
 
-                CO_fstream_reset(fdata);
-            }
+    case OD_3003_4_fread_deleteFile: // delete file from cache, domain, readonly
 
-            break;
+        if (ODF_arg->reading) {
+            ret = CO_SDO_AB_WRITEONLY;
+        } else {
+            if (fdata->file == NULL)
+                return CO_SDO_AB_NO_DATA;
+
+            if (olm_file_cache_remove(fdata->cache, fdata->file) != 0)
+                ret = CO_SDO_AB_DATA_LOC_CTRL;
+
+            CO_fstream_reset(fdata);
+        }
+
+        break;
     }
 
     return ret;
@@ -222,92 +224,94 @@ CO_fread_ODF(CO_ODF_arg_t *ODF_arg) {
 
 CO_SDO_abortCode_t
 CO_fwrite_ODF(CO_ODF_arg_t *ODF_arg) {
-    CO_fstream_t *fdata = (CO_fstream_t *)ODF_arg->object;
-    CO_SDO_abortCode_t ret = CO_SDO_AB_NONE;
+    CO_fstream_t *     fdata = (CO_fstream_t *)ODF_arg->object;
+    CO_SDO_abortCode_t ret   = CO_SDO_AB_NONE;
 
     if (fdata == NULL)
         return CO_SDO_AB_DATA_LOC_CTRL;
 
-    switch(ODF_arg->subIndex) {
+    switch (ODF_arg->subIndex) {
 
-        case OD_3004_1_fwrite_fileName: // file name, domain, readwrite
+    case OD_3004_1_fwrite_fileName: // file name, domain, readwrite
 
-            ret = CO_fstream_filename(ODF_arg, fdata);
+        ret = CO_fstream_filename(ODF_arg, fdata);
 
-            break;
+        break;
 
-        case OD_3004_2_fwrite_fileData: // file data, domain, writeonly
+    case OD_3004_2_fwrite_fileData: // file data, domain, writeonly
 
-            if (ODF_arg->reading)
-                return CO_SDO_AB_WRITEONLY;
+        if (ODF_arg->reading)
+            return CO_SDO_AB_WRITEONLY;
 
-            unsigned int len = 0;
-            if (ODF_arg->dataLength != 0)
-                len = ODF_arg->dataLength;
-            else if(ODF_arg->dataLengthTotal <= SDO_BLOCK_LEN)
-                len = ODF_arg->dataLength;
-            else 
+        unsigned int len = 0;
+        if (ODF_arg->dataLength != 0)
+            len = ODF_arg->dataLength;
+        else if (ODF_arg->dataLengthTotal <= SDO_BLOCK_LEN)
+            len = ODF_arg->dataLength;
+        else
+            return CO_SDO_AB_NO_DATA;
+
+        log_printf(LOG_DEBUG, "fwrite data buffer len %d", len);
+
+        if (ODF_arg->firstSegment) {
+            if (fdata->file == NULL)
                 return CO_SDO_AB_NO_DATA;
 
-            log_printf(LOG_DEBUG, "fwrite data buffer len %d", len);
+            char filepath[PATH_MAX];
 
-            if (ODF_arg->firstSegment) {
-                if (fdata->file == NULL)
-                    return CO_SDO_AB_NO_DATA;
+            sprintf(filepath, "%s%s", fdata->dir, fdata->file);
 
-                char filepath[PATH_MAX];
-
-                sprintf(filepath, "%s%s", fdata->dir, fdata->file);
-
-                if ((fdata->fptr = fopen(filepath, "w")) != NULL) {
-                    log_printf(LOG_INFO, "opened %s", filepath);
-                } else {
-                    log_printf(LOG_ERR, "failed to open %s", filepath);
-                    CO_fstream_reset(fdata);
-                    ret = CO_SDO_AB_DATA_LOC_CTRL;
-                    break;
-                }
-            }
-
-            // write file data
-            if (fwrite(ODF_arg->data, 1, len, fdata->fptr) != len) {
-                log_printf(LOG_ERR, "failed to write to file %s", fdata->file);
+            if ((fdata->fptr = fopen(filepath, "w")) != NULL) {
+                log_printf(LOG_INFO, "opened %s", filepath);
+            } else {
+                log_printf(LOG_ERR, "failed to open %s", filepath);
                 CO_fstream_reset(fdata);
                 ret = CO_SDO_AB_DATA_LOC_CTRL;
                 break;
-            } else {
-                log_printf(LOG_DEBUG, "%d bytes written to %s", len, fdata->file);
             }
-        
-            if (ODF_arg->lastSegment) {
-                char filepath[PATH_MAX];
-                sprintf(filepath, "%s%s", fdata->dir, fdata->file);
-                log_printf(LOG_DEBUG, "last fwrite data segment");
+        }
 
-                if (fdata->fptr != NULL) {
-                    fclose(fdata->fptr);
-                    fdata->fptr = NULL;
-                }
-                log_printf(LOG_ERR, "closed %s", fdata->file);
-
-                if (olm_file_cache_add(fdata->cache, filepath) == 0) {
-                    log_printf(LOG_ERR, "%s was added to the fwrite cache", fdata->file);
-                    CO_fstream_reset(fdata);
-                } else {
-                    log_printf(LOG_ERR, "%s failed to be added the fwrite cache", fdata->file);
-                }
-            }
-
+        // write file data
+        if (fwrite(ODF_arg->data, 1, len, fdata->fptr) != len) {
+            log_printf(LOG_ERR, "failed to write to file %s", fdata->file);
+            CO_fstream_reset(fdata);
+            ret = CO_SDO_AB_DATA_LOC_CTRL;
             break;
+        } else {
+            log_printf(LOG_DEBUG, "%d bytes written to %s", len, fdata->file);
+        }
 
-        case OD_3004_3_fwrite_reset: // reset fwrite, domain, writeonly
-            
-            if (ODF_arg->reading)
-                ret = CO_SDO_AB_WRITEONLY;
-            else
+        if (ODF_arg->lastSegment) {
+            char filepath[PATH_MAX];
+            sprintf(filepath, "%s%s", fdata->dir, fdata->file);
+            log_printf(LOG_DEBUG, "last fwrite data segment");
+
+            if (fdata->fptr != NULL) {
+                fclose(fdata->fptr);
+                fdata->fptr = NULL;
+            }
+            log_printf(LOG_ERR, "closed %s", fdata->file);
+
+            if (olm_file_cache_add(fdata->cache, filepath) == 0) {
+                log_printf(LOG_ERR, "%s was added to the fwrite cache",
+                           fdata->file);
                 CO_fstream_reset(fdata);
+            } else {
+                log_printf(LOG_ERR, "%s failed to be added the fwrite cache",
+                           fdata->file);
+            }
+        }
 
-            break;
+        break;
+
+    case OD_3004_3_fwrite_reset: // reset fwrite, domain, writeonly
+
+        if (ODF_arg->reading)
+            ret = CO_SDO_AB_WRITEONLY;
+        else
+            CO_fstream_reset(fdata);
+
+        break;
     }
 
     return ret;

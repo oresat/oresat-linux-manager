@@ -22,15 +22,17 @@ typedef struct {
     /** Lenght of the Bash command buffer. */
     int command_len;
     /** Reply buffer. */
-    char * reply_buf;
+    char *reply_buf;
     /** Reply buffer length. */
     uint32_t reply_buf_len;
     /** Reply length in the buffer. */
     uint32_t reply_len;
 } os_command_t;
 
-void co_command_async(os_command_t *data);
+void
+co_command_async(os_command_t *data);
 
-CO_SDO_abortCode_t OS_COMMAND_1023_ODF(CO_ODF_arg_t *ODF_arg);
+CO_SDO_abortCode_t
+OS_COMMAND_1023_ODF(CO_ODF_arg_t *ODF_arg);
 
 #endif /* OS_COMMAND_H */

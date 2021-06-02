@@ -9,14 +9,14 @@
  * Project home page is <https://github.com/oresat/oresat-linux-manager>.
  */
 
-#include "logging.h"
 #include "logind.h"
+#include "logging.h"
 #include <systemd/sd-bus.h>
 
-#define MODULE_NAME         "logind"
-#define DESTINATION         "org.freedesktop.logind1"
-#define INTERFACE_NAME      DESTINATION".Manager"
-#define OBJECT_PATH         "/org/freedesktop/logind1"
+#define MODULE_NAME    "logind"
+#define DESTINATION    "org.freedesktop.logind1"
+#define INTERFACE_NAME DESTINATION ".Manager"
+#define OBJECT_PATH    "/org/freedesktop/logind1"
 
 /** System D-Bus connection. Defined in main.c */
 extern sd_bus *system_bus;
@@ -42,7 +42,8 @@ logind_poweroff(void) {
     int r;
 
     if ((r = sd_bus_call_method(DBUS_INFO, "PowerOff", &err, NULL, NULL)) < 0)
-        LOG_DBUS_CALL_METHOD_ERROR(LOG_DEBUG, MODULE_NAME, "PowerOff", err.name);
+        LOG_DBUS_CALL_METHOD_ERROR(LOG_DEBUG, MODULE_NAME, "PowerOff",
+                                   err.name);
 
     sd_bus_error_free(&err);
     return r;

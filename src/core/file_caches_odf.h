@@ -14,12 +14,13 @@
 
 #include "CANopen.h"
 #include "olm_file.h"
+#include "olm_file_cache.h"
 #include <stddef.h>
 #include <stdint.h>
 #include <stdio.h>
 
-#define FREAD_CACHE     0
-#define FWRITE_CACHE    1
+#define FREAD_CACHE  0
+#define FWRITE_CACHE 1
 
 /** file transfer caches ODF private data. */
 typedef struct {
@@ -31,23 +32,25 @@ typedef struct {
     char *keyword;
 } file_caches_t;
 
-#define FILE_CACHES_INTIALIZER(_fread_cache, _fwrite_cache) { \
-    .fread_cache = _fread_cache, \
-    .fwrite_cache = _fwrite_cache,\
-    .keyword = NULL, \
-}
+#define FILE_CACHES_INTIALIZER(_fread_cache, _fwrite_cache)                    \
+    {                                                                          \
+        .fread_cache = _fread_cache, .fwrite_cache = _fwrite_cache,            \
+        .keyword = NULL,                                                       \
+    }
 
-void file_caches_free(file_caches_t *caches);
+void
+file_caches_free(file_caches_t *caches);
 
 /**
  * @brief ODF for list all file in the read and write caches and modifing the
- * caches. A file_caches_t object must be passed into the object arguemnt for 
+ * caches. A file_caches_t object must be passed into the object arguemnt for
  * CO_OD_configure when adding this ODF.
  *
  * @param ODF_arg Current ODF arguemnt for SDO
  *
  * @return SDO abort code
  */
-CO_SDO_abortCode_t file_caches_ODF(CO_ODF_arg_t *ODF_arg);
+CO_SDO_abortCode_t
+file_caches_ODF(CO_ODF_arg_t *ODF_arg);
 
 #endif /* FILE_CACHES_ODF_H */

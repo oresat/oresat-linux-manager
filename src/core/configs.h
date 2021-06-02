@@ -24,14 +24,14 @@ typedef struct {
     uint16_t bit_rate;
 } olm_configs_t;
 
-#define NODE_ID_DEFAULT     0x7C
-#define BIT_RATE_DEFAULT    0
+#define NODE_ID_DEFAULT  0x7C
+#define BIT_RATE_DEFAULT 0
 
-#define OLM_CONFIGS_DEFAULT { \
-    .interface = "can0", \
-    .node_id = NODE_ID_DEFAULT, \
-    .bit_rate = BIT_RATE_DEFAULT, \
-}
+#define OLM_CONFIGS_DEFAULT                                                    \
+    {                                                                          \
+        .interface = "can0", .node_id = NODE_ID_DEFAULT,                       \
+        .bit_rate = BIT_RATE_DEFAULT,                                          \
+    }
 
 /**
  * @brief Read configs from conf file.
@@ -40,6 +40,7 @@ typedef struct {
  *
  * @return 1 on success or negative value on error.
  */
-int read_config_file(olm_configs_t *configs);
+int
+read_config_file(olm_configs_t *configs);
 
 #endif /* OLM_CONFIGS_H */

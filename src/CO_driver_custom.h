@@ -19,7 +19,7 @@ extern "C" {
 
 /* TIME configs */
 #undef CO_CONFIG_TIME
-#define CO_CONFIG_TIME  0
+#define CO_CONFIG_TIME 0
 #undef CO_CONFIG_TIME_ENABLE
 #define CO_CONFIG_TIME_ENABLE 0
 
@@ -53,7 +53,7 @@ extern "C" {
 #undef CO_CONFIG_GTW
 #define CO_CONFIG_GTW 0
 
-/* GTW configs */
+/* Trace configs */
 #undef CO_CONFIG_TRACE_ENABLE
 #define CO_CONFIG_TRACE_ENABLE 0
 

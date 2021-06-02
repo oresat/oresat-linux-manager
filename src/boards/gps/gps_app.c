@@ -9,21 +9,21 @@
  * Project home page is <https://github.com/oresat/oresat-linux-manager>.
  */
 
+#include "gps_app.h"
 #include "CANopen.h"
 #include "ecss_time.h"
+#include "gps.h"
 #include "object_dictionary/CO_OD.h"
 #include "olm_file_cache.h"
-#include "gps.h"
-#include "gps_app.h"
 #include <stdbool.h>
 #include <stdint.h>
 #include <sys/time.h>
 
-#define TPDO_GPS_SV_TIME    2
-#define TPDO_GPS_SV_X_Y     3
-#define TPDO_GPS_SV_Z_VX    4
-#define TPDO_GPS_SV_VY_VZ   5
-#define TPDO_GPS_GENERAL    6
+#define TPDO_GPS_SV_TIME  2
+#define TPDO_GPS_SV_X_Y   3
+#define TPDO_GPS_SV_Z_VX  4
+#define TPDO_GPS_SV_VY_VZ 5
+#define TPDO_GPS_GENERAL  6
 
 void
 gps_app_async(void *data, olm_file_cache_t *fread_cache) {
