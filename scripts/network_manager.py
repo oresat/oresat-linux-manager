@@ -4,8 +4,6 @@
 from argparse import ArgumentParser
 import canopen
 
-EDS_FILE = "../src/boards/generic/object_dictionary/generic.eds"
-
 states = [
     "INITIALISING",
     "PRE-OPERATIONAL",
@@ -24,7 +22,7 @@ parser.add_argument("state", help="new state, can be: " + ", ".join(states))
 args = parser.parse_args()
 
 network = canopen.Network()
-node = canopen.RemoteNode(int(args.node, 16), EDS_FILE)
+node = canopen.RemoteNode(int(args.node, 16), canopen.ObjectDictionary())
 network.add_node(node)
 network.connect(bustype="socketcan", channel=args.bus)
 

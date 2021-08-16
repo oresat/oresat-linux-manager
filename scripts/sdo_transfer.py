@@ -1,14 +1,15 @@
 #!/usr/bin/env python3
-"""SDO transfer script"""
+"""SDO transfer script
+
+This scipt act as CANopen master node, allowing it to read and write other
+node's Object Dictionaries.
+"""
 
 import sys
 from argparse import ArgumentParser
 from struct import pack, unpack
 from enum import Enum, auto
 import canopen
-
-
-EDS_FILE = "../src/boards/generic/object_dictionary/generic.eds"
 
 
 class CANopenTypes(Enum):
@@ -25,7 +26,7 @@ class CANopenTypes(Enum):
     f32 = auto()
     f64 = auto()
     s = auto()
-    d = auto()
+    d = auto()  # DOMAIN type
 
 
 parser = ArgumentParser(description="Read or write value to a node\'s object \
@@ -46,8 +47,9 @@ co_type = CANopenTypes[args.type]
 index = int(args.index, 16)
 subindex = int(args.subindex, 16)
 
+# connect to network and add a fake node to make pythonic canopen happy
 network = canopen.Network()
-node = canopen.RemoteNode(int(args.node, 16), EDS_FILE)
+node = canopen.RemoteNode(int(args.node, 16), canopen.ObjectDictionary())
 network.add_node(node)
 network.connect(bustype="socketcan", channel=args.bus)
 
@@ -84,6 +86,9 @@ if args.mode == "r" or args.mode == "read":
     elif co_type == CANopenTypes.d:
         print(raw_data)
         sys.exit(0)
+    else:
+        print("invalid data type")
+        sys.exit(0)
 
     print(data[0])
 elif args.mode == "w" or args.mode == "write":
@@ -113,6 +118,11 @@ elif args.mode == "w" or args.mode == "write":
         raw_data = args.value.encode("utf-8")
     elif co_type == CANopenTypes.d:
         raw_data = args.value
+    else:
+        print("invalid data type")
 
     node.sdo.download(index, subindex, raw_data)
     network.disconnect()
+else:
+    print("Invalid mode")
+    print("Must be read or write")
