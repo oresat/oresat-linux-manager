@@ -2,7 +2,7 @@
  * Module for interfacing with the OreSat GPS daemon over D-Bus.
  *
  * @file        gps.c
- * @ingroup     daemon_modules
+ * @ingroup     daemons
  *
  * This file is part of OreSat Linux Manager, a common CAN to Dbus interface
  * for daemons running on OreSat Linux boards.
@@ -31,30 +31,34 @@ extern sd_bus *system_bus;
 
 int
 gps_state_vector(state_vector_t *st) {
-    sd_bus_error err = SD_BUS_ERROR_NULL;
+    sd_bus_error    err  = SD_BUS_ERROR_NULL;
     sd_bus_message *mess = NULL;
-    uint32_t time_coarse, time_fine;
-    int r = 0;
+    uint32_t        time_coarse, time_fine;
+    int             r = 0;
 
     if (st == NULL)
         return -EINVAL;
 
-    if ((r = sd_bus_get_property(DBUS_INFO, "StateVector", &err, &mess,
-                                 "(iiiiiiuu)"))
-        < 0)
+    r = sd_bus_get_property(DBUS_INFO, "StateVector", &err, &mess,
+                            "(iiiiiiuu)");
+    if (r < 0) {
         LOG_DBUS_GET_PROPERTY_ERROR(LOG_DEBUG, MODULE_NAME, "StateVector",
                                     err.name);
-    else if ((r = sd_bus_message_read(
-                  mess, "(iiiiiiuu)", &st->position.x, &st->position.y,
-                  &st->position.z, &st->velocity.x, &st->velocity.y,
-                  &st->velocity.z, &time_coarse, &time_fine))
-             < 0)
+        goto state_vector_end;
+    }
+
+    r = sd_bus_message_read(mess, "(iiiiiiuu)", &st->position.x,
+                            &st->position.y, &st->position.z, &st->velocity.x,
+                            &st->velocity.y, &st->velocity.z, &time_coarse,
+                            &time_fine);
+    if (r < 0)
         LOG_DBUS_PROPERTY_READ_ERROR(LOG_DEBUG, MODULE_NAME, "StateVector",
                                      err.name);
 
-    st->timestamp.tv_sec = (time_t)time_coarse;
+    st->timestamp.tv_sec  = (time_t)time_coarse;
     st->timestamp.tv_usec = (long)time_fine;
 
+state_vector_end:
     sd_bus_message_unref(mess);
     sd_bus_error_free(&err);
     return r;
@@ -62,9 +66,9 @@ gps_state_vector(state_vector_t *st) {
 
 uint8_t
 gps_status(void) {
-    sd_bus_error err = SD_BUS_ERROR_NULL;
+    sd_bus_error    err  = SD_BUS_ERROR_NULL;
     sd_bus_message *mess = NULL;
-    uint8_t status;
+    uint8_t         status;
 
     if (sd_bus_get_property(DBUS_INFO, "Status", &err, &mess, "y") < 0)
         LOG_DBUS_GET_PROPERTY_ERROR(LOG_DEBUG, MODULE_NAME, "Status", err.name);
@@ -79,10 +83,10 @@ gps_status(void) {
 
 bool
 gps_time_synchronized(void) {
-    sd_bus_error err = SD_BUS_ERROR_NULL;
-    sd_bus_message *mess = NULL;
-    bool sync = false;
-    int sync_raw = 0;
+    sd_bus_error    err      = SD_BUS_ERROR_NULL;
+    sd_bus_message *mess     = NULL;
+    bool            sync     = false;
+    int             sync_raw = 0;
 
     if (sd_bus_get_property(DBUS_INFO, "Sync", &err, &mess, "b") < 0)
         LOG_DBUS_GET_PROPERTY_ERROR(LOG_DEBUG, MODULE_NAME, "Sync", err.name);
@@ -99,9 +103,9 @@ gps_time_synchronized(void) {
 
 uint8_t
 gps_satellite_number(void) {
-    sd_bus_error err = SD_BUS_ERROR_NULL;
+    sd_bus_error    err  = SD_BUS_ERROR_NULL;
     sd_bus_message *mess = NULL;
-    uint8_t sats = 0;
+    uint8_t         sats = 0;
 
     if (sd_bus_get_property(DBUS_INFO, "Satellites", &err, &mess, "y") < 0)
         LOG_DBUS_GET_PROPERTY_ERROR(LOG_DEBUG, MODULE_NAME, "Satellites",

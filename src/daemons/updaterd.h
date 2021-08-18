@@ -2,7 +2,7 @@
  * Module for interfacing with the OreSat Linux Updater daemon over D-Bus.
  *
  * @file        updater.h
- * @ingroup     daemon_modules
+ * @ingroup     daemons
  *
  * This file is part of OreSat Linux Manager, a common CAN to Dbus interface
  * for daemons running on OreSat Linux boards.

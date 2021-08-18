@@ -145,7 +145,7 @@ target_link_libraries(oresat-linux-manager
     common
     core
     manitory_apps
-    daemon_modules
+    daemons
     board
     ${LIBSYSTEMD_LIBRARIES}
     Threads::Threads

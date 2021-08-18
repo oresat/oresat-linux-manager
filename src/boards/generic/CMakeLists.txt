@@ -15,7 +15,7 @@ target_link_libraries(board
     core
     common
     manitory_apps
-    daemon_modules
+    daemons
     )
 
 target_include_directories(board PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})

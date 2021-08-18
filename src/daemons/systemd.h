@@ -2,7 +2,7 @@
  * Module for interfacing with Systemd over D-Bus.
  *
  * @file        systemd.c
- * @ingroup     daemon_modules
+ * @ingroup     daemons
  *
  * This file is part of OreSat Linux Manager, a common CAN to Dbus interface
  * for daemons running on OreSat Linux boards.

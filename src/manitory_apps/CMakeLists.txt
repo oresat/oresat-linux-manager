@@ -14,7 +14,7 @@ target_link_libraries(manitory_apps
     CANopenNode
     common
     object_dictionary
-    daemon_modules
+    daemons
     )
 
 target_include_directories(manitory_apps PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})

@@ -2,7 +2,7 @@
  * Module for interfacing with Systemd over D-Bus.
  *
  * @file        systemd.c
- * @ingroup     daemon_modules
+ * @ingroup     daemons
  *
  * This file is part of OreSat Linux Manager, a common CAN to Dbus interface
  * for daemons running on OreSat Linux boards.
@@ -34,9 +34,9 @@ static const char *active_state_str[] = {
 
 char *
 get_unit(const char *name) {
-    sd_bus_error err = SD_BUS_ERROR_NULL;
+    sd_bus_error    err  = SD_BUS_ERROR_NULL;
     sd_bus_message *mess = NULL;
-    char *r = NULL, *unit = NULL;
+    char *          r = NULL, *unit = NULL;
 
     if (name == NULL)
         return r;
@@ -53,7 +53,8 @@ get_unit(const char *name) {
         goto get_unit_end;
     }
 
-    if ((r = malloc(strlen(unit) + 1)) != NULL) // must copy strings
+    r = malloc(strlen(unit) + 1);
+    if (r != NULL) // must copy strings
         strncpy(r, unit, strlen(unit) + 1);
 
 get_unit_end:
@@ -65,9 +66,9 @@ get_unit_end:
 
 char *
 load_unit(const char *name) {
-    sd_bus_error err = SD_BUS_ERROR_NULL;
+    sd_bus_error    err  = SD_BUS_ERROR_NULL;
     sd_bus_message *mess = NULL;
-    char *r = NULL, *unit = NULL;
+    char *          r = NULL, *unit = NULL;
 
     if (name == NULL)
         return r;
@@ -87,7 +88,8 @@ load_unit(const char *name) {
         goto load_unit_end;
     }
 
-    if ((r = malloc(strlen(unit) + 1)) != NULL) // must copy strings
+    r = malloc(strlen(unit) + 1);
+    if (r != NULL) // must copy strings
         strncpy(r, unit, strlen(unit) + 1);
 
 load_unit_end:
@@ -99,16 +101,16 @@ load_unit_end:
 
 int
 start_unit(const char *unit) {
-    sd_bus_error err = SD_BUS_ERROR_NULL;
+    sd_bus_error    err  = SD_BUS_ERROR_NULL;
     sd_bus_message *mess = NULL;
-    int r;
+    int             r;
 
     if (unit == NULL)
         return -EINVAL;
 
-    if ((r = sd_bus_call_method(system_bus, DESTINATION, unit, UNIT_INTERFACE,
-                                "Start", &err, &mess, "s", "fail"))
-        < 0)
+    r = sd_bus_call_method(system_bus, DESTINATION, unit, UNIT_INTERFACE,
+                           "Start", &err, &mess, "s", "fail");
+    if (r < 0)
         LOG_DBUS_CALL_METHOD_ERROR(LOG_DEBUG, MODULE_NAME, "Start", err.name);
 
     sd_bus_message_unref(mess);
@@ -118,16 +120,16 @@ start_unit(const char *unit) {
 
 int
 stop_unit(const char *unit) {
-    sd_bus_error err = SD_BUS_ERROR_NULL;
+    sd_bus_error    err  = SD_BUS_ERROR_NULL;
     sd_bus_message *mess = NULL;
-    int r;
+    int             r;
 
     if (unit == NULL)
         return -EINVAL;
 
-    if ((r = sd_bus_call_method(system_bus, DESTINATION, unit, UNIT_INTERFACE,
-                                "Stop", &err, &mess, "s", "fail"))
-        < 0)
+    r = sd_bus_call_method(system_bus, DESTINATION, unit, UNIT_INTERFACE,
+                           "Stop", &err, &mess, "s", "fail");
+    if (r < 0)
         LOG_DBUS_CALL_METHOD_ERROR(LOG_DEBUG, MODULE_NAME, "Stop", err.name);
 
     sd_bus_message_unref(mess);
@@ -137,16 +139,16 @@ stop_unit(const char *unit) {
 
 int
 restart_unit(const char *unit) {
-    sd_bus_error err = SD_BUS_ERROR_NULL;
+    sd_bus_error    err  = SD_BUS_ERROR_NULL;
     sd_bus_message *mess = NULL;
-    int r;
+    int             r;
 
     if (unit == NULL)
         return -EINVAL;
 
-    if ((r = sd_bus_call_method(system_bus, DESTINATION, unit, UNIT_INTERFACE,
-                                "Restart", &err, &mess, "s", "fail"))
-        < 0)
+    r = sd_bus_call_method(system_bus, DESTINATION, unit, UNIT_INTERFACE,
+                           "Restart", &err, &mess, "s", "fail");
+    if (r < 0)
         LOG_DBUS_CALL_METHOD_ERROR(LOG_DEBUG, MODULE_NAME, "Restart", err.name);
 
     sd_bus_message_unref(mess);
@@ -156,10 +158,10 @@ restart_unit(const char *unit) {
 
 unit_active_states_t
 get_unit_active_state(const char *unit) {
-    sd_bus_error err = SD_BUS_ERROR_NULL;
-    sd_bus_message *mess = NULL;
-    char *state = NULL;
-    int r = UNIT_UNKNOWN;
+    sd_bus_error    err   = SD_BUS_ERROR_NULL;
+    sd_bus_message *mess  = NULL;
+    char *          state = NULL;
+    int             r     = UNIT_UNKNOWN;
 
     if (unit == NULL)
         return -EINVAL;

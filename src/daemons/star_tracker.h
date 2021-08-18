@@ -2,7 +2,7 @@
  * Module for interfacing with the OreSat Star Tracker daemon over D-Bus.
  *
  * @file        star_tracker.h
- * @ingroup     daemon_modules
+ * @ingroup     daemons
  *
  * This file is part of OreSat Linux Manager, a common CAN to Dbus interface
  * for daemons running on OreSat Linux boards.
@@ -18,9 +18,9 @@
 #define STAR_TRACKER_SERVICE_FILE "oresat-star-trackerd.service"
 
 typedef struct {
-    double declination;
-    double right_ascension;
-    double roll;
+    double         declination;
+    double         right_ascension;
+    double         roll;
     struct timeval timestamp;
 } st_coordinates_t;
 

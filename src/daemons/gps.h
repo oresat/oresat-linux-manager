@@ -2,7 +2,7 @@
  * Module for interfacing with the OreSat GPS daemon over D-Bus.
  *
  * @file        gps.c
- * @ingroup     daemon_modules
+ * @ingroup     daemons
  *
  * This file is part of OreSat Linux Manager, a common CAN to Dbus interface
  * for daemons running on OreSat Linux boards.
@@ -19,11 +19,11 @@
 #define GPS_SERVICE_FILE "oresat-gpsd.service"
 
 enum gps_states {
-    GPS_SEARCHING = 0x00,
-    GPS_LOCKED = 0x01,
+    GPS_SEARCHING      = 0x00,
+    GPS_LOCKED         = 0x01,
     GPS_HARDWARE_ERROR = 0x02,
-    GPS_PARSER_ERROR = 0x03,
-    GPS_UNKNOWN = 0xFF, // most likely it is off
+    GPS_PARSER_ERROR   = 0x03,
+    GPS_UNKNOWN        = 0xFF, // most likely it is off
 };
 
 typedef struct {
@@ -33,8 +33,8 @@ typedef struct {
 } xyz_t;
 
 typedef struct {
-    xyz_t position;
-    xyz_t velocity;
+    xyz_t          position;
+    xyz_t          velocity;
     struct timeval timestamp;
 } state_vector_t;
 

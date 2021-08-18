@@ -2,7 +2,7 @@
  * Module for interfacing with Logind over D-Bus.
  *
  * @file        logind.c
- * @ingroup     daemon_modules
+ * @ingroup     daemons
  *
  * This file is part of OreSat Linux Manager, a common CAN to Dbus interface
  * for daemons running on OreSat Linux boards.
@@ -27,9 +27,10 @@ extern sd_bus *system_bus;
 int
 logind_reboot(void) {
     sd_bus_error err = SD_BUS_ERROR_NULL;
-    int r;
+    int          r;
 
-    if ((r = sd_bus_call_method(DBUS_INFO, "Reboot", &err, NULL, NULL)) < 0)
+    r = sd_bus_call_method(DBUS_INFO, "Reboot", &err, NULL, NULL);
+    if (r < 0)
         LOG_DBUS_CALL_METHOD_ERROR(LOG_DEBUG, MODULE_NAME, "Reboot", err.name);
 
     sd_bus_error_free(&err);
@@ -39,9 +40,10 @@ logind_reboot(void) {
 int
 logind_poweroff(void) {
     sd_bus_error err = SD_BUS_ERROR_NULL;
-    int r;
+    int          r;
 
-    if ((r = sd_bus_call_method(DBUS_INFO, "PowerOff", &err, NULL, NULL)) < 0)
+    r = sd_bus_call_method(DBUS_INFO, "PowerOff", &err, NULL, NULL);
+    if (r < 0)
         LOG_DBUS_CALL_METHOD_ERROR(LOG_DEBUG, MODULE_NAME, "PowerOff",
                                    err.name);
 
