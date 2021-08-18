@@ -64,7 +64,7 @@ DBus library or a DBus binding. A lot of languages do have DBus support, See
 - `$ cp -r src/boards/generic src/boards/<new_board_name>`
 - modify `$ src/boards/<new_board_name>/board_main.c` as needed
 - modify `$ src/boards/<new_board_name>/object_dictionary/*.xdd` with
-[libedssharp] as needed. Make sure to save the `.xdd`, `.eds`, `.md`, and
+[CANopenEditor] as needed. Make sure to save the `.xdd`, `.eds`, `.md`, and
 `CO_OD.*` files when editing the OD.
 
 ## Useful References
@@ -90,4 +90,4 @@ DBus library or a DBus binding. A lot of languages do have DBus support, See
 
 <!-- Other Repos -->
 [CANopenNode]:https://github.com/CANopenNode/CANopenNode
-[libedssharp]:https://github.com/robincornelius/libedssharp
+[CANopenEditor]:https://github.com/CANopenNode/CANopenEditor
