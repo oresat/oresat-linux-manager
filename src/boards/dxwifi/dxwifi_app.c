@@ -20,7 +20,7 @@ void
 dxwifi_app_async(void *data, olm_file_cache_t *fread_cache) {
     CO_LOCK_OD();
     CO->TPDO[TPDO_DXWIFI]->valid = true;
-    OD_dxWiFiStatus = true;
+    OD_dxWiFiStatus              = true;
     CO_UNLOCK_OD();
 }
 
@@ -28,6 +28,6 @@ void
 dxwifi_app_end(void *data) {
     CO_LOCK_OD();
     CO->TPDO[TPDO_DXWIFI]->valid = false;
-    OD_dxWiFiStatus = false;
+    OD_dxWiFiStatus              = false;
     CO_UNLOCK_OD();
 }

@@ -28,8 +28,8 @@
 void
 gps_app_async(void *data, olm_file_cache_t *fread_cache) {
     state_vector_t sv;
-    time_scet_t time;
-    uint8_t state, sats;
+    time_scet_t    time;
+    uint8_t        state, sats;
 
     if (!CO->TPDO[TPDO_GPS_GENERAL]->valid) {
         CO_LOCK_OD();
@@ -44,24 +44,24 @@ gps_app_async(void *data, olm_file_cache_t *fread_cache) {
     }
 
     state = gps_status();
-    sats = gps_satellite_number();
+    sats  = gps_satellite_number();
 
     if (state != 0xFF) {
         CO_LOCK_OD();
-        OD_GPSStatus = state;
-        OD_satellitesLocked = sats;
-        CO->TPDO[TPDO_GPS_SV_TIME]->valid = true;
-        CO->TPDO[TPDO_GPS_SV_X_Y]->valid = true;
-        CO->TPDO[TPDO_GPS_SV_Z_VX]->valid = true;
+        OD_GPSStatus                       = state;
+        OD_satellitesLocked                = sats;
+        CO->TPDO[TPDO_GPS_SV_TIME]->valid  = true;
+        CO->TPDO[TPDO_GPS_SV_X_Y]->valid   = true;
+        CO->TPDO[TPDO_GPS_SV_Z_VX]->valid  = true;
         CO->TPDO[TPDO_GPS_SV_VY_VZ]->valid = true;
         CO_UNLOCK_OD();
     } else {
         CO_LOCK_OD();
-        OD_GPSStatus = state;
-        OD_satellitesLocked = sats;
-        CO->TPDO[TPDO_GPS_SV_TIME]->valid = false;
-        CO->TPDO[TPDO_GPS_SV_X_Y]->valid = false;
-        CO->TPDO[TPDO_GPS_SV_Z_VX]->valid = false;
+        OD_GPSStatus                       = state;
+        OD_satellitesLocked                = sats;
+        CO->TPDO[TPDO_GPS_SV_TIME]->valid  = false;
+        CO->TPDO[TPDO_GPS_SV_X_Y]->valid   = false;
+        CO->TPDO[TPDO_GPS_SV_Z_VX]->valid  = false;
         CO->TPDO[TPDO_GPS_SV_VY_VZ]->valid = false;
         CO_UNLOCK_OD();
         return; // state vector is invalid
@@ -69,7 +69,7 @@ gps_app_async(void *data, olm_file_cache_t *fread_cache) {
 
     if (state == 0x2 && gps_state_vector(&sv) >= 0) {
         time.coarse = sv.timestamp.tv_sec;
-        time.fine = sv.timestamp.tv_usec;
+        time.fine   = sv.timestamp.tv_usec;
 
         CO_LOCK_OD();
         OD_stateVector.positionX = sv.position.x;
@@ -86,12 +86,12 @@ gps_app_async(void *data, olm_file_cache_t *fread_cache) {
 void
 gps_app_end(void *data) {
     CO_LOCK_OD();
-    CO->TPDO[TPDO_GPS_SV_TIME]->valid = false;
-    CO->TPDO[TPDO_GPS_SV_X_Y]->valid = false;
-    CO->TPDO[TPDO_GPS_SV_Z_VX]->valid = false;
+    CO->TPDO[TPDO_GPS_SV_TIME]->valid  = false;
+    CO->TPDO[TPDO_GPS_SV_X_Y]->valid   = false;
+    CO->TPDO[TPDO_GPS_SV_Z_VX]->valid  = false;
     CO->TPDO[TPDO_GPS_SV_VY_VZ]->valid = false;
-    CO->TPDO[TPDO_GPS_GENERAL]->valid = false;
-    OD_GPSStatus = 0xFF;
-    OD_satellitesLocked = 0;
+    CO->TPDO[TPDO_GPS_GENERAL]->valid  = false;
+    OD_GPSStatus                       = 0xFF;
+    OD_satellitesLocked                = 0;
     CO_UNLOCK_OD();
 }

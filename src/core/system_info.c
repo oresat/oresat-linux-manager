@@ -140,9 +140,10 @@ system_info_async(system_info_t *data) {
         OD_systemInfo.ramPercent
             = (uint8_t)((info.totalram - info.freeram) * 100 / info.totalram);
         if (OD_systemInfo.swapTotal > 0) {
-            OD_systemInfo.swapFree    = (uint32_t)(info.freeswap / 1024 / 1024);
-            OD_systemInfo.swapPercent = (uint8_t)(
-                (info.totalswap - info.freeswap) * 100 / info.totalswap);
+            OD_systemInfo.swapFree = (uint32_t)(info.freeswap / 1024 / 1024);
+            OD_systemInfo.swapPercent
+                = (uint8_t)((info.totalswap - info.freeswap) * 100
+                            / info.totalswap);
         }
         OD_systemInfo.procs = (uint32_t)info.procs;
     }
@@ -151,8 +152,9 @@ system_info_async(system_info_t *data) {
         // the order help with int overflow on 32bit systems
         OD_systemInfo.rootParitionFree
             = (uint32_t)(fs_info.f_bavail / 1024 * fs_info.f_bsize / 1024);
-        OD_systemInfo.rootParitionPercent = (uint8_t)(
-            (fs_info.f_blocks - fs_info.f_bavail) * 100 / fs_info.f_blocks);
+        OD_systemInfo.rootParitionPercent
+            = (uint8_t)((fs_info.f_blocks - fs_info.f_bavail) * 100
+                        / fs_info.f_blocks);
     }
 
     CO_UNLOCK_OD();

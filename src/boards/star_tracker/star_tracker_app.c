@@ -28,12 +28,12 @@
 void
 star_tracker_app_async(void *data, olm_file_cache_t *fread_cache) {
     st_coordinates_t coor;
-    time_scet_t scet;
-    uint8_t temp;
-    uint32_t temp2;
-    char *path;
-    time_t mytime;
-    char temp_path[PATH_MAX];
+    time_scet_t      scet;
+    uint8_t          temp;
+    uint32_t         temp2;
+    char *           path;
+    time_t           mytime;
+    char             temp_path[PATH_MAX];
 
     temp = OD_changeState;
     if (temp == 0 || temp == 1) {
@@ -41,24 +41,24 @@ star_tracker_app_async(void *data, olm_file_cache_t *fread_cache) {
         OD_changeState = 0xFF;
     }
 
-    temp2 = star_tracker_state();
+    temp2                = star_tracker_state();
     OD_starTrackerStatus = (uint8_t)temp2;
 
     if (OD_starTrackerStatus == 1 && star_tracker_coordinates(&coor) >= 0) {
         scet.coarse = coor.timestamp.tv_sec;
-        scet.fine = coor.timestamp.tv_usec;
+        scet.fine   = coor.timestamp.tv_usec;
 
         CO_LOCK_OD();
         CO->TPDO[TPDO_ST_COOR_TIME]->valid = true;
-        CO->TPDO[TPDO_ST_COOR]->valid = true;
-        OD_orienation.rightAscension = (int16_t)coor.right_ascension;
-        OD_orienation.declination = (int16_t)coor.declination;
-        OD_orienation.roll = (int16_t)coor.roll;
-        OD_orienation.timestamp = scet.raw;
+        CO->TPDO[TPDO_ST_COOR]->valid      = true;
+        OD_orienation.rightAscension       = (int16_t)coor.right_ascension;
+        OD_orienation.declination          = (int16_t)coor.declination;
+        OD_orienation.roll                 = (int16_t)coor.roll;
+        OD_orienation.timestamp            = scet.raw;
         CO_UNLOCK_OD();
     } else {
         CO->TPDO[TPDO_ST_COOR_TIME]->valid = false;
-        CO->TPDO[TPDO_ST_COOR]->valid = false;
+        CO->TPDO[TPDO_ST_COOR]->valid      = false;
     }
 
     if (OD_getLastSolveImage) {
@@ -109,15 +109,15 @@ void
 star_tracker_app_end(void *data) {
     CO_LOCK_OD();
     CO->TPDO[TPDO_ST_COOR_TIME]->valid = false;
-    CO->TPDO[TPDO_ST_COOR]->valid = false;
-    OD_starTrackerStatus = 0xFF;
+    CO->TPDO[TPDO_ST_COOR]->valid      = false;
+    OD_starTrackerStatus               = 0xFF;
     CO_UNLOCK_OD();
 }
 
 CO_SDO_abortCode_t
 star_tracker_ODF(CO_ODF_arg_t *ODF_arg) {
     CO_SDO_abortCode_t ret = CO_SDO_AB_NONE;
-    uint8_t temp;
+    uint8_t            temp;
 
     if (!ODF_arg->reading) {
         temp = CO_getUint8(ODF_arg->data);

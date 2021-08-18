@@ -22,23 +22,23 @@
 #include <unistd.h>
 
 static olm_app_t updater_app = {
-    .name = "Updater",
-    .unit_name = UPDATER_SERVICE_FILE,
+    .name           = "Updater",
+    .unit_name      = UPDATER_SERVICE_FILE,
     .fwrite_keyword = "update",
-    .fwrite_cb = updaterd_add_update_archive,
-    .async_cb = updater_async,
-    .daemon_end_cb = updater_end,
-    .data = NULL,
+    .fwrite_cb      = updaterd_add_update_archive,
+    .async_cb       = updater_async,
+    .daemon_end_cb  = updater_end,
+    .data           = NULL,
 };
 
 static olm_app_t star_tracker_app = {
-    .name = "Star Tracker",
-    .unit_name = STAR_TRACKER_SERVICE_FILE,
+    .name           = "Star Tracker",
+    .unit_name      = STAR_TRACKER_SERVICE_FILE,
     .fwrite_keyword = NULL,
-    .fwrite_cb = NULL,
-    .async_cb = star_tracker_app_async,
-    .daemon_end_cb = star_tracker_app_end,
-    .data = NULL,
+    .fwrite_cb      = NULL,
+    .async_cb       = star_tracker_app_async,
+    .daemon_end_cb  = star_tracker_app_end,
+    .data           = NULL,
 };
 
 static olm_app_t *apps[] = {

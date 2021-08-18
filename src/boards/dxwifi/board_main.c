@@ -21,23 +21,23 @@
 #include <unistd.h>
 
 static olm_app_t updater_app = {
-    .name = "Updater",
-    .unit_name = UPDATER_SERVICE_FILE,
+    .name           = "Updater",
+    .unit_name      = UPDATER_SERVICE_FILE,
     .fwrite_keyword = "update",
-    .fwrite_cb = updaterd_add_update_archive,
-    .async_cb = updater_async,
-    .daemon_end_cb = updater_end,
-    .data = NULL,
+    .fwrite_cb      = updaterd_add_update_archive,
+    .async_cb       = updater_async,
+    .daemon_end_cb  = updater_end,
+    .data           = NULL,
 };
 
 static olm_app_t dxwifi_app = {
-    .name = "DxWiFi",
-    .unit_name = "oresat-dxwifi-txd.service",
+    .name           = "DxWiFi",
+    .unit_name      = "oresat-dxwifi-txd.service",
     .fwrite_keyword = NULL,
-    .fwrite_cb = NULL,
-    .async_cb = dxwifi_app_async,
-    .daemon_end_cb = dxwifi_app_end,
-    .data = NULL,
+    .fwrite_cb      = NULL,
+    .async_cb       = dxwifi_app_async,
+    .daemon_end_cb  = dxwifi_app_end,
+    .data           = NULL,
 };
 
 static olm_app_t *apps[] = {
