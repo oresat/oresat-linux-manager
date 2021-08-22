@@ -338,10 +338,6 @@ main(int argc, char *argv[]) {
     if (sd_bus_open_system(&system_bus) < 0)
         log_printf(LOG_CRIT, "open system bus failed");
 
-    // set method and therefor priorities to timeout after 5 seconds.
-    // otherwise it defaults to 25 seconds
-    sd_bus_set_method_call_timeout(system_bus, 5000000);
-
     /* Allocate memory for CANopen objects */
     err = CO_new(NULL);
     if (err != CO_ERROR_NO) {
