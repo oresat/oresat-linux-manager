@@ -18,8 +18,6 @@
 
 /** Private data for system info ODF to use */
 typedef struct {
-    /** Flag for 1st time accessed */
-    bool init;
     /** Hostname */
     char *hostname;
     /** OS */
@@ -30,18 +28,25 @@ typedef struct {
     char *kernel_version;
     /** Architecture */
     char *architecture;
+    /** current remoteproc selected */
+    uint8_t rproc;
 } system_info_t;
 
-#define SYSTEM_INFO_DEFAULT                                                    \
-    {                                                                          \
-        .init = true, .hostname = NULL, .os_name = NULL, .os_distro = NULL,    \
-        .kernel_version = NULL, .architecture = NULL,                          \
-    }
+/**
+ * Create a system_info_t object
+ *
+ * @see system_info_destroy
+ */
+system_info_t *system_info_create(void);
 
-/** Free all data in a @ref system_info_t object. */
-void system_info_free(system_info_t *info);
-
-void system_info_async(system_info_t *info);
+/**
+ * Destroy system_info_t object.
+ *
+ * @param info the system_info_t object to free
+ *
+ * @see system_info_create
+ */
+void system_info_destroy(system_info_t *info);
 
 /**
  * Callback for using inside CO_OD_configure() function for getting the systems

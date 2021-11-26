@@ -90,7 +90,6 @@ static olm_configs_t configs = OLM_CONFIGS_DEFAULT;
 static os_command_t os_command_data;
 static olm_file_cache_t *fread_cache = NULL;
 static olm_file_cache_t *fwrite_cache = NULL;
-static system_info_t system_info = SYSTEM_INFO_DEFAULT;
 
 // not static
 sd_bus *system_bus = NULL;
@@ -209,6 +208,7 @@ main(int argc, char *argv[]) {
     bool verbose = false;
     bool cpufreq_ctrl = false;
     bool rebootEnable = false;
+    system_info_t *system_info;
 
     /* Read conf file */
     read_config_file(&configs);
@@ -308,6 +308,8 @@ main(int argc, char *argv[]) {
         = CO_FSTREAM_INITALIZER(FWRITE_TMP_DIR, fwrite_cache);
     file_caches_t caches_odf_data
         = FILE_CACHES_INTIALIZER(fread_cache, fwrite_cache);
+
+    system_info = system_info_create();
 
     /* Run as daemon if needed */
     if (daemon_flag) {
@@ -449,7 +451,7 @@ main(int argc, char *argv[]) {
             CO_OD_configure(CO->SDO[0], OD_3000_OLMControl, olm_control_ODF,
                             NULL, 0, 0U);
             CO_OD_configure(CO->SDO[0], OD_3001_systemInfo, system_info_ODF,
-                            &system_info, 0, 0U);
+                            system_info, 0, 0U);
             CO_OD_configure(CO->SDO[0], OD_3002_fileCaches, file_caches_ODF,
                             &caches_odf_data, 0, 0U);
             CO_OD_configure(CO->SDO[0], OD_3003_fread, CO_fread_ODF,
@@ -536,7 +538,7 @@ main(int argc, char *argv[]) {
 
     /* program exit
      * ***************************************************************/
-    system_info_free(&system_info);
+    system_info_destroy(system_info);
 
     // make sure the files are closed when ending program
     log_printf(LOG_DEBUG, "closing any opened files");
@@ -642,7 +644,6 @@ async_thread(void *arg) {
 
     /* Endless loop */
     while (CO_endProgram == 0) {
-        system_info_async(&system_info);
         co_command_async(&os_command_data);
         usleep(ASYNC_DELAY);
     }
