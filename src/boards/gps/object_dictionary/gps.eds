@@ -5,11 +5,11 @@ FileRevision=1
 LastEDS=
 EDSVersion=4.0
 Description=OreSat GPS
-CreationTime=11:31PM
+CreationTime=10:31PM
 CreationDate=03-09-2021
 CreatedBy=Ryan Medick
-ModificationTime=4:47PM
-ModificationDate=04-24-2021
+ModificationTime=12:50PM
+ModificationDate=11-26-2021
 ModifiedBy=Ryan Medick
 
 [DeviceInfo]
@@ -5491,18 +5491,18 @@ PDOMapping=0
 ParameterName=Reboot Board
 ObjectType=0x7
 ;StorageLocation=RAM
-DataType=0x000F
+DataType=0x0001
 AccessType=wo
-DefaultValue=
+DefaultValue=0
 PDOMapping=0
 
 [3000sub2]
 ParameterName=Poweroff Board
 ObjectType=0x7
 ;StorageLocation=RAM
-DataType=0x000F
+DataType=0x0001
 AccessType=wo
-DefaultValue=
+DefaultValue=0
 PDOMapping=0
 
 [3000sub3]
@@ -5542,36 +5542,36 @@ PDOMapping=0
 ParameterName=OS name
 ObjectType=0x7
 ;StorageLocation=RAM
-DataType=0x000F
+DataType=0x0009
 AccessType=ro
-DefaultValue=
+DefaultValue=x
 PDOMapping=0
 
 [3001sub2]
 ParameterName=OS distro
 ObjectType=0x7
 ;StorageLocation=RAM
-DataType=0x000F
+DataType=0x0009
 AccessType=ro
-DefaultValue=
+DefaultValue=x
 PDOMapping=0
 
 [3001sub3]
 ParameterName=OS kernel version
 ObjectType=0x7
 ;StorageLocation=RAM
-DataType=0x000F
+DataType=0x0009
 AccessType=ro
-DefaultValue=
+DefaultValue=x
 PDOMapping=0
 
 [3001sub4]
 ParameterName=hostname
 ObjectType=0x7
 ;StorageLocation=RAM
-DataType=0x000F
+DataType=0x0009
 AccessType=ro
-DefaultValue=
+DefaultValue=x
 PDOMapping=0
 
 [3001sub5]
@@ -5596,9 +5596,9 @@ PDOMapping=0
 ParameterName=CPU architecture
 ObjectType=0x7
 ;StorageLocation=RAM
-DataType=0x000F
+DataType=0x0009
 AccessType=ro
-DefaultValue=
+DefaultValue=x
 PDOMapping=0
 
 [3001sub8]
@@ -5641,18 +5641,18 @@ PDOMapping=0
 ParameterName=RemoteprocX name
 ObjectType=0x7
 ;StorageLocation=RAM
-DataType=0x000F
+DataType=0x0009
 AccessType=ro
-DefaultValue=
+DefaultValue=x
 PDOMapping=0
 
 [3001subD]
 ParameterName=RemoteprocX state
 ObjectType=0x7
 ;StorageLocation=RAM
-DataType=0x000F
+DataType=0x0009
 AccessType=ro
-DefaultValue=
+DefaultValue=x
 PDOMapping=0
 
 [3001subE]
@@ -5836,9 +5836,9 @@ PDOMapping=0
 ParameterName=Filter
 ObjectType=0x7
 ;StorageLocation=RAM
-DataType=0x000F
+DataType=0x0009
 AccessType=rw
-DefaultValue=
+DefaultValue=x
 PDOMapping=0
 
 [3002sub5]
@@ -5863,9 +5863,9 @@ PDOMapping=0
 ParameterName=File name
 ObjectType=0x7
 ;StorageLocation=RAM
-DataType=0x000F
+DataType=0x0009
 AccessType=ro
-DefaultValue=
+DefaultValue=x
 PDOMapping=0
 
 [3002sub8]
@@ -5881,9 +5881,9 @@ PDOMapping=0
 ParameterName=Delete file
 ObjectType=0x7
 ;StorageLocation=RAM
-DataType=0x000F
+DataType=0x0001
 AccessType=wo
-DefaultValue=
+DefaultValue=0
 PDOMapping=0
 
 [3003]
@@ -5905,9 +5905,9 @@ PDOMapping=0
 ParameterName=File name
 ObjectType=0x7
 ;StorageLocation=RAM
-DataType=0x000F
+DataType=0x0009
 AccessType=rw
-DefaultValue=
+DefaultValue=x
 PDOMapping=0
 
 [3003sub2]
@@ -5923,18 +5923,18 @@ PDOMapping=0
 ParameterName=Reset
 ObjectType=0x7
 ;StorageLocation=RAM
-DataType=0x000F
+DataType=0x0001
 AccessType=wo
-DefaultValue=
+DefaultValue=0
 PDOMapping=0
 
 [3003sub4]
 ParameterName=Delete file
 ObjectType=0x7
 ;StorageLocation=RAM
-DataType=0x000F
+DataType=0x0001
 AccessType=wo
-DefaultValue=
+DefaultValue=0
 PDOMapping=0
 
 [3004]
@@ -5956,9 +5956,9 @@ PDOMapping=0
 ParameterName=File name
 ObjectType=0x7
 ;StorageLocation=RAM
-DataType=0x000F
+DataType=0x0009
 AccessType=rw
-DefaultValue=
+DefaultValue=x
 PDOMapping=0
 
 [3004sub2]
@@ -5974,9 +5974,9 @@ PDOMapping=0
 ParameterName=Reset
 ObjectType=0x7
 ;StorageLocation=RAM
-DataType=0x000F
+DataType=0x0001
 AccessType=wo
-DefaultValue=
+DefaultValue=0
 PDOMapping=0
 
 [3005]
@@ -6034,9 +6034,9 @@ PDOMapping=0
 ParameterName=App name
 ObjectType=0x7
 ;StorageLocation=RAM
-DataType=0x000F
+DataType=0x0009
 AccessType=ro
-DefaultValue=
+DefaultValue=x
 PDOMapping=0
 
 [3005sub6]
@@ -6094,9 +6094,9 @@ PDOMapping=1
 ParameterName=List updates
 ObjectType=0x7
 ;StorageLocation=RAM
-DataType=0x000F
+DataType=0x0009
 AccessType=ro
-DefaultValue=
+DefaultValue=x
 PDOMapping=0
 
 [3100sub4]

@@ -54,7 +54,7 @@ if args.list:
         print("Apps")
         for i in range(apps):
             node.sdo[APP_MANAGER_INDEX][4].phys = i
-            name = node.sdo[APP_MANAGER_INDEX][5].raw.decode("utf-8")
+            name = node.sdo[APP_MANAGER_INDEX][5].phys
             state = node.sdo[APP_MANAGER_INDEX][6].phys
             print("{}: {} is {}".format(i, name, States(state).name))
 elif args.start != -1:
