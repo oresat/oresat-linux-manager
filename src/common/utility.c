@@ -24,11 +24,11 @@
 
 int
 copyfile(const char *src, const char *dest) {
-    char   buf[COPY_BUFF_LEN];
-    FILE * r_fptr = NULL;
-    FILE * w_fptr = NULL;
+    char buf[COPY_BUFF_LEN];
+    FILE *r_fptr = NULL;
+    FILE *w_fptr = NULL;
     size_t bytes;
-    int    r = 0;
+    int r = 0;
 
     if (dest == NULL || src == NULL)
         return -EINVAL;
@@ -65,7 +65,7 @@ copy_error:
 int
 mkdir_path(const char *path, mode_t mode) {
     char temp_path[PATH_MAX];
-    int  r = 0;
+    int r = 0;
 
     if (path == NULL)
         return -EINVAL;
@@ -90,7 +90,7 @@ mkdir_path(const char *path, mode_t mode) {
 bool
 is_file(const char *path) {
     FILE *fptr;
-    bool  r = false;
+    bool r = false;
 
     if ((fptr = fopen(path, "r")) != NULL) {
         fclose(fptr);
@@ -103,7 +103,7 @@ is_file(const char *path) {
 bool
 is_dir(const char *path) {
     DIR *dir = NULL;
-    bool r   = false;
+    bool r = false;
 
     if ((dir = opendir(path)) != NULL) {
         closedir(dir);
@@ -115,10 +115,10 @@ is_dir(const char *path) {
 
 int
 clear_dir(const char *path) {
-    char           filepath[PATH_MAX];
+    char filepath[PATH_MAX];
     struct dirent *dir;
-    DIR *          d;
-    int            r = 0;
+    DIR *d;
+    int r = 0;
 
     if ((d = opendir(path)) != NULL) {       // add all existing file to list
         while ((dir = readdir(d)) != NULL) { // directory found

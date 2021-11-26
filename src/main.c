@@ -52,7 +52,7 @@
 #define TMR_THREAD_INTERVAL_US 1000
 #endif
 
-#define ASYNC_DELAY 100000
+#define ASYNC_DELAY      100000
 
 // pid file for daemon
 #define DEFAULT_PID_FILE "/run/oresat-linux-managerd.pid"
@@ -86,11 +86,11 @@ static CO_time_t CO_time; /* Object for current time */
 #endif
 
 /* OLM globals  **************************************************************/
-static olm_configs_t     configs = OLM_CONFIGS_DEFAULT;
-static os_command_t      os_command_data;
-static olm_file_cache_t *fread_cache  = NULL;
+static olm_configs_t configs = OLM_CONFIGS_DEFAULT;
+static os_command_t os_command_data;
+static olm_file_cache_t *fread_cache = NULL;
 static olm_file_cache_t *fwrite_cache = NULL;
-static system_info_t     system_info  = SYSTEM_INFO_DEFAULT;
+static system_info_t system_info = SYSTEM_INFO_DEFAULT;
 
 // not static
 sd_bus *system_bus = NULL;
@@ -98,22 +98,18 @@ sd_bus *system_bus = NULL;
 /* Helper functions **********************************************************/
 /* Realtime thread */
 CO_epoll_t epRT;
-static void *
-rt_thread(void *arg);
+static void *rt_thread(void *arg);
 
 /* oresat linux manager app thread */
-static void *
-                 app_thread(void *arg);
+static void *app_thread(void *arg);
 static pthread_t app_thread_id;
 
 /* async thread */
-static void *
-                 async_thread(void *arg);
+static void *async_thread(void *arg);
 static pthread_t async_thread_id;
 
 /* make daemon */
-int
-make_daemon(const char *pid_file);
+int make_daemon(const char *pid_file);
 
 /* Signal handler */
 volatile sig_atomic_t CO_endProgram = 0;
@@ -200,19 +196,19 @@ printUsage(char *progName) {
  ******************************************************************************/
 int
 main(int argc, char *argv[]) {
-    int                  programExit = EXIT_SUCCESS;
-    CO_epoll_t           epMain;
-    pthread_t            rt_thread_id;
-    int                  rtPriority = -1;
-    CO_NMT_reset_cmd_t   reset      = CO_RESET_NOT;
-    CO_ReturnError_t     err;
+    int programExit = EXIT_SUCCESS;
+    CO_epoll_t epMain;
+    pthread_t rt_thread_id;
+    int rtPriority = -1;
+    CO_NMT_reset_cmd_t reset = CO_RESET_NOT;
+    CO_ReturnError_t err;
     CO_CANptrSocketCan_t CANptr = {0};
-    int                  opt;
-    bool                 firstRun     = true;
-    bool                 daemon_flag  = false;
-    bool                 verbose      = false;
-    bool                 cpufreq_ctrl = false;
-    bool                 rebootEnable = false;
+    int opt;
+    bool firstRun = true;
+    bool daemon_flag = false;
+    bool verbose = false;
+    bool cpufreq_ctrl = false;
+    bool rebootEnable = false;
 
     /* Read conf file */
     read_config_file(&configs);
@@ -400,7 +396,7 @@ main(int argc, char *argv[]) {
         err = CO_CANinit((void *)&CANptr, 0 /* bit rate not used */);
         if (err != CO_ERROR_NO) {
             log_printf(LOG_CRIT, DBG_CAN_OPEN, "CO_CANinit()", err);
-            programExit   = EXIT_FAILURE;
+            programExit = EXIT_FAILURE;
             CO_endProgram = 1;
             continue;
         }
@@ -410,7 +406,7 @@ main(int argc, char *argv[]) {
         err = CO_CANopenInit(CO_activeNodeId);
         if (err != CO_ERROR_NO && err != CO_ERROR_NODE_ID_UNCONFIGURED_LSS) {
             log_printf(LOG_CRIT, DBG_CAN_OPEN, "CO_CANopenInit()", err);
-            programExit   = EXIT_FAILURE;
+            programExit = EXIT_FAILURE;
             CO_endProgram = 1;
             continue;
         }
@@ -483,7 +479,7 @@ main(int argc, char *argv[]) {
             /* Create rt_thread and set priority */
             if (pthread_create(&rt_thread_id, NULL, rt_thread, NULL) != 0) {
                 log_printf(LOG_CRIT, DBG_ERRNO, "pthread_create(rt_thread)");
-                programExit   = EXIT_FAILURE;
+                programExit = EXIT_FAILURE;
                 CO_endProgram = 1;
                 continue;
             }
@@ -494,7 +490,7 @@ main(int argc, char *argv[]) {
                 if (pthread_setschedparam(rt_thread_id, SCHED_FIFO, &param)
                     != 0) {
                     log_printf(LOG_CRIT, DBG_ERRNO, "pthread_setschedparam()");
-                    programExit   = EXIT_FAILURE;
+                    programExit = EXIT_FAILURE;
                     CO_endProgram = 1;
                     continue;
                 }

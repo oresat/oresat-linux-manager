@@ -31,21 +31,18 @@ typedef struct {
  * @param out A pointer to a new olm_file struct if successful.
  * @return 0 on success or a negative errno on failure.
  */
-int
-olm_file_new(char *filename, olm_file_t **out);
+int olm_file_new(char *filename, olm_file_t **out);
 
 /**
  * @brief Free a olm_file_t struct. Will free the pointer.
  * @param file The olm_file struct to free.
  */
-void
-olm_file_free(olm_file_t *file);
+void olm_file_free(olm_file_t *file);
 
 /**
  * @brief Check if the filename follows olm_file format.
  * @param The filename to check.
  */
-bool
-is_olm_file(char *filepath);
+bool is_olm_file(char *filepath);
 
 #endif /* OLM_FILE_H */

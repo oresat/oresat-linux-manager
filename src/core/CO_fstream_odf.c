@@ -56,7 +56,7 @@ CO_fstream_filename(CO_ODF_arg_t *ODF_arg, CO_fstream_t *fdata) {
             ret = CO_SDO_AB_NO_DATA;
         } else {
             ODF_arg->dataLengthTotal = strlen(fdata->file) + 1;
-            ODF_arg->dataLength      = ODF_arg->dataLengthTotal;
+            ODF_arg->dataLength = ODF_arg->dataLengthTotal;
             memcpy(ODF_arg->data, fdata->file, ODF_arg->dataLength);
             log_printf(LOG_DEBUG, "read fstream filename %s", fdata->file);
             ODF_arg->lastSegment = true;
@@ -97,8 +97,8 @@ CO_fstream_filename(CO_ODF_arg_t *ODF_arg, CO_fstream_t *fdata) {
 
 CO_SDO_abortCode_t
 CO_fread_ODF(CO_ODF_arg_t *ODF_arg) {
-    CO_fstream_t *     fdata = (CO_fstream_t *)ODF_arg->object;
-    CO_SDO_abortCode_t ret   = CO_SDO_AB_NONE;
+    CO_fstream_t *fdata = (CO_fstream_t *)ODF_arg->object;
+    CO_SDO_abortCode_t ret = CO_SDO_AB_NONE;
 
     if (fdata == NULL)
         return CO_SDO_AB_DATA_LOC_CTRL;
@@ -133,7 +133,7 @@ CO_fread_ODF(CO_ODF_arg_t *ODF_arg) {
             return CO_SDO_AB_READONLY;
 
         if (ODF_arg->firstSegment == true) { // 1st segment only
-            char        filepath[PATH_MAX] = "\0";
+            char filepath[PATH_MAX] = "\0";
             struct stat st;
 
             if (fdata->file == NULL)
@@ -164,10 +164,10 @@ CO_fread_ODF(CO_ODF_arg_t *ODF_arg) {
         // Check if there are more segements needed
         uint32_t bytes_left = ODF_arg->dataLengthTotal - ODF_arg->offset;
         if (bytes_left > SDO_BLOCK_LEN) { // more segements needed
-            ODF_arg->dataLength  = SDO_BLOCK_LEN;
+            ODF_arg->dataLength = SDO_BLOCK_LEN;
             ODF_arg->lastSegment = false;
         } else { // last segement
-            ODF_arg->dataLength  = bytes_left;
+            ODF_arg->dataLength = bytes_left;
             ODF_arg->lastSegment = true;
         }
 
@@ -224,8 +224,8 @@ CO_fread_ODF(CO_ODF_arg_t *ODF_arg) {
 
 CO_SDO_abortCode_t
 CO_fwrite_ODF(CO_ODF_arg_t *ODF_arg) {
-    CO_fstream_t *     fdata = (CO_fstream_t *)ODF_arg->object;
-    CO_SDO_abortCode_t ret   = CO_SDO_AB_NONE;
+    CO_fstream_t *fdata = (CO_fstream_t *)ODF_arg->object;
+    CO_SDO_abortCode_t ret = CO_SDO_AB_NONE;
 
     if (fdata == NULL)
         return CO_SDO_AB_DATA_LOC_CTRL;

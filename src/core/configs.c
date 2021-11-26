@@ -17,7 +17,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define CONFIG_FILE "/etc/oresat-linux-manager.conf"
+#define CONFIG_FILE  "/etc/oresat-linux-manager.conf"
 
 #define BUS_SECTION  "[Bus]"
 #define BUS_NAME_KEY "Name="
@@ -28,11 +28,11 @@
 
 int
 read_config_file(olm_configs_t *configs) {
-    char *  end, *line = NULL;
-    size_t  len = 0;
+    char *end, *line = NULL;
+    size_t len = 0;
     ssize_t read;
-    char    section[20];
-    FILE *  fp;
+    char section[20];
+    FILE *fp;
 
     if (configs == NULL)
         return -1;

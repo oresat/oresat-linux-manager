@@ -37,7 +37,7 @@ app_manager_init(olm_app_t **apps) {
             apps[i]->unit_systemd1_object_path = load_unit(apps[i]->unit_name);
         log_printf(LOG_DEBUG, "app %s systemd1 object path %s", apps[i]->name,
                    apps[i]->unit_systemd1_object_path);
-        apps[i]->unit_state   = UNIT_INACTIVE;
+        apps[i]->unit_state = UNIT_INACTIVE;
         apps[i]->unit_command = UNIT_NO_CMD;
     }
 
@@ -50,11 +50,11 @@ app_manager_init(olm_app_t **apps) {
 
 void
 app_manager_async(olm_app_t **apps, olm_file_cache_t *fwrite_cache) {
-    char        path[PATH_MAX];
+    char path[PATH_MAX];
     olm_file_t *file;
-    uint32_t    active_apps = 0, failed_apps = 0;
-    uint8_t     last_state;
-    int         files, r;
+    uint32_t active_apps = 0, failed_apps = 0;
+    uint8_t last_state;
+    int files, r;
 
     if (apps == NULL || fwrite_cache == NULL) {
         log_printf(LOG_DEBUG, "app_manager_async() missing inputs");
@@ -140,13 +140,13 @@ app_manager_async(olm_app_t **apps, olm_file_cache_t *fwrite_cache) {
         if (active_apps == 0 && OD_systemInfo.CPUGovernor == performance) {
             set_cpufreq_gov(powersave);
             CO_LOCK_OD();
-            OD_systemInfo.CPUGovernor  = get_cpufreq_gov();
+            OD_systemInfo.CPUGovernor = get_cpufreq_gov();
             OD_systemInfo.CPUFrequency = get_cpufreq();
             CO_UNLOCK_OD();
         } else if (active_apps > 0 && OD_systemInfo.CPUGovernor == powersave) {
             set_cpufreq_gov(performance);
             CO_LOCK_OD();
-            OD_systemInfo.CPUGovernor  = get_cpufreq_gov();
+            OD_systemInfo.CPUGovernor = get_cpufreq_gov();
             OD_systemInfo.CPUFrequency = get_cpufreq();
             CO_UNLOCK_OD();
         }
@@ -160,10 +160,10 @@ app_manager_async(olm_app_t **apps, olm_file_cache_t *fwrite_cache) {
 
 CO_SDO_abortCode_t
 app_manager_ODF(CO_ODF_arg_t *ODF_arg) {
-    CO_SDO_abortCode_t ret  = CO_SDO_AB_NONE;
-    olm_app_t **       apps = (olm_app_t **)ODF_arg->object;
-    olm_app_t *        app  = NULL;
-    uint8_t            temp_uint8;
+    CO_SDO_abortCode_t ret = CO_SDO_AB_NONE;
+    olm_app_t **apps = (olm_app_t **)ODF_arg->object;
+    olm_app_t *app = NULL;
+    uint8_t temp_uint8;
 
     if (apps == NULL)
         return CO_SDO_AB_NO_DATA;

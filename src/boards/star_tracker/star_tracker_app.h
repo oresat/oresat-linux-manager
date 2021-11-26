@@ -16,13 +16,10 @@
 #include "olm_file_cache.h"
 #include "star_tracker.h"
 
-void
-star_tracker_app_async(void *data, olm_file_cache_t *fread_cache);
+void star_tracker_app_async(void *data, olm_file_cache_t *fread_cache);
 
-void
-star_tracker_app_end(void *data);
+void star_tracker_app_end(void *data);
 
-CO_SDO_abortCode_t
-star_tracker_ODF(CO_ODF_arg_t *ODF_arg);
+CO_SDO_abortCode_t star_tracker_ODF(CO_ODF_arg_t *ODF_arg);
 
 #endif /* STAR_TRACKER_APP_H */

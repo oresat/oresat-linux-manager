@@ -39,8 +39,7 @@ typedef struct {
  *
  * @param data The data to cleanup.
  */
-void
-CO_fstream_reset(CO_fstream_t *data);
+void CO_fstream_reset(CO_fstream_t *data);
 
 /**
  * @brief Callback for using inside CO_OD_configure() function for reading
@@ -51,8 +50,7 @@ CO_fstream_reset(CO_fstream_t *data);
  *
  * @return SDO abort code
  */
-CO_SDO_abortCode_t
-CO_fread_ODF(CO_ODF_arg_t *ODF_arg);
+CO_SDO_abortCode_t CO_fread_ODF(CO_ODF_arg_t *ODF_arg);
 
 /**
  * @brief Callback for using inside CO_OD_configure() function for writing
@@ -63,7 +61,6 @@ CO_fread_ODF(CO_ODF_arg_t *ODF_arg);
  *
  * @return SDO abort code
  */
-CO_SDO_abortCode_t
-CO_fwrite_ODF(CO_ODF_arg_t *ODF_arg);
+CO_SDO_abortCode_t CO_fwrite_ODF(CO_ODF_arg_t *ODF_arg);
 
 #endif /* _CO_FILE_TRANSFER_H_ */

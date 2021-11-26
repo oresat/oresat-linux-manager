@@ -19,8 +19,7 @@
  * Logs the message in syslog and will output to stderr/stdout, if available.
  * see man vsyslog for prioprity levels
  */
-void
-log_printf(int priority, const char *fmt, ...);
+void log_printf(int priority, const char *fmt, ...);
 
 #define LOG_DBUS_GET_PROPERTY_ERROR(log_lvl, app_name, prop_name, err_name)    \
     log_printf(log_lvl, "app %s: dbus get property %s failed: %s", app_name,   \

@@ -31,10 +31,10 @@ extern sd_bus *system_bus;
 
 int
 gps_state_vector(state_vector_t *st) {
-    sd_bus_error    err  = SD_BUS_ERROR_NULL;
+    sd_bus_error err = SD_BUS_ERROR_NULL;
     sd_bus_message *mess = NULL;
-    uint32_t        time_coarse, time_fine;
-    int             r = 0;
+    uint32_t time_coarse, time_fine;
+    int r = 0;
 
     if (st == NULL)
         return -EINVAL;
@@ -55,7 +55,7 @@ gps_state_vector(state_vector_t *st) {
         LOG_DBUS_PROPERTY_READ_ERROR(LOG_DEBUG, MODULE_NAME, "StateVector",
                                      err.name);
 
-    st->timestamp.tv_sec  = (time_t)time_coarse;
+    st->timestamp.tv_sec = (time_t)time_coarse;
     st->timestamp.tv_usec = (long)time_fine;
 
 state_vector_end:
@@ -66,9 +66,9 @@ state_vector_end:
 
 uint8_t
 gps_status(void) {
-    sd_bus_error    err  = SD_BUS_ERROR_NULL;
+    sd_bus_error err = SD_BUS_ERROR_NULL;
     sd_bus_message *mess = NULL;
-    uint8_t         status;
+    uint8_t status;
 
     if (sd_bus_get_property(DBUS_INFO, "Status", &err, &mess, "y") < 0)
         LOG_DBUS_GET_PROPERTY_ERROR(LOG_DEBUG, MODULE_NAME, "Status", err.name);
@@ -83,10 +83,10 @@ gps_status(void) {
 
 bool
 gps_time_synchronized(void) {
-    sd_bus_error    err      = SD_BUS_ERROR_NULL;
-    sd_bus_message *mess     = NULL;
-    bool            sync     = false;
-    int             sync_raw = 0;
+    sd_bus_error err = SD_BUS_ERROR_NULL;
+    sd_bus_message *mess = NULL;
+    bool sync = false;
+    int sync_raw = 0;
 
     if (sd_bus_get_property(DBUS_INFO, "Sync", &err, &mess, "b") < 0)
         LOG_DBUS_GET_PROPERTY_ERROR(LOG_DEBUG, MODULE_NAME, "Sync", err.name);
@@ -103,9 +103,9 @@ gps_time_synchronized(void) {
 
 uint8_t
 gps_satellite_number(void) {
-    sd_bus_error    err  = SD_BUS_ERROR_NULL;
+    sd_bus_error err = SD_BUS_ERROR_NULL;
     sd_bus_message *mess = NULL;
-    uint8_t         sats = 0;
+    uint8_t sats = 0;
 
     if (sd_bus_get_property(DBUS_INFO, "Satellites", &err, &mess, "y") < 0)
         LOG_DBUS_GET_PROPERTY_ERROR(LOG_DEBUG, MODULE_NAME, "Satellites",

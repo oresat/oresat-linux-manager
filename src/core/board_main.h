@@ -17,7 +17,6 @@
 extern olm_app_t **APPS;
 
 /** @brief Configure all the board ODFs (Object Dictionary Functions). */
-void
-board_init(void);
+void board_init(void);
 
 #endif /* BOARD_MAIN_H */

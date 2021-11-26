@@ -27,9 +27,9 @@
 /** OS command status values defined by CiA 301 */
 enum os_command_status {
     os_cmd_no_error_no_reply = 0x00,
-    os_cmd_no_error_reply    = 0x01,
-    os_cmd_error_no_reply    = 0x02,
-    os_cmd_error_reply       = 0x03,
+    os_cmd_no_error_reply = 0x01,
+    os_cmd_error_no_reply = 0x02,
+    os_cmd_error_reply = 0x03,
     // 0x04 to 0xFE reserved
     os_cmd_executing = 0xFF,
 };
@@ -38,7 +38,7 @@ void
 co_command_async(os_command_t *data) {
     FILE *pipe;
     char *temp;
-    int   c;
+    int c;
 
     if (data == NULL) {
         log_printf(LOG_DEBUG, "os command is missing argument data");
@@ -113,9 +113,9 @@ co_command_async(os_command_t *data) {
 
 CO_SDO_abortCode_t
 OS_COMMAND_1023_ODF(CO_ODF_arg_t *ODF_arg) {
-    os_command_t *     data = (os_command_t *)ODF_arg->object;
-    CO_SDO_abortCode_t ret  = CO_SDO_AB_NONE;
-    uint32_t           bytes_left;
+    os_command_t *data = (os_command_t *)ODF_arg->object;
+    CO_SDO_abortCode_t ret = CO_SDO_AB_NONE;
+    uint32_t bytes_left;
 
     if (data == NULL)
         return CO_SDO_AB_DATA_LOC_CTRL;
@@ -128,17 +128,17 @@ OS_COMMAND_1023_ODF(CO_ODF_arg_t *ODF_arg) {
                 if (data->command == NULL)
                     return CO_SDO_AB_NO_DATA;
 
-                ODF_arg->offset          = 0;
+                ODF_arg->offset = 0;
                 ODF_arg->dataLengthTotal = strlen(data->command) + 1;
             }
 
             // Check if there are more segements needed
             bytes_left = ODF_arg->dataLengthTotal - ODF_arg->offset;
             if (bytes_left > SDO_BLOCK_LEN) { // more segements needed
-                ODF_arg->dataLength  = SDO_BLOCK_LEN;
+                ODF_arg->dataLength = SDO_BLOCK_LEN;
                 ODF_arg->lastSegment = false;
             } else { // last segement
-                ODF_arg->dataLength  = bytes_left;
+                ODF_arg->dataLength = bytes_left;
                 ODF_arg->lastSegment = true;
             }
 
@@ -158,12 +158,12 @@ OS_COMMAND_1023_ODF(CO_ODF_arg_t *ODF_arg) {
             if (ODF_arg->firstSegment) {
                 FREE(data->command);
                 data->command_len = len;
-                ODF_arg->offset   = 0;
+                ODF_arg->offset = 0;
 
                 // free reply buffer
                 FREE(data->reply_buf);
                 data->reply_buf_len = 0;
-                data->reply_buf     = 0;
+                data->reply_buf = 0;
 
                 if ((data->command = malloc(data->command_len)) == NULL)
                     return CO_SDO_AB_OUT_OF_MEM;
@@ -174,7 +174,7 @@ OS_COMMAND_1023_ODF(CO_ODF_arg_t *ODF_arg) {
 
             if (ODF_arg->lastSegment) {
                 data->command[len - 1] = '\0';
-                OD_OSCommand.status    = os_cmd_executing;
+                OD_OSCommand.status = os_cmd_executing;
             }
         }
 
@@ -187,17 +187,17 @@ OS_COMMAND_1023_ODF(CO_ODF_arg_t *ODF_arg) {
                     && OD_OSCommand.status != os_cmd_error_reply)
                     return CO_SDO_AB_NO_DATA;
 
-                ODF_arg->offset          = 0;
+                ODF_arg->offset = 0;
                 ODF_arg->dataLengthTotal = data->reply_len;
             }
 
             // Check if there are more segements needed
             bytes_left = ODF_arg->dataLengthTotal - ODF_arg->offset;
             if (bytes_left > SDO_BLOCK_LEN) { // more segements needed
-                ODF_arg->dataLength  = SDO_BLOCK_LEN;
+                ODF_arg->dataLength = SDO_BLOCK_LEN;
                 ODF_arg->lastSegment = false;
             } else { // last segement
-                ODF_arg->dataLength  = bytes_left;
+                ODF_arg->dataLength = bytes_left;
                 ODF_arg->lastSegment = true;
             }
 

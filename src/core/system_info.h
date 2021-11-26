@@ -39,11 +39,9 @@ typedef struct {
     }
 
 /** Free all data in a @ref system_info_t object. */
-void
-system_info_free(system_info_t *info);
+void system_info_free(system_info_t *info);
 
-void
-system_info_async(system_info_t *info);
+void system_info_async(system_info_t *info);
 
 /**
  * Callback for using inside CO_OD_configure() function for getting the systems
@@ -53,7 +51,6 @@ system_info_async(system_info_t *info);
  *
  * @return SDO abort code
  */
-CO_SDO_abortCode_t
-system_info_ODF(CO_ODF_arg_t *ODF_arg);
+CO_SDO_abortCode_t system_info_ODF(CO_ODF_arg_t *ODF_arg);
 
 #endif /* SYSTEM_INFO_H */

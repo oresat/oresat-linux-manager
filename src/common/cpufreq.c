@@ -16,18 +16,18 @@
 #include <string.h>
 
 /** filepath to cpu sysfs files */
-#define FILEPATH "/sys/devices/system/cpu/cpufreq/policy0/"
+#define FILEPATH     "/sys/devices/system/cpu/cpufreq/policy0/"
 /** filepath to a cpu frequency sysfs file */
 #define CURFREQ_FILE FILEPATH "scaling_cur_freq"
 /** filepath to a cpu governor sysfs file */
-#define GOV_FILE FILEPATH "scaling_governor"
+#define GOV_FILE     FILEPATH "scaling_governor"
 
 uint32_t
 get_cpufreq(void) {
-    FILE *fptr    = NULL;
-    int   buf_len = 50;
-    char  buf[buf_len];
-    int   r = 0;
+    FILE *fptr = NULL;
+    int buf_len = 50;
+    char buf[buf_len];
+    int r = 0;
 
     fptr = fopen(CURFREQ_FILE, "r");
     if (fptr != NULL) {
@@ -41,10 +41,10 @@ get_cpufreq(void) {
 
 int
 get_cpufreq_gov(void) {
-    FILE *fptr    = NULL;
-    int   buf_len = 50;
-    char  buf[buf_len];
-    int   r = 0;
+    FILE *fptr = NULL;
+    int buf_len = 50;
+    char buf[buf_len];
+    int r = 0;
 
     if ((fptr = fopen(GOV_FILE, "r")) != NULL) {
         fgets(buf, buf_len, fptr);
@@ -64,7 +64,7 @@ get_cpufreq_gov(void) {
 int
 set_cpufreq_gov(int governor) {
     FILE *fptr = NULL;
-    int   r    = 0;
+    int r = 0;
 
     if ((fptr = fopen(GOV_FILE, "w")) == NULL)
         return -EIO;

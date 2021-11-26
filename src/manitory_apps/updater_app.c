@@ -26,8 +26,8 @@
 void
 updater_async(void *data, olm_file_cache_t *fread_cache) {
     uint32_t temp_uint32;
-    uint8_t  temp_uint8;
-    char *   temp_str;
+    uint8_t temp_uint8;
+    char *temp_str;
     (void)data;
 
     if (!CO->TPDO[TPDO_UPDATER]->valid) {
@@ -74,16 +74,16 @@ updater_async(void *data, olm_file_cache_t *fread_cache) {
 void
 updater_end(void *data) {
     CO_LOCK_OD();
-    OD_updater.status             = 0xFF;
+    OD_updater.status = 0xFF;
     CO->TPDO[TPDO_UPDATER]->valid = false;
     CO_UNLOCK_OD();
 }
 
 CO_SDO_abortCode_t
 updater_ODF(CO_ODF_arg_t *ODF_arg) {
-    CO_SDO_abortCode_t ret      = CO_SDO_AB_NONE;
-    char *             temp_str = (char *)ODF_arg->object;
-    size_t             len;
+    CO_SDO_abortCode_t ret = CO_SDO_AB_NONE;
+    char *temp_str = (char *)ODF_arg->object;
+    size_t len;
 
     if (ODF_arg->subIndex
         != OD_3100_3_updater_listUpdates) // list updates, domain, readonly
@@ -99,16 +99,16 @@ updater_ODF(CO_ODF_arg_t *ODF_arg) {
             return CO_SDO_AB_NO_DATA;
 
         ODF_arg->dataLengthTotal = strlen(temp_str) + 1;
-        ODF_arg->offset          = 0;
+        ODF_arg->offset = 0;
     }
 
     len = ODF_arg->dataLengthTotal - ODF_arg->offset;
 
     if (len < 889) {
-        ODF_arg->dataLength  = len;
+        ODF_arg->dataLength = len;
         ODF_arg->lastSegment = true;
     } else {
-        ODF_arg->dataLength  = 899;
+        ODF_arg->dataLength = 899;
         ODF_arg->lastSegment = false;
     }
 

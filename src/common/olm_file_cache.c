@@ -44,12 +44,12 @@ static int
 olm_file_cache_insert_rec(struct olm_file_index_t **index,
                           struct olm_file_index_t *new) {
     struct olm_file_index_t *current = *index;
-    int                      r       = 1;
+    int r = 1;
 
     if (new == NULL || new->data == NULL) { // invalid args
         r = -EINVAL;
     } else if (current == NULL) { // add to tail
-        *index    = new;
+        *index = new;
         new->next = NULL; // just in case
     } else if (strncmp(current->data->name, new->data->name,
                        strlen(new->data->name) + 1)
@@ -57,7 +57,7 @@ olm_file_cache_insert_rec(struct olm_file_index_t **index,
         r = 0;
     } else if (current->data->unix_time > new->data->unix_time) { // insert
         new->next = current;
-        *index    = new;
+        *index = new;
     } else { // recursion
         r = olm_file_cache_insert_rec(&current->next, new);
     }
@@ -74,7 +74,7 @@ olm_file_cache_insert_rec(struct olm_file_index_t **index,
 static int
 olm_file_cache_insert(olm_file_cache_t *in, olm_file_t *new_file) {
     struct olm_file_index_t *new_index;
-    int                      r = 0;
+    int r = 0;
 
     if (in == NULL || new_file == NULL)
         return -EINVAL;
@@ -99,7 +99,7 @@ olm_file_cache_insert(olm_file_cache_t *in, olm_file_t *new_file) {
 static int
 olm_file_cache_remove_rec(struct olm_file_index_t **index, char *filename) {
     struct olm_file_index_t *current = *index;
-    int                      r       = 0;
+    int r = 0;
 
     if (index == NULL || current == NULL) {
         r = -EINVAL;
@@ -122,12 +122,12 @@ olm_file_cache_remove_rec(struct olm_file_index_t **index, char *filename) {
 int
 olm_file_cache_new(char *dir_path, olm_file_cache_t **out) {
     olm_file_cache_t *new_cache;
-    struct dirent *   dir;
-    char              temp_path[PATH_MAX];
-    olm_file_t *      new_olm_file;
-    struct stat       st;
-    DIR *             d;
-    int               r = 0;
+    struct dirent *dir;
+    char temp_path[PATH_MAX];
+    olm_file_t *new_olm_file;
+    struct stat st;
+    DIR *d;
+    int r = 0;
 
     if (dir_path == NULL || dir_path[0] != '/')
         return -EINVAL;
@@ -135,9 +135,9 @@ olm_file_cache_new(char *dir_path, olm_file_cache_t **out) {
     if ((new_cache = malloc(sizeof(olm_file_cache_t))) == NULL)
         return -ENOMEM;
 
-    new_cache->dir   = NULL;
+    new_cache->dir = NULL;
     new_cache->files = NULL;
-    new_cache->len   = 0;
+    new_cache->len = 0;
     pthread_mutex_init(&new_cache->mutex, NULL);
 
     if (dir_path[strlen(dir_path)] == '/')
@@ -152,7 +152,7 @@ olm_file_cache_new(char *dir_path, olm_file_cache_t **out) {
     }
     strncpy(new_cache->dir, dir_path, strlen(dir_path) + 1);
     if (dir_path[strlen(dir_path)] == '/') {
-        new_cache->dir[strlen(dir_path)]     = '/';
+        new_cache->dir[strlen(dir_path)] = '/';
         new_cache->dir[strlen(dir_path) + 1] = '\0';
     }
 
@@ -220,9 +220,9 @@ olm_file_cache_free(olm_file_cache_t *in) {
 
 int
 olm_file_cache_add(olm_file_cache_t *in, char *filepath) {
-    char        new_filepath[PATH_MAX];
+    char new_filepath[PATH_MAX];
     olm_file_t *new_file = NULL;
-    int         r        = 0;
+    int r = 0;
 
     if ((r = olm_file_new(filepath, &new_file)) != 0)
         return r;
@@ -244,7 +244,7 @@ olm_file_cache_add(olm_file_cache_t *in, char *filepath) {
 int
 olm_file_cache_remove(olm_file_cache_t *in, char *filename) {
     char temp_path[PATH_MAX];
-    int  r;
+    int r;
 
     sprintf(temp_path, "%s%s", in->dir, filename);
     if ((r = remove(temp_path)) != 0)
@@ -262,10 +262,10 @@ olm_file_cache_remove(olm_file_cache_t *in, char *filename) {
 int
 olm_file_cache_index(olm_file_cache_t *in, int index, const char *keyword,
                      olm_file_t **out) {
-    char                     filepath[PATH_MAX];
-    size_t                   len;
+    char filepath[PATH_MAX];
+    size_t len;
     struct olm_file_index_t *current;
-    int                      r = 0;
+    int r = 0;
 
     len = olm_file_cache_len(in, keyword);
     if ((size_t)index >= len)
@@ -297,7 +297,7 @@ olm_file_cache_index(olm_file_cache_t *in, int index, const char *keyword,
 uint32_t
 olm_file_cache_len(olm_file_cache_t *in, const char *keyword) {
     struct olm_file_index_t *current;
-    uint32_t                 len = 0;
+    uint32_t len = 0;
 
     pthread_mutex_lock(&in->mutex);
 
@@ -323,7 +323,7 @@ olm_file_cache_len(olm_file_cache_t *in, const char *keyword) {
 bool
 olm_file_cache_file_exist(olm_file_cache_t *in, const char *filename) {
     struct olm_file_index_t *current;
-    bool                     r = false;
+    bool r = false;
 
     pthread_mutex_lock(&in->mutex);
 

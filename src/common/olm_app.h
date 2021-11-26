@@ -16,20 +16,20 @@
 
 /** Systemd daemon states. */
 typedef enum {
-    UNIT_INACTIVE     = 0,
-    UNIT_RELOADING    = 1,
-    UNIT_ACTIVE       = 2,
-    UNIT_FAILED       = 3,
-    UNIT_ACTIVATING   = 4,
+    UNIT_INACTIVE = 0,
+    UNIT_RELOADING = 1,
+    UNIT_ACTIVE = 2,
+    UNIT_FAILED = 3,
+    UNIT_ACTIVATING = 4,
     UNIT_DEACTIVATING = 5,
-    UNIT_UNKNOWN      = 6, // No unit
+    UNIT_UNKNOWN = 6, // No unit
 } unit_active_states_t;
 
 /** Systemd commands for daemons. */
 typedef enum {
-    UNIT_NO_CMD  = 0, // No command, do nothing
-    UNIT_STOP    = 1,
-    UNIT_START   = 2,
+    UNIT_NO_CMD = 0, // No command, do nothing
+    UNIT_STOP = 1,
+    UNIT_START = 2,
     UNIT_RESTART = 3,
 } unit_commands_t;
 

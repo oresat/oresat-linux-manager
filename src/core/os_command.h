@@ -29,10 +29,8 @@ typedef struct {
     uint32_t reply_len;
 } os_command_t;
 
-void
-co_command_async(os_command_t *data);
+void co_command_async(os_command_t *data);
 
-CO_SDO_abortCode_t
-OS_COMMAND_1023_ODF(CO_ODF_arg_t *ODF_arg);
+CO_SDO_abortCode_t OS_COMMAND_1023_ODF(CO_ODF_arg_t *ODF_arg);
 
 #endif /* OS_COMMAND_H */

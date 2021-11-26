@@ -27,7 +27,7 @@ extern sd_bus *system_bus;
 int
 logind_reboot(void) {
     sd_bus_error err = SD_BUS_ERROR_NULL;
-    int          r;
+    int r;
 
     r = sd_bus_call_method(DBUS_INFO, "Reboot", &err, NULL, NULL);
     if (r < 0)
@@ -40,7 +40,7 @@ logind_reboot(void) {
 int
 logind_poweroff(void) {
     sd_bus_error err = SD_BUS_ERROR_NULL;
-    int          r;
+    int r;
 
     r = sd_bus_call_method(DBUS_INFO, "PowerOff", &err, NULL, NULL);
     if (r < 0)

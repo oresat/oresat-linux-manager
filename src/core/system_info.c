@@ -33,26 +33,23 @@
 #define REMOTEPROC_DIR "/sys/class/remoteproc/"
 
 // see function definition for doxygen comments
-static int
-get_linux_distro_name(char *buf, int buf_len);
-static int
-get_nremoteprocs(void);
-static void
-system_info_fill(system_info_t *info);
+static int get_linux_distro_name(char *buf, int buf_len);
+static int get_nremoteprocs(void);
+static void system_info_fill(system_info_t *info);
 
 static void
 system_info_fill(system_info_t *info) {
     struct utsname name;
-    int            buf_len = 256;
-    char           buf[buf_len];
-    int            len;
+    int buf_len = 256;
+    char buf[buf_len];
+    int len;
 
     if (!info->init)
         return;
 
     if (uname(&name) == 0) {
         // os name
-        len           = strlen(name.sysname) + 1;
+        len = strlen(name.sysname) + 1;
         info->os_name = malloc(len * sizeof(char));
         if (info->os_name != NULL)
             strncpy(info->os_name, name.sysname, len);
@@ -60,7 +57,7 @@ system_info_fill(system_info_t *info) {
             log_printf(LOG_CRIT, "malloc failed for os_distro");
 
         // kernel version
-        len                  = strlen(name.release) + 1;
+        len = strlen(name.release) + 1;
         info->kernel_version = malloc(len * sizeof(char));
         if (info->kernel_version != NULL)
             strncpy(info->kernel_version, name.release, len);
@@ -68,7 +65,7 @@ system_info_fill(system_info_t *info) {
             log_printf(LOG_CRIT, "malloc failed for kernel_version");
 
         // hostname
-        len            = strlen(name.nodename) + 1;
+        len = strlen(name.nodename) + 1;
         info->hostname = malloc(len * sizeof(char));
         if (info->hostname != NULL)
             strncpy(info->hostname, name.nodename, len);
@@ -76,7 +73,7 @@ system_info_fill(system_info_t *info) {
             log_printf(LOG_CRIT, "malloc failed for hostname");
 
         // architecture
-        len                = strlen(name.machine) + 1;
+        len = strlen(name.machine) + 1;
         info->architecture = malloc(len * sizeof(char));
         if (info->architecture != NULL)
             strncpy(info->architecture, name.machine, len);
@@ -86,7 +83,7 @@ system_info_fill(system_info_t *info) {
 
     // os distro name
     if (get_linux_distro_name(buf, buf_len) == 0) {
-        len             = strlen(buf) + 1;
+        len = strlen(buf) + 1;
         info->os_distro = malloc(len * sizeof(char));
         strncpy(info->os_distro, buf, len);
     }
@@ -113,7 +110,7 @@ system_info_async(system_info_t *data) {
 
         if (sysinfo(&info) == 0) {
             OD_systemInfo.swapTotal = (uint32_t)(info.totalswap / 1024 / 1024);
-            OD_systemInfo.ramTotal  = (uint32_t)(info.totalram / 1024 / 1024);
+            OD_systemInfo.ramTotal = (uint32_t)(info.totalram / 1024 / 1024);
         }
 
         if (statvfs("/", &fs_info) == 0)
@@ -121,21 +118,21 @@ system_info_async(system_info_t *data) {
             OD_systemInfo.rootParitionTotal
                 = (uint32_t)(fs_info.f_blocks / 1024 * fs_info.f_bsize / 1024);
 
-        OD_systemInfo.numberOfCPUs        = get_nprocs();
+        OD_systemInfo.numberOfCPUs = get_nprocs();
         OD_systemInfo.numberOfRemoteprocs = get_nremoteprocs();
-        OD_systemInfo.CPUGovernor         = get_cpufreq_gov();
-        OD_systemInfo.CPUFrequency        = get_cpufreq();
+        OD_systemInfo.CPUGovernor = get_cpufreq_gov();
+        OD_systemInfo.CPUFrequency = get_cpufreq();
 
         data->init = false;
     }
 
     if (sysinfo(&info) != -1) {
-        OD_systemInfo.uptime           = (uint32_t)(info.uptime / 60);
-        OD_systemInfo.loadAverage1min  = (uint32_t)info.loads[0];
-        OD_systemInfo.loadAverage5min  = (uint32_t)info.loads[1];
+        OD_systemInfo.uptime = (uint32_t)(info.uptime / 60);
+        OD_systemInfo.loadAverage1min = (uint32_t)info.loads[0];
+        OD_systemInfo.loadAverage5min = (uint32_t)info.loads[1];
         OD_systemInfo.loadAverage15min = (uint32_t)info.loads[2];
-        OD_systemInfo.ramFree          = (uint32_t)(info.freeram / 1024 / 1024);
-        OD_systemInfo.ramShared   = (uint32_t)(info.sharedram / 1024 / 1024);
+        OD_systemInfo.ramFree = (uint32_t)(info.freeram / 1024 / 1024);
+        OD_systemInfo.ramShared = (uint32_t)(info.sharedram / 1024 / 1024);
         OD_systemInfo.ramBuffered = (uint32_t)(info.bufferram / 1024 / 1024);
         OD_systemInfo.ramPercent
             = (uint8_t)((info.totalram - info.freeram) * 100 / info.totalram);
@@ -162,11 +159,11 @@ system_info_async(system_info_t *data) {
 
 CO_SDO_abortCode_t
 system_info_ODF(CO_ODF_arg_t *ODF_arg) {
-    CO_SDO_abortCode_t ret     = CO_SDO_AB_NONE;
-    system_info_t *    data    = (system_info_t *)ODF_arg->object;
-    FILE *             fptr    = NULL;
-    int                buf_len = 256;
-    char               filepath[PATH_MAX], buf[buf_len];
+    CO_SDO_abortCode_t ret = CO_SDO_AB_NONE;
+    system_info_t *data = (system_info_t *)ODF_arg->object;
+    FILE *fptr = NULL;
+    int buf_len = 256;
+    char filepath[PATH_MAX], buf[buf_len];
 
     if (data == NULL)
         return CO_SDO_AB_GENERAL;
@@ -252,8 +249,8 @@ system_info_ODF(CO_ODF_arg_t *ODF_arg) {
 static int
 get_linux_distro_name(char *buf, int buf_len) {
     FILE *filePointer;
-    bool  found = false;
-    char *temp  = NULL;
+    bool found = false;
+    char *temp = NULL;
 
     if ((filePointer = fopen("/etc/os-release", "r")) == NULL)
         return -ENOENT;
@@ -270,9 +267,9 @@ get_linux_distro_name(char *buf, int buf_len) {
     if (found != true) {
         buf[0] = '\0';
     } else {
-        temp  = strrchr(buf, '\"');
+        temp = strrchr(buf, '\"');
         *temp = '\0';
-        temp  = strchr(buf, '\"');
+        temp = strchr(buf, '\"');
         strncpy(buf, &temp[1], strlen(temp) + 1);
     }
 
@@ -281,10 +278,10 @@ get_linux_distro_name(char *buf, int buf_len) {
 
 static int
 get_nremoteprocs(void) {
-    struct stat    st = {0};
+    struct stat st = {0};
     struct dirent *dir;
-    DIR *          d;
-    int            nremoteproc = 0;
+    DIR *d;
+    int nremoteproc = 0;
 
     // make sure dir exist
     if (stat(REMOTEPROC_DIR, &st) == -1) {
