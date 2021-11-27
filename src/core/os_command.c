@@ -13,6 +13,7 @@
 #include "CANopen.h"
 #include "logging.h"
 #include "utility.h"
+#include <assert.h>
 #include <errno.h>
 #include <stdbool.h>
 #include <stdint.h>
@@ -25,54 +26,79 @@
 #define BUFFER_LEN_MAX (BUFFER_LEN * 128)
 
 /** OS command status values defined by CiA 301 */
-enum os_command_status {
-    os_cmd_no_error_no_reply = 0x00,
-    os_cmd_no_error_reply = 0x01,
-    os_cmd_error_no_reply = 0x02,
-    os_cmd_error_reply = 0x03,
-    // 0x04 to 0xFE reserved
-    os_cmd_executing = 0xFF,
+enum {
+    // clang-format off
+    OS_CMD_NO_ERROR_NO_REPLY = 0x00,
+    OS_CMD_NO_ERROR_REPLY    = 0x01,
+    OS_CMD_ERROR_NO_REPLY    = 0x02,
+    OS_CMD_ERROR_REPLY       = 0x03,
+    OS_CMD_EXECUTING         = 0xFF,
+    // clang-format on
 };
 
+os_command_t *
+os_command_create(void) {
+    os_command_t *data;
+
+    data = malloc(sizeof(os_command_t));
+    if (data) {
+        data->command = NULL;
+        data->command_len = 0;
+        data->reply_buf = NULL;
+        data->reply_buf_len = 0;
+        data->reply_len = 0;
+    }
+
+    return data;
+}
+
 void
-co_command_async(os_command_t *data) {
+os_command_destroy(os_command_t *data) {
+    if (data) {
+        FREE(data->command);
+        FREE(data->reply_buf);
+        free(data);
+    }
+}
+
+void
+os_command_async(os_command_t *data) {
+    assert(data);
     FILE *pipe;
     char *temp;
     int c;
 
-    if (data == NULL) {
-        log_printf(LOG_DEBUG, "os command is missing argument data");
-        return;
-    } else if (OD_OSCommand.status != os_cmd_executing) {
+    if (OD_OSCommand.status != OS_CMD_EXECUTING) {
         return; // nothing todo
     }
 
-    if (data->command == NULL) {
+    if (!data->command) {
         CO_LOCK_OD();
-        OD_OSCommand.status = os_cmd_error_no_reply;
+        OD_OSCommand.status = OS_CMD_ERROR_NO_REPLY;
         CO_UNLOCK_OD();
         log_printf(LOG_DEBUG, "no command in excuting state");
         return;
     }
 
-    if (data->command_len < 50)
+    if (data->command_len < 50) // short message
         log_printf(LOG_DEBUG, "running bash command: %s", data->command);
     else
         log_printf(LOG_DEBUG, "running long bash command");
 
     pipe = popen(data->command, "r");
-    if (pipe == NULL) {
+    if (!pipe) {
         CO_LOCK_OD();
-        OD_OSCommand.status = os_cmd_error_no_reply;
+        OD_OSCommand.status = OS_CMD_ERROR_NO_REPLY;
         CO_UNLOCK_OD();
         log_printf(LOG_ERR, "popen failed");
     } else {
         // initialize buffer
         FREE(data->reply_buf);
         data->reply_buf_len = BUFFER_LEN;
-        if ((data->reply_buf = malloc(BUFFER_LEN)) == NULL) {
+        data->reply_buf = malloc(BUFFER_LEN);
+        if (!data->reply_buf) {
             CO_LOCK_OD();
-            OD_OSCommand.status = os_cmd_no_error_no_reply;
+            OD_OSCommand.status = OS_CMD_NO_ERROR_NO_REPLY;
             CO_UNLOCK_OD();
             log_printf(LOG_ERR, "bash reply malloc failed");
             return;
@@ -87,8 +113,8 @@ co_command_async(os_command_t *data) {
 
                 data->reply_buf_len *= 2;
 
-                if ((temp = realloc(data->reply_buf, data->reply_buf_len))
-                    == NULL) {
+                temp = realloc(data->reply_buf, data->reply_buf_len);
+                if (!temp) {
                     log_printf(LOG_ERR, "bash reply realloc failed");
                     break; // realloc failed;
                 } else {
@@ -102,110 +128,144 @@ co_command_async(os_command_t *data) {
 
         CO_LOCK_OD();
         if (data->reply_len == 0)
-            OD_OSCommand.status = os_cmd_no_error_no_reply;
+            OD_OSCommand.status = OS_CMD_NO_ERROR_NO_REPLY;
         else
-            OD_OSCommand.status = os_cmd_no_error_reply;
+            OD_OSCommand.status = OS_CMD_NO_ERROR_REPLY;
         CO_UNLOCK_OD();
     }
 
     return;
 }
 
-CO_SDO_abortCode_t
-OS_COMMAND_1023_ODF(CO_ODF_arg_t *ODF_arg) {
+static CO_SDO_abortCode_t
+os_command_command_dn_odf(CO_ODF_arg_t *ODF_arg) {
+    assert(ODF_arg->index == 0x1023);
+    assert(ODF_arg->subIndex == 1);
+    assert(ODF_arg->reading);
+    assert(ODF_arg->object);
     os_command_t *data = (os_command_t *)ODF_arg->object;
     CO_SDO_abortCode_t ret = CO_SDO_AB_NONE;
     uint32_t bytes_left;
 
-    if (data == NULL)
-        return CO_SDO_AB_DATA_LOC_CTRL;
+    if (ODF_arg->firstSegment) {
+        if (!data->command)
+            return CO_SDO_AB_NO_DATA;
+
+        ODF_arg->offset = 0;
+        ODF_arg->dataLengthTotal = strlen(data->command) + 1;
+    }
+
+    // Check if there are more segements needed
+    bytes_left = ODF_arg->dataLengthTotal - ODF_arg->offset;
+    if (bytes_left > SDO_BLOCK_LEN) { // more segements needed
+        ODF_arg->dataLength = SDO_BLOCK_LEN;
+        ODF_arg->lastSegment = false;
+    } else { // last segement
+        ODF_arg->dataLength = bytes_left;
+        ODF_arg->lastSegment = true;
+    }
+
+    memcpy(ODF_arg->data, &data->command[ODF_arg->offset], ODF_arg->dataLength);
+
+    return ret;
+}
+
+static CO_SDO_abortCode_t
+os_command_command_up_odf(CO_ODF_arg_t *ODF_arg) {
+    assert(ODF_arg->index == 0x1023);
+    assert(ODF_arg->subIndex == 1);
+    assert(!ODF_arg->reading);
+    assert(ODF_arg->object);
+    os_command_t *data = (os_command_t *)ODF_arg->object;
+    CO_SDO_abortCode_t ret = CO_SDO_AB_NONE;
+    uint32_t len;
+
+    // add on incase it is missing '\0'
+    if (ODF_arg->dataLengthTotal > BUFFER_LEN_MAX)
+        return CO_SDO_AB_DATA_LONG;
+    else if (ODF_arg->dataLengthTotal != 0)
+        len = ODF_arg->dataLengthTotal + 1;
+    else
+        len = ODF_arg->dataLength + 1;
+
+    if (ODF_arg->firstSegment) {
+        FREE(data->command);
+        data->command_len = len;
+        ODF_arg->offset = 0;
+
+        // free reply buffer
+        FREE(data->reply_buf);
+        data->reply_buf_len = 0;
+        data->reply_buf = 0;
+
+        data->command = malloc(data->command_len);
+        if (!data->command)
+            return CO_SDO_AB_OUT_OF_MEM;
+    }
+
+    memcpy(&data->command[ODF_arg->offset], ODF_arg->data, ODF_arg->dataLength);
+
+    if (ODF_arg->lastSegment) {
+        data->command[len - 1] = '\0';
+        OD_OSCommand.status = OS_CMD_EXECUTING;
+    }
+
+    return ret;
+}
+
+static CO_SDO_abortCode_t
+os_command_reply_dn_odf(CO_ODF_arg_t *ODF_arg) {
+    assert(ODF_arg->index == 0x1023);
+    assert(ODF_arg->subIndex == 3);
+    assert(ODF_arg->reading);
+    assert(ODF_arg->object);
+    os_command_t *data = (os_command_t *)ODF_arg->object;
+    uint32_t bytes_left;
+
+    if (ODF_arg->firstSegment) {
+        if (OD_OSCommand.status != OS_CMD_NO_ERROR_REPLY
+            && OD_OSCommand.status != OS_CMD_ERROR_REPLY)
+            return CO_SDO_AB_NO_DATA;
+
+        ODF_arg->offset = 0;
+        ODF_arg->dataLengthTotal = data->reply_len;
+    }
+
+    // Check if there are more segements needed
+    bytes_left = ODF_arg->dataLengthTotal - ODF_arg->offset;
+    if (bytes_left > SDO_BLOCK_LEN) { // more segements needed
+        ODF_arg->dataLength = SDO_BLOCK_LEN;
+        ODF_arg->lastSegment = false;
+    } else { // last segement
+        ODF_arg->dataLength = bytes_left;
+        ODF_arg->lastSegment = true;
+    }
+
+    memcpy(ODF_arg->data, &data->reply_buf[ODF_arg->offset],
+           ODF_arg->dataLength);
+
+    return CO_SDO_AB_NONE;
+}
+
+CO_SDO_abortCode_t
+os_command_odf(CO_ODF_arg_t *ODF_arg) {
+    assert(ODF_arg->index == 0x1023);
+    assert(ODF_arg->object);
+    CO_SDO_abortCode_t ret = CO_SDO_AB_NONE;
 
     switch (ODF_arg->subIndex) {
     case OD_1023_1_OSCommand_command: // bash command, domain, readwrite
 
-        if (ODF_arg->reading) {
-            if (ODF_arg->firstSegment == true) {
-                if (data->command == NULL)
-                    return CO_SDO_AB_NO_DATA;
-
-                ODF_arg->offset = 0;
-                ODF_arg->dataLengthTotal = strlen(data->command) + 1;
-            }
-
-            // Check if there are more segements needed
-            bytes_left = ODF_arg->dataLengthTotal - ODF_arg->offset;
-            if (bytes_left > SDO_BLOCK_LEN) { // more segements needed
-                ODF_arg->dataLength = SDO_BLOCK_LEN;
-                ODF_arg->lastSegment = false;
-            } else { // last segement
-                ODF_arg->dataLength = bytes_left;
-                ODF_arg->lastSegment = true;
-            }
-
-            memcpy(ODF_arg->data, &data->command[ODF_arg->offset],
-                   ODF_arg->dataLength);
-        } else { // writing
-            uint32_t len;
-
-            // add on incase it is missing '\0'
-            if (ODF_arg->dataLengthTotal > BUFFER_LEN_MAX)
-                return CO_SDO_AB_GENERAL;
-            else if (ODF_arg->dataLengthTotal != 0)
-                len = ODF_arg->dataLengthTotal + 1;
-            else
-                len = ODF_arg->dataLength + 1;
-
-            if (ODF_arg->firstSegment) {
-                FREE(data->command);
-                data->command_len = len;
-                ODF_arg->offset = 0;
-
-                // free reply buffer
-                FREE(data->reply_buf);
-                data->reply_buf_len = 0;
-                data->reply_buf = 0;
-
-                if ((data->command = malloc(data->command_len)) == NULL)
-                    return CO_SDO_AB_OUT_OF_MEM;
-            }
-
-            memcpy(&data->command[ODF_arg->offset], ODF_arg->data,
-                   ODF_arg->dataLength);
-
-            if (ODF_arg->lastSegment) {
-                data->command[len - 1] = '\0';
-                OD_OSCommand.status = os_cmd_executing;
-            }
-        }
+        if (ODF_arg->reading)
+            ret = os_command_command_dn_odf(ODF_arg);
+        else
+            ret = os_command_command_up_odf(ODF_arg);
 
         break;
 
     case OD_1023_3_OSCommand_reply: // bash command reply, domain, readonly
-        if (ODF_arg->reading) {
-            if (ODF_arg->firstSegment) {
-                if (OD_OSCommand.status != os_cmd_no_error_reply
-                    && OD_OSCommand.status != os_cmd_error_reply)
-                    return CO_SDO_AB_NO_DATA;
-
-                ODF_arg->offset = 0;
-                ODF_arg->dataLengthTotal = data->reply_len;
-            }
-
-            // Check if there are more segements needed
-            bytes_left = ODF_arg->dataLengthTotal - ODF_arg->offset;
-            if (bytes_left > SDO_BLOCK_LEN) { // more segements needed
-                ODF_arg->dataLength = SDO_BLOCK_LEN;
-                ODF_arg->lastSegment = false;
-            } else { // last segement
-                ODF_arg->dataLength = bytes_left;
-                ODF_arg->lastSegment = true;
-            }
-
-            memcpy(ODF_arg->data, &data->reply_buf[ODF_arg->offset],
-                   ODF_arg->dataLength);
-        } else {
-            return CO_SDO_AB_READONLY;
-        }
+        if (ODF_arg->reading)
+            ret = os_command_reply_dn_odf(ODF_arg);
 
         break;
     }

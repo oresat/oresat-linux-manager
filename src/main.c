@@ -87,7 +87,6 @@ static CO_time_t CO_time; /* Object for current time */
 
 /* OLM globals  **************************************************************/
 static olm_configs_t configs = OLM_CONFIGS_DEFAULT;
-static os_command_t os_command_data;
 static olm_file_cache_t *fread_cache = NULL;
 static olm_file_cache_t *fwrite_cache = NULL;
 
@@ -209,6 +208,7 @@ main(int argc, char *argv[]) {
     bool cpufreq_ctrl = false;
     bool rebootEnable = false;
     system_info_t *system_info;
+    os_command_t *os_command;
 
     /* Read conf file */
     read_config_file(&configs);
@@ -310,6 +310,7 @@ main(int argc, char *argv[]) {
         = FILE_CACHES_INTIALIZER(fread_cache, fwrite_cache);
 
     system_info = system_info_create();
+    os_command = os_command_create();
 
     /* Run as daemon if needed */
     if (daemon_flag) {
@@ -446,8 +447,8 @@ main(int argc, char *argv[]) {
 
             // configure core ODFs
             board_init();
-            CO_OD_configure(CO->SDO[0], OD_1023_OSCommand, OS_COMMAND_1023_ODF,
-                            &os_command_data, 0, 0U);
+            CO_OD_configure(CO->SDO[0], OD_1023_OSCommand, os_command_odf,
+                            os_command, 0, 0U);
             CO_OD_configure(CO->SDO[0], OD_3000_OLMControl, olm_control_ODF,
                             NULL, 0, 0U);
             CO_OD_configure(CO->SDO[0], OD_3001_systemInfo, system_info_ODF,
@@ -499,7 +500,7 @@ main(int argc, char *argv[]) {
             }
 
             /* create async thread */
-            if (pthread_create(&async_thread_id, NULL, async_thread, NULL)
+            if (pthread_create(&async_thread_id, NULL, async_thread, os_command)
                 != 0) {
                 log_printf(LOG_CRIT, DBG_ERRNO, "pthread_create(async_thread)");
                 exit(EXIT_FAILURE);
@@ -538,7 +539,9 @@ main(int argc, char *argv[]) {
 
     /* program exit
      * ***************************************************************/
+
     system_info_destroy(system_info);
+    os_command_destroy(os_command);
 
     // make sure the files are closed when ending program
     log_printf(LOG_DEBUG, "closing any opened files");
@@ -639,12 +642,12 @@ app_thread(void *arg) {
 
 static void *
 async_thread(void *arg) {
-    (void)arg;
+    os_command_t *os_command = (os_command_t *)arg;
     log_printf(LOG_DEBUG, "async thread started");
 
     /* Endless loop */
     while (CO_endProgram == 0) {
-        co_command_async(&os_command_data);
+        os_command_async(os_command);
         usleep(ASYNC_DELAY);
     }
 
