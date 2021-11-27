@@ -22,7 +22,7 @@
  *
  * @param app_manager Daemon apps list.
  *
- * @return 1 on success or negative errno on failure.
+ * @return number of app initialize on success or negative errno on failure.
  */
 int app_manager_init(olm_app_t **apps);
 

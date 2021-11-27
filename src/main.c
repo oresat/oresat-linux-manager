@@ -23,14 +23,14 @@
 #include "CANopen.h"
 #include "CO_epoll_interface.h"
 #include "CO_error.h"
-#include "logging.h"
-
 #include "CO_fstream_odf.h"
 #include "app_manager.h"
 #include "board_main.h"
 #include "configs.h"
 #include "ecss_time.h"
+#include "ecss_time_odf.h"
 #include "file_caches_odf.h"
+#include "logging.h"
 #include "olm_app.h"
 #include "olm_control_odf.h"
 #include "olm_file_cache.h"
@@ -38,11 +38,6 @@
 #include "system_info.h"
 #include "systemd.h"
 #include "utility.h"
-#if TIME_PRODUCER
-#include "time_producer.h"
-#else
-#include "time_sync.h"
-#endif
 
 /* Interval of mainline and real-time thread in microseconds */
 #ifndef MAIN_THREAD_INTERVAL_US
@@ -461,12 +456,8 @@ main(int argc, char *argv[]) {
                             &CO_fwrite_data, 0, 0U);
             CO_OD_configure(CO->SDO[0], OD_3005_appManager, app_manager_ODF,
                             APPS, 0, 0U);
-#if TIME_PRODUCER
-            CO_OD_configure(CO->SDO[0], OD_2010_SCET, time_producer_ODF, NULL,
-                            0, 0U);
-#else
-            CO_OD_configure(CO->SDO[0], OD_2010_SCET, SCET_ODF, NULL, 0, 0U);
-#endif
+            CO_OD_configure(CO->SDO[0], OD_2010_SCET, ecss_scet_odf, NULL, 0,
+                            0U);
 
             log_printf(LOG_INFO, DBG_CAN_OPEN_INFO, CO_activeNodeId,
                        "communication reset");

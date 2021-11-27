@@ -22,7 +22,7 @@
 /** filepath to a cpu governor sysfs file */
 #define GOV_FILE     FILEPATH "scaling_governor"
 
-uint32_t
+unsigned int
 get_cpufreq(void) {
     FILE *fptr = NULL;
     int buf_len = 50;
@@ -52,11 +52,11 @@ get_cpufreq_gov(void) {
     }
 
     if (strncmp(buf, "powersave", strlen("powersave")) == 0)
-        r = powersave;
+        r = CPUFREQ_GOV_POWERSAVE;
     else if (strncmp(buf, "performance", strlen("performance")) == 0)
-        r = performance;
+        r = CPUFREQ_GOV_PERFORMACE;
     else
-        r = unknown;
+        r = CPUFREQ_GOV_UNKNOWN;
 
     return r;
 }
@@ -70,11 +70,11 @@ set_cpufreq_gov(int governor) {
         return -EIO;
 
     switch (governor) {
-    case powersave:
+    case CPUFREQ_GOV_POWERSAVE:
         fwrite("powersave", 1, strlen("powersave") + 1, fptr);
         break;
 
-    case performance:
+    case CPUFREQ_GOV_PERFORMACE:
         fwrite("performance", 1, strlen("performance") + 1, fptr);
         break;
 

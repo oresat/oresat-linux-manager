@@ -2,7 +2,7 @@
 #include "ecss_time.h"
 
 CO_SDO_abortCode_t
-SCET_ODF(CO_ODF_arg_t *ODF_arg) {
+ecss_scet_odf(CO_ODF_arg_t *ODF_arg) {
 
     if (ODF_arg->reading)
         get_time_scet((time_scet_t *)ODF_arg->data);
@@ -13,7 +13,7 @@ SCET_ODF(CO_ODF_arg_t *ODF_arg) {
 }
 
 CO_SDO_abortCode_t
-UTC_ODF(CO_ODF_arg_t *ODF_arg) {
+ecss_utc_odf(CO_ODF_arg_t *ODF_arg) {
 
     if (ODF_arg->reading)
         get_time_utc((time_utc_t *)ODF_arg->data);
