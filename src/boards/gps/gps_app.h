@@ -14,10 +14,8 @@
 
 #include "olm_file_cache.h"
 
-void
-gps_app_async(void *data, olm_file_cache_t *fread_cache);
+void gps_app_async(void *data, olm_file_cache_t *fread_cache);
 
-void
-gps_app_end(void *data);
+void gps_app_end(void *data);
 
 #endif /* GPS_APP_H */

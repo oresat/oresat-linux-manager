@@ -26,7 +26,7 @@ void
 file_caches_free(file_caches_t *caches) {
     if (caches != NULL) {
         // these are handle elsewhere
-        caches->fread_cache  = NULL;
+        caches->fread_cache = NULL;
         caches->fwrite_cache = NULL;
 
         FREE_AND_NULL(caches->keyword);
@@ -35,10 +35,10 @@ file_caches_free(file_caches_t *caches) {
 
 CO_SDO_abortCode_t
 file_caches_ODF(CO_ODF_arg_t *ODF_arg) {
-    file_caches_t *    caches = (file_caches_t *)ODF_arg->object;
-    CO_SDO_abortCode_t ret    = CO_SDO_AB_NONE;
-    olm_file_cache_t * cache  = NULL;
-    olm_file_t *       file   = NULL;
+    file_caches_t *caches = (file_caches_t *)ODF_arg->object;
+    CO_SDO_abortCode_t ret = CO_SDO_AB_NONE;
+    olm_file_cache_t *cache = NULL;
+    olm_file_t *file = NULL;
 
     if (caches == NULL || caches->fread_cache == NULL
         || caches->fwrite_cache == NULL)

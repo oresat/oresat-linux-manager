@@ -42,7 +42,7 @@ if args.cache is not None:
 
     for i in range(node.sdo[FCACHE_INDEX][5].phys):
         node.sdo[FCACHE_INDEX][6].phys = i
-        print(node.sdo[FCACHE_INDEX][7].raw.decode("utf-8"))
+        print(node.sdo[FCACHE_INDEX][7].phys)
 elif args.read_file is not None:
     node.sdo[0x3003][1].raw = args.read_file.encode("utf-8")
     infile = node.sdo[0x3003][2].open("rb", encoding="ascii")

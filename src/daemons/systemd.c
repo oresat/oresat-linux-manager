@@ -34,9 +34,9 @@ static const char *active_state_str[] = {
 
 char *
 get_unit(const char *name) {
-    sd_bus_error    err  = SD_BUS_ERROR_NULL;
+    sd_bus_error err = SD_BUS_ERROR_NULL;
     sd_bus_message *mess = NULL;
-    char *          r = NULL, *unit = NULL;
+    char *r = NULL, *unit = NULL;
 
     if (name == NULL)
         return r;
@@ -66,9 +66,9 @@ get_unit_end:
 
 char *
 load_unit(const char *name) {
-    sd_bus_error    err  = SD_BUS_ERROR_NULL;
+    sd_bus_error err = SD_BUS_ERROR_NULL;
     sd_bus_message *mess = NULL;
-    char *          r = NULL, *unit = NULL;
+    char *r = NULL, *unit = NULL;
 
     if (name == NULL)
         return r;
@@ -101,9 +101,9 @@ load_unit_end:
 
 int
 start_unit(const char *unit) {
-    sd_bus_error    err  = SD_BUS_ERROR_NULL;
+    sd_bus_error err = SD_BUS_ERROR_NULL;
     sd_bus_message *mess = NULL;
-    int             r;
+    int r;
 
     if (unit == NULL)
         return -EINVAL;
@@ -120,9 +120,9 @@ start_unit(const char *unit) {
 
 int
 stop_unit(const char *unit) {
-    sd_bus_error    err  = SD_BUS_ERROR_NULL;
+    sd_bus_error err = SD_BUS_ERROR_NULL;
     sd_bus_message *mess = NULL;
-    int             r;
+    int r;
 
     if (unit == NULL)
         return -EINVAL;
@@ -139,9 +139,9 @@ stop_unit(const char *unit) {
 
 int
 restart_unit(const char *unit) {
-    sd_bus_error    err  = SD_BUS_ERROR_NULL;
+    sd_bus_error err = SD_BUS_ERROR_NULL;
     sd_bus_message *mess = NULL;
-    int             r;
+    int r;
 
     if (unit == NULL)
         return -EINVAL;
@@ -158,10 +158,10 @@ restart_unit(const char *unit) {
 
 unit_active_states_t
 get_unit_active_state(const char *unit) {
-    sd_bus_error    err   = SD_BUS_ERROR_NULL;
-    sd_bus_message *mess  = NULL;
-    char *          state = NULL;
-    int             r     = UNIT_UNKNOWN;
+    sd_bus_error err = SD_BUS_ERROR_NULL;
+    sd_bus_message *mess = NULL;
+    char *state = NULL;
+    int r = UNIT_UNKNOWN;
 
     if (unit == NULL)
         return -EINVAL;

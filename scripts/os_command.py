@@ -27,6 +27,6 @@ while node.sdo[OS_COMMAND_INDEX][2].phys == 0xFF:
     sleep(0.1)
 
 print("status: " + str(node.sdo[OS_COMMAND_INDEX][2].phys))
-print("reply: " + node.sdo[OS_COMMAND_INDEX][3].raw.decode("utf-8"))
+print("reply:\n\n" + node.sdo[OS_COMMAND_INDEX][3].raw.decode("utf-8"))
 
 network.disconnect()

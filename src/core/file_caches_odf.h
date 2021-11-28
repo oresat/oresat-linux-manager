@@ -38,8 +38,7 @@ typedef struct {
         .keyword = NULL,                                                       \
     }
 
-void
-file_caches_free(file_caches_t *caches);
+void file_caches_free(file_caches_t *caches);
 
 /**
  * @brief ODF for list all file in the read and write caches and modifing the
@@ -50,7 +49,6 @@ file_caches_free(file_caches_t *caches);
  *
  * @return SDO abort code
  */
-CO_SDO_abortCode_t
-file_caches_ODF(CO_ODF_arg_t *ODF_arg);
+CO_SDO_abortCode_t file_caches_ODF(CO_ODF_arg_t *ODF_arg);
 
 #endif /* FILE_CACHES_ODF_H */

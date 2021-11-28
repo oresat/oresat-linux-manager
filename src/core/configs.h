@@ -40,7 +40,6 @@ typedef struct {
  *
  * @return 1 on success or negative value on error.
  */
-int
-read_config_file(olm_configs_t *configs);
+int read_config_file(olm_configs_t *configs);
 
 #endif /* OLM_CONFIGS_H */

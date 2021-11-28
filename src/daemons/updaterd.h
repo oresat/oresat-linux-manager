@@ -26,16 +26,14 @@
  * @return 1 if the file was added, 0 on if it wasn't, negativer errno on
  * error.
  */
-int
-updaterd_add_update_archive(const char *file);
+int updaterd_add_update_archive(const char *file);
 
 /**
  * @brief Tells the Updater to update.
  *
  * @return non negative number on sucess or negativer errno on error.
  */
-int
-updaterd_update(void);
+int updaterd_update(void);
 
 /**
  * @brief Tells the OreSat Linux Updater to make a status archive.
@@ -45,8 +43,7 @@ updaterd_update(void);
  *
  * @return non negative number on sucess or negativer errno on error.
  */
-int
-updaterd_make_status_archive(char **out);
+int updaterd_make_status_archive(char **out);
 
 /**
  * @breif Gets the status enum.
@@ -55,8 +52,7 @@ updaterd_make_status_archive(char **out);
  *
  * @return 0 on sucess or a negative errno value on error.
  */
-int
-updaterd_status(uint8_t *state);
+int updaterd_status(uint8_t *state);
 
 /**
  * @breif Gets the number of updates available.
@@ -65,8 +61,7 @@ updaterd_status(uint8_t *state);
  *
  * @return non negative number on sucess or negativer errno on error.
  */
-int
-updaterd_updates_available(uint32_t *count);
+int updaterd_updates_available(uint32_t *count);
 
 /**
  * @breif Gets the list of updates.
@@ -76,7 +71,6 @@ updaterd_updates_available(uint32_t *count);
  *
  * @return non negative number on sucess or negativer errno on error.
  */
-int
-updaterd_list_updates(char **out);
+int updaterd_list_updates(char **out);
 
 #endif /* UPDATER_MODULE_H */

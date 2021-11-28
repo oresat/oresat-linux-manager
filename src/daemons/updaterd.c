@@ -32,9 +32,9 @@ extern sd_bus *system_bus;
 
 int
 updaterd_add_update_archive(const char *file) {
-    sd_bus_error    err  = SD_BUS_ERROR_NULL;
+    sd_bus_error err = SD_BUS_ERROR_NULL;
     sd_bus_message *mess = NULL;
-    int             r, value = 0;
+    int r, value = 0;
 
     if (file == NULL)
         return -EINVAL;
@@ -64,9 +64,9 @@ update_archive_end:
 
 int
 updaterd_update(void) {
-    sd_bus_error    err  = SD_BUS_ERROR_NULL;
+    sd_bus_error err = SD_BUS_ERROR_NULL;
     sd_bus_message *mess = NULL;
-    int             r;
+    int r;
 
     r = sd_bus_call_method(DBUS_INFO, "Update", &err, &mess, NULL);
     if (r < 0)
@@ -79,10 +79,10 @@ updaterd_update(void) {
 
 int
 updaterd_make_status_archive(char **out) {
-    sd_bus_error    err  = SD_BUS_ERROR_NULL;
+    sd_bus_error err = SD_BUS_ERROR_NULL;
     sd_bus_message *mess = NULL;
-    char *          temp, *filepath;
-    int             r;
+    char *temp, *filepath;
+    int r;
 
     r = sd_bus_call_method(DBUS_INFO, "MakeStatusArchive", &err, &mess, NULL);
     if (r < 0) {
@@ -113,9 +113,9 @@ make_status_archve_end:
 
 int
 updaterd_status(uint8_t *state) {
-    sd_bus_error    err  = SD_BUS_ERROR_NULL;
+    sd_bus_error err = SD_BUS_ERROR_NULL;
     sd_bus_message *mess = NULL;
-    int             r;
+    int r;
 
     r = sd_bus_get_property(DBUS_INFO, "StatusValue", &err, &mess, "y");
     if (r < 0) {
@@ -137,9 +137,9 @@ status_end:
 
 int
 updaterd_updates_available(uint32_t *count) {
-    sd_bus_error    err  = SD_BUS_ERROR_NULL;
+    sd_bus_error err = SD_BUS_ERROR_NULL;
     sd_bus_message *mess = NULL;
-    int             r;
+    int r;
 
     r = sd_bus_get_property(DBUS_INFO, "AvailableUpdateArchives", &err, &mess,
                             "u");
@@ -162,10 +162,10 @@ updates_available_end:
 
 int
 updaterd_list_updates(char **out) {
-    sd_bus_error    err  = SD_BUS_ERROR_NULL;
+    sd_bus_error err = SD_BUS_ERROR_NULL;
     sd_bus_message *mess = NULL;
-    char *          temp = NULL, *update_list = NULL;
-    int             r;
+    char *temp = NULL, *update_list = NULL;
+    int r;
 
     r = sd_bus_get_property(DBUS_INFO, "ListUpdates", &err, &mess, "s");
     if (r < 0) {

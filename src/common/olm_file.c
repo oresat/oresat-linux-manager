@@ -33,11 +33,11 @@ olm_file_free(olm_file_t *out) {
 
 int
 olm_file_new(char *filepath, olm_file_t **out) {
-    char *      unix_time_str, *end;
-    char        filename[PATH_MAX];
-    olm_file_t *new_file    = NULL;
-    int         keyword_loc = 0, date_loc = 0, ext_loc = 0;
-    int         len, r = 0;
+    char *unix_time_str, *end;
+    char filename[PATH_MAX];
+    olm_file_t *new_file = NULL;
+    int keyword_loc = 0, date_loc = 0, ext_loc = 0;
+    int len, r = 0;
     struct stat st;
 
     if (filepath == NULL)
@@ -77,10 +77,10 @@ olm_file_new(char *filepath, olm_file_t **out) {
     if ((new_file = malloc(sizeof(olm_file_t))) == NULL)
         goto olm_file_mem_error;
 
-    new_file->size      = st.st_size;
-    new_file->name      = NULL;
-    new_file->board     = NULL;
-    new_file->keyword   = NULL;
+    new_file->size = st.st_size;
+    new_file->name = NULL;
+    new_file->board = NULL;
+    new_file->keyword = NULL;
     new_file->extension = NULL;
 
     // copy filename
@@ -108,7 +108,7 @@ olm_file_new(char *filepath, olm_file_t **out) {
         goto olm_file_mem_error;
     strncpy(unix_time_str, &filename[date_loc], len);
     unix_time_str[len - 1] = '\0';
-    new_file->unix_time    = (uint32_t)strtol(unix_time_str, &end, 10);
+    new_file->unix_time = (uint32_t)strtol(unix_time_str, &end, 10);
     free(unix_time_str);
 
     // copy extension (if there is one)
@@ -131,9 +131,9 @@ olm_file_mem_error:
 
 bool
 is_olm_file(char *filepath) {
-    int   keyword_loc = 0, date_loc = 0;
+    int keyword_loc = 0, date_loc = 0;
     char *filename;
-    bool  r = true;
+    bool r = true;
 
     if (filepath == NULL)
         return false;

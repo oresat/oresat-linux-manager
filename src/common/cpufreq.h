@@ -12,12 +12,10 @@
 #ifndef CPUFREQ_H
 #define CPUFREQ_H
 
-#include <stdint.h>
-
-enum cpu_gov {
-    unknown     = 0,
-    powersave   = 1,
-    performance = 2,
+enum cpu_gov_t {
+    CPUFREQ_GOV_POWERSAVE = 0x00,
+    CPUFREQ_GOV_PERFORMACE = 0x01,
+    CPUFREQ_GOV_UNKNOWN = 0xFF,
 };
 
 /**
@@ -25,23 +23,20 @@ enum cpu_gov {
  *
  * @return cpufreq on success or 0 on error.
  */
-uint32_t
-get_cpufreq(void);
+unsigned int get_cpufreq(void);
 
 /**
  * Gets cpufreq governor.
  *
  * @return cpu_gov enum value on success or -1 on error.
  */
-int
-get_cpufreq_gov(void);
+int get_cpufreq_gov(void);
 
 /**
  * Sets cpufreq governor.
  *
  * @return 0 on success or negative errno value on error.
  */
-int
-set_cpufreq_gov(int governor);
+int set_cpufreq_gov(int governor);
 
 #endif

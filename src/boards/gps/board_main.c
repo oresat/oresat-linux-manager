@@ -22,23 +22,23 @@
 #include <unistd.h>
 
 static olm_app_t updater_app = {
-    .name           = "Updater",
-    .unit_name      = UPDATER_SERVICE_FILE,
+    .name = "Updater",
+    .unit_name = UPDATER_SERVICE_FILE,
     .fwrite_keyword = "update",
-    .fwrite_cb      = updaterd_add_update_archive,
-    .async_cb       = updater_async,
-    .daemon_end_cb  = updater_end,
-    .data           = NULL,
+    .fwrite_cb = updaterd_add_update_archive,
+    .async_cb = updater_async,
+    .daemon_end_cb = updater_end,
+    .data = NULL,
 };
 
 static olm_app_t gps_app = {
-    .name           = "GPS",
-    .unit_name      = GPS_SERVICE_FILE,
+    .name = "GPS",
+    .unit_name = GPS_SERVICE_FILE,
     .fwrite_keyword = NULL,
-    .fwrite_cb      = NULL,
-    .async_cb       = gps_app_async,
-    .daemon_end_cb  = gps_app_end,
-    .data           = NULL,
+    .fwrite_cb = NULL,
+    .async_cb = gps_app_async,
+    .daemon_end_cb = gps_app_end,
+    .data = NULL,
 };
 
 static olm_app_t *apps[] = {

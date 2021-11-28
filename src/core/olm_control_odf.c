@@ -10,35 +10,32 @@
  */
 
 #include "CANopen.h"
+#include "cpufreq.h"
 #include "logind.h"
 
 CO_SDO_abortCode_t
 olm_control_ODF(CO_ODF_arg_t *ODF_arg) {
     CO_SDO_abortCode_t ret = CO_SDO_AB_NONE;
-    int                r   = 0;
+    int r = 0;
 
     switch (ODF_arg->subIndex) {
-    case OD_3000_1_OLMControl_rebootBoard: // bash command, domain, readwrite
+    case OD_3000_1_OLMControl_rebootBoard:
 
-        if (ODF_arg->reading)
-            return CO_SDO_AB_WRITEONLY;
-        else
+        if (!ODF_arg->reading && ODF_arg->data[0])
             r = logind_poweroff();
 
         break;
 
-    case OD_3000_2_OLMControl_poweroffBoard: // poweroff, domain, writeonly
+    case OD_3000_2_OLMControl_poweroffBoard:
 
-        if (ODF_arg->reading)
-            return CO_SDO_AB_WRITEONLY;
-        else
+        if (!ODF_arg->reading && ODF_arg->data[0])
             r = logind_reboot();
 
         break;
     }
 
     if (r < 0)
-        ret = CO_SDO_AB_GENERAL;
+        ret = CO_SDO_AB_DATA_LOC_CTRL;
 
     return ret;
 }

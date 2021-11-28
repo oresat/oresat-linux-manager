@@ -29,10 +29,29 @@ typedef struct {
     uint32_t reply_len;
 } os_command_t;
 
-void
-co_command_async(os_command_t *data);
+/**
+ * Create an os_command_t object
+ *
+ * @see os_command_destroy
+ */
+os_command_t *os_command_create();
 
-CO_SDO_abortCode_t
-OS_COMMAND_1023_ODF(CO_ODF_arg_t *ODF_arg);
+/**
+ * Destroy an os_command_t object
+ *
+ * @param data os_command_t object to destroy
+ *
+ * @see os_command_create
+ */
+void os_command_destroy(os_command_t *data);
+
+/**
+ * Run the OS command received over the CAN bus.
+ *
+ * @param data os command data
+ */
+void os_command_async(os_command_t *data);
+
+CO_SDO_abortCode_t os_command_odf(CO_ODF_arg_t *ODF_arg);
 
 #endif /* OS_COMMAND_H */

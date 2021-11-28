@@ -55,8 +55,7 @@
  *
  * @return 0 on success or negative errno on error.
  */
-int
-copyfile(const char *src, const char *dest);
+int copyfile(const char *src, const char *dest);
 
 /**
  * @breif Makes directory path. A wrapper on top of mkdir().
@@ -66,8 +65,7 @@ copyfile(const char *src, const char *dest);
  *
  * @return 0 on success or negative errno on error.
  */
-int
-mkdir_path(const char *path, mode_t mode);
+int mkdir_path(const char *path, mode_t mode);
 
 /**
  * @breif Check to see if file exist.
@@ -76,8 +74,7 @@ mkdir_path(const char *path, mode_t mode);
  *
  * @return true if the file exist or false if file does not exist.
  */
-bool
-is_file(const char *path);
+bool is_file(const char *path);
 
 /**
  * @breif Check to see if directory exist.
@@ -86,8 +83,7 @@ is_file(const char *path);
  *
  * @return true if the directory exist or false if directory does not exist.
  */
-bool
-is_dir(const char *path);
+bool is_dir(const char *path);
 
 /**
  * @breif Delete all files in a directory.
@@ -96,7 +92,6 @@ is_dir(const char *path);
  *
  * @return 0 on success or negative errno on error.
  */
-int
-clear_dir(const char *path);
+int clear_dir(const char *path);
 
 #endif /* UTILITY_H */

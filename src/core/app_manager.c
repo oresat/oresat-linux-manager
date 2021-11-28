@@ -27,17 +27,17 @@ int
 app_manager_init(olm_app_t **apps) {
     int i;
 
-    if (apps == NULL)
+    if (!apps)
         return -EINVAL;
 
     // find systemd1 object paths
-    for (i = 0; apps[i] != NULL; ++i) {
+    for (i = 0; apps[i]; ++i) {
         apps[i]->unit_systemd1_object_path = get_unit(apps[i]->unit_name);
-        if (apps[i]->unit_systemd1_object_path == NULL)
+        if (!apps[i]->unit_systemd1_object_path)
             apps[i]->unit_systemd1_object_path = load_unit(apps[i]->unit_name);
         log_printf(LOG_DEBUG, "app %s systemd1 object path %s", apps[i]->name,
                    apps[i]->unit_systemd1_object_path);
-        apps[i]->unit_state   = UNIT_INACTIVE;
+        apps[i]->unit_state = UNIT_INACTIVE;
         apps[i]->unit_command = UNIT_NO_CMD;
     }
 
@@ -45,24 +45,24 @@ app_manager_init(olm_app_t **apps) {
     OD_appManager.totalApps = (uint8_t)i;
     CO_UNLOCK_OD();
 
-    return 1;
+    return i;
 }
 
 void
 app_manager_async(olm_app_t **apps, olm_file_cache_t *fwrite_cache) {
-    char        path[PATH_MAX];
+    char path[PATH_MAX];
     olm_file_t *file;
-    uint32_t    active_apps = 0, failed_apps = 0;
-    uint8_t     last_state;
-    int         files, r;
+    uint32_t active_apps = 0, failed_apps = 0;
+    uint8_t last_state;
+    int files, r;
 
-    if (apps == NULL || fwrite_cache == NULL) {
+    if (!apps || !fwrite_cache) {
         log_printf(LOG_DEBUG, "app_manager_async() missing inputs");
         return;
     }
 
-    for (int i = 0; apps[i] != NULL; ++i) {
-        if (apps[i]->unit_systemd1_object_path == NULL
+    for (int i = 0; apps[i]; ++i) {
+        if (!apps[i]->unit_systemd1_object_path
             || apps[i]->unit_state == UNIT_UNKNOWN) {
             continue; // no daemon found
         }
@@ -95,7 +95,7 @@ app_manager_async(olm_app_t **apps, olm_file_cache_t *fwrite_cache) {
             = get_unit_active_state(apps[i]->unit_systemd1_object_path);
 
         // call daemon_end_cb if daemon has stopped / failed
-        if (apps[i]->daemon_end_cb != NULL && last_state == UNIT_ACTIVE
+        if (apps[i]->daemon_end_cb && last_state == UNIT_ACTIVE
             && apps[i]->unit_state != UNIT_ACTIVE)
             apps[i]->daemon_end_cb(apps[i]->data);
 
@@ -106,8 +106,8 @@ app_manager_async(olm_app_t **apps, olm_file_cache_t *fwrite_cache) {
             ++failed_apps;
 
         // if app is not running or does not require fwrite
-        if (apps[i]->unit_state != UNIT_ACTIVE
-            || apps[i]->fwrite_keyword == NULL || apps[i]->fwrite_cb == NULL) {
+        if (apps[i]->unit_state != UNIT_ACTIVE || !apps[i]->fwrite_keyword
+            || !apps[i]->fwrite_cb) {
             continue;
         }
 
@@ -137,16 +137,16 @@ app_manager_async(olm_app_t **apps, olm_file_cache_t *fwrite_cache) {
     }
 
     if (OD_OLMControl.CPUFrequency) {
-        if (active_apps == 0 && OD_systemInfo.CPUGovernor == performance) {
-            set_cpufreq_gov(powersave);
+        if (active_apps == 0 && OD_systemInfo.CPUGovernor == CPUFREQ_GOV_PERFORMACE) {
+            set_cpufreq_gov(CPUFREQ_GOV_POWERSAVE);
             CO_LOCK_OD();
-            OD_systemInfo.CPUGovernor  = get_cpufreq_gov();
+            OD_systemInfo.CPUGovernor = get_cpufreq_gov();
             OD_systemInfo.CPUFrequency = get_cpufreq();
             CO_UNLOCK_OD();
-        } else if (active_apps > 0 && OD_systemInfo.CPUGovernor == powersave) {
-            set_cpufreq_gov(performance);
+        } else if (active_apps > 0 && OD_systemInfo.CPUGovernor == CPUFREQ_GOV_POWERSAVE) {
+            set_cpufreq_gov(CPUFREQ_GOV_PERFORMACE);
             CO_LOCK_OD();
-            OD_systemInfo.CPUGovernor  = get_cpufreq_gov();
+            OD_systemInfo.CPUGovernor = get_cpufreq_gov();
             OD_systemInfo.CPUFrequency = get_cpufreq();
             CO_UNLOCK_OD();
         }
@@ -160,12 +160,12 @@ app_manager_async(olm_app_t **apps, olm_file_cache_t *fwrite_cache) {
 
 CO_SDO_abortCode_t
 app_manager_ODF(CO_ODF_arg_t *ODF_arg) {
-    CO_SDO_abortCode_t ret  = CO_SDO_AB_NONE;
-    olm_app_t **       apps = (olm_app_t **)ODF_arg->object;
-    olm_app_t *        app  = NULL;
-    uint8_t            temp_uint8;
+    CO_SDO_abortCode_t ret = CO_SDO_AB_NONE;
+    olm_app_t **apps = (olm_app_t **)ODF_arg->object;
+    olm_app_t *app = NULL;
+    uint8_t temp_uint8;
 
-    if (apps == NULL)
+    if (!apps)
         return CO_SDO_AB_NO_DATA;
 
     app = apps[OD_appManager.selectApp];
@@ -185,7 +185,7 @@ app_manager_ODF(CO_ODF_arg_t *ODF_arg) {
     case OD_3005_5_appManager_appName: // app name, domain, readonly
 
         if (ODF_arg->reading) {
-            if (app->name == NULL) {
+            if (!app->name) {
                 ret = CO_SDO_AB_NO_DATA;
             } else {
                 ODF_arg->dataLength = strlen(app->name) + 1;

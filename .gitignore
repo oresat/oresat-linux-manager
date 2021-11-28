@@ -61,3 +61,5 @@ CMakeFiles
 doxygen_html
 index.html
 .vscode/
+compile_commands.json
+.cache/

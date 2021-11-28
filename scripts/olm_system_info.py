@@ -19,16 +19,16 @@ network.connect(bustype="socketcan", channel=args.bus)
 
 print("")
 
-os_name = node.sdo[SYSTEM_INFO_INDEX][1].raw.decode("utf-8")
-os_distro = node.sdo[SYSTEM_INFO_INDEX][2].raw.decode("utf-8")
-kernel_ver = node.sdo[SYSTEM_INFO_INDEX][3].raw.decode("utf-8")
+os_name = node.sdo[SYSTEM_INFO_INDEX][1].phys
+os_distro = node.sdo[SYSTEM_INFO_INDEX][2].phys
+kernel_ver = node.sdo[SYSTEM_INFO_INDEX][3].phys
 print("OS Name: " + os_name)
 print("OS Distro: " + os_distro)
 print("Kernel Version: " + kernel_ver)
 
 print("")
 
-hostname = node.sdo[SYSTEM_INFO_INDEX][4].raw.decode("utf-8")
+hostname = node.sdo[SYSTEM_INFO_INDEX][4].phys
 uptime = node.sdo[SYSTEM_INFO_INDEX][5].phys
 print("Hostname: " + hostname)
 print("Uptime: {} seconds".format(uptime))
@@ -36,7 +36,7 @@ print("Uptime: {} seconds".format(uptime))
 print("")
 
 cpus = node.sdo[SYSTEM_INFO_INDEX][6].phys
-cpu_arch = node.sdo[SYSTEM_INFO_INDEX][7].raw.decode("utf-8")
+cpu_arch = node.sdo[SYSTEM_INFO_INDEX][7].phys
 cpu_gov = node.sdo[SYSTEM_INFO_INDEX][8].phys
 cpu_freq = node.sdo[SYSTEM_INFO_INDEX][9].phys
 print("CPU info")
@@ -54,8 +54,8 @@ else:
     print("Remote processors")
     for i in range(remote_procs):
         node.sdo[SYSTEM_INFO_INDEX][11].phys = i
-        rproc_name = node.sdo[SYSTEM_INFO_INDEX][12].raw.decode("utf-8")
-        rproc_state = node.sdo[SYSTEM_INFO_INDEX][13].raw.decode("utf-8")
+        rproc_name = node.sdo[SYSTEM_INFO_INDEX][12].phys
+        rproc_state = node.sdo[SYSTEM_INFO_INDEX][13].phys
         print("  " + rproc_name + " is " + rproc_state)
 
 print("")
